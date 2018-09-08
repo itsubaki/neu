@@ -1,2 +1,6 @@
 # arts
-machine learning written by golang
+
+
+# Reference
+
+ 1. [Deep Learning Book](https://www.deeplearningbook.org)
