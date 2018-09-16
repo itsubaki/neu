@@ -5,6 +5,42 @@ import (
 	"testing"
 )
 
+func TestBernoulli(t *testing.T) {
+
+	if Bernoulli(0, 0) != 1 {
+		t.Error(Bernoulli(0, 1))
+	}
+
+	if Bernoulli(0.3, 0) != 0.7 {
+		t.Error(Bernoulli(0.3, 1))
+	}
+
+	if math.Abs(Bernoulli(0.7, 0)-0.3) > 1e-16 {
+		t.Error(Bernoulli(0.7, 0))
+	}
+
+	if Bernoulli(1, 0) != 0 {
+		t.Error(Bernoulli(1, 0))
+	}
+
+	if Bernoulli(0, 1) != 0 {
+		t.Error(Bernoulli(0, 1))
+	}
+
+	if Bernoulli(0.3, 1) != 0.3 {
+		t.Error(Bernoulli(0.3, 1))
+	}
+
+	if Bernoulli(0.7, 1) != 0.7 {
+		t.Error(Bernoulli(0.7, 1))
+	}
+
+	if Bernoulli(1, 1) != 1 {
+		t.Error(Bernoulli(1, 1))
+	}
+
+}
+
 func TestGaussian(t *testing.T) {
 	if Gaussian(-2, 0, 1) != Gaussian(2, 0, 1) {
 		t.Errorf("%f: %f", Gaussian(-2, 0, 1), Gaussian(2, 0, 1))

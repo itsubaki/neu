@@ -5,13 +5,13 @@ import (
 	"math"
 )
 
-// phi must be 0 or 1
-func Bernoulli(x float64, phi int) float64 {
-	if phi != 0 && phi != 1 {
-		panic(fmt.Sprintf("out of range. phi: %v", phi))
+// k must be 0 or 1
+func Bernoulli(p float64, k int) float64 {
+	if k != 0 && k != 1 {
+		panic(fmt.Sprintf("out of range. k: %v", k))
 	}
 
-	return math.Pow(float64(phi), x) * math.Pow(float64((1-phi)), 1-x)
+	return math.Pow(p, float64(k)) * math.Pow((1.0-p), float64(1-k))
 }
 
 func Gaussian(x, mu, sigma float64) float64 {
