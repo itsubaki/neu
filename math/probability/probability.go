@@ -1,8 +1,20 @@
 package probability
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
-func Gauss(x, mu, sigma float64) float64 {
+// phi must be 0 or 1
+func Bernoulli(x float64, phi int) float64 {
+	if phi != 0 && phi != 1 {
+		panic(fmt.Sprintf("out of range. phi: %v", phi))
+	}
+
+	return math.Pow(float64(phi), x) * math.Pow(float64((1-phi)), 1-x)
+}
+
+func Gaussian(x, mu, sigma float64) float64 {
 	c := math.Sqrt(1 / (2 * math.Pi * sigma * sigma))
 	e := math.Exp(-1 * (x - mu) * (x - mu) / (2 * sigma * sigma))
 	return c * e
@@ -14,7 +26,7 @@ func Laplace(x, mu, gamma float64) float64 {
 	return c * e
 }
 
-func Sigmoid(x float64) float64 {
+func LogisticSigmoid(x float64) float64 {
 	return 1 / (1 + math.Exp(-x))
 }
 

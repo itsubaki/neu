@@ -5,13 +5,13 @@ import (
 	"testing"
 )
 
-func TestGauss(t *testing.T) {
-	if Gauss(-2, 0, 1) != Gauss(2, 0, 1) {
-		t.Errorf("%f: %f", Gauss(-2, 0, 1), Gauss(2, 0, 1))
+func TestGaussian(t *testing.T) {
+	if Gaussian(-2, 0, 1) != Gaussian(2, 0, 1) {
+		t.Errorf("%f: %f", Gaussian(-2, 0, 1), Gaussian(2, 0, 1))
 	}
 
-	if Gauss(-1, 0, 1) != Gauss(1, 0, 1) {
-		t.Errorf("%f: %f", Gauss(-2, 0, 1), Gauss(2, 0, 1))
+	if Gaussian(-1, 0, 1) != Gaussian(1, 0, 1) {
+		t.Errorf("%f: %f", Gaussian(-2, 0, 1), Gaussian(2, 0, 1))
 	}
 }
 
@@ -25,17 +25,17 @@ func TestLaplace(t *testing.T) {
 	}
 }
 
-func TestSigmoid(t *testing.T) {
-	if math.Abs(Sigmoid(0)-0.5) > 1e-13 {
-		t.Error(Sigmoid(0))
+func TestLogisticSigmoid(t *testing.T) {
+	if math.Abs(LogisticSigmoid(0)-0.5) > 1e-13 {
+		t.Error(LogisticSigmoid(0))
 	}
 
-	if math.Abs(Sigmoid(-10)) > 1e-4 {
-		t.Error(Sigmoid(-10))
+	if math.Abs(LogisticSigmoid(-10)) > 1e-4 {
+		t.Error(LogisticSigmoid(-10))
 	}
 
-	if math.Abs(Sigmoid(10)-1.0) > 1e-4 {
-		t.Error(Sigmoid(10))
+	if math.Abs(LogisticSigmoid(10)-1.0) > 1e-4 {
+		t.Error(LogisticSigmoid(10))
 	}
 }
 
