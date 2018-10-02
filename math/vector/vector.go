@@ -68,10 +68,10 @@ func (v0 Vector) IsUnit(eps ...float64) bool {
 func (v0 Vector) Apply(mat matrix.Matrix) Vector {
 	v := Vector{}
 
-	m, _ := mat.Dimension()
+	m, n := mat.Dimension()
 	for i := 0; i < m; i++ {
 		tmp := 0.0
-		for j := 0; j < len(v0); j++ {
+		for j := 0; j < n; j++ {
 			tmp = tmp + mat[i][j]*v0[j]
 		}
 		v = append(v, tmp)
@@ -81,12 +81,12 @@ func (v0 Vector) Apply(mat matrix.Matrix) Vector {
 }
 
 func (v0 Vector) Equals(v1 Vector, eps ...float64) bool {
-	if len(v0) != len(v1) {
+	if v0.Dimension() != v1.Dimension() {
 		return false
 	}
 
 	e := matrix.Eps(eps...)
-	for i := 0; i < len(v0); i++ {
+	for i := 0; i < v0.Dimension(); i++ {
 		if math.Abs(v0[i]-v1[i]) > e {
 			return false
 		}
@@ -97,8 +97,8 @@ func (v0 Vector) Equals(v1 Vector, eps ...float64) bool {
 
 func (v0 Vector) TensorProduct(v1 Vector) Vector {
 	v2 := Vector{}
-	for i := 0; i < len(v0); i++ {
-		for j := 0; j < len(v1); j++ {
+	for i := 0; i < v0.Dimension(); i++ {
+		for j := 0; j < v1.Dimension(); j++ {
 			v2 = append(v2, v0[i]*v1[j])
 		}
 	}

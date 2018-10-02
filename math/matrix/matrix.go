@@ -8,6 +8,16 @@ func (m0 Matrix) Dimension() (int, int) {
 	return len(m0), len(m0[0])
 }
 
+// TODO
+func (m0 Matrix) Inverse() Matrix {
+	return m0
+}
+
+// TODO
+func (m0 Matrix) Determinant() float64 {
+	return 0
+}
+
 func (m0 Matrix) Transpose() Matrix {
 	p, q := m0.Dimension()
 

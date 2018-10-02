@@ -3,12 +3,15 @@ package probability
 import (
 	"fmt"
 	"math"
+
+	"github.com/itsubaki/q/math/matrix"
+	"github.com/itsubaki/q/math/vector"
 )
 
 // k must be 0 or 1
 func Bernoulli(p float64, k int) float64 {
 	if k != 0 && k != 1 {
-		panic(fmt.Sprintf("out of range. k: %v", k))
+		panic(fmt.Sprintf("out of range. k=%v", k))
 	}
 
 	return math.Pow(p, float64(k)) * math.Pow((1.0-p), float64(1-k))
@@ -32,4 +35,14 @@ func LogisticSigmoid(x float64) float64 {
 
 func Softplus(x float64) float64 {
 	return math.Log(1 + math.Exp(x))
+}
+
+func Softend(x float64) float64 {
+	return math.Max(0, x)
+}
+
+// TODO
+// when sigma is precision matrix Beta, this is isotropic Gaussian.
+func MultiVariateNormal(v, mu vector.Vector, sigma matrix.Matrix) vector.Vector {
+	return vector.New(0)
 }
