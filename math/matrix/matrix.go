@@ -1,21 +1,96 @@
 package matrix
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 type Matrix [][]float64
+
+func (m0 Matrix) Clone() Matrix {
+	m, n := m0.Dimension()
+	ret := Matrix{}
+	for i := 0; i < m; i++ {
+		v := []float64{}
+		for j := 0; j < n; j++ {
+			v = append(v, m0[i][j])
+		}
+		ret = append(ret, v)
+	}
+
+	return ret
+}
 
 func (m0 Matrix) Dimension() (int, int) {
 	return len(m0), len(m0[0])
 }
 
-// TODO
 func (m0 Matrix) Inverse() Matrix {
-	return m0
+	mat := m0.Clone()
+	m, n := mat.Dimension()
+	if m != n {
+		panic(fmt.Sprintf("m=%d n=%d", m, n))
+	}
+
+	inv := Matrix{}
+	for i := 0; i < m; i++ {
+		v := []float64{}
+		for j := 0; j < n; j++ {
+			if i == j {
+				v = append(v, 1)
+				continue
+			}
+			v = append(v, 0)
+		}
+		inv = append(inv, v)
+	}
+
+	for i := 0; i < m; i++ {
+		c := 1 / mat[i][i]
+		for j := 0; j < n; j++ {
+			mat[i][j] = c * mat[i][j]
+			inv[i][j] = c * inv[i][j]
+		}
+		for j := 0; j < n; j++ {
+			if i == j {
+				continue
+			}
+			c := mat[j][i]
+			for k := 0; k < n; k++ {
+				mat[j][k] = mat[j][k] - c*mat[i][k]
+				inv[j][k] = inv[j][k] - c*inv[i][k]
+			}
+		}
+	}
+
+	return inv
 }
 
-// TODO
 func (m0 Matrix) Determinant() float64 {
-	return 0
+	mat := m0.Clone()
+	m, n := mat.Dimension()
+	if m != n {
+		panic(fmt.Sprintf("m=%d n=%d", m, n))
+	}
+
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			if i >= j {
+				continue
+			}
+			c := mat[j][i] / mat[i][i]
+			for k := 0; k < n; k++ {
+				mat[j][k] = mat[j][k] - c*mat[i][k]
+			}
+		}
+	}
+
+	det := 1.0
+	for i := 0; i < m; i++ {
+		det = det * mat[i][i]
+	}
+
+	return det
 }
 
 func (m0 Matrix) Transpose() Matrix {
