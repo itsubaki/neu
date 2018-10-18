@@ -93,6 +93,21 @@ func (m0 Matrix) Determinant() float64 {
 	return det
 }
 
+// Frobenius Norm
+func (m0 Matrix) Norm() float64 {
+	m, n := m0.Dimension()
+
+	sum := 0.0
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			aij := math.Abs(m0[i][j])
+			sum = sum + aij*aij
+		}
+	}
+
+	return math.Sqrt(sum)
+}
+
 func (m0 Matrix) Transpose() Matrix {
 	p, q := m0.Dimension()
 
