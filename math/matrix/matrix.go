@@ -143,6 +143,10 @@ func (m0 Matrix) Apply(m1 Matrix) Matrix {
 	return m2
 }
 
+func (m0 Matrix) IsSymmetric(eps ...float64) bool {
+	return m0.Equals(m0.Transpose(), eps...)
+}
+
 func (m0 Matrix) IsOrthogonal(eps ...float64) bool {
 	p, q := m0.Dimension()
 	m := m0.Apply(m0.Transpose())
