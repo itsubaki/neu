@@ -7,6 +7,14 @@ import (
 
 type Matrix [][]float64
 
+func New(v ...[]float64) Matrix {
+	m := make(Matrix, len(v))
+	for i := 0; i < len(v); i++ {
+		m[i] = v[i]
+	}
+	return m
+}
+
 func (m0 Matrix) Clone() Matrix {
 	m, n := m0.Dimension()
 	ret := Matrix{}

@@ -36,6 +36,14 @@ func (v0 Vector) Add(v1 Vector) Vector {
 	return v2
 }
 
+func (v0 Vector) Sub(v1 Vector) Vector {
+	v2 := Vector{}
+	for i := 0; i < len(v0); i++ {
+		v2 = append(v2, v0[i]-v1[i])
+	}
+	return v2
+}
+
 func (v0 Vector) Mul(z float64) Vector {
 	v2 := Vector{}
 	for i, _ := range v0 {
@@ -78,6 +86,15 @@ func (v0 Vector) Apply(mat matrix.Matrix) Vector {
 	}
 
 	return v
+}
+
+func (v0 Vector) InnerProduct(v1 Vector) float64 {
+	p := 0.0
+	for i := 0; i < len(v0); i++ {
+		p = p + v0[i]*v1[i]
+	}
+
+	return p
 }
 
 func (v0 Vector) Equals(v1 Vector, eps ...float64) bool {

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/itsubaki/q/math/matrix"
-	"github.com/itsubaki/q/math/vector"
+	"github.com/itsubaki/arts/math/matrix"
+	"github.com/itsubaki/arts/math/vector"
 )
 
 // k must be 0 or 1
@@ -41,8 +41,11 @@ func Softend(x float64) float64 {
 	return math.Max(0, x)
 }
 
-// TODO
 // when sigma is precision matrix Beta, this is isotropic Gaussian.
-func MultiVariateNormal(v, mu vector.Vector, sigma matrix.Matrix) vector.Vector {
-	return vector.New(0)
+func MultiVariateNormal(v, mu vector.Vector, sigma matrix.Matrix) float64 {
+	n := float64(v.Dimension())
+	z := math.Sqrt(1 / (math.Pow(2*math.Pi, n) * sigma.Determinant()))
+	s := v.Sub(mu)
+	i := -1 * (s.InnerProduct(s.Apply(sigma.Inverse()))) / 2
+	return z * math.Exp(i)
 }
