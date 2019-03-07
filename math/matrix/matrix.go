@@ -35,6 +35,7 @@ func (m0 Matrix) Dimension() (int, int) {
 
 func (m0 Matrix) Inverse() Matrix {
 	mat := m0.Clone()
+
 	m, n := mat.Dimension()
 	if m != n {
 		panic(fmt.Sprintf("m=%d n=%d", m, n))
@@ -76,6 +77,7 @@ func (m0 Matrix) Inverse() Matrix {
 
 func (m0 Matrix) Determinant() float64 {
 	mat := m0.Clone()
+
 	m, n := mat.Dimension()
 	if m != n {
 		panic(fmt.Sprintf("m=%d n=%d", m, n))
