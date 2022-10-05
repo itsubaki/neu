@@ -3,7 +3,7 @@ package perceptron_test
 import (
 	"fmt"
 
-	"github.com/itsubaki/zero/perceptron"
+	"github.com/itsubaki/godeep/perceptron"
 )
 
 func ExampleAND() {
