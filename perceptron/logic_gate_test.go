@@ -44,3 +44,16 @@ func ExampleOR() {
 	// 1
 	// 1
 }
+
+func ExampleXOR() {
+	fmt.Println(perceptron.XOR([]float64{0, 0}))
+	fmt.Println(perceptron.XOR([]float64{1, 0}))
+	fmt.Println(perceptron.XOR([]float64{0, 1}))
+	fmt.Println(perceptron.XOR([]float64{1, 1}))
+
+	// Output:
+	// 0
+	// 1
+	// 1
+	// 0
+}
