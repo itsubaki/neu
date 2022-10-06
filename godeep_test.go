@@ -9,40 +9,28 @@ import (
 )
 
 func Example() {
-	X := matrix.New([]float64{1.0, 0.5})
-	W1 := matrix.New(
-		[]float64{0.1, 0.3, 0.5},
-		[]float64{0.2, 0.4, 0.6},
-	)
+	// network
+	W1 := matrix.New([]float64{0.1, 0.3, 0.5}, []float64{0.2, 0.4, 0.6})
 	B1 := matrix.New([]float64{0.1, 0.2, 0.3})
+	W2 := matrix.New([]float64{0.1, 0.4}, []float64{0.2, 0.5}, []float64{0.3, 0.6})
+	B2 := matrix.New([]float64{0.1, 0.2})
+	W3 := matrix.New([]float64{0.1, 0.3}, []float64{0.2, 0.4})
+	B3 := matrix.New([]float64{0.1, 0.2})
 
+	// forward
+	X := matrix.New([]float64{1.0, 0.5})
 	A1 := matrix.Dot(X, W1).Add(B1)
 	Z1 := activation.Sigmoid(A1[0])
+	A2 := matrix.Dot(matrix.New(Z1), W2).Add(B2)
+	Z2 := activation.Sigmoid(A2[0])
+	A3 := matrix.Dot(matrix.New(Z2), W3).Add(B3)
+	Y := activation.Identity(A3[0])
 
 	fmt.Println(A1[0])
 	fmt.Println(Z1)
 
-	W2 := matrix.New(
-		[]float64{0.1, 0.4},
-		[]float64{0.2, 0.5},
-		[]float64{0.3, 0.6},
-	)
-	B2 := matrix.New([]float64{0.1, 0.2})
-
-	A2 := matrix.Dot(matrix.New(Z1), W2).Add(B2)
-	Z2 := activation.Sigmoid(A2[0])
-
 	fmt.Println(A2[0])
 	fmt.Println(Z2)
-
-	W3 := matrix.New(
-		[]float64{0.1, 0.3},
-		[]float64{0.2, 0.4},
-	)
-	B3 := matrix.New([]float64{0.1, 0.2})
-
-	A3 := matrix.Dot(matrix.New(Z2), W3).Add(B3)
-	Y := activation.Identity(A3[0])
 
 	fmt.Println(A3[0])
 	fmt.Println(Y)
