@@ -1,0 +1,27 @@
+package matrix_test
+
+import (
+	"fmt"
+
+	"github.com/itsubaki/godeep/matrix"
+)
+
+func ExampleMatrix_Dot() {
+	A := matrix.New(
+		[]float64{1, 2},
+		[]float64{3, 4},
+	)
+
+	B := matrix.New(
+		[]float64{5, 6},
+		[]float64{7, 8},
+	)
+
+	for _, r := range matrix.Dot(A, B) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [19 22]
+	// [43 50]
+}
