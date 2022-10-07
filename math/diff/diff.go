@@ -32,14 +32,14 @@ func Grad(f func(x ...float64) float64, x []float64) []float64 {
 	return grad
 }
 
-func GradDescent(f func(x ...float64) float64, initx []float64, lerningRate float64, step int) []float64 {
+func GradDescent(f func(x ...float64) float64, initx []float64, learningRate float64, step int) []float64 {
 	x := initx
 
 	for i := 0; i < step; i++ {
 		grad := Grad(f, x)
 
 		for i := range grad {
-			x[i] = x[i] - lerningRate*grad[i]
+			x[i] = x[i] - learningRate*grad[i]
 		}
 	}
 
