@@ -44,3 +44,78 @@ func Example_neuralNetwork() {
 	// [0.3168270764110298 0.6962790898619668]
 
 }
+
+func Example_perceptron() {
+	f := func(x, w []float64, b float64) int {
+		var sum float64
+		for i := range x {
+			sum = sum + x[i]*w[i]
+		}
+
+		v := sum + b
+		if v <= 0 {
+			return 0
+		}
+
+		return 1
+	}
+
+	AND := func(x []float64) int { return f(x, []float64{0.5, 0.5}, -0.7) }
+	NAND := func(x []float64) int { return f(x, []float64{-0.5, -0.5}, 0.7) }
+	OR := func(x []float64) int { return f(x, []float64{0.5, 0.5}, -0.2) }
+	XOR := func(x []float64) int { return AND([]float64{float64(NAND(x)), float64(OR(x))}) }
+
+	fmt.Println("AND")
+	fmt.Println(AND([]float64{0, 0}))
+	fmt.Println(AND([]float64{1, 0}))
+	fmt.Println(AND([]float64{0, 1}))
+	fmt.Println(AND([]float64{1, 1}))
+	fmt.Println()
+
+	fmt.Println("NAND")
+	fmt.Println(NAND([]float64{0, 0}))
+	fmt.Println(NAND([]float64{1, 0}))
+	fmt.Println(NAND([]float64{0, 1}))
+	fmt.Println(NAND([]float64{1, 1}))
+	fmt.Println()
+
+	fmt.Println("OR")
+	fmt.Println(OR([]float64{0, 0}))
+	fmt.Println(OR([]float64{1, 0}))
+	fmt.Println(OR([]float64{0, 1}))
+	fmt.Println(OR([]float64{1, 1}))
+	fmt.Println()
+
+	fmt.Println("XOR")
+	fmt.Println(XOR([]float64{0, 0}))
+	fmt.Println(XOR([]float64{1, 0}))
+	fmt.Println(XOR([]float64{0, 1}))
+	fmt.Println(XOR([]float64{1, 1}))
+	fmt.Println()
+
+	// Output:
+	// AND
+	// 0
+	// 0
+	// 0
+	// 1
+	//
+	// NAND
+	// 1
+	// 1
+	// 1
+	// 0
+	//
+	// OR
+	// 0
+	// 1
+	// 1
+	// 1
+	//
+	// XOR
+	// 0
+	// 1
+	// 1
+	// 0
+	//
+}
