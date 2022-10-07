@@ -1,10 +1,10 @@
-package godeep_test
+package neu_test
 
 import (
 	"fmt"
 
-	"github.com/itsubaki/godeep/activation"
-	"github.com/itsubaki/godeep/math/matrix"
+	"github.com/itsubaki/neu/activation"
+	"github.com/itsubaki/neu/math/matrix"
 )
 
 func Example_neuralNetwork() {

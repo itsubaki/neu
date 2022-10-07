@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/itsubaki/godeep/math/diff"
-	"github.com/itsubaki/godeep/plot"
+	"github.com/itsubaki/neu/math/diff"
+	"github.com/itsubaki/neu/plot"
 )
 
 func ExampleDiff() {

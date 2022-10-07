@@ -8,24 +8,6 @@ func New(v ...[]float64) Matrix {
 	return out
 }
 
-func Zero(n int) Matrix {
-	out := make(Matrix, n)
-	for i := 0; i < n; i++ {
-		out[i] = make([]float64, n)
-	}
-
-	return out
-}
-
-func Identity(n int) Matrix {
-	out := Zero(n)
-	for i := 0; i < n; i++ {
-		out[i][i] = 1
-	}
-
-	return out
-}
-
 func (m Matrix) Dimension() (int, int) {
 	if len(m) == 0 {
 		return 0, 0

@@ -3,7 +3,7 @@ package loss_test
 import (
 	"fmt"
 
-	"github.com/itsubaki/godeep/loss"
+	"github.com/itsubaki/neu/loss"
 )
 
 func ExampleMeanSquaredError() {

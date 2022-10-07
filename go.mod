@@ -1,4 +1,4 @@
-module github.com/itsubaki/godeep
+module github.com/itsubaki/neu
 
 go 1.19
 

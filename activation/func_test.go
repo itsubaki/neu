@@ -3,8 +3,8 @@ package activation_test
 import (
 	"fmt"
 
-	"github.com/itsubaki/godeep/activation"
-	"github.com/itsubaki/godeep/plot"
+	"github.com/itsubaki/neu/activation"
+	"github.com/itsubaki/neu/plot"
 )
 
 func ExampleStep() {
