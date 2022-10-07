@@ -8,15 +8,15 @@ import (
 )
 
 func ExampleStep() {
-	xrange := plot.XRange(-6, 6, 0.1)
-	yrange := make([]float64, 0)
+	x := plot.XRange(-6, 6, 0.1)
+	y := make([]float64, 0)
 
-	for _, x := range xrange {
-		y := activation.Step([]float64{x})
-		yrange = append(yrange, y[0])
+	for _, xi := range x {
+		v := activation.Step([]float64{xi})
+		y = append(y, v[0])
 	}
 
-	if err := plot.Save(xrange, yrange, "ExampleStep.png"); err != nil {
+	if err := plot.Save(x, y, "ExampleStep.png"); err != nil {
 		panic(err)
 	}
 
@@ -24,15 +24,15 @@ func ExampleStep() {
 }
 
 func ExampleSigmoid() {
-	xrange := plot.XRange(-6, 6, 0.1)
-	yrange := make([]float64, 0)
+	x := plot.XRange(-6, 6, 0.1)
+	y := make([]float64, 0)
 
-	for _, x := range xrange {
-		y := activation.Sigmoid([]float64{x})
-		yrange = append(yrange, y[0])
+	for _, xi := range x {
+		v := activation.Sigmoid([]float64{xi})
+		y = append(y, v[0])
 	}
 
-	if err := plot.Save(xrange, yrange, "ExampleSigmoid.png"); err != nil {
+	if err := plot.Save(x, y, "ExampleSigmoid.png"); err != nil {
 		panic(err)
 	}
 
@@ -40,15 +40,15 @@ func ExampleSigmoid() {
 }
 
 func ExampleReLU() {
-	xrange := plot.XRange(-6, 6, 0.1)
-	yrange := make([]float64, 0)
+	x := plot.XRange(-6, 6, 0.1)
+	y := make([]float64, 0)
 
-	for _, x := range xrange {
-		y := activation.ReLU([]float64{x})
-		yrange = append(yrange, y[0])
+	for _, xi := range x {
+		v := activation.ReLU([]float64{xi})
+		y = append(y, v[0])
 	}
 
-	if err := plot.Save(xrange, yrange, "ExampleReLU.png"); err != nil {
+	if err := plot.Save(x, y, "ExampleReLU.png"); err != nil {
 		panic(err)
 	}
 

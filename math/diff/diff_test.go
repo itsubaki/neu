@@ -13,10 +13,10 @@ func ExampleDiff() {
 		return math.Pow(x, 3) - 2*math.Pow(x, 2) + 1
 	}
 
-	xrange := plot.XRange(0, 2, 1e-3)
-	yrange := diff.Diff(f, xrange, 1e-3)
+	x := plot.XRange(0, 2, 1e-3)
+	y := diff.Diff(f, x, 1e-3)
 
-	if err := plot.Save(xrange, yrange, "ExampleDiff.png"); err != nil {
+	if err := plot.Save(x, y, "ExampleDiff.png"); err != nil {
 		panic(err)
 	}
 

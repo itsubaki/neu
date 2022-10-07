@@ -22,12 +22,12 @@ func XRange(begin, end, delta float64) []float64 {
 	return out
 }
 
-func Save(xrange, yrange []float64, filename string) error {
+func Save(x, y []float64, filename string) error {
 	xys := make(plotter.XYs, 0)
-	for i := range xrange {
+	for i := range x {
 		xys = append(xys, plotter.XY{
-			X: xrange[i],
-			Y: yrange[i],
+			X: x[i],
+			Y: y[i],
 		})
 	}
 
