@@ -3,12 +3,11 @@ package godeep_test
 import (
 	"fmt"
 
-	"github.com/itsubaki/godeep"
 	"github.com/itsubaki/godeep/activation"
-	"github.com/itsubaki/godeep/matrix"
+	"github.com/itsubaki/godeep/math/matrix"
 )
 
-func Example() {
+func Example_neuralNetwork() {
 	// network
 	W1 := matrix.New([]float64{0.1, 0.3, 0.5}, []float64{0.2, 0.4, 0.6})
 	B1 := matrix.New([]float64{0.1, 0.2, 0.3})
@@ -26,6 +25,7 @@ func Example() {
 	A3 := matrix.Dot(matrix.New(Z2), W3).Add(B3)
 	Y := activation.Identity(A3[0])
 
+	// result
 	fmt.Println(A1[0])
 	fmt.Println(Z1)
 
@@ -43,19 +43,4 @@ func Example() {
 	// [0.3168270764110298 0.6962790898619668]
 	// [0.3168270764110298 0.6962790898619668]
 
-}
-
-func ExampleSoftmax() {
-	y := godeep.Softmax([]float64{0.3, 2.9, 4.0})
-	fmt.Println(y)
-
-	var sum float64
-	for i := range y {
-		sum = sum + y[i]
-	}
-	fmt.Println(sum)
-
-	// Output:
-	// [0.01821127329554753 0.24519181293507386 0.7365969137693786]
-	// 1
 }

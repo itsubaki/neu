@@ -3,7 +3,7 @@ package matrix_test
 import (
 	"fmt"
 
-	"github.com/itsubaki/godeep/matrix"
+	"github.com/itsubaki/godeep/math/matrix"
 )
 
 func ExampleMatrix_Dot() {
