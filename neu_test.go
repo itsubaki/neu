@@ -16,7 +16,8 @@ func Example_simpleNet() {
 
 	// predict
 	p := matrix.Dot(x, W)
-	fmt.Println(p) // https://github.com/oreilly-japan/deep-learning-from-scratch/wiki/errata
+	// https://github.com/oreilly-japan/deep-learning-from-scratch/wiki/errata
+	fmt.Println(p) 
 
 	// Output:
 	// [[1.054148091 0.630716529 1.132807401]]
