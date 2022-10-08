@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/itsubaki/neu/activation"
+	"github.com/itsubaki/neu/loss"
 	"github.com/itsubaki/neu/math/matrix"
 )
 
@@ -17,10 +18,16 @@ func Example_simpleNet() {
 	// predict
 	p := matrix.Dot(x, W)
 	// https://github.com/oreilly-japan/deep-learning-from-scratch/wiki/errata
-	fmt.Println(p) 
+	fmt.Println(p)
+
+	y := activation.Softmax(p[0])
+	e := loss.CrossEntropyError(y, []float64{0, 0, 1})
+
+	fmt.Println(e)
 
 	// Output:
 	// [[1.054148091 0.630716529 1.132807401]]
+	// 0.9280682857864075
 
 }
 
