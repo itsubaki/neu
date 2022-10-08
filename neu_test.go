@@ -11,6 +11,7 @@ import (
 func Example_simpleNet() {
 	// https://github.com/oreilly-japan/deep-learning-from-scratch/wiki/errata#%E7%AC%AC7%E5%88%B7%E3%81%BE%E3%81%A7
 
+	// rand.NormFloat64()
 	W := matrix.New(
 		[]float64{0.47355232, 0.99773930, 0.84668094},
 		[]float64{0.85557411, 0.03563661, 0.69422093},
