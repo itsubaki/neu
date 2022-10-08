@@ -61,5 +61,5 @@ func (m Matrix) Add(n Matrix) Matrix {
 }
 
 func Dot(m, n Matrix) Matrix {
-	return n.Apply(m)
+	return m.Dot(n)
 }

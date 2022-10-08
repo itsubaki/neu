@@ -69,3 +69,10 @@ func ExampleSoftmax() {
 	// [0.01821127329554753 0.24519181293507386 0.7365969137693786]
 	// 1
 }
+
+func ExampleIdentity() {
+	fmt.Println(activation.Identity([]float64{1, 2, 3, 4, 5}))
+
+	// Output:
+	// [1 2 3 4 5]
+}
