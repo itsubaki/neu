@@ -1,4 +1,4 @@
-package diff
+package numerical
 
 func Diff(f func(x float64) float64, x []float64, h float64) []float64 {
 	out := make([]float64, 0)

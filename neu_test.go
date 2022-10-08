@@ -7,6 +7,22 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 )
 
+func Example_simpleNet() {
+	W := matrix.New(
+		[]float64{0.47355232, 0.99773930, 0.84668094},
+		[]float64{0.85557411, 0.03563661, 0.69422093},
+	)
+	x := matrix.New([]float64{0.6, 0.9})
+
+	// predict
+	p := matrix.Dot(x, W)
+	fmt.Println(p) // https://github.com/oreilly-japan/deep-learning-from-scratch/wiki/errata
+
+	// Output:
+	// [[1.054148091 0.630716529 1.132807401]]
+
+}
+
 func Example_neuralNetwork() {
 	// network
 	W1 := matrix.New([]float64{0.1, 0.3, 0.5}, []float64{0.2, 0.4, 0.6})
