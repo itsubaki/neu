@@ -16,7 +16,7 @@ func (l *Mul) Forward(x, y []float64) []float64 {
 	return out
 }
 
-func (l *Mul) Backwward(dout []float64) ([]float64, []float64) {
+func (l *Mul) Backward(dout []float64) ([]float64, []float64) {
 	dx, dy := make([]float64, 0), make([]float64, 0)
 
 	for i := range dout {

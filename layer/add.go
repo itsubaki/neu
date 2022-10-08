@@ -11,7 +11,7 @@ func (l *Add) Forward(x, y []float64) []float64 {
 	return out
 }
 
-func (l *Add) Backwward(dout []float64) ([]float64, []float64) {
+func (l *Add) Backward(dout []float64) ([]float64, []float64) {
 	// dx := dout * 1
 	// dy := dout * 1
 	return dout, dout

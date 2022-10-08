@@ -20,8 +20,8 @@ func ExampleMul() {
 	fmt.Println(price)
 
 	dPrice := 1.0
-	dApplePrice, dTax := taxLayer.Backwward([]float64{dPrice})
-	dApple, dAppleNum := appleLayer.Backwward(dApplePrice)
+	dApplePrice, dTax := taxLayer.Backward([]float64{dPrice})
+	dApple, dAppleNum := appleLayer.Backward(dApplePrice)
 
 	fmt.Printf("%v %v %v\n", dApple, dAppleNum, dTax)
 
