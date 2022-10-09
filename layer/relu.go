@@ -1,43 +1,60 @@
 package layer
 
+import "github.com/itsubaki/neu/math/matrix"
+
 type ReLU struct {
-	mask []bool
+	mask [][]bool
 }
 
-func (l *ReLU) Forward(x, _ []float64) []float64 {
+func (l *ReLU) Forward(x, _ matrix.Matrix) matrix.Matrix {
 	l.mask = mask(x)
 
-	out := make([]float64, 0)
+	out := make(matrix.Matrix, 0)
 	for i := range x {
-		if l.mask[i] {
-			out = append(out, 0)
-			continue
+		v := make([]float64, 0)
+		for j := range x[i] {
+			if l.mask[i][j] {
+				v = append(v, 0)
+				continue
+			}
+
+			v = append(v, x[i][j])
 		}
 
-		out = append(out, x[i])
+		out = append(out, v)
 	}
 
 	return out
 }
 
-func (l *ReLU) Backward(dout []float64) ([]float64, []float64) {
-	dx := make([]float64, 0)
+func (l *ReLU) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
+	dx := make(matrix.Matrix, 0)
 	for i := range dout {
-		if l.mask[i] {
-			dx = append(dx, 0)
-			continue
+		v := make([]float64, 0)
+		for j := range dout[i] {
+			if l.mask[i][j] {
+				v = append(v, 0)
+				continue
+			}
+
+			v = append(v, dout[i][j])
 		}
 
-		dx = append(dx, dout[i])
+		dx = append(dx, v)
 	}
 
-	return dx, []float64{}
+	return dx, matrix.New()
 }
 
-func mask(x []float64) []bool {
-	out := make([]bool, 0)
+func mask(x matrix.Matrix) [][]bool {
+	out := make([][]bool, 0)
 	for i := range x {
-		out = append(out, x[i] <= 0)
+		v := make([]bool, 0)
+		for j := range x[i] {
+			v = append(v, x[i][j] <= 0)
+		}
+
+		out = append(out, v)
 	}
 
 	return out

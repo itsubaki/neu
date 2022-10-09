@@ -1,28 +1,19 @@
 package layer
 
+import "github.com/itsubaki/neu/math/matrix"
+
 type Mul struct {
-	x []float64
-	y []float64
+	x matrix.Matrix
+	y matrix.Matrix
 }
 
-func (l *Mul) Forward(x, y []float64) []float64 {
+func (l *Mul) Forward(x, y matrix.Matrix) matrix.Matrix {
 	l.x, l.y = x, y
-
-	out := make([]float64, 0)
-	for i := range x {
-		out = append(out, x[i]*y[i])
-	}
-
-	return out
+	return x.Mul(y)
 }
 
-func (l *Mul) Backward(dout []float64) ([]float64, []float64) {
-	dx, dy := make([]float64, 0), make([]float64, 0)
-
-	for i := range dout {
-		dx = append(dx, dout[i]*l.y[i])
-		dy = append(dy, dout[i]*l.x[i])
-	}
-
+func (l *Mul) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
+	dx := dout.Mul(l.y)
+	dy := dout.Mul(l.x)
 	return dx, dy
 }

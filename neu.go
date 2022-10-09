@@ -2,6 +2,7 @@ package neu
 
 import (
 	"github.com/itsubaki/neu/layer"
+	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/optimizer"
 )
 
@@ -22,8 +23,8 @@ var (
 )
 
 type Layer interface {
-	Forward(x, y []float64) []float64
-	Backward(dout []float64) ([]float64, []float64)
+	Forward(x, y matrix.Matrix) matrix.Matrix
+	Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix)
 }
 
 type Optimizer interface {

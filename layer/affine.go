@@ -7,19 +7,25 @@ type Affine struct {
 	B  matrix.Matrix
 	x  matrix.Matrix
 	DW matrix.Matrix
+	DB []float64
 }
 
-func (l *Affine) Forward(x, _ []float64) []float64 {
-	l.x = matrix.New(x)
-	return matrix.Dot(l.x, l.W).Add(l.B)[0]
+func (l *Affine) Forward(x, _ matrix.Matrix) matrix.Matrix {
+	l.x = x
+	return matrix.Dot(l.x, l.W).Add(l.B)
 }
 
-func (l *Affine) Backward(dout []float64) ([]float64, []float64) {
-	mdout := matrix.New(dout)
+func (l *Affine) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
+	dx := matrix.Dot(dout, l.W.T())
+	l.DW = matrix.Dot(l.x.T(), dout)
 
-	dx := matrix.Dot(mdout, l.W.T())
-	l.DW = matrix.Dot(l.x.T(), mdout)
-	// TODO: l.DB = np.sum(dout, axis=0)
+	n, m := dout.Shape()
+	dB := make([]float64, m)
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			dB[i] = dB[i] + dout[j][i]
+		}
+	}
 
-	return dx[0], []float64{}
+	return dx, matrix.New()
 }

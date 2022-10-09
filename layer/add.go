@@ -1,18 +1,18 @@
 package layer
 
+import "github.com/itsubaki/neu/math/matrix"
+
 type Add struct{}
 
-func (l *Add) Forward(x, y []float64) []float64 {
-	out := make([]float64, 0)
-	for i := range x {
-		out = append(out, x[i]+y[i])
-	}
-
-	return out
+func (l *Add) Forward(x, y matrix.Matrix) matrix.Matrix {
+	return x.Add(y)
 }
 
-func (l *Add) Backward(dout []float64) ([]float64, []float64) {
-	// dx := dout * 1
-	// dy := dout * 1
-	return dout, dout
+func (l *Add) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
+	n, m := dout.Shape()
+	one := matrix.Fill(1.0, n, m)
+
+	dx := dout.Mul(one)
+	dy := dout.Mul(one)
+	return dx, dy
 }

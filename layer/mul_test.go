@@ -4,12 +4,13 @@ import (
 	"fmt"
 
 	"github.com/itsubaki/neu/layer"
+	"github.com/itsubaki/neu/math/matrix"
 )
 
 func ExampleMul() {
-	apple := []float64{100.0}
-	appleNum := []float64{2.0}
-	tax := []float64{1.1}
+	apple := matrix.New([]float64{100.0})
+	appleNum := matrix.New([]float64{2.0})
+	tax := matrix.New([]float64{1.1})
 
 	appleLayer := layer.Mul{}
 	taxLayer := layer.Mul{}
@@ -19,14 +20,14 @@ func ExampleMul() {
 
 	fmt.Println(price)
 
-	dPrice := []float64{1.0}
+	dPrice := matrix.New([]float64{1.0})
 	dApplePrice, dTax := taxLayer.Backward(dPrice)
 	dApple, dAppleNum := appleLayer.Backward(dApplePrice)
 
 	fmt.Printf("%v %v %v\n", dApple, dAppleNum, dTax)
 
 	// Output:
-	// [220.00000000000003]
-	// [2.2] [110.00000000000001] [200]
+	// [[220.00000000000003]]
+	// [[2.2]] [[110.00000000000001]] [[200]]
 
 }

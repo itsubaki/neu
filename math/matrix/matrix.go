@@ -8,6 +8,24 @@ func New(v ...[]float64) Matrix {
 	return out
 }
 
+func Fill(w float64, n, m int) Matrix {
+	out := make(Matrix, 0)
+	for i := 0; i < n; i++ {
+		v := make([]float64, 0)
+		for j := 0; j < m; j++ {
+			v = append(v, w)
+		}
+
+		out = append(out, v)
+	}
+
+	return out
+}
+
+func (m Matrix) Shape() (int, int) {
+	return m.Dimension()
+}
+
 func (m Matrix) Dimension() (int, int) {
 	if len(m) == 0 {
 		return 0, 0
@@ -52,6 +70,40 @@ func (m Matrix) Add(n Matrix) Matrix {
 
 		for j := 0; j < q; j++ {
 			v = append(v, m[i][j]+n[i][j])
+		}
+
+		out = append(out, v)
+	}
+
+	return out
+}
+
+func (m Matrix) Sub(n Matrix) Matrix {
+	p, q := m.Dimension()
+
+	out := make(Matrix, 0, p)
+	for i := 0; i < p; i++ {
+		v := make([]float64, 0, q)
+
+		for j := 0; j < q; j++ {
+			v = append(v, m[i][j]-n[i][j])
+		}
+
+		out = append(out, v)
+	}
+
+	return out
+}
+
+func (m Matrix) Mul(n Matrix) Matrix {
+	p, q := m.Dimension()
+
+	out := make(Matrix, 0, p)
+	for i := 0; i < p; i++ {
+		v := make([]float64, 0, q)
+
+		for j := 0; j < q; j++ {
+			v = append(v, m[i][j]*n[i][j])
 		}
 
 		out = append(out, v)
