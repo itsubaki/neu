@@ -4,7 +4,6 @@ import (
 	"math/rand"
 
 	"github.com/itsubaki/neu/activation"
-	"github.com/itsubaki/neu/loss"
 )
 
 type Matrix [][]float64
@@ -194,15 +193,6 @@ func Sigmoid(m Matrix) Matrix {
 		}
 
 		out = append(out, v)
-	}
-
-	return out
-}
-
-func CrossEntropyError(y, t Matrix) []float64 {
-	out := make([]float64, 0)
-	for i := range y {
-		out = append(out, loss.CrossEntropyError(y[i], t[i]))
 	}
 
 	return out
