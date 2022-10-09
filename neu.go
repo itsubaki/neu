@@ -10,4 +10,6 @@ type Layer interface {
 var (
 	_ Layer = (*layer.Add)(nil)
 	_ Layer = (*layer.Mul)(nil)
+	_ Layer = (*layer.ReLU)(nil)
+	_ Layer = (*layer.Sigmoid)(nil)
 )
