@@ -12,8 +12,7 @@ func ExampleStep() {
 	y := make([]float64, 0)
 
 	for _, xi := range x {
-		v := activation.Step([]float64{xi})
-		y = append(y, v[0])
+		y = append(y, activation.Step(xi))
 	}
 
 	if err := plot.Save(x, y, "ExampleStep.png"); err != nil {
@@ -29,8 +28,7 @@ func ExampleSigmoid() {
 	y := make([]float64, 0)
 
 	for _, xi := range x {
-		v := activation.Sigmoid([]float64{xi})
-		y = append(y, v[0])
+		y = append(y, activation.Sigmoid(xi))
 	}
 
 	if err := plot.Save(x, y, "ExampleSigmoid.png"); err != nil {
@@ -46,8 +44,7 @@ func ExampleReLU() {
 	y := make([]float64, 0)
 
 	for _, xi := range x {
-		v := activation.ReLU([]float64{xi})
-		y = append(y, v[0])
+		y = append(y, activation.ReLU(xi))
 	}
 
 	if err := plot.Save(x, y, "ExampleReLU.png"); err != nil {
@@ -71,13 +68,5 @@ func ExampleSoftmax() {
 	// Output:
 	// [0.01821127329554753 0.24519181293507386 0.7365969137693786]
 	// 1
-
-}
-
-func ExampleIdentity() {
-	fmt.Println(activation.Identity([]float64{1, 2, 3, 4, 5}))
-
-	// Output:
-	// [1 2 3 4 5]
 
 }

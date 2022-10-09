@@ -9,7 +9,7 @@ type Mul struct {
 
 func (l *Mul) Forward(x, y matrix.Matrix) matrix.Matrix {
 	l.x, l.y = x, y
-	return x.Mul(y)
+	return l.x.Mul(l.y)
 }
 
 func (l *Mul) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {

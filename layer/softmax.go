@@ -1,8 +1,6 @@
 package layer
 
 import (
-	"github.com/itsubaki/neu/activation"
-	"github.com/itsubaki/neu/loss"
 	"github.com/itsubaki/neu/math/matrix"
 )
 
@@ -13,26 +11,14 @@ type SoftmaxWithLoss struct {
 }
 
 func (l *SoftmaxWithLoss) Forward(x, t matrix.Matrix) matrix.Matrix {
-	y := make(matrix.Matrix, 0)
-	for i := range x {
-		y = append(y, activation.Sigmoid(x[i]))
-	}
-
-	ls := make([]float64, 0)
-	for i := range y {
-		ls = append(ls, loss.CrossEntropyError(y[i], t[i]))
-	}
-
 	l.t = t
-	l.y = y
-	l.loss = ls
+	l.y = matrix.Sigmoid(x)
+	l.loss = matrix.CrossEntropyError(l.y, t)
 	return matrix.New(l.loss)
 }
 
 func (l *SoftmaxWithLoss) Backward(_ matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	n, m := l.t.Shape()
-
-	den := matrix.Fill(1.0/float64(n), n, m)
-	dx := l.y.Sub(l.t).Mul(den)
+	n, _ := l.t.Shape()
+	dx := l.y.Sub(l.t).Mulf64(1.0 / float64(n)) // (y - t)/n
 	return dx, matrix.New()
 }

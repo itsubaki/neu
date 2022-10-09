@@ -9,10 +9,7 @@ func (l *Add) Forward(x, y matrix.Matrix) matrix.Matrix {
 }
 
 func (l *Add) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	n, m := dout.Shape()
-	one := matrix.Fill(1.0, n, m)
-
-	dx := dout.Mul(one)
-	dy := dout.Mul(one)
+	dx := dout.Mulf64(1.0)
+	dy := dout.Mulf64(1.0)
 	return dx, dy
 }
