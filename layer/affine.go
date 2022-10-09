@@ -19,7 +19,7 @@ func (l *Affine) Backward(dout []float64) ([]float64, []float64) {
 
 	dx := matrix.Dot(mdout, l.W.T())
 	l.DW = matrix.Dot(l.x.T(), mdout)
-	// TODO: l.DB = np.sum(dYm axis=0)
+	// TODO: l.DB = np.sum(dout, axis=0)
 
 	return dx[0], []float64{}
 }
