@@ -9,7 +9,7 @@ import (
 
 func ExampleMask() {
 	x := matrix.New([]float64{1.0, -0.5}, []float64{-2.0, 3.0})
-	fmt.Println(layer.Mask(x))
+	fmt.Println(layer.Mask(x, func(x float64) bool { return x <= 0 }))
 
 	// Output:
 	// [[false true] [true false]]
