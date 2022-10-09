@@ -7,20 +7,20 @@ import (
 )
 
 func ExampleMul() {
-	apple := 100.0
-	appleNum := 2.0
-	tax := 1.1
+	apple := []float64{100.0}
+	appleNum := []float64{2.0}
+	tax := []float64{1.1}
 
 	appleLayer := layer.Mul{}
 	taxLayer := layer.Mul{}
 
-	applePrice := appleLayer.Forward([]float64{apple}, []float64{appleNum})
-	price := taxLayer.Forward(applePrice, []float64{tax})
+	applePrice := appleLayer.Forward(apple, appleNum)
+	price := taxLayer.Forward(applePrice, tax)
 
 	fmt.Println(price)
 
-	dPrice := 1.0
-	dApplePrice, dTax := taxLayer.Backward([]float64{dPrice})
+	dPrice := []float64{1.0}
+	dApplePrice, dTax := taxLayer.Backward(dPrice)
 	dApple, dAppleNum := appleLayer.Backward(dApplePrice)
 
 	fmt.Printf("%v %v %v\n", dApple, dAppleNum, dTax)

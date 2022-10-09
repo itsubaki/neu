@@ -20,6 +20,7 @@ func ExampleSumSquaredError() {
 	// Output:
 	// 0.09750000000000003
 	// 0.5974999999999999
+
 }
 
 func ExampleCrossEntropyError() {
@@ -35,4 +36,5 @@ func ExampleCrossEntropyError() {
 	// Output:
 	// 0.510825457099338
 	// 2.302584092994546
+
 }

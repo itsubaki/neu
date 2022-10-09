@@ -24,6 +24,7 @@ func ExampleMatrix_Dot() {
 	// Output:
 	// [19 22]
 	// [43 50]
+
 }
 
 func ExampleMatrix_Dimension() {
@@ -33,6 +34,7 @@ func ExampleMatrix_Dimension() {
 	// Output:
 	// 0 0
 	// 1 3
+
 }
 
 func ExampleMatrix_Add() {
@@ -53,4 +55,5 @@ func ExampleMatrix_Add() {
 	// Output:
 	// [6 8]
 	// [10 12]
+
 }

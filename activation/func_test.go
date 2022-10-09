@@ -21,6 +21,7 @@ func ExampleStep() {
 	}
 
 	// Output:
+
 }
 
 func ExampleSigmoid() {
@@ -37,6 +38,7 @@ func ExampleSigmoid() {
 	}
 
 	// Output:
+
 }
 
 func ExampleReLU() {
@@ -53,6 +55,7 @@ func ExampleReLU() {
 	}
 
 	// Output:
+
 }
 
 func ExampleSoftmax() {
@@ -68,6 +71,7 @@ func ExampleSoftmax() {
 	// Output:
 	// [0.01821127329554753 0.24519181293507386 0.7365969137693786]
 	// 1
+
 }
 
 func ExampleIdentity() {
@@ -75,4 +79,5 @@ func ExampleIdentity() {
 
 	// Output:
 	// [1 2 3 4 5]
+
 }

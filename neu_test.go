@@ -144,4 +144,5 @@ func Example_perceptron() {
 	// 1
 	// 0
 	//
+
 }
