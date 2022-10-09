@@ -1,6 +1,9 @@
 package matrix
 
 import (
+	"math/rand"
+	"time"
+
 	"github.com/itsubaki/neu/activation"
 	"github.com/itsubaki/neu/loss"
 )
@@ -13,8 +16,29 @@ func New(v ...[]float64) Matrix {
 	return out
 }
 
-func (m Matrix) Shape() (int, int) {
-	return m.Dimension()
+func Zero(n, m int) Matrix {
+	out := make(Matrix, n)
+	for i := 0; i < n; i++ {
+		out[i] = make([]float64, m)
+	}
+
+	return out
+}
+
+func Rand(n, m int) Matrix {
+	rand.Seed(time.Now().UnixNano())
+
+	out := make(Matrix, 0)
+	for i := 0; i < n; i++ {
+		v := make([]float64, 0)
+		for j := 0; j < m; j++ {
+			v = append(v, rand.NormFloat64())
+		}
+
+		out = append(out, v)
+	}
+
+	return out
 }
 
 func (m Matrix) Dimension() (int, int) {
@@ -164,7 +188,7 @@ func Dot(m, n Matrix) Matrix {
 
 func Sigmoid(m Matrix) Matrix {
 	out := make(Matrix, 0)
-	p, q := m.Shape()
+	p, q := m.Dimension()
 
 	for i := 0; i < p; i++ {
 		v := make([]float64, 0)
@@ -192,7 +216,7 @@ func Identity(m Matrix) Matrix {
 }
 
 func SumAxis1(m Matrix) []float64 {
-	p, q := m.Shape()
+	p, q := m.Dimension()
 
 	out := make([]float64, q)
 	for i := 0; i < q; i++ {

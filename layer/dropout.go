@@ -10,7 +10,8 @@ type Dropout struct {
 
 func (l *Dropout) Forward(x, _ matrix.Matrix) matrix.Matrix {
 	if l.TrainFlag {
-		l.mask = mask(x, func(x float64) bool { return x > l.Ratio })
+		p, q := x.Dimension()
+		l.mask = Mask(matrix.Rand(p, q), func(x float64) bool { return x > l.Ratio })
 		return matrix.Mask(x, l.mask)
 	}
 

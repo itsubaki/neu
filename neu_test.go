@@ -3,10 +3,43 @@ package neu_test
 import (
 	"fmt"
 
+	"github.com/itsubaki/neu"
 	"github.com/itsubaki/neu/activation"
+	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/loss"
 	"github.com/itsubaki/neu/math/matrix"
 )
+
+func Example_layer() {
+	// network
+	W1 := matrix.New([]float64{0.1, 0.3, 0.5}, []float64{0.2, 0.4, 0.6})
+	B1 := matrix.New([]float64{0.1, 0.2, 0.3})
+	W2 := matrix.New([]float64{0.1, 0.4}, []float64{0.2, 0.5}, []float64{0.3, 0.6})
+	B2 := matrix.New([]float64{0.1, 0.2})
+	W3 := matrix.New([]float64{0.1, 0.3}, []float64{0.2, 0.4})
+	B3 := matrix.New([]float64{0.1, 0.2})
+
+	// layer
+	layers := []neu.Layer{
+		&layer.Affine{W: W1, B: B1},
+		&layer.Sigmoid{},
+		&layer.Affine{W: W2, B: B2},
+		&layer.Sigmoid{},
+		&layer.Affine{W: W3, B: B3},
+	}
+
+	// forward
+	X := matrix.New([]float64{1.0, 0.5})
+	for _, layer := range layers {
+		X = layer.Forward(X, nil)
+	}
+
+	fmt.Println(X)
+
+	// Output:
+	// [[0.3168270764110298 0.6962790898619668]]
+
+}
 
 func Example_simpleNet() {
 	// https://github.com/oreilly-japan/deep-learning-from-scratch/wiki/errata#%E7%AC%AC7%E5%88%B7%E3%81%BE%E3%81%A7
@@ -52,21 +85,21 @@ func Example_neuralNetwork() {
 	Y := matrix.Identity(A3)
 
 	// result
-	fmt.Println(A1[0])
+	fmt.Println(A1)
 	fmt.Println(Z1)
 
-	fmt.Println(A2[0])
+	fmt.Println(A2)
 	fmt.Println(Z2)
 
-	fmt.Println(A3[0])
+	fmt.Println(A3)
 	fmt.Println(Y)
 
 	// Output:
-	// [0.30000000000000004 0.7 1.1]
+	// [[0.30000000000000004 0.7 1.1]]
 	// [[0.574442516811659 0.6681877721681662 0.7502601055951177]]
-	// [0.5161598377933344 1.2140269561658172]
+	// [[0.5161598377933344 1.2140269561658172]]
 	// [[0.6262493703990729 0.7710106968556123]]
-	// [0.3168270764110298 0.6962790898619668]
+	// [[0.3168270764110298 0.6962790898619668]]
 	// [[0.3168270764110298 0.6962790898619668]]
 
 }

@@ -7,7 +7,9 @@ type SGD struct {
 }
 
 func (o *SGD) Update(params, grads map[string]matrix.Matrix) map[string]matrix.Matrix {
-	// TODO
-	out := make(map[string]matrix.Matrix)
-	return out
+	for k := range params {
+		params[k] = params[k].Sub(grads[k].Mulf64(o.LearningRate)) // params[k] = params[k] - o.LearningRate * grads[k]
+	}
+
+	return params
 }

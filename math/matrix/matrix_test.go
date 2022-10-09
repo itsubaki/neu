@@ -27,9 +27,9 @@ func ExampleMatrix_Dot() {
 
 }
 
-func ExampleMatrix_Shape() {
-	fmt.Println(matrix.New().Shape())
-	fmt.Println(matrix.New([]float64{1, 2, 3}).Shape())
+func ExampleMatrix_Dimension() {
+	fmt.Println(matrix.New().Dimension())
+	fmt.Println(matrix.New([]float64{1, 2, 3}).Dimension())
 
 	// Output:
 	// 0 0

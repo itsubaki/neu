@@ -1,8 +1,6 @@
 package layer
 
-import (
-	"github.com/itsubaki/neu/math/matrix"
-)
+import "github.com/itsubaki/neu/math/matrix"
 
 type SoftmaxWithLoss struct {
 	loss []float64
@@ -18,7 +16,7 @@ func (l *SoftmaxWithLoss) Forward(x, t matrix.Matrix) matrix.Matrix {
 }
 
 func (l *SoftmaxWithLoss) Backward(_ matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	size, _ := l.t.Shape()
+	size, _ := l.t.Dimension()
 	dx := l.y.Sub(l.t).Mulf64(1.0 / float64(size)) // (y - t)/batch_size
 	return dx, matrix.New()
 }

@@ -18,8 +18,6 @@ var (
 var (
 	_ Optimizer = (*optimizer.SGD)(nil)
 	_ Optimizer = (*optimizer.Momentum)(nil)
-	_ Optimizer = (*optimizer.AdaGrad)(nil)
-	_ Optimizer = (*optimizer.Adam)(nil)
 )
 
 type Layer interface {
@@ -29,4 +27,15 @@ type Layer interface {
 
 type Optimizer interface {
 	Update(params, grads map[string]matrix.Matrix) map[string]matrix.Matrix
+}
+
+func Reverse(layer []Layer) []Layer {
+	list := make([]Layer, len(layer))
+	copy(list, layer)
+
+	for i := 0; i < len(list)/2; i++ {
+		list[i], list[len(list)-1-i] = list[len(list)-1-i], list[i]
+	}
+
+	return list
 }

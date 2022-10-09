@@ -1,8 +1,6 @@
 package layer
 
-import (
-	"github.com/itsubaki/neu/math/matrix"
-)
+import "github.com/itsubaki/neu/math/matrix"
 
 type Affine struct {
 	W  matrix.Matrix

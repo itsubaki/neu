@@ -2,7 +2,7 @@ package layer
 
 import "github.com/itsubaki/neu/math/matrix"
 
-func mask(x matrix.Matrix, f func(x float64) bool) [][]bool {
+func Mask(x matrix.Matrix, f func(x float64) bool) [][]bool {
 	out := make([][]bool, 0)
 	for i := range x {
 		v := make([]bool, 0)
