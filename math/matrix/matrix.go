@@ -2,7 +2,6 @@ package matrix
 
 import (
 	"math/rand"
-	"time"
 
 	"github.com/itsubaki/neu/activation"
 	"github.com/itsubaki/neu/loss"
@@ -26,8 +25,6 @@ func Zero(n, m int) Matrix {
 }
 
 func Rand(n, m int) Matrix {
-	rand.Seed(time.Now().UnixNano())
-
 	out := make(Matrix, 0)
 	for i := 0; i < n; i++ {
 		v := make([]float64, 0)
