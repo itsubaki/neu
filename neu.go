@@ -28,5 +28,5 @@ type Layer interface {
 }
 
 type Optimizer interface {
-	Update(params, grads *map[string][]float64)
+	Update(params, grads map[string]matrix.Matrix) map[string]matrix.Matrix
 }

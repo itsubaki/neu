@@ -60,8 +60,8 @@ func ExampleMatrix_Add() {
 
 func ExampleMatrix_T() {
 	A := matrix.New(
-		[]float64{1, 2},
-		[]float64{3, 4},
+		[]float64{1, 2, 3},
+		[]float64{4, 5, 6},
 	)
 
 	for _, r := range A.T() {
@@ -69,9 +69,9 @@ func ExampleMatrix_T() {
 	}
 
 	// Output:
-	// [1 3]
-	// [2 4]
-
+	// [1 4]
+	// [2 5]
+	// [3 6]
 }
 
 func ExampleSumAxis1() {
