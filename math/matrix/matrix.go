@@ -60,6 +60,26 @@ func (m Matrix) Add(n Matrix) Matrix {
 	return out
 }
 
+func (m Matrix) Transpose() Matrix {
+	p, q := m.Dimension()
+
+	out := make(Matrix, 0, p)
+	for i := 0; i < p; i++ {
+		v := make([]float64, 0, q)
+		for j := 0; j < q; j++ {
+			v = append(v, m[j][i])
+		}
+
+		out = append(out, v)
+	}
+
+	return out
+}
+
+func (m Matrix) T() Matrix {
+	return m.Transpose()
+}
+
 func Dot(m, n Matrix) Matrix {
 	return m.Dot(n)
 }

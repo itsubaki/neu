@@ -57,3 +57,19 @@ func ExampleMatrix_Add() {
 	// [10 12]
 
 }
+
+func ExampleMatrix_T() {
+	A := matrix.New(
+		[]float64{1, 2},
+		[]float64{3, 4},
+	)
+
+	for _, r := range A.T() {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [1 3]
+	// [2 4]
+
+}

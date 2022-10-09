@@ -17,5 +17,5 @@ func (l *Sigmoid) Backward(dout []float64) ([]float64, []float64) {
 		dx = append(dx, dout[i]*(1.0-l.out[i])*l.out[i])
 	}
 
-	return dx, nil
+	return dx, []float64{}
 }

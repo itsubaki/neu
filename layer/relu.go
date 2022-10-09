@@ -31,7 +31,7 @@ func (l *ReLU) Backward(dout []float64) ([]float64, []float64) {
 		dx = append(dx, dout[i])
 	}
 
-	return dx, nil
+	return dx, []float64{}
 }
 
 func mask(x []float64) []bool {

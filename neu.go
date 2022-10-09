@@ -10,6 +10,8 @@ var (
 	_ Layer = (*layer.Mul)(nil)
 	_ Layer = (*layer.ReLU)(nil)
 	_ Layer = (*layer.Sigmoid)(nil)
+	_ Layer = (*layer.Affine)(nil)
+	_ Layer = (*layer.SoftmaxWithLoss)(nil)
 )
 
 var (
