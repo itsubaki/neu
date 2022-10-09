@@ -30,14 +30,22 @@ func Example_layer() {
 
 	// forward
 	X := matrix.New([]float64{1.0, 0.5})
-	for _, layer := range layers {
-		X = layer.Forward(X, nil)
+	for _, l := range layers {
+		X = l.Forward(X, nil)
+	}
+
+	// backward
+	dout := matrix.New([]float64{1})
+	for _, l := range neu.Reverse(layers) {
+		dout, _ = l.Backward(dout)
 	}
 
 	fmt.Println(X)
+	fmt.Println(dout)
 
 	// Output:
 	// [[0.3168270764110298 0.6962790898619668]]
+	// [[0.004530872169552449 0.005957136450888734]]
 
 }
 
