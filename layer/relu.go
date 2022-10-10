@@ -7,11 +7,11 @@ type ReLU struct {
 }
 
 func (l *ReLU) Forward(x, _ matrix.Matrix) matrix.Matrix {
-	l.mask = Mask(x, func(x float64) bool { return x <= 0 })
-	return matrix.Mask(x, l.mask)
+	l.mask = newMask(x, func(x float64) bool { return x <= 0 })
+	return mask(x, l.mask)
 }
 
 func (l *ReLU) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	dx := matrix.Mask(dout, l.mask)
+	dx := mask(dout, l.mask)
 	return dx, matrix.New()
 }

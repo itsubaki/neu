@@ -8,8 +8,7 @@ type SGD struct {
 
 func (o *SGD) Update(params, grads map[string]matrix.Matrix) map[string]matrix.Matrix {
 	for k := range params {
-		g := grads[k].Func(func(v float64) float64 { return -1.0 * o.LearningRate * v })
-		params[k] = params[k].Add(g) // params[k] = params[k] - o.LearningRate * grads[k]
+		params[k] = matrix.FuncWith(params[k], grads[k], func(pk, gk float64) float64 { return pk - o.LearningRate*gk }) // params[k] = params[k] - o.LearningRate * grads[k]
 	}
 
 	return params

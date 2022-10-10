@@ -59,48 +59,6 @@ func ExampleMatrix_Add() {
 
 }
 
-func ExampleMatrix_Sub() {
-	A := matrix.New(
-		[]float64{1, 2},
-		[]float64{3, 4},
-	)
-
-	B := matrix.New(
-		[]float64{5, 6},
-		[]float64{7, 8},
-	)
-
-	for _, r := range A.Sub(B) {
-		fmt.Println(r)
-	}
-
-	// Output:
-	// [-4 -4]
-	// [-4 -4]
-
-}
-
-func ExampleMatrix_Mul() {
-	A := matrix.New(
-		[]float64{1, 2},
-		[]float64{3, 4},
-	)
-
-	B := matrix.New(
-		[]float64{5, 6},
-		[]float64{7, 8},
-	)
-
-	for _, r := range A.Mul(B) {
-		fmt.Println(r)
-	}
-
-	// Output:
-	// [5 12]
-	// [21 32]
-
-}
-
 func ExampleMatrix_Func() {
 	A := matrix.New(
 		[]float64{1, 2},
@@ -154,23 +112,4 @@ func ExampleRand() {
 	// [-1.233758177597947 -0.12634751070237293 -0.5209945711531503]
 	// [2.28571911769958 0.3228052526115799 0.5900672875996937]
 
-}
-
-func ExampleMask() {
-	x := matrix.New([]float64{0, 1}, []float64{2, 3})
-	for _, r := range matrix.Mask(x, [][]bool{{true, false}, {true, false}}) {
-		fmt.Println(r)
-	}
-
-	// Output:
-	// [0 1]
-	// [0 3]
-}
-
-func ExampleSumAxis1() {
-	x := matrix.New([]float64{1, 2, 3}, []float64{4, 5, 6})
-	fmt.Println(matrix.SumAxis1(x))
-
-	// Output:
-	// [5 7 9]
 }

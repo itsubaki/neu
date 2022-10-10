@@ -26,3 +26,11 @@ func ExampleAffine() {
 	// [[0.79 1]] []
 
 }
+
+func ExampleSumAxis1() {
+	x := matrix.New([]float64{1, 2, 3}, []float64{4, 5, 6})
+	fmt.Println(layer.SumAxis1(x))
+
+	// Output:
+	// [5 7 9]
+}

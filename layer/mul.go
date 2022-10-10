@@ -9,11 +9,11 @@ type Mul struct {
 
 func (l *Mul) Forward(x, y matrix.Matrix) matrix.Matrix {
 	l.x, l.y = x, y
-	return l.x.Mul(l.y)
+	return matrix.FuncWith(l.x, l.y, func(a, b float64) float64 { return a * b })
 }
 
 func (l *Mul) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	dx := dout.Mul(l.y)
-	dy := dout.Mul(l.x)
+	dx := matrix.FuncWith(dout, l.y, func(a, b float64) float64 { return a * b })
+	dy := matrix.FuncWith(dout, l.x, func(a, b float64) float64 { return a * b })
 	return dx, dy
 }

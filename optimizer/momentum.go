@@ -12,16 +12,13 @@ func (o *Momentum) Update(params, grads map[string]matrix.Matrix) map[string]mat
 	if o.v == nil {
 		o.v = make(map[string]matrix.Matrix)
 		for k, v := range params {
-			p, q := v.Dimension()
-			o.v[k] = matrix.Zero(p, q)
+			o.v[k] = matrix.Zero(v.Dimension())
 		}
 	}
 
 	for k := range params {
-		m := o.v[k].Func(func(v float64) float64 { return o.Momentum * v })
-		g := grads[k].Func(func(v float64) float64 { return -1.0 * o.LearningRate * v })
-		o.v[k] = m.Add(g)                 // v[k] = momentum * v[k] - lr *grads[k]
-		params[k] = params[k].Add(o.v[k]) // params[k] = params[k] + v[k]
+		o.v[k] = matrix.FuncWith(o.v[k], grads[k], func(vk, gk float64) float64 { return o.Momentum*vk - o.LearningRate*gk }) // v[k] = momentum * v[k] - lr * grads[k]
+		params[k] = params[k].Add(o.v[k])
 	}
 
 	return params
