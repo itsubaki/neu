@@ -16,10 +16,11 @@ func (o *Momentum) Update(params, grads map[string]matrix.Matrix) map[string]mat
 		}
 	}
 
+	out := make(map[string]matrix.Matrix)
 	for k := range params {
 		o.v[k] = matrix.FuncWith(o.v[k], grads[k], func(vk, gk float64) float64 { return o.Momentum*vk - o.LearningRate*gk }) // v[k] = momentum * v[k] - lr * grads[k]
-		params[k] = params[k].Add(o.v[k])
+		out[k] = params[k].Add(o.v[k])
 	}
 
-	return params
+	return out
 }
