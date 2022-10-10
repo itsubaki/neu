@@ -86,11 +86,11 @@ func Example_neuralNetwork() {
 	// forward
 	X := matrix.New([]float64{1.0, 0.5})
 	A1 := matrix.Dot(X, W1).Add(B1)
-	Z1 := matrix.Sigmoid(A1)
+	Z1 := matrix.Func(A1, func(v float64) float64 { return activation.Sigmoid(v) })
 	A2 := matrix.Dot(Z1, W2).Add(B2)
-	Z2 := matrix.Sigmoid(A2)
+	Z2 := matrix.Func(A2, func(v float64) float64 { return activation.Sigmoid(v) })
 	A3 := matrix.Dot(Z2, W3).Add(B3)
-	Y := matrix.Identity(A3)
+	Y := matrix.Func(A3, func(v float64) float64 { return v }) // identity
 
 	// result
 	fmt.Println(A1)

@@ -2,8 +2,6 @@ package matrix
 
 import (
 	"math/rand"
-
-	"github.com/itsubaki/neu/activation"
 )
 
 type Matrix [][]float64
@@ -123,40 +121,6 @@ func (m Matrix) Mul(n Matrix) Matrix {
 	return out
 }
 
-func (m Matrix) Addf64(w float64) Matrix {
-	p, q := m.Dimension()
-
-	out := make(Matrix, 0, p)
-	for i := 0; i < p; i++ {
-		v := make([]float64, 0, q)
-
-		for j := 0; j < q; j++ {
-			v = append(v, m[i][j]+w)
-		}
-
-		out = append(out, v)
-	}
-
-	return out
-}
-
-func (m Matrix) Mulf64(w float64) Matrix {
-	p, q := m.Dimension()
-
-	out := make(Matrix, 0, p)
-	for i := 0; i < p; i++ {
-		v := make([]float64, 0, q)
-
-		for j := 0; j < q; j++ {
-			v = append(v, m[i][j]*w)
-		}
-
-		out = append(out, v)
-	}
-
-	return out
-}
-
 func (m Matrix) Transpose() Matrix {
 	p, q := m.Dimension()
 
@@ -178,18 +142,15 @@ func (m Matrix) T() Matrix {
 	return m.Transpose()
 }
 
-func Dot(m, n Matrix) Matrix {
-	return m.Dot(n)
-}
-
-func Sigmoid(m Matrix) Matrix {
-	out := make(Matrix, 0)
+func (m Matrix) Func(f func(v float64) float64) Matrix {
 	p, q := m.Dimension()
 
+	out := make(Matrix, 0, p)
 	for i := 0; i < p; i++ {
-		v := make([]float64, 0)
+		v := make([]float64, 0, q)
+
 		for j := 0; j < q; j++ {
-			v = append(v, activation.Sigmoid(m[i][j]))
+			v = append(v, f(m[i][j]))
 		}
 
 		out = append(out, v)
@@ -198,8 +159,12 @@ func Sigmoid(m Matrix) Matrix {
 	return out
 }
 
-func Identity(m Matrix) Matrix {
-	return m
+func Dot(m, n Matrix) Matrix {
+	return m.Dot(n)
+}
+
+func Func(m Matrix, f func(v float64) float64) Matrix {
+	return m.Func(f)
 }
 
 func SumAxis1(m Matrix) []float64 {

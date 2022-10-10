@@ -1,6 +1,7 @@
 package layer
 
 import (
+	"github.com/itsubaki/neu/activation"
 	"github.com/itsubaki/neu/loss"
 	"github.com/itsubaki/neu/math/matrix"
 )
@@ -13,14 +14,14 @@ type SoftmaxWithLoss struct {
 
 func (l *SoftmaxWithLoss) Forward(x, t matrix.Matrix) matrix.Matrix {
 	l.t = t
-	l.y = matrix.Sigmoid(x)
+	l.y = x.Func(func(v float64) float64 { return activation.Sigmoid(v) })
 	l.loss = CrossEntropyError(l.y, l.t)
 	return matrix.New(l.loss)
 }
 
 func (l *SoftmaxWithLoss) Backward(_ matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	size, _ := l.t.Dimension()
-	dx := l.y.Sub(l.t).Mulf64(1.0 / float64(size)) // (y - t)/batch_size
+	dx := l.y.Sub(l.t).Func(func(v float64) float64 { return v / float64(size) }) // (y - t)/batch_size
 	return dx, matrix.New()
 }
 

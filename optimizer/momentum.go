@@ -18,8 +18,10 @@ func (o *Momentum) Update(params, grads map[string]matrix.Matrix) map[string]mat
 	}
 
 	for k := range params {
-		o.v[k] = o.v[k].Mulf64(o.Momentum).Sub(grads[k].Mulf64(o.LearningRate)) // v[k] = momentum * v[k] - lr *grads[k]
-		params[k] = params[k].Add(o.v[k])                                       // params[k] = params[k] + v[k]
+		m := o.v[k].Func(func(v float64) float64 { return o.Momentum * v })
+		g := grads[k].Func(func(v float64) float64 { return -1.0 * o.LearningRate * v })
+		o.v[k] = m.Add(g)                 // v[k] = momentum * v[k] - lr *grads[k]
+		params[k] = params[k].Add(o.v[k]) // params[k] = params[k] + v[k]
 	}
 
 	return params

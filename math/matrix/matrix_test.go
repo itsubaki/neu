@@ -101,29 +101,13 @@ func ExampleMatrix_Mul() {
 
 }
 
-func ExampleMatrix_Addf64() {
+func ExampleMatrix_Func() {
 	A := matrix.New(
 		[]float64{1, 2},
 		[]float64{3, 4},
 	)
 
-	for _, r := range A.Addf64(3.0) {
-		fmt.Println(r)
-	}
-
-	// Output:
-	// [4 5]
-	// [6 7]
-
-}
-
-func ExampleMatrix_Mulf64() {
-	A := matrix.New(
-		[]float64{1, 2},
-		[]float64{3, 4},
-	)
-
-	for _, r := range A.Mulf64(3.0) {
+	for _, r := range A.Func(func(v float64) float64 { return v * 3.0 }) {
 		fmt.Println(r)
 	}
 
@@ -170,28 +154,6 @@ func ExampleRand() {
 	// [-1.233758177597947 -0.12634751070237293 -0.5209945711531503]
 	// [2.28571911769958 0.3228052526115799 0.5900672875996937]
 
-}
-
-func ExampleSigmoid() {
-	x := matrix.New([]float64{0, 1}, []float64{2, 3})
-	for _, r := range matrix.Sigmoid(x) {
-		fmt.Println(r)
-	}
-
-	// Output:
-	// [0.5 0.7310585786300049]
-	// [0.8807970779778823 0.9525741268224334]
-}
-
-func ExampleIdentity() {
-	x := matrix.New([]float64{0, 1}, []float64{2, 3})
-	for _, r := range matrix.Identity(x) {
-		fmt.Println(r)
-	}
-
-	// Output:
-	// [0 1]
-	// [2 3]
 }
 
 func ExampleMask() {
