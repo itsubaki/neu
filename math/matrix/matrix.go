@@ -138,18 +138,5 @@ func Func(m Matrix, f func(a float64) float64) Matrix {
 }
 
 func FuncWith(m, n Matrix, f func(a, b float64) float64) Matrix {
-	p, q := m.Dimension()
-
-	out := make(Matrix, 0, p)
-	for i := 0; i < p; i++ {
-		v := make([]float64, 0, q)
-
-		for j := 0; j < q; j++ {
-			v = append(v, f(m[i][j], n[i][j]))
-		}
-
-		out = append(out, v)
-	}
-
-	return out
+	return m.FuncWith(n, f)
 }

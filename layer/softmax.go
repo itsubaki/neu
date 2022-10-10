@@ -14,7 +14,7 @@ type SoftmaxWithLoss struct {
 
 func (l *SoftmaxWithLoss) Forward(x, t matrix.Matrix) matrix.Matrix {
 	l.t = t
-	l.y = x.Func(activation.Sigmoid)
+	l.y = matrix.Func(x, activation.Sigmoid)
 	l.loss = crossEntropyError(l.y, l.t)
 	return matrix.New(l.loss)
 }
