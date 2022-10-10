@@ -113,3 +113,40 @@ func ExampleRand() {
 	// [2.28571911769958 0.3228052526115799 0.5900672875996937]
 
 }
+
+func ExampleFunc() {
+	A := matrix.New(
+		[]float64{1, 2},
+		[]float64{3, 4},
+	)
+
+	for _, r := range matrix.Func(A, func(v float64) float64 { return v * 2 }) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [2 4]
+	// [6 8]
+
+}
+
+func ExampleFuncWith() {
+	A := matrix.New(
+		[]float64{1, 2},
+		[]float64{3, 4},
+	)
+
+	B := matrix.New(
+		[]float64{5, 6},
+		[]float64{7, 8},
+	)
+
+	for _, r := range matrix.FuncWith(A, B, func(a, b float64) float64 { return a * b }) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [5 12]
+	// [21 32]
+
+}
