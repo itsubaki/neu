@@ -21,8 +21,9 @@ func Example_sgd() {
 
 	// training
 	T := matrix.New([]float64{1, 0})
+	X := matrix.New([]float64{0.5, 0.5})
 	learningRate := 0.1
-	loop := 100
+	loop := 40
 
 	// learning
 	for i := 0; i < loop; i++ {
@@ -34,16 +35,13 @@ func Example_sgd() {
 		}
 		last := &layer.SoftmaxWithLoss{}
 
-		// input
-		X := matrix.New([]float64{0.5, 0.5})
-
 		// forward
 		for _, l := range layers {
 			X = l.Forward(X, nil)
 		}
 		loss := last.Forward(X, T)
 
-		if i%25 == 0 {
+		if i%10 == 0 {
 			fmt.Printf("predict=%.04f, loss=%.04f\n", layer.Softmax(X), loss)
 		}
 
@@ -65,9 +63,9 @@ func Example_sgd() {
 
 	// Output:
 	// predict=[[0.3555 0.6445]], loss=[[1.0343]]
-	// predict=[[0.9081 0.0919]], loss=[[0.0963]]
-	// predict=[[0.9652 0.0348]], loss=[[0.0354]]
-	// predict=[[0.9808 0.0192]], loss=[[0.0194]]
+	// predict=[[0.8930 0.1070]], loss=[[0.1132]]
+	// predict=[[0.9878 0.0122]], loss=[[0.0122]]
+	// predict=[[0.9982 0.0018]], loss=[[0.0018]]
 }
 
 func Example_layer() {
