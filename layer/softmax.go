@@ -14,7 +14,7 @@ type SoftmaxWithLoss struct {
 
 func (l *SoftmaxWithLoss) Forward(x, t matrix.Matrix) matrix.Matrix {
 	l.t = t
-	l.y = x.Func(func(v float64) float64 { return activation.Sigmoid(v) })
+	l.y = Softmax(x)
 	l.loss = CrossEntropyError(l.y, l.t)
 	return matrix.New(l.loss)
 }
@@ -29,6 +29,15 @@ func CrossEntropyError(y, t matrix.Matrix) []float64 {
 	out := make([]float64, 0)
 	for i := range y {
 		out = append(out, loss.CrossEntropyError(y[i], t[i]))
+	}
+
+	return out
+}
+
+func Softmax(x matrix.Matrix) matrix.Matrix {
+	out := make(matrix.Matrix, 0)
+	for _, r := range x {
+		out = append(out, activation.Softmax(r))
 	}
 
 	return out

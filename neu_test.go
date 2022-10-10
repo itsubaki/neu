@@ -8,10 +8,57 @@ import (
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/loss"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/optimizer"
 )
 
+func Example_twoLayer() {
+	// initial weight
+	params := make(map[string]matrix.Matrix)
+	params["W1"] = matrix.New([]float64{0.1, 0.3, 0.5}, []float64{0.2, 0.4, 0.6})
+	params["B1"] = matrix.New([]float64{0.1, 0.2, 0.3})
+	params["W2"] = matrix.New([]float64{0.1, 0.4}, []float64{0.2, 0.5}, []float64{0.3, 0.6})
+	params["B2"] = matrix.New([]float64{0.1, 0.2})
+
+	// learning
+	for i := 0; i < 10; i++ {
+		// layer
+		layers := []neu.Layer{
+			&layer.Affine{W: params["W1"], B: params["B1"]},
+			&layer.ReLU{},
+			&layer.Affine{W: params["W2"], B: params["B2"]},
+		}
+		last := &layer.SoftmaxWithLoss{}
+
+		// forward
+		X := matrix.New([]float64{0.5, 0.5})
+		T := matrix.New([]float64{1, 0})
+		for _, l := range layers {
+			X = l.Forward(X, nil)
+		}
+		loss := last.Forward(X, T)
+
+		fmt.Printf("predict=%.04f, loss=%.04f\n", layer.Softmax(X), loss)
+
+		// backward
+		dout, _ := last.Backward(matrix.New([]float64{1}))
+		for _, l := range neu.Reverse(layers) {
+			dout, _ = l.Backward(dout)
+		}
+
+		grads := make(map[string]matrix.Matrix)
+		grads["W1"] = layers[0].(*layer.Affine).DW
+		grads["B1"] = layers[0].(*layer.Affine).DB
+		grads["W2"] = layers[2].(*layer.Affine).DW
+		grads["B2"] = layers[2].(*layer.Affine).DB
+
+		opt := &optimizer.SGD{LearningRate: 0.1}
+		params = opt.Update(params, grads)
+	}
+
+	// Output:
+}
 func Example_layer() {
-	// network
+	// initial weight
 	W1 := matrix.New([]float64{0.1, 0.3, 0.5}, []float64{0.2, 0.4, 0.6})
 	B1 := matrix.New([]float64{0.1, 0.2, 0.3})
 	W2 := matrix.New([]float64{0.1, 0.4}, []float64{0.2, 0.5}, []float64{0.3, 0.6})
