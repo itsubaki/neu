@@ -41,8 +41,8 @@ func Example_twoLayer() {
 
 		// backward
 		dout, _ := last.Backward(matrix.New([]float64{1}))
-		for _, l := range neu.Reverse(layers) {
-			dout, _ = l.Backward(dout)
+		for i := len(layers) - 1; i > -1; i-- {
+			dout, _ = layers[i].Backward(dout)
 		}
 
 		grads := make(map[string]matrix.Matrix)
@@ -56,7 +56,18 @@ func Example_twoLayer() {
 	}
 
 	// Output:
+	// predict=[[0.3555 0.6445]], loss=[[1.0343]]
+	// predict=[[0.4241 0.5759]], loss=[[0.8578]]
+	// predict=[[0.4836 0.5164]], loss=[[0.7266]]
+	// predict=[[0.5350 0.4650]], loss=[[0.6255]]
+	// predict=[[0.5796 0.4204]], loss=[[0.5454]]
+	// predict=[[0.6185 0.3815]], loss=[[0.4804]]
+	// predict=[[0.6527 0.3473]], loss=[[0.4267]]
+	// predict=[[0.6828 0.3172]], loss=[[0.3816]]
+	// predict=[[0.7094 0.2906]], loss=[[0.3433]]
+	// predict=[[0.7331 0.2669]], loss=[[0.3105]]
 }
+
 func Example_layer() {
 	// initial weight
 	W1 := matrix.New([]float64{0.1, 0.3, 0.5}, []float64{0.2, 0.4, 0.6})
@@ -83,8 +94,8 @@ func Example_layer() {
 
 	// backward
 	dout := matrix.New([]float64{1})
-	for _, l := range neu.Reverse(layers) {
-		dout, _ = l.Backward(dout)
+	for i := len(layers) - 1; i > -1; i-- {
+		dout, _ = layers[i].Backward(dout)
 	}
 
 	fmt.Println(X)
