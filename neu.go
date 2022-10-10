@@ -29,10 +29,7 @@ type Optimizer interface {
 	Update(params, grads map[string]matrix.Matrix) map[string]matrix.Matrix
 }
 
-func Reverse(layer []Layer) []Layer {
-	list := make([]Layer, len(layer))
-	copy(list, layer)
-
+func Reverse(list []Layer) []Layer {
 	for i := 0; i < len(list)/2; i++ {
 		list[i], list[len(list)-1-i] = list[len(list)-1-i], list[i]
 	}
