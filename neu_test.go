@@ -11,7 +11,7 @@ import (
 	"github.com/itsubaki/neu/optimizer"
 )
 
-func Example_twoLayer() {
+func Example_sgd() {
 	// initial weight
 	params := make(map[string]matrix.Matrix)
 	params["W1"] = matrix.New([]float64{0.1, 0.3, 0.5}, []float64{0.2, 0.4, 0.6})
@@ -19,8 +19,13 @@ func Example_twoLayer() {
 	params["W2"] = matrix.New([]float64{0.1, 0.4}, []float64{0.2, 0.5}, []float64{0.3, 0.6})
 	params["B2"] = matrix.New([]float64{0.1, 0.2})
 
+	// training
+	T := matrix.New([]float64{1, 0})
+	learningRate := 0.1
+	loop := 100
+
 	// learning
-	for i := 0; i < 10; i++ {
+	for i := 0; i < loop; i++ {
 		// layer
 		layers := []neu.Layer{
 			&layer.Affine{W: params["W1"], B: params["B1"]},
@@ -29,15 +34,18 @@ func Example_twoLayer() {
 		}
 		last := &layer.SoftmaxWithLoss{}
 
-		// forward
+		// input
 		X := matrix.New([]float64{0.5, 0.5})
-		T := matrix.New([]float64{1, 0})
+
+		// forward
 		for _, l := range layers {
 			X = l.Forward(X, nil)
 		}
 		loss := last.Forward(X, T)
 
-		fmt.Printf("predict=%.04f, loss=%.04f\n", layer.Softmax(X), loss)
+		if i%25 == 0 {
+			fmt.Printf("predict=%.04f, loss=%.04f\n", layer.Softmax(X), loss)
+		}
 
 		// backward
 		dout, _ := last.Backward(matrix.New([]float64{1}))
@@ -51,21 +59,15 @@ func Example_twoLayer() {
 		grads["W2"] = layers[2].(*layer.Affine).DW
 		grads["B2"] = layers[2].(*layer.Affine).DB
 
-		opt := &optimizer.SGD{LearningRate: 0.1}
+		opt := &optimizer.SGD{LearningRate: learningRate}
 		params = opt.Update(params, grads)
 	}
 
 	// Output:
 	// predict=[[0.3555 0.6445]], loss=[[1.0343]]
-	// predict=[[0.4241 0.5759]], loss=[[0.8578]]
-	// predict=[[0.4836 0.5164]], loss=[[0.7266]]
-	// predict=[[0.5350 0.4650]], loss=[[0.6255]]
-	// predict=[[0.5796 0.4204]], loss=[[0.5454]]
-	// predict=[[0.6185 0.3815]], loss=[[0.4804]]
-	// predict=[[0.6527 0.3473]], loss=[[0.4267]]
-	// predict=[[0.6828 0.3172]], loss=[[0.3816]]
-	// predict=[[0.7094 0.2906]], loss=[[0.3433]]
-	// predict=[[0.7331 0.2669]], loss=[[0.3105]]
+	// predict=[[0.9081 0.0919]], loss=[[0.0963]]
+	// predict=[[0.9652 0.0348]], loss=[[0.0354]]
+	// predict=[[0.9808 0.0192]], loss=[[0.0194]]
 }
 
 func Example_layer() {
@@ -144,9 +146,9 @@ func Example_neuralNetwork() {
 	// forward
 	X := matrix.New([]float64{1.0, 0.5})
 	A1 := matrix.Dot(X, W1).Add(B1)
-	Z1 := matrix.Func(A1, func(v float64) float64 { return activation.Sigmoid(v) })
+	Z1 := matrix.Func(A1, activation.Sigmoid)
 	A2 := matrix.Dot(Z1, W2).Add(B2)
-	Z2 := matrix.Func(A2, func(v float64) float64 { return activation.Sigmoid(v) })
+	Z2 := matrix.Func(A2, activation.Sigmoid)
 	A3 := matrix.Dot(Z2, W3).Add(B3)
 	Y := matrix.Func(A3, func(v float64) float64 { return v }) // identity
 

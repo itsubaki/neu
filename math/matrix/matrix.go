@@ -71,54 +71,7 @@ func (m Matrix) Dot(n Matrix) Matrix {
 }
 
 func (m Matrix) Add(n Matrix) Matrix {
-	p, q := m.Dimension()
-
-	out := make(Matrix, 0, p)
-	for i := 0; i < p; i++ {
-		v := make([]float64, 0, q)
-
-		for j := 0; j < q; j++ {
-			v = append(v, m[i][j]+n[i][j])
-		}
-
-		out = append(out, v)
-	}
-
-	return out
-}
-
-func (m Matrix) Sub(n Matrix) Matrix {
-	p, q := m.Dimension()
-
-	out := make(Matrix, 0, p)
-	for i := 0; i < p; i++ {
-		v := make([]float64, 0, q)
-
-		for j := 0; j < q; j++ {
-			v = append(v, m[i][j]-n[i][j])
-		}
-
-		out = append(out, v)
-	}
-
-	return out
-}
-
-func (m Matrix) Mul(n Matrix) Matrix {
-	p, q := m.Dimension()
-
-	out := make(Matrix, 0, p)
-	for i := 0; i < p; i++ {
-		v := make([]float64, 0, q)
-
-		for j := 0; j < q; j++ {
-			v = append(v, m[i][j]*n[i][j])
-		}
-
-		out = append(out, v)
-	}
-
-	return out
+	return m.FuncWith(n, func(a, b float64) float64 { return a + b })
 }
 
 func (m Matrix) Transpose() Matrix {
@@ -159,42 +112,31 @@ func (m Matrix) Func(f func(v float64) float64) Matrix {
 	return out
 }
 
-func Dot(m, n Matrix) Matrix {
-	return m.Dot(n)
-}
-
-func Func(m Matrix, f func(v float64) float64) Matrix {
-	return m.Func(f)
-}
-
-func SumAxis1(m Matrix) []float64 {
+func (m Matrix) FuncWith(n Matrix, f func(a, b float64) float64) Matrix {
 	p, q := m.Dimension()
 
-	out := make([]float64, q)
-	for i := 0; i < q; i++ {
-		for j := 0; j < p; j++ {
-			out[i] = out[i] + m[j][i]
-		}
-	}
+	out := make(Matrix, 0, p)
+	for i := 0; i < p; i++ {
+		v := make([]float64, 0, q)
 
-	return out
-}
-
-func Mask(m Matrix, mask [][]bool) Matrix {
-	out := make(Matrix, 0)
-	for i := range m {
-		v := make([]float64, 0)
-		for j := range m[i] {
-			if mask[i][j] {
-				v = append(v, 0)
-				continue
-			}
-
-			v = append(v, m[i][j])
+		for j := 0; j < q; j++ {
+			v = append(v, f(m[i][j], n[i][j]))
 		}
 
 		out = append(out, v)
 	}
 
 	return out
+}
+
+func Dot(m, n Matrix) Matrix {
+	return m.Dot(n)
+}
+
+func Func(m Matrix, f func(a float64) float64) Matrix {
+	return m.Func(f)
+}
+
+func FuncWith(m, n Matrix, f func(a, b float64) float64) Matrix {
+	return m.FuncWith(n, f)
 }

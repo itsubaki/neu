@@ -10,11 +10,11 @@ type Sigmoid struct {
 }
 
 func (l *Sigmoid) Forward(x, _ matrix.Matrix) matrix.Matrix {
-	l.out = x.Func(func(v float64) float64 { return activation.Sigmoid(v) })
+	l.out = x.Func(activation.Sigmoid)
 	return l.out
 }
 
 func (l *Sigmoid) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	dx := dout.Mul(l.out.Func(func(v float64) float64 { return -1.0*v + 1.0 })).Mul(l.out) // dout * (-1.0 * out + 1.0) * out
+	dx := matrix.FuncWith(dout, l.out, func(do, o float64) float64 { return do * (1.0 - o) * o }) // dout * (1.0 - out) * out
 	return dx, matrix.New()
 }

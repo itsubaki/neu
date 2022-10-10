@@ -21,7 +21,7 @@ func (l *SoftmaxWithLoss) Forward(x, t matrix.Matrix) matrix.Matrix {
 
 func (l *SoftmaxWithLoss) Backward(_ matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	size, _ := l.t.Dimension()
-	dx := l.y.Sub(l.t).Func(func(v float64) float64 { return v / float64(size) }) // (y - t)/batch_size
+	dx := matrix.FuncWith(l.y, l.t, func(y, t float64) float64 { return (y - t) / float64(size) }) // (y - t)/batch_size
 	return dx, matrix.New()
 }
 
