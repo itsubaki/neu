@@ -11,6 +11,10 @@ import (
 	"github.com/itsubaki/neu/optimizer"
 )
 
+func ExampleNeu() {
+
+}
+
 func Example_sgd() {
 	// initial weight
 	params := make(map[string]matrix.Matrix)

@@ -28,3 +28,10 @@ type Layer interface {
 type Optimizer interface {
 	Update(params, grads map[string]matrix.Matrix) map[string]matrix.Matrix
 }
+
+type Neu struct {
+}
+
+func New() *Neu {
+	return &Neu{}
+}
