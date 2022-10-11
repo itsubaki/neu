@@ -9,13 +9,13 @@ import (
 
 func ExampleMask() {
 	x := matrix.New([]float64{0, 1}, []float64{2, 3})
-	mask := [][]bool{{true, false}, {true, false}}
+	mask := layer.Mask(x, func(x float64) bool { return x > 2 })
 
-	for _, r := range layer.Mask(x, mask) {
+	for _, r := range x.Mul(mask) {
 		fmt.Println(r)
 	}
 
 	// Output:
 	// [0 1]
-	// [0 3]
+	// [2 0]
 }

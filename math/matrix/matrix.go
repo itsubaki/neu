@@ -74,6 +74,10 @@ func (m Matrix) Add(n Matrix) Matrix {
 	return m.FuncWith(n, func(a, b float64) float64 { return a + b })
 }
 
+func (m Matrix) Mul(n Matrix) Matrix {
+	return m.FuncWith(n, func(a, b float64) float64 { return a * b })
+}
+
 func (m Matrix) Transpose() Matrix {
 	p, q := m.Dimension()
 

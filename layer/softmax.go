@@ -7,16 +7,16 @@ import (
 )
 
 type SoftmaxWithLoss struct {
-	loss []float64
-	y    matrix.Matrix
 	t    matrix.Matrix
+	y    matrix.Matrix
+	loss float64
 }
 
 func (l *SoftmaxWithLoss) Forward(x, t matrix.Matrix) matrix.Matrix {
 	l.t = t
 	l.y = Softmax(x)
 	l.loss = CrossEntropyError(l.y, l.t)
-	return matrix.New(l.loss)
+	return matrix.New([]float64{l.loss})
 }
 
 func (l *SoftmaxWithLoss) Backward(_ matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
@@ -25,13 +25,19 @@ func (l *SoftmaxWithLoss) Backward(_ matrix.Matrix) (matrix.Matrix, matrix.Matri
 	return dx, matrix.New()
 }
 
-func CrossEntropyError(y, t matrix.Matrix) []float64 {
-	out := make([]float64, 0)
+func CrossEntropyError(y, t matrix.Matrix) float64 {
+	list := make([]float64, 0)
 	for i := range y {
-		out = append(out, loss.CrossEntropyError(y[i], t[i]))
+		list = append(list, loss.CrossEntropyError(y[i], t[i]))
 	}
 
-	return out
+	var sum float64
+	for _, e := range list {
+		sum = sum + e
+	}
+
+	N := float64(len(list))
+	return 1.0 / N * sum
 }
 
 func Softmax(x matrix.Matrix) matrix.Matrix {
