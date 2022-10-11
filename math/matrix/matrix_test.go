@@ -59,6 +59,27 @@ func ExampleMatrix_Add() {
 
 }
 
+func ExampleMatrix_Mul() {
+	A := matrix.New(
+		[]float64{1, 2},
+		[]float64{3, 4},
+	)
+
+	B := matrix.New(
+		[]float64{5, 6},
+		[]float64{7, 8},
+	)
+
+	for _, r := range A.Mul(B) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [5 12]
+	// [21 32]
+
+}
+
 func ExampleMatrix_Func() {
 	A := matrix.New(
 		[]float64{1, 2},
