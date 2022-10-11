@@ -12,7 +12,11 @@ import (
 )
 
 func ExampleNeu() {
+	n := neu.New()
+	fmt.Printf("%T", n)
 
+	// Output:
+	// *neu.Neu
 }
 
 func Example_sgd() {
