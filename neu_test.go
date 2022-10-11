@@ -2,6 +2,7 @@ package neu_test
 
 import (
 	"fmt"
+	"math/rand"
 
 	"github.com/itsubaki/neu"
 	"github.com/itsubaki/neu/activation"
@@ -12,11 +13,36 @@ import (
 )
 
 func ExampleNeu() {
-	n := neu.New()
-	fmt.Printf("%T", n)
+	// hyper parameter
+	inSize, hiddenSize, outSize := 2, 3, 2
+	weightInitStd := 0.01
+	loop := 100
+
+	// init
+	rand.Seed(1) // for test
+	n := neu.New(inSize, hiddenSize, outSize, weightInitStd)
+
+	// data
+	x := matrix.New([]float64{0.5, 0.5})
+	t := matrix.New([]float64{1, 0})
+
+	// learning
+	for i := 0; i < loop; i++ {
+		y := n.Predict(x)
+		loss := n.Loss(x, t)
+		grads := n.Gradient(x, t)
+		n.Optimize(grads)
+
+		if i%25 == 0 {
+			fmt.Printf("predict=%.04f, loss=%.04f\n", layer.Softmax(y), loss)
+		}
+	}
 
 	// Output:
-	// *neu.Neu
+	// predict=[[0.1444 0.8556]], loss=[[1.9353]]
+	// predict=[[0.9512 0.0488]], loss=[[0.0500]]
+	// predict=[[0.9829 0.0171]], loss=[[0.0173]]
+	// predict=[[0.9902 0.0098]], loss=[[0.0098]]
 }
 
 func Example_sgd() {
