@@ -132,7 +132,7 @@ func Example_gradientCheck() {
 
 }
 
-func Example_sgd() {
+func Example_optimize() {
 	// initial weight
 	params := make(map[string]matrix.Matrix)
 	params["W1"] = matrix.New([]float64{0.1, 0.3, 0.5}, []float64{0.2, 0.4, 0.6})
