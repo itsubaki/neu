@@ -1,8 +1,11 @@
 package neu
 
 import (
+	"math"
+
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/numerical"
 	"github.com/itsubaki/neu/optimizer"
 )
 
@@ -79,6 +82,64 @@ func (n *Neu) Predict(x matrix.Matrix) matrix.Matrix {
 func (n *Neu) Loss(x, t matrix.Matrix) matrix.Matrix {
 	y := n.Predict(x)
 	return n.last.Forward(y, t)
+}
+
+func (n *Neu) Accuracy(x, t matrix.Matrix) float64 {
+	max := func(x matrix.Matrix) []int {
+		out := make([]int, 0)
+		for i := range x {
+			max := -math.MaxFloat64
+			var argmax int
+			for j := range x[i] {
+				if x[i][j] > max {
+					max = x[i][j]
+					argmax = j
+				}
+			}
+
+			out = append(out, argmax)
+		}
+
+		return out
+	}
+
+	y := n.Predict(x)
+	ymax := max(y)
+	tmax := max(t)
+
+	var count int
+	for i := range ymax {
+		if ymax[i] == tmax[i] {
+			count++
+		}
+	}
+
+	size, _ := x.Dimension()
+	return float64(count) / float64(size)
+}
+
+func (n *Neu) NumericalGradient(x, t matrix.Matrix) map[string]matrix.Matrix {
+	f := func(w ...float64) float64 {
+		return n.Loss(x, t)[0][0]
+	}
+
+	numGrad2d := func(f func(x ...float64) float64, x matrix.Matrix) matrix.Matrix {
+		out := make(matrix.Matrix, 0)
+		for _, r := range x {
+			out = append(out, numerical.Gradient(f, r))
+		}
+
+		return out
+	}
+
+	// gradient
+	grads := make(map[string]matrix.Matrix)
+	grads["W1"] = numGrad2d(f, n.params["W1"])
+	grads["B1"] = numGrad2d(f, n.params["B1"])
+	grads["W2"] = numGrad2d(f, n.params["W2"])
+	grads["B2"] = numGrad2d(f, n.params["B2"])
+
+	return grads
 }
 
 func (n *Neu) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {

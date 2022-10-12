@@ -2,6 +2,7 @@ package neu_test
 
 import (
 	"fmt"
+	"math"
 	"math/rand"
 
 	"github.com/itsubaki/neu"
@@ -48,6 +49,87 @@ func ExampleNeu() {
 	// predict=[[0.9967 0.0033] [0.0076 0.9924] [0.0010 0.9990]], loss=[[0.0040]]
 	// predict=[[0.9982 0.0018] [0.0044 0.9956] [0.0005 0.9995]], loss=[[0.0022]]
 	// predict=[[0.9988 0.0012] [0.0031 0.9969] [0.0004 0.9996]], loss=[[0.0015]]
+}
+
+func Example_accuracy() {
+	// data
+	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
+	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
+	batchSize, inSize := x.Dimension()
+	hiddenSize, outSize := t.Dimension()
+
+	// init
+	rand.Seed(1) // for test
+	n := neu.New(&neu.Config{
+		InputSize:     inSize,
+		HiddenSize:    hiddenSize,
+		OutputSize:    outSize,
+		BatchSize:     batchSize,
+		WeightInitStd: 0.01,
+		Optimizer:     &optimizer.SGD{LearningRate: 0.1},
+	})
+
+	// learning
+	for i := 0; i < 1000; i++ {
+		grads := n.Gradient(x, t)
+		n.Optimize(grads)
+
+		if i%250 == 0 {
+			fmt.Printf("acc=%.4f\n", n.Accuracy(x, t))
+		}
+	}
+
+	// Output:
+	// acc=0.6667
+	// acc=0.6667
+	// acc=0.6667
+	// acc=1.0000
+}
+
+func Example_gradientCheck() {
+	// data
+	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
+	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
+	batchSize, inSize := x.Dimension()
+	hiddenSize, outSize := t.Dimension()
+
+	// init
+	rand.Seed(1) // for test
+	n := neu.New(&neu.Config{
+		InputSize:     inSize,
+		HiddenSize:    hiddenSize,
+		OutputSize:    outSize,
+		BatchSize:     batchSize,
+		WeightInitStd: 0.01,
+		Optimizer:     &optimizer.SGD{LearningRate: 0.1},
+	})
+
+	// gradient
+	ngrads := n.NumericalGradient(x, t)
+	grads := n.Gradient(x, t)
+
+	// check
+	for _, k := range []string{"W1", "B1", "W2", "B2"} {
+		diffabs := matrix.FuncWith(ngrads[k], grads[k], func(a, b float64) float64 { return math.Abs(a - b) })
+
+		var sum float64
+		for i := range diffabs {
+			for j := range diffabs[i] {
+				sum = sum + diffabs[i][j]
+			}
+		}
+		a, b := diffabs.Dimension()
+
+		avg := sum * 1.0 / float64(a*b)
+		fmt.Printf("%v: %v\n", k, avg)
+	}
+
+	// Output:
+	// W1: 1.6667580752359698e-10
+	// B1: 0.0011093844469993565
+	// W2: 2.8191449832846066e-10
+	// B2: 0.11111413456359369
+
 }
 
 func Example_sgd() {
