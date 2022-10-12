@@ -195,3 +195,11 @@ func ExampleFuncWith() {
 	// [21 32]
 
 }
+
+func ExampleArgmax() {
+	A := matrix.New([]float64{1, 2, 3}, []float64{6, 5, 4})
+	fmt.Println(matrix.Argmax(A))
+
+	// Output:
+	// [2 0]
+}

@@ -1,6 +1,7 @@
 package matrix
 
 import (
+	"math"
 	"math/rand"
 )
 
@@ -180,4 +181,22 @@ func Func(m Matrix, f func(a float64) float64) Matrix {
 
 func FuncWith(m, n Matrix, f func(a, b float64) float64) Matrix {
 	return m.FuncWith(n, f)
+}
+
+func Argmax(x Matrix) []int {
+	out := make([]int, 0)
+	for i := range x {
+		max := -math.MaxFloat64
+		var index int
+		for j := range x[i] {
+			if x[i][j] > max {
+				max = x[i][j]
+				index = j
+			}
+		}
+
+		out = append(out, index)
+	}
+
+	return out
 }
