@@ -14,3 +14,6 @@
 # coverage
 coverage.txt
 coverage.html
+
+# mnist
+*.gz
