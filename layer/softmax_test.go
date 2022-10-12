@@ -8,18 +8,17 @@ import (
 )
 
 func ExampleSoftmaxWithLoss() {
-	t := matrix.New(
-		[]float64{0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
-		[]float64{0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
-	)
 	x := matrix.New(
 		[]float64{0.1, 0.05, 0.6, 0.0, 0.05, 0.1, 0.0, 0.1, 0.0, 0.0},
 		[]float64{0.1, 0.05, 0.1, 0.0, 0.05, 0.1, 0.0, 0.6, 0.0, 0.0},
 	)
+	t := matrix.New(
+		[]float64{0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+		[]float64{0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+	)
 
 	softmax := &layer.SoftmaxWithLoss{}
 	loss := softmax.Forward(x, t)
-
 	fmt.Println(loss)
 
 	dx, _ := softmax.Backward(nil)

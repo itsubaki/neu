@@ -8,16 +8,20 @@ import (
 )
 
 func ExampleAffine() {
+	// weight
 	W := matrix.New([]float64{0.1, 0.3, 0.5}, []float64{0.2, 0.4, 0.6})
 	B := matrix.New([]float64{0.1, 0.2, 0.3})
-	X := matrix.New([]float64{1.0, 0.5})
 
+	// data
+	x := matrix.New([]float64{1.0, 0.5})
+
+	// layer
 	affine := layer.Affine{
 		W: W,
 		B: B,
 	}
 
-	A := affine.Forward(X, nil)
+	A := affine.Forward(x, nil)
 	fmt.Println(A)
 	fmt.Println(affine.Backward(A))
 
@@ -27,10 +31,10 @@ func ExampleAffine() {
 
 }
 
-func ExampleSumAxis1() {
+func ExampleSumAxis0() {
 	x := matrix.New([]float64{1, 2, 3}, []float64{4, 5, 6})
-	fmt.Println(layer.SumAxis1(x))
+	fmt.Println(layer.SumAxis0(x))
 
 	// Output:
-	// [5 7 9]
+	// [[5 7 9] [5 7 9]]
 }

@@ -21,12 +21,45 @@ func Zero(n, m int) Matrix {
 	return out
 }
 
-func Rand(n, m int) Matrix {
+func Randn(n, m int) Matrix {
 	out := make(Matrix, 0)
 	for i := 0; i < n; i++ {
 		v := make([]float64, 0)
 		for j := 0; j < m; j++ {
 			v = append(v, rand.NormFloat64())
+		}
+
+		out = append(out, v)
+	}
+
+	return out
+}
+
+func Rand(n, m int) Matrix {
+	out := make(Matrix, 0)
+	for i := 0; i < n; i++ {
+		v := make([]float64, 0)
+		for j := 0; j < m; j++ {
+			v = append(v, rand.Float64())
+		}
+
+		out = append(out, v)
+	}
+
+	return out
+}
+
+func Mask(x Matrix, f func(x float64) bool) Matrix {
+	out := make(Matrix, 0)
+	for i := range x {
+		v := make([]float64, 0)
+		for j := range x[i] {
+			if f(x[i][j]) {
+				v = append(v, 0)
+				continue
+			}
+
+			v = append(v, 1)
 		}
 
 		out = append(out, v)

@@ -14,13 +14,15 @@ func ExampleDropout() {
 	rand.Seed(1)
 	drop := layer.Dropout{Ratio: 0.5, TrainFlag: true}
 	fmt.Println(drop.Forward(x, nil))
+	fmt.Println(drop.Backward(x))
 
 	drop.TrainFlag = false
 	fmt.Println(drop.Forward(x, nil))
 	fmt.Println(drop.Backward(x))
 
 	// Output:
-	// [[1 -0.5] [-2 0]]
+	// [[0 -0] [-0 3]]
+	// [[0 -0] [-0 3]] []
 	// [[0.5 -0.25] [-1 1.5]]
-	// [[1 -0.5] [-2 0]] []
+	// [[0 -0] [-0 3]] []
 }

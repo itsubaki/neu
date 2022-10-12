@@ -130,9 +130,33 @@ func ExampleRand() {
 	}
 
 	// Output:
+	// [0.6046602879796196 0.9405090880450124 0.6645600532184904]
+	// [0.4377141871869802 0.4246374970712657 0.6868230728671094]
+
+}
+func ExampleRandn() {
+	rand.Seed(1)
+	for _, r := range matrix.Randn(2, 3) {
+		fmt.Println(r)
+	}
+
+	// Output:
 	// [-1.233758177597947 -0.12634751070237293 -0.5209945711531503]
 	// [2.28571911769958 0.3228052526115799 0.5900672875996937]
 
+}
+
+func ExampleMask() {
+	x := matrix.New([]float64{0, 1}, []float64{2, 3})
+	mask := matrix.Mask(x, func(x float64) bool { return x > 2 })
+
+	for _, r := range x.Mul(mask) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [0 1]
+	// [2 0]
 }
 
 func ExampleFunc() {
