@@ -12,6 +12,7 @@ func New(v ...[]float64) Matrix {
 	return out
 }
 
+// Zero returns a matrix with all elements 0.
 func Zero(n, m int) Matrix {
 	out := make(Matrix, n)
 	for i := 0; i < n; i++ {
@@ -21,20 +22,7 @@ func Zero(n, m int) Matrix {
 	return out
 }
 
-func Randn(n, m int) Matrix {
-	out := make(Matrix, 0)
-	for i := 0; i < n; i++ {
-		v := make([]float64, 0)
-		for j := 0; j < m; j++ {
-			v = append(v, rand.NormFloat64())
-		}
-
-		out = append(out, v)
-	}
-
-	return out
-}
-
+// Rand returns a matrix with elements that pseudo-random number in the half-open interval [0.0,1.0).
 func Rand(n, m int) Matrix {
 	out := make(Matrix, 0)
 	for i := 0; i < n; i++ {
@@ -49,6 +37,22 @@ func Rand(n, m int) Matrix {
 	return out
 }
 
+// Randn returns a matrix with elements that normally distributed float64 in the range [-math.MaxFloat64, +math.MaxFloat64] with standard normal distribution.
+func Randn(n, m int) Matrix {
+	out := make(Matrix, 0)
+	for i := 0; i < n; i++ {
+		v := make([]float64, 0)
+		for j := 0; j < m; j++ {
+			v = append(v, rand.NormFloat64())
+		}
+
+		out = append(out, v)
+	}
+
+	return out
+}
+
+// Mask returns a matrix with elements that 1 if f() is true and 0 otherwise.
 func Mask(x Matrix, f func(x float64) bool) Matrix {
 	out := make(Matrix, 0)
 	for i := range x {

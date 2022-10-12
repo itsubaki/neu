@@ -88,12 +88,14 @@ func Example_sgd() {
 			dout, _ = layers[i].Backward(dout)
 		}
 
+		// gradient
 		grads := make(map[string]matrix.Matrix)
 		grads["W1"] = layers[0].(*layer.Affine).DW
 		grads["B1"] = layers[0].(*layer.Affine).DB
 		grads["W2"] = layers[2].(*layer.Affine).DW
 		grads["B2"] = layers[2].(*layer.Affine).DB
 
+		// optimize
 		opt := &optimizer.SGD{LearningRate: 0.1}
 		params = opt.Update(params, grads)
 	}
@@ -106,7 +108,7 @@ func Example_sgd() {
 }
 
 func Example_layer() {
-	// initial weight
+	// weight
 	W1 := matrix.New([]float64{0.1, 0.3, 0.5}, []float64{0.2, 0.4, 0.6})
 	B1 := matrix.New([]float64{0.1, 0.2, 0.3})
 	W2 := matrix.New([]float64{0.1, 0.4}, []float64{0.2, 0.5}, []float64{0.3, 0.6})
@@ -155,11 +157,12 @@ func Example_simpleNet() {
 
 	// data
 	x := matrix.New([]float64{0.6, 0.9})
+	t := []float64{0, 0, 1}
 
 	// predict
 	p := matrix.Dot(x, W)
 	y := activation.Softmax(p[0])
-	e := loss.CrossEntropyError(y, []float64{0, 0, 1})
+	e := loss.CrossEntropyError(y, t)
 
 	fmt.Println(p)
 	fmt.Println(e)
