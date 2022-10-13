@@ -150,7 +150,7 @@ func Load(dir string) (*Dataset, *Dataset, error) {
 }
 
 func OneHot(label []Label) [][]int {
-	out := make([][]int, 0)
+	out := make([][]int, 0, len(label))
 	for _, l := range label {
 		v := make([]int, 10)
 		v[l] = 1
