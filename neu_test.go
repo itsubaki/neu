@@ -113,18 +113,8 @@ func Example_gradientCheck() {
 
 	// check
 	for _, k := range []string{"W1", "B1", "W2", "B2"} {
-		diffabs := matrix.FuncWith(ngrads[k], grads[k], func(a, b float64) float64 { return math.Abs(a - b) })
-
-		var sum float64
-		for i := range diffabs {
-			for j := range diffabs[i] {
-				sum = sum + diffabs[i][j]
-			}
-		}
-		a, b := diffabs.Dimension()
-
-		avg := sum * 1.0 / float64(a*b)
-		fmt.Printf("%v: %v\n", k, avg)
+		diff := matrix.FuncWith(ngrads[k], grads[k], func(a, b float64) float64 { return math.Abs(a - b) })
+		fmt.Printf("%v: %v\n", k, diff.Avg())
 	}
 
 	// Output:

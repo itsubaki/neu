@@ -95,8 +95,8 @@ func (n *Neu) Accuracy(x, t matrix.Matrix) float64 {
 	}
 
 	y := n.Predict(x)
-	ymax := matrix.Argmax(y)
-	tmax := matrix.Argmax(t)
+	ymax := y.Argmax()
+	tmax := t.Argmax()
 
 	c := count(ymax, tmax)
 	return float64(c) / float64(len(ymax))

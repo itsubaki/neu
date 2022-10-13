@@ -112,6 +112,28 @@ func ExampleMatrix_T() {
 	// [3 6]
 }
 
+func ExampleMatrix_Avg() {
+	A := matrix.New(
+		[]float64{1, 2, 3},
+		[]float64{4, 5, 6},
+	)
+
+	fmt.Println(A.Sum())
+	fmt.Println(A.Avg())
+
+	// Output:
+	// 21
+	// 3.5
+}
+
+func ExampleMatrix_Argmax() {
+	A := matrix.New([]float64{1, 2, 3}, []float64{6, 5, 4})
+	fmt.Println(A.Argmax())
+
+	// Output:
+	// [2 0]
+}
+
 func ExampleZero() {
 	for _, r := range matrix.Zero(2, 3) {
 		fmt.Println(r)
@@ -194,12 +216,4 @@ func ExampleFuncWith() {
 	// [5 12]
 	// [21 32]
 
-}
-
-func ExampleArgmax() {
-	A := matrix.New([]float64{1, 2, 3}, []float64{6, 5, 4})
-	fmt.Println(matrix.Argmax(A))
-
-	// Output:
-	// [2 0]
 }
