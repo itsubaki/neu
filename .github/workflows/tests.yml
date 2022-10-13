@@ -28,6 +28,7 @@ jobs:
 
       - name: Tests
         run: |
+          make mnist
           make test
 
       - name: Codecov
