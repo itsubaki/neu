@@ -147,16 +147,16 @@ func ExampleRandn() {
 }
 
 func ExampleMask() {
-	x := matrix.New([]float64{0, 1}, []float64{2, 3})
-	mask := matrix.Mask(x, func(x float64) bool { return x > 2 })
+	x := matrix.New([]float64{1, -0.5}, []float64{-2, 3})
+	mask := matrix.Mask(x, func(x float64) bool { return x <= 0 })
 
-	for _, r := range x.Mul(mask) {
+	for _, r := range mask {
 		fmt.Println(r)
 	}
 
 	// Output:
+	// [1 0]
 	// [0 1]
-	// [2 0]
 }
 
 func ExampleFunc() {

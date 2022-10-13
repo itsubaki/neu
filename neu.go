@@ -107,7 +107,7 @@ func (n *Neu) NumericalGradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 		return n.Loss(x, t)[0][0]
 	}
 
-	numGrad2d := func(f func(x ...float64) float64, x matrix.Matrix) matrix.Matrix {
+	grad := func(f func(x ...float64) float64, x matrix.Matrix) matrix.Matrix {
 		out := make(matrix.Matrix, 0)
 		for _, r := range x {
 			out = append(out, numerical.Gradient(f, r))
@@ -118,10 +118,10 @@ func (n *Neu) NumericalGradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 
 	// gradient
 	grads := make(map[string]matrix.Matrix)
-	grads["W1"] = numGrad2d(lossW, n.params["W1"])
-	grads["B1"] = numGrad2d(lossW, n.params["B1"])
-	grads["W2"] = numGrad2d(lossW, n.params["W2"])
-	grads["B2"] = numGrad2d(lossW, n.params["B2"])
+	grads["W1"] = grad(lossW, n.params["W1"])
+	grads["B1"] = grad(lossW, n.params["B1"])
+	grads["W2"] = grad(lossW, n.params["W2"])
+	grads["B2"] = grad(lossW, n.params["B2"])
 
 	return grads
 }

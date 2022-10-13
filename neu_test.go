@@ -10,6 +10,7 @@ import (
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/loss"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/numerical"
 	"github.com/itsubaki/neu/optimizer"
 )
 
@@ -71,19 +72,21 @@ func Example_accuracy() {
 
 	// learning
 	for i := 0; i < 1000; i++ {
+		y := n.Predict(x)
+		loss := n.Loss(x, t)
 		grads := n.Gradient(x, t)
 		n.Optimize(grads)
 
 		if i%250 == 0 {
-			fmt.Printf("acc=%.4f\n", n.Accuracy(x, t))
+			fmt.Printf("predict=%.04f, loss=%.04f, acc=%.4f\n", layer.Softmax(y), loss, n.Accuracy(x, t))
 		}
 	}
 
 	// Output:
-	// acc=0.6667
-	// acc=0.6667
-	// acc=0.6667
-	// acc=1.0000
+	// predict=[[0.5000 0.5000] [0.5000 0.5000] [0.5000 0.5000]], loss=[[0.6931]], acc=0.6667
+	// predict=[[0.3373 0.6627] [0.3373 0.6627] [0.3203 0.6797]], loss=[[0.6281]], acc=0.6667
+	// predict=[[0.4506 0.5494] [0.4505 0.5495] [0.0703 0.9297]], loss=[[0.4896]], acc=0.6667
+	// predict=[[0.5120 0.4880] [0.4824 0.5176] [0.0191 0.9809]], loss=[[0.4491]], acc=1.0000
 }
 
 func Example_gradientCheck() {
@@ -249,9 +252,33 @@ func Example_simpleNet() {
 	fmt.Println(p)
 	fmt.Println(e)
 
+	// gradient
+	fW := func(w ...float64) float64 {
+		p := matrix.Dot(x, W)
+		y := activation.Softmax(p[0])
+		e := loss.CrossEntropyError(y, t)
+		return e
+	}
+
+	grad := func(f func(x ...float64) float64, x matrix.Matrix) matrix.Matrix {
+		out := make(matrix.Matrix, 0)
+		for _, r := range x {
+			out = append(out, numerical.Gradient(f, r))
+		}
+
+		return out
+	}
+
+	dW := grad(fW, W)
+	for _, r := range dW {
+		fmt.Println(r)
+	}
+
 	// Output:
 	// [[1.054148091 0.630716529 1.132807401]]
 	// 0.9280682857864075
+	// [0.2192475712392561 0.14356242984070455 -0.3628100010055757]
+	// [0.3288713569016277 0.21534364482433954 -0.5442150014750569]
 
 }
 
