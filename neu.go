@@ -1,6 +1,7 @@
 package neu
 
 import (
+	"math"
 	"math/rand"
 
 	"github.com/itsubaki/neu/layer"
@@ -31,6 +32,11 @@ type Layer interface {
 type Optimizer interface {
 	Update(params, grads map[string]matrix.Matrix) map[string]matrix.Matrix
 }
+
+var (
+	Xavier = func(prevNodeNum int) float64 { return math.Sqrt(1.0 / float64(prevNodeNum)) }
+	He     = func(prevNodeNum int) float64 { return math.Sqrt(2.0 / float64(prevNodeNum)) }
+)
 
 type Config struct {
 	InputSize     int

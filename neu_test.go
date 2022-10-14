@@ -444,3 +444,27 @@ func Example_perceptron() {
 	//
 
 }
+
+func ExampleXavier() {
+	fmt.Println(neu.Xavier(1))
+	fmt.Println(neu.Xavier(2))
+	fmt.Println(neu.Xavier(4))
+
+	// Output:
+	// 1
+	// 0.7071067811865476
+	// 0.5
+
+}
+
+func ExampleHe() {
+	fmt.Println(neu.He(1))
+	fmt.Println(neu.He(2))
+	fmt.Println(neu.He(4))
+
+	// Output:
+	// 1.4142135623730951
+	// 1
+	// 0.7071067811865476
+
+}
