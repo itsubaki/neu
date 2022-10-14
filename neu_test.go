@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
+	"os"
 
 	"github.com/itsubaki/neu"
 	"github.com/itsubaki/neu/activation"
@@ -11,10 +12,54 @@ import (
 	"github.com/itsubaki/neu/loss"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/math/numerical"
+	"github.com/itsubaki/neu/mnist"
 	"github.com/itsubaki/neu/optimizer"
 )
 
-func ExampleNeu() {
+func Example_mnist() {
+	// data
+	train, _, err := mnist.Load("./testdata")
+	if err != nil {
+		fmt.Printf("load mnist: %v", err)
+		os.Exit(1)
+	}
+
+	batchSize := 3
+	x := matrix.New(mnist.Image2f64(train.Image[:batchSize])...)
+	t := matrix.New(mnist.OneHotLabel2f64(mnist.OneHot(train.Label[:batchSize]))...)
+
+	// init
+	rand.Seed(1) // for test
+	n := neu.New(&neu.Config{
+		InputSize:     784,
+		HiddenSize:    50,
+		OutputSize:    10,
+		BatchSize:     batchSize,
+		WeightInitStd: 0.01,
+		Optimizer:     &optimizer.SGD{LearningRate: 0.1},
+	})
+
+	// learning
+	for i := 0; i < 1000; i++ {
+		loss := n.Loss(x, t)
+		grads := n.Gradient(x, t)
+		n.Optimize(grads)
+
+		if i%200 == 0 {
+			fmt.Printf("loss=%.04f\n", loss)
+		}
+	}
+
+	// Output:
+	// loss=[[2.4120]]
+	// loss=[[0.0765]]
+	// loss=[[0.0308]]
+	// loss=[[0.0188]]
+	// loss=[[0.0134]]
+
+}
+
+func Example_neu() {
 	// data
 	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
