@@ -24,9 +24,13 @@ func Example_mnist() {
 		os.Exit(1)
 	}
 
-	batchSize := 3
-	x := matrix.New(mnist.Image2f64(train.Image[:batchSize])...)
-	t := matrix.New(mnist.OneHotLabel2f64(mnist.OneHot(train.Label[:batchSize]))...)
+	x := matrix.New(mnist.Normalize(train.Image)...)
+	t := matrix.New(mnist.OneHot(train.Label)...)
+
+	// hyper-parameter
+	trainSize := len(train.Image)
+	batchSize := 10
+	iter := 1000
 
 	// init
 	rand.Seed(1) // for test
@@ -40,22 +44,25 @@ func Example_mnist() {
 	})
 
 	// learning
-	for i := 0; i < 1000; i++ {
-		loss := n.Loss(x, t)
-		grads := n.Gradient(x, t)
+	for i := 0; i < iter; i++ {
+		mask := neu.Random(trainSize, batchSize)
+		xbatch := matrix.Batch(x, mask)
+		tbatch := matrix.Batch(t, mask)
+
+		grads := n.Gradient(xbatch, tbatch)
 		n.Optimize(grads)
 
 		if i%200 == 0 {
-			fmt.Printf("loss=%.04f\n", loss)
+			fmt.Printf("loss=%.04f\n", n.Loss(xbatch, tbatch))
 		}
 	}
 
 	// Output:
-	// loss=[[2.4120]]
-	// loss=[[0.0765]]
-	// loss=[[0.0308]]
-	// loss=[[0.0188]]
-	// loss=[[0.0134]]
+	// loss=[[2.2971]]
+	// loss=[[1.0641]]
+	// loss=[[0.0839]]
+	// loss=[[0.0493]]
+	// loss=[[0.0513]]
 
 }
 

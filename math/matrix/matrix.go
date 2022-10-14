@@ -216,3 +216,12 @@ func Func(m Matrix, f func(a float64) float64) Matrix {
 func FuncWith(m, n Matrix, f func(a, b float64) float64) Matrix {
 	return m.FuncWith(n, f)
 }
+
+func Batch(m Matrix, index []int) Matrix {
+	out := make(Matrix, 0)
+	for _, i := range index {
+		out = append(out, m[i])
+	}
+
+	return out
+}

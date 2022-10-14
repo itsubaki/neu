@@ -21,9 +21,8 @@ const (
 )
 
 type (
-	Image       [Width * Height]byte
-	Label       uint8
-	OneHotLabel []int
+	Image [Width * Height]byte
+	Label uint8
 )
 
 type Dataset struct {
@@ -150,37 +149,23 @@ func Load(dir string) (*Dataset, *Dataset, error) {
 	return train, test, nil
 }
 
-func OneHot(label []Label) []OneHotLabel {
-	out := make([]OneHotLabel, 0, len(label))
+func OneHot(label []Label) [][]float64 {
+	out := make([][]float64, 0, len(label))
 	for _, l := range label {
-		v := make(OneHotLabel, 10)
-		v[l] = 1
+		v := make([]float64, 10)
+		v[l] = 1.0
 		out = append(out, v)
 	}
 
 	return out
 }
 
-func Image2f64(img []Image) [][]float64 {
+func Normalize(img []Image) [][]float64 {
 	out := make([][]float64, 0)
 	for i := range img {
 		v := make([]float64, 0)
 		for j := range img[i] {
-			v = append(v, float64(img[i][j]))
-		}
-
-		out = append(out, v)
-	}
-
-	return out
-}
-
-func OneHotLabel2f64(ohl []OneHotLabel) [][]float64 {
-	out := make([][]float64, 0)
-	for i := range ohl {
-		v := make([]float64, 0)
-		for j := range ohl[i] {
-			v = append(v, float64(ohl[i][j]))
+			v = append(v, float64(img[i][j])/float64(255))
 		}
 
 		out = append(out, v)

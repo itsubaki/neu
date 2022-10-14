@@ -1,6 +1,8 @@
 package neu
 
 import (
+	"math/rand"
+
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/math/numerical"
@@ -148,4 +150,23 @@ func (n *Neu) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 
 func (n *Neu) Optimize(grads map[string]matrix.Matrix) {
 	n.params = n.optimizer.Update(n.params, grads)
+}
+
+func Random(trainSize, batchSize int) []int {
+	tmp := make(map[int]bool)
+
+	for c := 0; c < batchSize; {
+		n := rand.Intn(trainSize)
+		if _, ok := tmp[n]; !ok {
+			tmp[n] = true
+			c++
+		}
+	}
+
+	out := make([]int, 0, len(tmp))
+	for k := range tmp {
+		out = append(out, k)
+	}
+
+	return out
 }
