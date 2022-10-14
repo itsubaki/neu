@@ -18,7 +18,7 @@ import (
 
 func Example_mnist() {
 	// data
-	train, _, err := mnist.Load("./testdata")
+	train, test, err := mnist.Load("./testdata")
 	if err != nil {
 		fmt.Printf("load mnist: %v", err)
 		os.Exit(1)
@@ -26,6 +26,9 @@ func Example_mnist() {
 
 	x := matrix.New(mnist.Normalize(train.Image)...)
 	t := matrix.New(mnist.OneHot(train.Label)...)
+
+	xt := matrix.New(mnist.Normalize(test.Image)...)
+	tt := matrix.New(mnist.OneHot(test.Label)...)
 
 	// hyper-parameter
 	trainSize := len(train.Image)
@@ -53,16 +56,21 @@ func Example_mnist() {
 		n.Optimize(grads)
 
 		if i%200 == 0 {
-			fmt.Printf("loss=%.04f\n", n.Loss(xbatch, tbatch))
+			loss := n.Loss(xbatch, tbatch)
+			acc := n.Accuracy(xbatch, tbatch)
+			mask := neu.Random(len(test.Image), batchSize)
+			tacc := n.Accuracy(matrix.Batch(xt, mask), matrix.Batch(tt, mask))
+
+			fmt.Printf("loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", loss, acc, tacc)
 		}
 	}
 
 	// Output:
-	// loss=[[2.2971]]
-	// loss=[[1.0641]]
-	// loss=[[0.0839]]
-	// loss=[[0.0493]]
-	// loss=[[0.0513]]
+	// loss=[[2.2971]], train_acc=0.3000, test_acc=0.2000
+	// loss=[[0.3096]], train_acc=1.0000, test_acc=0.5000
+	// loss=[[0.1905]], train_acc=1.0000, test_acc=1.0000
+	// loss=[[0.0858]], train_acc=1.0000, test_acc=1.0000
+	// loss=[[0.0340]], train_acc=1.0000, test_acc=0.9000
 
 }
 
