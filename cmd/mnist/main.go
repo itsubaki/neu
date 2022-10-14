@@ -32,7 +32,6 @@ func main() {
 	tt := matrix.New(mnist.OneHot(test.Label)...)
 
 	// hyper-parameter
-	trainSize := len(train.Image)
 	batchSize := 100
 	iter := 10000
 
@@ -49,7 +48,7 @@ func main() {
 
 	// learning
 	for i := 0; i < iter; i++ {
-		mask := neu.Random(trainSize, batchSize)
+		mask := neu.Random(len(train.Image), batchSize)
 		xbatch := matrix.Batch(x, mask)
 		tbatch := matrix.Batch(t, mask)
 
