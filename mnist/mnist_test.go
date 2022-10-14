@@ -2,17 +2,12 @@ package mnist_test
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/itsubaki/neu/mnist"
 )
 
 func ExampleLoad() {
-	train, test, err := mnist.Load("../testdata")
-	if err != nil {
-		fmt.Printf("load mnist: %v", err)
-		os.Exit(1)
-	}
+	train, test := mnist.Must(mnist.Load("../testdata"))
 
 	fmt.Println(train.N)
 	fmt.Println(test.N)

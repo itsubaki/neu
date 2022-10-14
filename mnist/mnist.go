@@ -129,6 +129,14 @@ func load(imageFileName, labelFileName string) (*Dataset, error) {
 	}, nil
 }
 
+func Must(train, test *Dataset, err error) (*Dataset, *Dataset) {
+	if err != nil {
+		panic(err)
+	}
+
+	return train, test
+}
+
 func Load(dir string) (*Dataset, *Dataset, error) {
 	train, err := load(
 		path.Join(dir, TrainImageGZ),

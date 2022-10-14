@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"math/rand"
-	"os"
 	"time"
 
 	"github.com/itsubaki/neu"
@@ -19,11 +18,7 @@ func main() {
 	flag.Parse()
 
 	// data
-	train, test, err := mnist.Load(dir)
-	if err != nil {
-		fmt.Printf("load mnist: %v", err)
-		os.Exit(1)
-	}
+	train, test := mnist.Must(mnist.Load(dir))
 
 	x := matrix.New(mnist.Normalize(train.Image)...)
 	t := matrix.New(mnist.OneHot(train.Label)...)
@@ -48,7 +43,7 @@ func main() {
 
 	// learning
 	for i := 0; i < iter; i++ {
-		mask := neu.Random(len(train.Image), batchSize)
+		mask := neu.Random(train.N, batchSize)
 		xbatch := matrix.Batch(x, mask)
 		tbatch := matrix.Batch(t, mask)
 
@@ -58,7 +53,7 @@ func main() {
 		if i%(iter/batchSize) == 0 {
 			loss := n.Loss(xbatch, tbatch)
 			acc := n.Accuracy(xbatch, tbatch)
-			mask := neu.Random(len(test.Image), batchSize)
+			mask := neu.Random(test.N, batchSize)
 			tacc := n.Accuracy(matrix.Batch(xt, mask), matrix.Batch(tt, mask))
 			fmt.Printf("%4d: loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", i, loss, acc, tacc)
 

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
-	"os"
 
 	"github.com/itsubaki/neu"
 	"github.com/itsubaki/neu/activation"
@@ -18,11 +17,7 @@ import (
 
 func Example_mnist() {
 	// data
-	train, test, err := mnist.Load("./testdata")
-	if err != nil {
-		fmt.Printf("load mnist: %v", err)
-		os.Exit(1)
-	}
+	train, test := mnist.Must(mnist.Load("./testdata"))
 
 	x := matrix.New(mnist.Normalize(train.Image)...)
 	t := matrix.New(mnist.OneHot(train.Label)...)
@@ -47,7 +42,7 @@ func Example_mnist() {
 
 	// learning
 	for i := 0; i < iter; i++ {
-		mask := neu.Random(len(train.Image), batchSize)
+		mask := neu.Random(train.N, batchSize)
 		xbatch := matrix.Batch(x, mask)
 		tbatch := matrix.Batch(t, mask)
 
@@ -57,7 +52,7 @@ func Example_mnist() {
 		if i%200 == 0 {
 			loss := n.Loss(xbatch, tbatch)
 			acc := n.Accuracy(xbatch, tbatch)
-			mask := neu.Random(len(test.Image), batchSize)
+			mask := neu.Random(test.N, batchSize)
 			tacc := n.Accuracy(matrix.Batch(xt, mask), matrix.Batch(tt, mask))
 
 			fmt.Printf("loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", loss, acc, tacc)
