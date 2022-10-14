@@ -60,8 +60,11 @@ func main() {
 			acc := n.Accuracy(xbatch, tbatch)
 			mask := neu.Random(len(test.Image), batchSize)
 			tacc := n.Accuracy(matrix.Batch(xt, mask), matrix.Batch(tt, mask))
-
 			fmt.Printf("%4d: loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", i, loss, acc, tacc)
+
+			p := n.Predict(xbatch)
+			fmt.Printf("predict: %v\n", p.Argmax()[:10])
+			fmt.Printf("label  : %v\n", tbatch.Argmax()[:10])
 		}
 	}
 }
