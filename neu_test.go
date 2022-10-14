@@ -51,9 +51,12 @@ func Example_mnist() {
 
 		if i%200 == 0 {
 			loss := n.Loss(xbatch, tbatch)
-			acc := n.Accuracy(xbatch, tbatch)
+			acc := neu.Accuracy(n.Predict(xbatch), tbatch)
+
 			mask := neu.Random(test.N, batchSize)
-			tacc := n.Accuracy(matrix.Batch(xt, mask), matrix.Batch(tt, mask))
+			xtbatch := matrix.Batch(xt, mask)
+			ttbatch := matrix.Batch(tt, mask)
+			tacc := neu.Accuracy(n.Predict(xtbatch), ttbatch)
 
 			fmt.Printf("loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", loss, acc, tacc)
 		}
@@ -132,12 +135,12 @@ func Example_accuracy() {
 		n.Optimize(grads)
 
 		if i%250 == 0 {
-			fmt.Printf("predict=%.04f, loss=%.04f, acc=%.4f\n", layer.Softmax(y), loss, n.Accuracy(x, t))
+			fmt.Printf("predict=%.04f, loss=%.04f, acc=%.4f\n", layer.Softmax(y), loss, neu.Accuracy(y, t))
 		}
 	}
 
 	// Output:
-	// predict=[[0.5000 0.5000] [0.5000 0.5000] [0.5000 0.5000]], loss=[[0.6931]], acc=0.6667
+	// predict=[[0.5000 0.5000] [0.5000 0.5000] [0.5000 0.5000]], loss=[[0.6931]], acc=0.3333
 	// predict=[[0.3373 0.6627] [0.3373 0.6627] [0.3203 0.6797]], loss=[[0.6281]], acc=0.6667
 	// predict=[[0.4506 0.5494] [0.4505 0.5495] [0.0703 0.9297]], loss=[[0.4896]], acc=0.6667
 	// predict=[[0.5120 0.4880] [0.4824 0.5176] [0.0191 0.9809]], loss=[[0.4491]], acc=1.0000

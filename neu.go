@@ -84,26 +84,6 @@ func (n *Neu) Loss(x, t matrix.Matrix) matrix.Matrix {
 	return n.last.Forward(y, t)
 }
 
-func (n *Neu) Accuracy(x, t matrix.Matrix) float64 {
-	count := func(x, y []int) int {
-		var c int
-		for i := range x {
-			if x[i] == y[i] {
-				c++
-			}
-		}
-
-		return c
-	}
-
-	y := n.Predict(x)
-	ymax := y.Argmax()
-	tmax := t.Argmax()
-
-	c := count(ymax, tmax)
-	return float64(c) / float64(len(ymax))
-}
-
 func (n *Neu) NumericalGradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 	lossW := func(w ...float64) float64 {
 		return n.Loss(x, t)[0][0]
@@ -150,6 +130,25 @@ func (n *Neu) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 
 func (n *Neu) Optimize(grads map[string]matrix.Matrix) {
 	n.params = n.optimizer.Update(n.params, grads)
+}
+
+func Accuracy(y, t matrix.Matrix) float64 {
+	count := func(x, y []int) int {
+		var c int
+		for i := range x {
+			if x[i] == y[i] {
+				c++
+			}
+		}
+
+		return c
+	}
+
+	ymax := y.Argmax()
+	tmax := t.Argmax()
+
+	c := count(ymax, tmax)
+	return float64(c) / float64(len(ymax))
 }
 
 func Random(trainSize, batchSize int) []int {
