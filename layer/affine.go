@@ -12,7 +12,8 @@ type Affine struct {
 
 func (l *Affine) Forward(x, _ matrix.Matrix) matrix.Matrix {
 	l.x = x
-	return matrix.Dot(l.x, l.W).Add(l.B) // x.W + b
+	bB := matrix.Broadcast(l.B, len(l.x))
+	return matrix.Dot(l.x, l.W).Add(bB) // x.W + b
 }
 
 func (l *Affine) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
@@ -20,7 +21,6 @@ func (l *Affine) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	l.DW = matrix.Dot(l.x.T(), dout)
 	l.DB = SumAxis0(dout)
 	return dx, matrix.New()
-
 }
 
 func SumAxis0(m matrix.Matrix) matrix.Matrix {
@@ -33,11 +33,5 @@ func SumAxis0(m matrix.Matrix) matrix.Matrix {
 		}
 	}
 
-	// broadcast
-	out := make(matrix.Matrix, 0)
-	for i := 0; i < p; i++ {
-		out = append(out, v)
-	}
-
-	return out
+	return matrix.New(v)
 }

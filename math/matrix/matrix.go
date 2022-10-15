@@ -225,3 +225,23 @@ func Batch(m Matrix, index []int) Matrix {
 
 	return out
 }
+
+func Broadcast(m Matrix, size int) Matrix {
+	out := make(Matrix, 0)
+	for {
+		var fill bool
+		for j := range m {
+			out = append(out, m[j])
+			if len(out) == size {
+				fill = true
+				break
+			}
+		}
+
+		if fill {
+			break
+		}
+	}
+
+	return out
+}

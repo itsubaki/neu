@@ -36,7 +36,6 @@ func main() {
 		InputSize:  784, // 24 * 24
 		HiddenSize: 50,
 		OutputSize: 10, // 0 ~ 9
-		BatchSize:  batchSize,
 		WeightInit: neu.He,
 		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
 	})

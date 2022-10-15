@@ -229,3 +229,15 @@ func ExampleBatch() {
 	// [5 6]
 	// [9 10]
 }
+
+func ExampleBroadcast() {
+	m := matrix.New([]float64{1, 2}, []float64{3, 4})
+	for _, r := range matrix.Broadcast(m, 3) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [1 2]
+	// [3 4]
+	// [1 2]
+}

@@ -43,7 +43,6 @@ type Config struct {
 	InputSize  int
 	HiddenSize int
 	OutputSize int
-	BatchSize  int
 	WeightInit func(prevNodeNum int) float64
 	Optimizer  Optimizer
 }
@@ -59,9 +58,9 @@ func New(c *Config) *Neu {
 	// params
 	params := make(map[string]matrix.Matrix)
 	params["W1"] = matrix.Randn(c.InputSize, c.HiddenSize).Func(func(v float64) float64 { return c.WeightInit(c.InputSize) * v })
-	params["B1"] = matrix.Zero(c.BatchSize, c.HiddenSize)
+	params["B1"] = matrix.Zero(1, c.HiddenSize)
 	params["W2"] = matrix.Randn(c.HiddenSize, c.OutputSize).Func(func(v float64) float64 { return c.WeightInit(c.HiddenSize) * v })
-	params["B2"] = matrix.Zero(c.BatchSize, c.OutputSize)
+	params["B2"] = matrix.Zero(1, c.OutputSize)
 
 	// new
 	return &Neu{
