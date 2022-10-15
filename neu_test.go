@@ -32,12 +32,12 @@ func Example_mnist() {
 	// init
 	rand.Seed(1) // for test
 	n := neu.New(&neu.Config{
-		InputSize:     784,
-		HiddenSize:    50,
-		OutputSize:    10,
-		BatchSize:     batchSize,
-		WeightInitStd: 0.01,
-		Optimizer:     &optimizer.SGD{LearningRate: 0.1},
+		InputSize:  784,
+		HiddenSize: 50,
+		OutputSize: 10,
+		BatchSize:  batchSize,
+		WeightInit: neu.Std(0.01),
+		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
 	})
 
 	// learning
@@ -81,12 +81,12 @@ func Example_neu() {
 	// init
 	rand.Seed(1) // for test
 	n := neu.New(&neu.Config{
-		InputSize:     inSize,
-		HiddenSize:    hiddenSize,
-		OutputSize:    outSize,
-		BatchSize:     batchSize,
-		WeightInitStd: 0.01,
-		Optimizer:     &optimizer.SGD{LearningRate: 0.1},
+		InputSize:  inSize,
+		HiddenSize: hiddenSize,
+		OutputSize: outSize,
+		BatchSize:  batchSize,
+		WeightInit: neu.Std(0.01),
+		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
 	})
 
 	// learning
@@ -119,12 +119,12 @@ func Example_accuracy() {
 	// init
 	rand.Seed(1) // for test
 	n := neu.New(&neu.Config{
-		InputSize:     inSize,
-		HiddenSize:    hiddenSize,
-		OutputSize:    outSize,
-		BatchSize:     batchSize,
-		WeightInitStd: 0.01,
-		Optimizer:     &optimizer.SGD{LearningRate: 0.1},
+		InputSize:  inSize,
+		HiddenSize: hiddenSize,
+		OutputSize: outSize,
+		BatchSize:  batchSize,
+		WeightInit: neu.Std(0.01),
+		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
 	})
 
 	// learning
@@ -156,12 +156,12 @@ func Example_gradientCheck() {
 	// init
 	rand.Seed(1) // for test
 	n := neu.New(&neu.Config{
-		InputSize:     inSize,
-		HiddenSize:    hiddenSize,
-		OutputSize:    outSize,
-		BatchSize:     batchSize,
-		WeightInitStd: 0.01,
-		Optimizer:     &optimizer.SGD{LearningRate: 0.1},
+		InputSize:  inSize,
+		HiddenSize: hiddenSize,
+		OutputSize: outSize,
+		BatchSize:  batchSize,
+		WeightInit: neu.Std(0.01),
+		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
 	})
 
 	// gradient

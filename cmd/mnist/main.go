@@ -33,12 +33,12 @@ func main() {
 	// init
 	rand.Seed(time.Now().Unix())
 	n := neu.New(&neu.Config{
-		InputSize:     784, // 24 * 24
-		HiddenSize:    50,
-		OutputSize:    10, // 0 ~ 9
-		BatchSize:     batchSize,
-		WeightInitStd: 0.01,
-		Optimizer:     &optimizer.SGD{LearningRate: 0.1},
+		InputSize:  784, // 24 * 24
+		HiddenSize: 50,
+		OutputSize: 10, // 0 ~ 9
+		BatchSize:  batchSize,
+		WeightInit: neu.He,
+		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
 	})
 
 	// learning
