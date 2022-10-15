@@ -71,44 +71,6 @@ func Example_mnist() {
 
 }
 
-func Example_neu() {
-	// data
-	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
-	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
-	batchSize, inSize := x.Dimension()
-	hiddenSize, outSize := t.Dimension()
-
-	// init
-	rand.Seed(1) // for test
-	n := neu.New(&neu.Config{
-		InputSize:  inSize,
-		HiddenSize: hiddenSize,
-		OutputSize: outSize,
-		BatchSize:  batchSize,
-		WeightInit: neu.Std(0.01),
-		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
-	})
-
-	// learning
-	for i := 0; i < 10000; i++ {
-		y := n.Predict(x)
-		loss := n.Loss(x, t)
-		grads := n.Gradient(x, t)
-		n.Optimize(grads)
-
-		if i%2000 == 0 {
-			fmt.Printf("predict=%.04f, loss=%.04f\n", layer.Softmax(y), loss)
-		}
-	}
-
-	// Output:
-	// predict=[[0.5000 0.5000] [0.5000 0.5000] [0.5000 0.5000]], loss=[[0.6931]]
-	// predict=[[0.9876 0.0124] [0.0238 0.9762] [0.0038 0.9962]], loss=[[0.0135]]
-	// predict=[[0.9967 0.0033] [0.0076 0.9924] [0.0010 0.9990]], loss=[[0.0040]]
-	// predict=[[0.9982 0.0018] [0.0044 0.9956] [0.0005 0.9995]], loss=[[0.0022]]
-	// predict=[[0.9988 0.0012] [0.0031 0.9969] [0.0004 0.9996]], loss=[[0.0015]]
-}
-
 func Example_accuracy() {
 	// data
 	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
@@ -173,6 +135,8 @@ func Example_gradientCheck() {
 		diff := matrix.FuncWith(ngrads[k], grads[k], func(a, b float64) float64 { return math.Abs(a - b) })
 		fmt.Printf("%v: %v\n", k, diff.Avg())
 	}
+
+	// TODO: find out about B1, B2
 
 	// Output:
 	// W1: 1.6658328893821156e-10
