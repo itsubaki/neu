@@ -2,6 +2,7 @@ package mnist_test
 
 import (
 	"fmt"
+	"testing"
 
 	"github.com/itsubaki/neu/mnist"
 )
@@ -52,4 +53,22 @@ func ExampleOneHot() {
 	// [0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0]
 	// [0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0]
 	// [0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0]
+}
+
+func TestMust(t *testing.T) {
+	defer func() {
+		if rec := recover(); rec != nil {
+			err, ok := rec.(error)
+			if !ok {
+				t.Fail()
+			}
+
+			if err.Error() != "something went wrong" {
+				t.Fail()
+			}
+		}
+	}()
+
+	mnist.Must(nil, nil, fmt.Errorf("something went wrong"))
+	t.Fail()
 }
