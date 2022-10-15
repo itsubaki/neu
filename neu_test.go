@@ -35,7 +35,6 @@ func Example_mnist() {
 		InputSize:  784,
 		HiddenSize: 50,
 		OutputSize: 10,
-		BatchSize:  batchSize,
 		WeightInit: neu.Std(0.01),
 		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
 	})
@@ -75,7 +74,7 @@ func Example_accuracy() {
 	// data
 	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
-	batchSize, inSize := x.Dimension()
+	_, inSize := x.Dimension()
 	hiddenSize, outSize := t.Dimension()
 
 	// init
@@ -84,7 +83,6 @@ func Example_accuracy() {
 		InputSize:  inSize,
 		HiddenSize: hiddenSize,
 		OutputSize: outSize,
-		BatchSize:  batchSize,
 		WeightInit: neu.Std(0.01),
 		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
 	})
@@ -112,7 +110,7 @@ func Example_gradientCheck() {
 	// data
 	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
-	batchSize, inSize := x.Dimension()
+	_, inSize := x.Dimension()
 	hiddenSize, outSize := t.Dimension()
 
 	// init
@@ -121,7 +119,6 @@ func Example_gradientCheck() {
 		InputSize:  inSize,
 		HiddenSize: hiddenSize,
 		OutputSize: outSize,
-		BatchSize:  batchSize,
 		WeightInit: neu.Std(0.01),
 		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
 	})
@@ -136,13 +133,11 @@ func Example_gradientCheck() {
 		fmt.Printf("%v: %v\n", k, diff.Avg())
 	}
 
-	// TODO: find out about B1, B2
-
 	// Output:
 	// W1: 1.6658328893821156e-10
 	// W2: 2.8191449832846066e-10
-	// B1: 0.0011093844468143194
-	// B2: 0.11111413456359369
+	// B1: 7.510020527910314e-13
+	// B2: 3.3325323139932195e-08
 
 }
 

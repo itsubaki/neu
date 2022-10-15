@@ -36,5 +36,5 @@ func ExampleSumAxis0() {
 	fmt.Println(layer.SumAxis0(x))
 
 	// Output:
-	// [[5 7 9] [5 7 9]]
+	// [[5 7 9]]
 }
