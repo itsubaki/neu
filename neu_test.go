@@ -196,6 +196,7 @@ func Example_optimize() {
 	// predict=[[0.8930 0.1070]], loss=[[0.1132]]
 	// predict=[[0.9878 0.0122]], loss=[[0.0122]]
 	// predict=[[0.9982 0.0018]], loss=[[0.0018]]
+
 }
 
 func Example_layer() {
