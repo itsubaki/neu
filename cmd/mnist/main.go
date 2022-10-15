@@ -41,7 +41,7 @@ func main() {
 	})
 
 	// learning
-	for i := 0; i < iter; i++ {
+	for i := 0; i < iter+1; i++ {
 		mask := neu.Random(train.N, batchSize)
 		xbatch := matrix.Batch(x, mask)
 		tbatch := matrix.Batch(t, mask)
