@@ -2,6 +2,7 @@ package layer_test
 
 import (
 	"fmt"
+	"math"
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
@@ -46,6 +47,29 @@ func ExampleCrossEntropyError() {
 	)
 
 	fmt.Println(layer.CrossEntropyError(y, t))
+
+	// Output:
+	// 1.406704775046942
+
+}
+
+func Example_crossEntropyErrorLabel() {
+	t := []int{2, 2}
+	y := [][]float64{
+		{0.1, 0.05, 0.6, 0.0, 0.05, 0.1, 0.0, 0.1, 0.0, 0.0},
+		{0.1, 0.05, 0.1, 0.0, 0.05, 0.1, 0.0, 0.6, 0.0, 0.0},
+	}
+
+	f := func(y [][]float64, t []int) float64 {
+		var sum float64
+		for i := range y {
+			sum = sum + math.Log(y[i][t[i]]+1e-7)
+		}
+
+		return -1.0 * sum / float64(len(y))
+	}
+
+	fmt.Println(f(y, t))
 
 	// Output:
 	// 1.406704775046942

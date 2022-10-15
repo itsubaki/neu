@@ -169,15 +169,15 @@ func Example_gradientCheck() {
 	grads := n.Gradient(x, t)
 
 	// check
-	for _, k := range []string{"W1", "B1", "W2", "B2"} {
+	for _, k := range []string{"W1", "W2", "B1", "B2"} {
 		diff := matrix.FuncWith(ngrads[k], grads[k], func(a, b float64) float64 { return math.Abs(a - b) })
 		fmt.Printf("%v: %v\n", k, diff.Avg())
 	}
 
 	// Output:
-	// W1: 1.6667580752359698e-10
-	// B1: 0.0011093844469993565
+	// W1: 1.6658328893821156e-10
 	// W2: 2.8191449832846066e-10
+	// B1: 0.0011093844468143194
 	// B2: 0.11111413456359369
 
 }

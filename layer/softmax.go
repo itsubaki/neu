@@ -36,8 +36,7 @@ func CrossEntropyError(y, t matrix.Matrix) float64 {
 		sum = sum + e
 	}
 
-	N := float64(len(list))
-	return 1.0 / N * sum
+	return sum / float64(len(y))
 }
 
 func Softmax(x matrix.Matrix) matrix.Matrix {

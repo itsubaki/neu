@@ -23,18 +23,20 @@ func ExampleCrossEntropyError() {
 
 }
 
-func Example_crossEntropyErrorWithLabel() {
+func Example_crossEntropyErrorLabel() {
 	t := 2 // label
-	y := []float64{0.1, 0.05, 0.6, 0.0, 0.05, 0.1, 0.0, 0.1, 0.0, 0.0}
+	y1 := []float64{0.1, 0.05, 0.6, 0.0, 0.05, 0.1, 0.0, 0.1, 0.0, 0.0}
+	y2 := []float64{0.1, 0.05, 0.1, 0.0, 0.05, 0.1, 0.0, 0.6, 0.0, 0.0}
 
 	f := func(y []float64, t int) float64 {
-		sum := math.Log(y[t] + 1e-7)
-		return -1.0 * sum
+		return -1.0 * math.Log(y[t]+1e-7)
 	}
 
-	fmt.Println(f(y, t))
+	fmt.Println(f(y1, t))
+	fmt.Println(f(y2, t))
 
 	// Output:
 	// 0.510825457099338
+	// 2.302584092994546
 
 }
