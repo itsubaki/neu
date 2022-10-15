@@ -51,15 +51,18 @@ func main() {
 		n.Optimize(grads)
 
 		if i%(iter/batchSize) == 0 {
+			// train data
 			loss := n.Loss(xbatch, tbatch)
 			acc := neu.Accuracy(n.Predict(xbatch), tbatch)
 
+			// test data
 			mask := neu.Random(test.N, batchSize)
 			xtbatch := matrix.Batch(xt, mask)
 			ttbatch := matrix.Batch(tt, mask)
 			yt := n.Predict(xtbatch)
 			tacc := neu.Accuracy(yt, ttbatch)
 
+			// print
 			fmt.Printf("%4d: loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", i, loss, acc, tacc)
 			fmt.Printf("predict: %v\n", yt.Argmax()[:20])
 			fmt.Printf("label  : %v\n", ttbatch.Argmax()[:20])
