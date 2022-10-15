@@ -52,17 +52,18 @@ func main() {
 
 		if i%(iter/batchSize) == 0 {
 			loss := n.Loss(xbatch, tbatch)
-			y := n.Predict(xbatch)
-			acc := neu.Accuracy(y, tbatch)
+			acc := neu.Accuracy(n.Predict(xbatch), tbatch)
 
 			mask := neu.Random(test.N, batchSize)
 			xtbatch := matrix.Batch(xt, mask)
 			ttbatch := matrix.Batch(tt, mask)
-			tacc := neu.Accuracy(n.Predict(xtbatch), ttbatch)
-			fmt.Printf("%4d: loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", i, loss, acc, tacc)
+			yt := n.Predict(xtbatch)
+			tacc := neu.Accuracy(yt, ttbatch)
 
-			fmt.Printf("predict: %v\n", y.Argmax()[:10])
-			fmt.Printf("label  : %v\n", tbatch.Argmax()[:10])
+			fmt.Printf("%4d: loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", i, loss, acc, tacc)
+			fmt.Printf("predict: %v\n", yt.Argmax()[:20])
+			fmt.Printf("label  : %v\n", ttbatch.Argmax()[:20])
+			fmt.Println()
 		}
 	}
 }
