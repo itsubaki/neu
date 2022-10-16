@@ -12,7 +12,7 @@ type Affine struct {
 
 func (l *Affine) Forward(x, _ matrix.Matrix) matrix.Matrix {
 	l.x = x
-	bB := matrix.Broadcast(l.B, len(l.x))
+	bB := Broadcast(l.B, len(l.x))
 	return matrix.Dot(l.x, l.W).Add(bB) // x.W + b
 }
 
@@ -34,4 +34,24 @@ func SumAxis0(m matrix.Matrix) matrix.Matrix {
 	}
 
 	return matrix.New(v)
+}
+
+func Broadcast(m matrix.Matrix, size int) matrix.Matrix {
+	out := make(matrix.Matrix, 0)
+	for {
+		var fill bool
+		for j := range m {
+			out = append(out, m[j])
+			if len(out) == size {
+				fill = true
+				break
+			}
+		}
+
+		if fill {
+			break
+		}
+	}
+
+	return out
 }

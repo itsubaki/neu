@@ -11,17 +11,20 @@ import (
 )
 
 var (
-	_ Layer = (*layer.Add)(nil)
-	_ Layer = (*layer.Mul)(nil)
-	_ Layer = (*layer.ReLU)(nil)
-	_ Layer = (*layer.Sigmoid)(nil)
-	_ Layer = (*layer.Affine)(nil)
-	_ Layer = (*layer.SoftmaxWithLoss)(nil)
+	_ Layer     = (*layer.Add)(nil)
+	_ Layer     = (*layer.Mul)(nil)
+	_ Layer     = (*layer.ReLU)(nil)
+	_ Layer     = (*layer.Sigmoid)(nil)
+	_ Layer     = (*layer.Affine)(nil)
+	_ Layer     = (*layer.SoftmaxWithLoss)(nil)
+	_ Optimizer = (*optimizer.SGD)(nil)
+	_ Optimizer = (*optimizer.Momentum)(nil)
 )
 
 var (
-	_ Optimizer = (*optimizer.SGD)(nil)
-	_ Optimizer = (*optimizer.Momentum)(nil)
+	Xavier = func(prevNodeNum int) float64 { return math.Sqrt(1.0 / float64(prevNodeNum)) }
+	He     = func(prevNodeNum int) float64 { return math.Sqrt(2.0 / float64(prevNodeNum)) }
+	Std    = func(std float64) func(_ int) float64 { return func(_ int) float64 { return std } }
 )
 
 type Layer interface {
@@ -33,17 +36,13 @@ type Optimizer interface {
 	Update(params, grads map[string]matrix.Matrix) map[string]matrix.Matrix
 }
 
-var (
-	Xavier = func(prevNodeNum int) float64 { return math.Sqrt(1.0 / float64(prevNodeNum)) }
-	He     = func(prevNodeNum int) float64 { return math.Sqrt(2.0 / float64(prevNodeNum)) }
-	Std    = func(std float64) func(_ int) float64 { return func(_ int) float64 { return std } }
-)
+type WeightInit func(prevNodeNum int) float64
 
 type Config struct {
 	InputSize  int
 	HiddenSize int
 	OutputSize int
-	WeightInit func(prevNodeNum int) float64
+	WeightInit WeightInit
 	Optimizer  Optimizer
 }
 
@@ -90,6 +89,26 @@ func (n *Neu) Loss(x, t matrix.Matrix) matrix.Matrix {
 	return n.last.Forward(y, t)
 }
 
+func (n *Neu) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
+	// forward
+	n.Loss(x, t)
+
+	// backward
+	dout, _ := n.last.Backward(matrix.New([]float64{1}))
+	for i := len(n.layer) - 1; i > -1; i-- {
+		dout, _ = n.layer[i].Backward(dout)
+	}
+
+	// gradient
+	grads := make(map[string]matrix.Matrix)
+	grads["W1"] = n.layer[0].(*layer.Affine).DW
+	grads["B1"] = n.layer[0].(*layer.Affine).DB
+	grads["W2"] = n.layer[2].(*layer.Affine).DW
+	grads["B2"] = n.layer[2].(*layer.Affine).DB
+
+	return grads
+}
+
 func (n *Neu) NumericalGradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 	lossW := func(w ...float64) float64 {
 		return n.Loss(x, t)[0][0]
@@ -110,26 +129,6 @@ func (n *Neu) NumericalGradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 	grads["B1"] = grad(lossW, n.params["B1"])
 	grads["W2"] = grad(lossW, n.params["W2"])
 	grads["B2"] = grad(lossW, n.params["B2"])
-
-	return grads
-}
-
-func (n *Neu) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
-	// forward
-	n.Loss(x, t)
-
-	// backward
-	dout, _ := n.last.Backward(matrix.New([]float64{1}))
-	for i := len(n.layer) - 1; i > -1; i-- {
-		dout, _ = n.layer[i].Backward(dout)
-	}
-
-	// gradient
-	grads := make(map[string]matrix.Matrix)
-	grads["W1"] = n.layer[0].(*layer.Affine).DW
-	grads["B1"] = n.layer[0].(*layer.Affine).DB
-	grads["W2"] = n.layer[2].(*layer.Affine).DW
-	grads["B2"] = n.layer[2].(*layer.Affine).DB
 
 	return grads
 }
@@ -171,6 +170,15 @@ func Random(trainSize, batchSize int) []int {
 	out := make([]int, 0, len(tmp))
 	for k := range tmp {
 		out = append(out, k)
+	}
+
+	return out
+}
+
+func Batch(m matrix.Matrix, index []int) matrix.Matrix {
+	out := make(matrix.Matrix, 0)
+	for _, i := range index {
+		out = append(out, m[i])
 	}
 
 	return out

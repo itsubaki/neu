@@ -43,8 +43,8 @@ func main() {
 	// learning
 	for i := 0; i < iter+1; i++ {
 		mask := neu.Random(train.N, batchSize)
-		xbatch := matrix.Batch(x, mask)
-		tbatch := matrix.Batch(t, mask)
+		xbatch := neu.Batch(x, mask)
+		tbatch := neu.Batch(t, mask)
 
 		grads := n.Gradient(xbatch, tbatch)
 		n.Optimize(grads)
@@ -56,8 +56,8 @@ func main() {
 
 			// test data
 			mask := neu.Random(test.N, batchSize)
-			xtbatch := matrix.Batch(xt, mask)
-			ttbatch := matrix.Batch(tt, mask)
+			xtbatch := neu.Batch(xt, mask)
+			ttbatch := neu.Batch(tt, mask)
 			yt := n.Predict(xtbatch)
 			tacc := neu.Accuracy(yt, ttbatch)
 

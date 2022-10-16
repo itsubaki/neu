@@ -42,8 +42,8 @@ func Example_mnist() {
 	// learning
 	for i := 0; i < iter; i++ {
 		mask := neu.Random(train.N, batchSize)
-		xbatch := matrix.Batch(x, mask)
-		tbatch := matrix.Batch(t, mask)
+		xbatch := neu.Batch(x, mask)
+		tbatch := neu.Batch(t, mask)
 
 		grads := n.Gradient(xbatch, tbatch)
 		n.Optimize(grads)
@@ -53,8 +53,8 @@ func Example_mnist() {
 			acc := neu.Accuracy(n.Predict(xbatch), tbatch)
 
 			mask := neu.Random(test.N, batchSize)
-			xtbatch := matrix.Batch(xt, mask)
-			ttbatch := matrix.Batch(tt, mask)
+			xtbatch := neu.Batch(xt, mask)
+			ttbatch := neu.Batch(tt, mask)
 			tacc := neu.Accuracy(n.Predict(xtbatch), ttbatch)
 
 			fmt.Printf("loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", loss, acc, tacc)
@@ -427,4 +427,16 @@ func ExampleHe() {
 	// 1
 	// 0.7071067811865476
 
+}
+
+func ExampleBatch() {
+	x := matrix.New([]float64{1, 2}, []float64{3, 4}, []float64{5, 6}, []float64{7, 8}, []float64{9, 10})
+	for _, r := range neu.Batch(x, []int{0, 2, 4}) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [1 2]
+	// [5 6]
+	// [9 10]
 }
