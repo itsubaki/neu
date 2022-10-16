@@ -440,3 +440,119 @@ func ExampleBatch() {
 	// [5 6]
 	// [9 10]
 }
+
+func Example_multiLayer() {
+	rand.Seed(1) // for test
+
+	input := 784
+	hidden := []int{100, 100, 100}
+	out := 10
+	weightDecayLambda := 1e-6
+
+	// size
+	size := append([]int{input}, hidden...)
+	size = append(size, out)
+
+	fmt.Println(size)
+	fmt.Println()
+
+	// params
+	params := make(map[string]matrix.Matrix)
+	for i := 0; i < len(size)-1; i++ {
+		W, B := fmt.Sprintf("W%v", i+1), fmt.Sprintf("B%v", i+1)
+		params[W] = matrix.Randn(size[i], size[i+1])
+		params[B] = matrix.Randn(1, size[i+1])
+	}
+
+	for k, v := range params {
+		a, b := v.Dimension()
+		fmt.Printf("%v: %v, %v\n", k, a, b)
+	}
+	fmt.Println()
+
+	// decay
+	for i := 0; i < len(size)-1; i++ {
+		W := fmt.Sprintf("W%v", i+1)
+		params[W] = params[W].Func(func(v float64) float64 {
+			return neu.He(size[i]) * v
+		})
+
+		fmt.Printf("%v: He(%v)\n", W, size[i])
+	}
+	fmt.Println()
+
+	// layer
+	layers := make([]neu.Layer, 0)
+	for i := 0; i < len(size)-1; i++ {
+		W, B := fmt.Sprintf("W%v", i+1), fmt.Sprintf("B%v", i+1)
+		layers = append(layers, &layer.Affine{W: params[W], B: params[B]})
+		layers = append(layers, &layer.ReLU{})
+	}
+	layers = layers[:len(layers)-1] // remove last ReLu
+
+	for i, l := range layers {
+		fmt.Printf("%v: %T\n", i, l)
+	}
+	fmt.Println()
+
+	// decay
+	var decay float64
+	for i := 0; i < len(size)-1; i++ {
+		W := fmt.Sprintf("W%v", i+1)
+		sump2 := params[W].Func(func(v float64) float64 { return v * v }).Sum()
+		decay = decay + 0.5*weightDecayLambda*sump2
+
+		fmt.Printf("%v: decay=%v\n", W, decay)
+	}
+	fmt.Println()
+
+	// gradient
+	var i int
+	for j := 0; j < len(layers); j = j + 2 {
+		W, B := fmt.Sprintf("W%v", i+1), fmt.Sprintf("B%v", i+1)
+		fmt.Printf("grads[%v]=(%T)layer[%v].DW + %v * %v\n", W, layers[j], j, weightDecayLambda, W)
+		fmt.Printf("grads[%v]=(%T)layer[%v].DB\n", B, layers[j], j)
+		i++
+	}
+	fmt.Println()
+
+	// Unordered output:
+	// [784 100 100 100 10]
+	//
+	// W1: 784, 100
+	// B1: 1, 100
+	// W2: 100, 100
+	// B2: 1, 100
+	// W3: 100, 100
+	// B3: 1, 100
+	// W4: 100, 10
+	// B4: 1, 10
+	//
+	// W1: He(784)
+	// W2: He(100)
+	// W3: He(100)
+	// W4: He(100)
+	//
+	// 0: *layer.Affine
+	// 1: *layer.ReLU
+	// 2: *layer.Affine
+	// 3: *layer.ReLU
+	// 4: *layer.Affine
+	// 5: *layer.ReLU
+	// 6: *layer.Affine
+	//
+	// W1: decay=0.00010047182907097258
+	// W2: decay=0.00019841836067364144
+	// W3: decay=0.0002990230090528864
+	// W4: decay=0.00030883444162085465
+	//
+	// grads[W1]=(*layer.Affine)layer[0].DW + 1e-06 * W1
+	// grads[B1]=(*layer.Affine)layer[0].DB
+	// grads[W2]=(*layer.Affine)layer[2].DW + 1e-06 * W2
+	// grads[B2]=(*layer.Affine)layer[2].DB
+	// grads[W3]=(*layer.Affine)layer[4].DW + 1e-06 * W3
+	// grads[B3]=(*layer.Affine)layer[4].DB
+	// grads[W4]=(*layer.Affine)layer[6].DW + 1e-06 * W4
+	// grads[B4]=(*layer.Affine)layer[6].DB
+
+}
