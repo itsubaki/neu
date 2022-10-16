@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"path/filepath"
 )
 
 const (
@@ -32,7 +33,7 @@ type Dataset struct {
 }
 
 func image(fileName string) ([]Image, error) {
-	f, err := os.Open(fileName)
+	f, err := os.Open(filepath.Clean(fileName))
 	if err != nil {
 		return nil, fmt.Errorf("file=%v open: %v", fileName, err)
 	}
@@ -71,7 +72,7 @@ func image(fileName string) ([]Image, error) {
 }
 
 func label(fileName string) ([]Label, error) {
-	f, err := os.Open(fileName)
+	f, err := os.Open(filepath.Clean(fileName))
 	if err != nil {
 		return nil, fmt.Errorf("file=%v open: %v", fileName, err)
 	}
