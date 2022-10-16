@@ -51,24 +51,28 @@ type Neu struct {
 	params            map[string]matrix.Matrix
 	layer             []Layer
 	last              Layer
-	weightDecaylambda float64
+	weightDecayLambda float64
 	optimizer         Optimizer
 }
 
 func New(c *Config) *Neu {
 	// params
 	params := make(map[string]matrix.Matrix)
-	params["W1"] = matrix.Randn(c.InputSize, c.HiddenSize).Func(func(v float64) float64 { return c.WeightInit(c.InputSize) * v })
+	params["W1"] = matrix.Randn(c.InputSize, c.HiddenSize)
 	params["B1"] = matrix.Zero(1, c.HiddenSize)
-	params["W2"] = matrix.Randn(c.HiddenSize, c.OutputSize).Func(func(v float64) float64 { return c.WeightInit(c.HiddenSize) * v })
+	params["W2"] = matrix.Randn(c.HiddenSize, c.OutputSize)
 	params["B2"] = matrix.Zero(1, c.OutputSize)
+
+	// weight init
+	params["W1"] = matrix.Func(params["W1"], func(v float64) float64 { return c.WeightInit(c.InputSize) * v })
+	params["W2"] = matrix.Func(params["W2"], func(v float64) float64 { return c.WeightInit(c.HiddenSize) * v })
 
 	// new
 	return &Neu{
 		params:            params,
 		layer:             make([]Layer, 0),
 		last:              &layer.SoftmaxWithLoss{},
-		weightDecaylambda: c.WeightDecayLambda,
+		weightDecayLambda: c.WeightDecayLambda,
 		optimizer:         c.Optimizer,
 	}
 }
@@ -89,14 +93,16 @@ func (n *Neu) Predict(x matrix.Matrix) matrix.Matrix {
 
 func (n *Neu) Loss(x, t matrix.Matrix) matrix.Matrix {
 	y := n.Predict(x)
+	loss := n.last.Forward(y, t)
 
 	// decay
 	var weightDecay float64
 	for _, k := range []string{"W1", "W2"} {
-		weightDecay = weightDecay + 0.5*n.weightDecaylambda*matrix.Func(n.params[k], func(v float64) float64 { return v * v }).Sum()
+		sum2 := matrix.Func(n.params[k], func(v float64) float64 { return v * v }).Sum() // sum(W**2)
+		weightDecay = weightDecay + n.weightDecayLambda*0.5*sum2
 	}
 
-	return n.last.Forward(y, t).Func(func(v float64) float64 { return v + weightDecay })
+	return loss.Func(func(v float64) float64 { return v + weightDecay })
 }
 
 func (n *Neu) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
@@ -111,10 +117,14 @@ func (n *Neu) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 
 	// gradient
 	grads := make(map[string]matrix.Matrix)
-	grads["W1"] = n.layer[0].(*layer.Affine).DW.FuncWith(n.params["W1"], func(a, b float64) float64 { return a + n.weightDecaylambda*b })
+	grads["W1"] = n.layer[0].(*layer.Affine).DW
 	grads["B1"] = n.layer[0].(*layer.Affine).DB
-	grads["W2"] = n.layer[2].(*layer.Affine).DW.FuncWith(n.params["W2"], func(a, b float64) float64 { return a + n.weightDecaylambda*b })
+	grads["W2"] = n.layer[2].(*layer.Affine).DW
 	grads["B2"] = n.layer[2].(*layer.Affine).DB
+
+	// decay
+	grads["W1"] = matrix.FuncWith(grads["W1"], n.params["W1"], func(a, b float64) float64 { return a + n.weightDecayLambda*b })
+	grads["W2"] = matrix.FuncWith(grads["W2"], n.params["W2"], func(a, b float64) float64 { return a + n.weightDecayLambda*b })
 
 	return grads
 }
@@ -135,10 +145,14 @@ func (n *Neu) NumericalGradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 
 	// gradient
 	grads := make(map[string]matrix.Matrix)
-	grads["W1"] = grad(lossW, n.params["W1"]).FuncWith(n.params["W1"], func(a, b float64) float64 { return a + n.weightDecaylambda*b })
+	grads["W1"] = grad(lossW, n.params["W1"])
 	grads["B1"] = grad(lossW, n.params["B1"])
-	grads["W2"] = grad(lossW, n.params["W2"]).FuncWith(n.params["W2"], func(a, b float64) float64 { return a + n.weightDecaylambda*b })
+	grads["W2"] = grad(lossW, n.params["W2"])
 	grads["B2"] = grad(lossW, n.params["B2"])
+
+	// decay
+	grads["W1"] = matrix.FuncWith(grads["W1"], n.params["W1"], func(a, b float64) float64 { return a + n.weightDecayLambda*b })
+	grads["W2"] = matrix.FuncWith(grads["W2"], n.params["W2"], func(a, b float64) float64 { return a + n.weightDecayLambda*b })
 
 	return grads
 }
