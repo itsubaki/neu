@@ -37,7 +37,7 @@ func main() {
 		HiddenSize: 50,
 		OutputSize: 10, // 0 ~ 9
 		WeightInit: neu.He,
-		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
+		Optimizer:  &optimizer.AdaGrad{LearningRate: 0.1},
 	})
 
 	// learning
