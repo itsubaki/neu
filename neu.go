@@ -96,13 +96,13 @@ func (n *Neu) Loss(x, t matrix.Matrix) matrix.Matrix {
 	loss := n.last.Forward(y, t)
 
 	// decay
-	var weightDecay float64
+	var decay float64
 	for _, k := range []string{"W1", "W2"} {
-		sum2 := matrix.Func(n.params[k], func(v float64) float64 { return v * v }).Sum() // sum(W**2)
-		weightDecay = weightDecay + n.weightDecayLambda*0.5*sum2
+		sump2 := matrix.Func(n.params[k], func(v float64) float64 { return v * v }).Sum() // sum(W**2)
+		decay = decay + 0.5*n.weightDecayLambda*sump2                                     // decay = decay + (1/2 * lambda * sum(W**2))
 	}
 
-	return loss.Func(func(v float64) float64 { return v + weightDecay })
+	return loss.Func(func(v float64) float64 { return v + decay })
 }
 
 func (n *Neu) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
