@@ -507,12 +507,16 @@ func Example_multiLayer() {
 	fmt.Println()
 
 	// gradient
-	var i int
-	for j := 0; j < len(layers); j = j + 2 {
-		W, B := fmt.Sprintf("W%v", i+1), fmt.Sprintf("B%v", i+1)
-		fmt.Printf("grads[%v]=(%T)layer[%v].DW + %v * %v\n", W, layers[j], j, weightDecayLambda, W)
-		fmt.Printf("grads[%v]=(%T)layer[%v].DB\n", B, layers[j], j)
-		i++
+	var j int
+	for i := 0; i < len(layers); i++ {
+		if _, ok := layers[i].(*layer.Affine); !ok {
+			continue
+		}
+
+		W, B := fmt.Sprintf("W%v", j+1), fmt.Sprintf("B%v", j+1)
+		fmt.Printf("grads[%v]=(%T)layer[%v].DW + %v * %v\n", W, layers[i], i, weightDecayLambda, W)
+		fmt.Printf("grads[%v]=(%T)layer[%v].DB\n", B, layers[i], i)
+		j++
 	}
 	fmt.Println()
 
