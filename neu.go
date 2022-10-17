@@ -1,6 +1,7 @@
 package neu
 
 import (
+	"fmt"
 	"math"
 	"math/rand"
 
@@ -40,7 +41,7 @@ type WeightInit func(prevNodeNum int) float64
 
 type Config struct {
 	InputSize         int
-	HiddenSize        int
+	HiddenSize        []int
 	OutputSize        int
 	WeightDecayLambda float64
 	WeightInit        WeightInit
@@ -48,6 +49,7 @@ type Config struct {
 }
 
 type Neu struct {
+	size              []int
 	params            map[string]matrix.Matrix
 	layer             []Layer
 	last              Layer
@@ -56,19 +58,27 @@ type Neu struct {
 }
 
 func New(c *Config) *Neu {
+	// size
+	size := append([]int{c.InputSize}, c.HiddenSize...)
+	size = append(size, c.OutputSize)
+
 	// params
 	params := make(map[string]matrix.Matrix)
-	params["W1"] = matrix.Randn(c.InputSize, c.HiddenSize)
-	params["B1"] = matrix.Zero(1, c.HiddenSize)
-	params["W2"] = matrix.Randn(c.HiddenSize, c.OutputSize)
-	params["B2"] = matrix.Zero(1, c.OutputSize)
+	for i := 0; i < len(size)-1; i++ {
+		params[fmt.Sprintf("W%v", i+1)] = matrix.Randn(size[i], size[i+1])
+		params[fmt.Sprintf("B%v", i+1)] = matrix.Zero(1, size[i+1])
+	}
 
 	// weight init
-	params["W1"] = matrix.Func(params["W1"], func(v float64) float64 { return c.WeightInit(c.InputSize) * v })
-	params["W2"] = matrix.Func(params["W2"], func(v float64) float64 { return c.WeightInit(c.HiddenSize) * v })
+	for i := 0; i < len(size)-1; i++ {
+		params[fmt.Sprintf("W%v", i+1)] = matrix.Func(params[fmt.Sprintf("W%v", i+1)], func(v float64) float64 {
+			return c.WeightInit(size[i]) * v
+		})
+	}
 
 	// new
 	return &Neu{
+		size:              size,
 		params:            params,
 		layer:             make([]Layer, 0),
 		last:              &layer.SoftmaxWithLoss{},
@@ -78,11 +88,12 @@ func New(c *Config) *Neu {
 }
 
 func (n *Neu) Predict(x matrix.Matrix) matrix.Matrix {
-	n.layer = []Layer{
-		&layer.Affine{W: n.params["W1"], B: n.params["B1"]},
-		&layer.ReLU{},
-		&layer.Affine{W: n.params["W2"], B: n.params["B2"]},
+	n.layer = make([]Layer, 0)
+	for i := 0; i < len(n.size)-1; i++ {
+		n.layer = append(n.layer, &layer.Affine{W: n.params[fmt.Sprintf("W%v", i+1)], B: n.params[fmt.Sprintf("B%v", i+1)]})
+		n.layer = append(n.layer, &layer.ReLU{})
 	}
+	n.layer = n.layer[:len(n.layer)-1] // remove last ReLu
 
 	for _, l := range n.layer {
 		x = l.Forward(x, nil)
@@ -97,9 +108,9 @@ func (n *Neu) Loss(x, t matrix.Matrix) matrix.Matrix {
 
 	// decay
 	var decay float64
-	for _, k := range []string{"W1", "W2"} {
-		sump2 := matrix.Func(n.params[k], func(v float64) float64 { return v * v }).Sum() // sum(W**2)
-		decay = decay + 0.5*n.weightDecayLambda*sump2                                     // decay = decay + (1/2 * lambda * sum(W**2))
+	for i := 0; i < len(n.size)-1; i++ {
+		sump2 := n.params[fmt.Sprintf("W%v", i+1)].Func(func(v float64) float64 { return v * v }).Sum()
+		decay = decay + 0.5*n.weightDecayLambda*sump2
 	}
 
 	return loss.Func(func(v float64) float64 { return v + decay })

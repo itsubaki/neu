@@ -33,7 +33,7 @@ func Example_mnist() {
 	rand.Seed(1) // for test
 	n := neu.New(&neu.Config{
 		InputSize:  784,
-		HiddenSize: 50,
+		HiddenSize: []int{50},
 		OutputSize: 10,
 		WeightInit: neu.Std(0.01),
 		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
@@ -81,7 +81,7 @@ func Example_accuracy() {
 	rand.Seed(1) // for test
 	n := neu.New(&neu.Config{
 		InputSize:  inSize,
-		HiddenSize: hiddenSize,
+		HiddenSize: []int{hiddenSize},
 		OutputSize: outSize,
 		WeightInit: neu.Std(0.01),
 		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
@@ -117,7 +117,7 @@ func Example_gradientCheck() {
 	rand.Seed(1) // for test
 	n := neu.New(&neu.Config{
 		InputSize:  inSize,
-		HiddenSize: hiddenSize,
+		HiddenSize: []int{hiddenSize},
 		OutputSize: outSize,
 		WeightInit: neu.Std(0.01),
 		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
@@ -461,7 +461,7 @@ func Example_multiLayer() {
 	for i := 0; i < len(size)-1; i++ {
 		W, B := fmt.Sprintf("W%v", i+1), fmt.Sprintf("B%v", i+1)
 		params[W] = matrix.Randn(size[i], size[i+1])
-		params[B] = matrix.Randn(1, size[i+1])
+		params[B] = matrix.Zero(1, size[i+1])
 	}
 
 	for k, v := range params {
@@ -470,7 +470,7 @@ func Example_multiLayer() {
 	}
 	fmt.Println()
 
-	// decay
+	// weight init
 	for i := 0; i < len(size)-1; i++ {
 		W := fmt.Sprintf("W%v", i+1)
 		params[W] = params[W].Func(func(v float64) float64 {
@@ -546,9 +546,9 @@ func Example_multiLayer() {
 	// 6: *layer.Affine
 	//
 	// W1: decay=0.00010047182907097258
-	// W2: decay=0.00019841836067364144
-	// W3: decay=0.0002990230090528864
-	// W4: decay=0.00030883444162085465
+	// W2: decay=0.00019823447431020557
+	// W3: decay=0.0002991742587073469
+	// W4: decay=0.00030882534324749964
 	//
 	// grads[W1]=(*layer.Affine)layer[0].DW + 1e-06 * W1
 	// grads[B1]=(*layer.Affine)layer[0].DB
