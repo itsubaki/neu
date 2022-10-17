@@ -90,7 +90,10 @@ func New(c *Config) *Neu {
 func (n *Neu) Predict(x matrix.Matrix) matrix.Matrix {
 	n.layer = make([]Layer, 0)
 	for i := 0; i < len(n.size)-1; i++ {
-		n.layer = append(n.layer, &layer.Affine{W: n.params[fmt.Sprintf("W%v", i+1)], B: n.params[fmt.Sprintf("B%v", i+1)]})
+		n.layer = append(n.layer, &layer.Affine{
+			W: n.params[fmt.Sprintf("W%v", i+1)],
+			B: n.params[fmt.Sprintf("B%v", i+1)],
+		})
 		n.layer = append(n.layer, &layer.ReLU{})
 	}
 	n.layer = n.layer[:len(n.layer)-1] // remove last ReLu
