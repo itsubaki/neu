@@ -100,7 +100,7 @@ func (n *Neu) Predict(x matrix.Matrix) matrix.Matrix {
 		})
 		n.layer = append(n.layer, &layer.ReLU{})
 	}
-	n.layer = n.layer[:len(n.layer)-1] // remove last ReLu
+	n.layer = n.layer[:len(n.layer)-1] // remove last ReLU
 
 	for _, l := range n.layer {
 		x = l.Forward(x, nil)
