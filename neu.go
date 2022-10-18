@@ -119,7 +119,7 @@ func (n *Neu) Loss(x, t matrix.Matrix) matrix.Matrix {
 		sumw2 := n.params[fmt.Sprintf("W%v", i+1)].Func(func(v float64) float64 {
 			return v * v
 		}).Sum() // sum(W**2)
-		decay = decay + 0.5*n.weightDecayLambda*sumw2
+		decay = decay + 0.5*n.weightDecayLambda*sumw2 // 1/2 * lambda * sum(W**2)
 	}
 
 	return loss.Func(func(v float64) float64 { return v + decay })
@@ -152,7 +152,7 @@ func (n *Neu) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 	for i := 0; i < len(n.size)-1; i++ {
 		W := fmt.Sprintf("W%v", i+1)
 		grads[W] = grads[W].FuncWith(n.params[W], func(a, b float64) float64 {
-			return a + n.weightDecayLambda*b // grads[W] + decay * params[W]
+			return a + n.weightDecayLambda*b // grads[W] + lambda * params[W]
 		})
 	}
 
@@ -185,7 +185,7 @@ func (n *Neu) NumericalGradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 	for i := 0; i < len(n.size)-1; i++ {
 		W := fmt.Sprintf("W%v", i+1)
 		grads[W] = grads[W].FuncWith(n.params[W], func(a, b float64) float64 {
-			return a + n.weightDecayLambda*b // grads[W] + decay * params[W]
+			return a + n.weightDecayLambda*b // grads[W] + lambda * params[W]
 		})
 	}
 
