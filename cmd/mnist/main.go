@@ -34,7 +34,7 @@ func main() {
 	rand.Seed(time.Now().Unix())
 	n := neu.New(&neu.Config{
 		InputSize:         784, // 24 * 24
-		HiddenSize:        []int{50},
+		HiddenSize:        []int{50, 50, 50},
 		OutputSize:        10, // 0 ~ 9
 		WeightDecayLambda: 1e-6,
 		WeightInit:        neu.He,
