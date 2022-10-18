@@ -28,7 +28,7 @@ func main() {
 
 	// hyper-parameter
 	batchSize := 100
-	iter := 10000
+	iter := 1000
 
 	// init
 	rand.Seed(time.Now().Unix())
