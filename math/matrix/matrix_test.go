@@ -202,6 +202,18 @@ func ExampleMask() {
 	// [0 1]
 }
 
+func ExampleBatch() {
+	x := matrix.New([]float64{1, 2}, []float64{3, 4}, []float64{5, 6}, []float64{7, 8}, []float64{9, 10})
+	for _, r := range matrix.Batch(x, []int{0, 2, 4}) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [1 2]
+	// [5 6]
+	// [9 10]
+}
+
 func ExampleFunc() {
 	A := matrix.New(
 		[]float64{1, 2},

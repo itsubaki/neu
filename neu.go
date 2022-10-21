@@ -233,12 +233,3 @@ func Random(trainSize, batchSize int) []int {
 
 	return out
 }
-
-func Batch(m matrix.Matrix, index []int) matrix.Matrix {
-	out := make(matrix.Matrix, 0)
-	for _, i := range index {
-		out = append(out, m[i])
-	}
-
-	return out
-}

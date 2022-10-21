@@ -26,10 +26,6 @@ func main() {
 	xt := matrix.New(mnist.Normalize(test.Image)...)
 	tt := matrix.New(mnist.OneHot(test.Label)...)
 
-	// hyper-parameter
-	batchSize := 100
-	iter := 1000
-
 	// init
 	rand.Seed(time.Now().Unix())
 	n := neu.New(&neu.Config{
@@ -41,12 +37,17 @@ func main() {
 		Optimizer:         &optimizer.AdaGrad{LearningRate: 0.01},
 	})
 
-	// learning
-	for i := 0; i < iter+1; i++ {
-		mask := neu.Random(train.N, batchSize)
-		xbatch := neu.Batch(x, mask)
-		tbatch := neu.Batch(t, mask)
+	// training
+	batchSize := 100
+	iter := 10000
 
+	for i := 0; i < iter+1; i++ {
+		// batch
+		mask := neu.Random(train.N, batchSize)
+		xbatch := matrix.Batch(x, mask)
+		tbatch := matrix.Batch(t, mask)
+
+		// update
 		grads := n.Gradient(xbatch, tbatch)
 		n.Optimize(grads)
 
@@ -57,8 +58,8 @@ func main() {
 
 			// test data
 			mask := neu.Random(test.N, batchSize)
-			xtbatch := neu.Batch(xt, mask)
-			ttbatch := neu.Batch(tt, mask)
+			xtbatch := matrix.Batch(xt, mask)
+			ttbatch := matrix.Batch(tt, mask)
 			yt := n.Predict(xtbatch)
 			tacc := neu.Accuracy(yt, ttbatch)
 
@@ -69,4 +70,6 @@ func main() {
 			fmt.Println()
 		}
 	}
+
+	fmt.Printf("test_acc=%v\n", neu.Accuracy(n.Predict(xt), tt))
 }

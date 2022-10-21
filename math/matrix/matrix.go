@@ -73,6 +73,16 @@ func Mask(x Matrix, f func(x float64) bool) Matrix {
 	return out
 }
 
+// Batch returns a matrix with rows of the specified index.
+func Batch(m Matrix, index []int) Matrix {
+	out := make(Matrix, 0)
+	for _, i := range index {
+		out = append(out, m[i])
+	}
+
+	return out
+}
+
 func (m Matrix) Dimension() (int, int) {
 	if len(m) == 0 {
 		return 0, 0

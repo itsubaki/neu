@@ -25,10 +25,6 @@ func Example_mnist() {
 	xt := matrix.New(mnist.Normalize(test.Image)...)
 	tt := matrix.New(mnist.OneHot(test.Label)...)
 
-	// hyper-parameter
-	batchSize := 10
-	iter := 1000
-
 	// init
 	rand.Seed(1) // for test
 	n := neu.New(&neu.Config{
@@ -39,12 +35,17 @@ func Example_mnist() {
 		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
 	})
 
-	// learning
-	for i := 0; i < iter; i++ {
-		mask := neu.Random(train.N, batchSize)
-		xbatch := neu.Batch(x, mask)
-		tbatch := neu.Batch(t, mask)
+	// training
+	batchSize := 10
+	iter := 1000
 
+	for i := 0; i < iter; i++ {
+		// batch
+		mask := neu.Random(train.N, batchSize)
+		xbatch := matrix.Batch(x, mask)
+		tbatch := matrix.Batch(t, mask)
+
+		// update
 		grads := n.Gradient(xbatch, tbatch)
 		n.Optimize(grads)
 
@@ -53,8 +54,8 @@ func Example_mnist() {
 			acc := neu.Accuracy(n.Predict(xbatch), tbatch)
 
 			mask := neu.Random(test.N, batchSize)
-			xtbatch := neu.Batch(xt, mask)
-			ttbatch := neu.Batch(tt, mask)
+			xtbatch := matrix.Batch(xt, mask)
+			ttbatch := matrix.Batch(tt, mask)
 			tacc := neu.Accuracy(n.Predict(xtbatch), ttbatch)
 
 			fmt.Printf("loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", loss, acc, tacc)
@@ -87,7 +88,7 @@ func Example_accuracy() {
 		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
 	})
 
-	// learning
+	// training
 	for i := 0; i < 1000; i++ {
 		y := n.Predict(x)
 		loss := n.Loss(x, t)
@@ -149,11 +150,11 @@ func Example_optimize() {
 	params["W2"] = matrix.New([]float64{0.1, 0.4}, []float64{0.2, 0.5}, []float64{0.3, 0.6})
 	params["B2"] = matrix.New([]float64{0.1, 0.2})
 
-	// training
+	// data
 	x := matrix.New([]float64{0.5, 0.5})
 	t := matrix.New([]float64{1, 0})
 
-	// learning
+	// training
 	for i := 0; i < 40; i++ {
 		// layer
 		layers := []neu.Layer{
@@ -229,6 +230,7 @@ func Example_layer() {
 		dout, _ = layers[i].Backward(dout)
 	}
 
+	// print
 	fmt.Println(x)
 	fmt.Println(dout)
 
@@ -309,7 +311,7 @@ func Example_neuralNetwork() {
 	A3 := matrix.Dot(Z2, W3).Add(B3)
 	y := matrix.Func(A3, func(v float64) float64 { return v }) // identity
 
-	// result
+	// print
 	fmt.Println(A1)
 	fmt.Println(Z1)
 
@@ -427,18 +429,6 @@ func ExampleHe() {
 	// 1
 	// 0.7071067811865476
 
-}
-
-func ExampleBatch() {
-	x := matrix.New([]float64{1, 2}, []float64{3, 4}, []float64{5, 6}, []float64{7, 8}, []float64{9, 10})
-	for _, r := range neu.Batch(x, []int{0, 2, 4}) {
-		fmt.Println(r)
-	}
-
-	// Output:
-	// [1 2]
-	// [5 6]
-	// [9 10]
 }
 
 func Example_multiLayer() {
