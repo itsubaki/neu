@@ -39,7 +39,7 @@ func main() {
 
 	// training
 	batchSize := 100
-	iter := 10000
+	iter := 1000
 
 	for i := 0; i < iter+1; i++ {
 		// batch
