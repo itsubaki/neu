@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"math/rand"
+	"runtime"
 	"time"
 
 	"github.com/itsubaki/neu"
@@ -62,5 +63,5 @@ func main() {
 		},
 	})
 
-	fmt.Printf("elapsed=%v\n", time.Since(now))
+	fmt.Printf("cpu_num=%v, elapsed=%v\n", runtime.NumCPU(), time.Since(now))
 }

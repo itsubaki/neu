@@ -7,7 +7,6 @@ import (
 
 	"github.com/itsubaki/neu"
 	"github.com/itsubaki/neu/activation"
-	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/loss"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/math/numerical"
@@ -102,104 +101,6 @@ func Example_gradientCheck() {
 	// W2: 2.8191449832846066e-10
 	// B1: 7.510020527910314e-13
 	// B2: 3.3325323139932195e-08
-
-}
-
-func Example_optimize() {
-	// initial weight
-	params := make(map[string]matrix.Matrix)
-	params["W1"] = matrix.New([]float64{0.1, 0.3, 0.5}, []float64{0.2, 0.4, 0.6})
-	params["B1"] = matrix.New([]float64{0.1, 0.2, 0.3})
-	params["W2"] = matrix.New([]float64{0.1, 0.4}, []float64{0.2, 0.5}, []float64{0.3, 0.6})
-	params["B2"] = matrix.New([]float64{0.1, 0.2})
-
-	// data
-	x := matrix.New([]float64{0.5, 0.5})
-	t := matrix.New([]float64{1, 0})
-
-	// training
-	for i := 0; i < 40; i++ {
-		// layer
-		layers := []neu.Layer{
-			&layer.Affine{W: params["W1"], B: params["B1"]},
-			&layer.ReLU{},
-			&layer.Affine{W: params["W2"], B: params["B2"]},
-		}
-		last := &layer.SoftmaxWithLoss{}
-
-		// forward
-		for _, l := range layers {
-			x = l.Forward(x, nil)
-		}
-		loss := last.Forward(x, t)
-
-		if i%10 == 0 {
-			fmt.Printf("predict=%.04f, loss=%.04f\n", layer.Softmax(x), loss)
-		}
-
-		// backward
-		dout, _ := last.Backward(matrix.New([]float64{1}))
-		for i := len(layers) - 1; i > -1; i-- {
-			dout, _ = layers[i].Backward(dout)
-		}
-
-		// gradient
-		grads := make(map[string]matrix.Matrix)
-		grads["W1"] = layers[0].(*layer.Affine).DW
-		grads["B1"] = layers[0].(*layer.Affine).DB
-		grads["W2"] = layers[2].(*layer.Affine).DW
-		grads["B2"] = layers[2].(*layer.Affine).DB
-
-		// optimize
-		opt := &optimizer.SGD{LearningRate: 0.1}
-		params = opt.Update(params, grads)
-	}
-
-	// Output:
-	// predict=[[0.3555 0.6445]], loss=[[1.0343]]
-	// predict=[[0.8930 0.1070]], loss=[[0.1132]]
-	// predict=[[0.9878 0.0122]], loss=[[0.0122]]
-	// predict=[[0.9982 0.0018]], loss=[[0.0018]]
-
-}
-
-func Example_layer() {
-	// weight
-	W1 := matrix.New([]float64{0.1, 0.3, 0.5}, []float64{0.2, 0.4, 0.6})
-	B1 := matrix.New([]float64{0.1, 0.2, 0.3})
-	W2 := matrix.New([]float64{0.1, 0.4}, []float64{0.2, 0.5}, []float64{0.3, 0.6})
-	B2 := matrix.New([]float64{0.1, 0.2})
-	W3 := matrix.New([]float64{0.1, 0.3}, []float64{0.2, 0.4})
-	B3 := matrix.New([]float64{0.1, 0.2})
-
-	// layer
-	layers := []neu.Layer{
-		&layer.Affine{W: W1, B: B1},
-		&layer.Sigmoid{},
-		&layer.Affine{W: W2, B: B2},
-		&layer.Sigmoid{},
-		&layer.Affine{W: W3, B: B3},
-	}
-
-	// forward
-	x := matrix.New([]float64{1.0, 0.5})
-	for _, l := range layers {
-		x = l.Forward(x, nil)
-	}
-
-	// backward
-	dout := matrix.New([]float64{1})
-	for i := len(layers) - 1; i > -1; i-- {
-		dout, _ = layers[i].Backward(dout)
-	}
-
-	// print
-	fmt.Println(x)
-	fmt.Println(dout)
-
-	// Output:
-	// [[0.3168270764110298 0.6962790898619668]]
-	// [[0.004530872169552449 0.005957136450888734]]
 
 }
 
