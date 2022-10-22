@@ -2,33 +2,28 @@ package neu
 
 import (
 	"fmt"
-	"math"
-	"math/rand"
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/math/numerical"
 	"github.com/itsubaki/neu/optimizer"
+	"github.com/itsubaki/neu/trainer"
+	"github.com/itsubaki/neu/winit"
 )
 
 var (
-	_ Layer      = (*layer.Add)(nil)
-	_ Layer      = (*layer.Mul)(nil)
-	_ Layer      = (*layer.ReLU)(nil)
-	_ Layer      = (*layer.Sigmoid)(nil)
-	_ Layer      = (*layer.Affine)(nil)
-	_ Layer      = (*layer.SoftmaxWithLoss)(nil)
-	_ Optimizer  = (*optimizer.SGD)(nil)
-	_ Optimizer  = (*optimizer.Momentum)(nil)
-	_ WeightInit = Xavier
-	_ WeightInit = He
-	_ WeightInit = Std(0.01)
-)
-
-var (
-	Xavier = func(prevNodeNum int) float64 { return math.Sqrt(1.0 / float64(prevNodeNum)) }
-	He     = func(prevNodeNum int) float64 { return math.Sqrt(2.0 / float64(prevNodeNum)) }
-	Std    = func(std float64) func(_ int) float64 { return func(_ int) float64 { return std } }
+	_ Layer         = (*layer.Add)(nil)
+	_ Layer         = (*layer.Mul)(nil)
+	_ Layer         = (*layer.ReLU)(nil)
+	_ Layer         = (*layer.Sigmoid)(nil)
+	_ Layer         = (*layer.Affine)(nil)
+	_ Layer         = (*layer.SoftmaxWithLoss)(nil)
+	_ Optimizer     = (*optimizer.SGD)(nil)
+	_ Optimizer     = (*optimizer.Momentum)(nil)
+	_ WeightInit    = winit.Xavier
+	_ WeightInit    = winit.He
+	_ WeightInit    = winit.Std(0.01)
+	_ trainer.Model = (*Neu)(nil)
 )
 
 type Layer interface {
@@ -194,42 +189,4 @@ func (n *Neu) NumericalGradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 
 func (n *Neu) Optimize(grads map[string]matrix.Matrix) {
 	n.params = n.optimizer.Update(n.params, grads)
-}
-
-func Accuracy(y, t matrix.Matrix) float64 {
-	count := func(x, y []int) int {
-		var c int
-		for i := range x {
-			if x[i] == y[i] {
-				c++
-			}
-		}
-
-		return c
-	}
-
-	ymax := y.Argmax()
-	tmax := t.Argmax()
-
-	c := count(ymax, tmax)
-	return float64(c) / float64(len(ymax))
-}
-
-func Random(trainSize, batchSize int) []int {
-	tmp := make(map[int]bool)
-
-	for c := 0; c < batchSize; {
-		n := rand.Intn(trainSize)
-		if _, ok := tmp[n]; !ok {
-			tmp[n] = true
-			c++
-		}
-	}
-
-	out := make([]int, 0, len(tmp))
-	for k := range tmp {
-		out = append(out, k)
-	}
-
-	return out
 }
