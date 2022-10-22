@@ -31,14 +31,14 @@ func Train(m Model, x, t, xt, tt matrix.Matrix, iter, batchSize int, verbose boo
 		if verbose && i%(iter/batchSize) == 0 {
 			// train data
 			loss := m.Loss(xbatch, tbatch)
-			acc := model.Accuracy(m.Predict(xbatch), tbatch)
+			acc := Accuracy(m.Predict(xbatch), tbatch)
 
 			// test data
 			mask := Random(len(xt), batchSize)
 			xtbatch := matrix.Batch(xt, mask)
 			ttbatch := matrix.Batch(tt, mask)
 			yt := m.Predict(xtbatch)
-			tacc := model.Accuracy(yt, ttbatch)
+			tacc := Accuracy(yt, ttbatch)
 
 			// print
 			fmt.Printf("%4d: loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", i, loss, acc, tacc)
@@ -48,7 +48,26 @@ func Train(m Model, x, t, xt, tt matrix.Matrix, iter, batchSize int, verbose boo
 		}
 	}
 
-	return model.Accuracy(m.Predict(x), t), model.Accuracy(m.Predict(xt), tt)
+	return Accuracy(m.Predict(x), t), Accuracy(m.Predict(xt), tt)
+}
+
+func Accuracy(y, t matrix.Matrix) float64 {
+	count := func(x, y []int) int {
+		var c int
+		for i := range x {
+			if x[i] == y[i] {
+				c++
+			}
+		}
+
+		return c
+	}
+
+	ymax := y.Argmax()
+	tmax := t.Argmax()
+
+	c := count(ymax, tmax)
+	return float64(c) / float64(len(ymax))
 }
 
 func Random(trainSize, batchSize int) []int {

@@ -38,22 +38,3 @@ var (
 	He     = func(prevNodeNum int) float64 { return math.Sqrt(2.0 / float64(prevNodeNum)) }
 	Std    = func(std float64) func(_ int) float64 { return func(_ int) float64 { return std } }
 )
-
-func Accuracy(y, t matrix.Matrix) float64 {
-	count := func(x, y []int) int {
-		var c int
-		for i := range x {
-			if x[i] == y[i] {
-				c++
-			}
-		}
-
-		return c
-	}
-
-	ymax := y.Argmax()
-	tmax := t.Argmax()
-
-	c := count(ymax, tmax)
-	return float64(c) / float64(len(ymax))
-}
