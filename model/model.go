@@ -1,9 +1,8 @@
-package neu
+package model
 
 import (
 	"fmt"
 	"math"
-	"math/rand"
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
@@ -51,7 +50,7 @@ type Config struct {
 	Optimizer         Optimizer
 }
 
-type Neu struct {
+type MultiLayer struct {
 	size              []int
 	params            map[string]matrix.Matrix
 	layer             []Layer
@@ -60,7 +59,7 @@ type Neu struct {
 	optimizer         Optimizer
 }
 
-func New(c *Config) *Neu {
+func New(c *Config) *MultiLayer {
 	// size
 	size := append([]int{c.InputSize}, c.HiddenSize...)
 	size = append(size, c.OutputSize)
@@ -81,7 +80,7 @@ func New(c *Config) *Neu {
 	}
 
 	// new
-	return &Neu{
+	return &MultiLayer{
 		size:              size,
 		params:            params,
 		layer:             make([]Layer, 0),
@@ -91,7 +90,7 @@ func New(c *Config) *Neu {
 	}
 }
 
-func (n *Neu) Predict(x matrix.Matrix) matrix.Matrix {
+func (n *MultiLayer) Predict(x matrix.Matrix) matrix.Matrix {
 	n.layer = make([]Layer, 0) // init
 	for i := 0; i < len(n.size)-1; i++ {
 		n.layer = append(n.layer, &layer.Affine{
@@ -109,7 +108,7 @@ func (n *Neu) Predict(x matrix.Matrix) matrix.Matrix {
 	return x
 }
 
-func (n *Neu) Loss(x, t matrix.Matrix) matrix.Matrix {
+func (n *MultiLayer) Loss(x, t matrix.Matrix) matrix.Matrix {
 	y := n.Predict(x)
 	loss := n.last.Forward(y, t)
 
@@ -125,7 +124,7 @@ func (n *Neu) Loss(x, t matrix.Matrix) matrix.Matrix {
 	return loss.Func(func(v float64) float64 { return v + decay })
 }
 
-func (n *Neu) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
+func (n *MultiLayer) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 	// forward
 	n.Loss(x, t)
 
@@ -159,7 +158,7 @@ func (n *Neu) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 	return grads
 }
 
-func (n *Neu) NumericalGradient(x, t matrix.Matrix) map[string]matrix.Matrix {
+func (n *MultiLayer) NumericalGradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 	lossW := func(w ...float64) float64 {
 		return n.Loss(x, t)[0][0]
 	}
@@ -192,7 +191,7 @@ func (n *Neu) NumericalGradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 	return grads
 }
 
-func (n *Neu) Optimize(grads map[string]matrix.Matrix) {
+func (n *MultiLayer) Optimize(grads map[string]matrix.Matrix) {
 	n.params = n.optimizer.Update(n.params, grads)
 }
 
@@ -213,23 +212,4 @@ func Accuracy(y, t matrix.Matrix) float64 {
 
 	c := count(ymax, tmax)
 	return float64(c) / float64(len(ymax))
-}
-
-func Random(trainSize, batchSize int) []int {
-	tmp := make(map[int]bool)
-
-	for c := 0; c < batchSize; {
-		n := rand.Intn(trainSize)
-		if _, ok := tmp[n]; !ok {
-			tmp[n] = true
-			c++
-		}
-	}
-
-	out := make([]int, 0, len(tmp))
-	for k := range tmp {
-		out = append(out, k)
-	}
-
-	return out
 }
