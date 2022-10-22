@@ -14,7 +14,7 @@ import (
 	"github.com/itsubaki/neu/mnist"
 	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/trainer"
-	"github.com/itsubaki/neu/winit"
+	"github.com/itsubaki/neu/weight"
 )
 
 func Example_mnist() {
@@ -29,47 +29,45 @@ func Example_mnist() {
 
 	// init
 	rand.Seed(1) // for test
-	n := neu.New(&neu.Config{
+	m := neu.New(&neu.Config{
 		InputSize:  784,
 		HiddenSize: []int{50},
 		OutputSize: 10,
-		WeightInit: winit.Std(0.01),
+		WeightInit: weight.Std(0.01),
 		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
 	})
 
 	// training
-	batchSize := 10
-	iter := 1000
-
-	for i := 0; i < iter; i++ {
-		// batch
-		mask := trainer.Random(train.N, batchSize)
-		xbatch := matrix.Batch(x, mask)
-		tbatch := matrix.Batch(t, mask)
-
-		// update
-		grads := n.Gradient(xbatch, tbatch)
-		n.Optimize(grads)
-
-		if i%200 == 0 {
-			loss := n.Loss(xbatch, tbatch)
-			acc := trainer.Accuracy(n.Predict(xbatch), tbatch)
-
-			mask := trainer.Random(test.N, batchSize)
-			xtbatch := matrix.Batch(xt, mask)
-			ttbatch := matrix.Batch(tt, mask)
-			tacc := trainer.Accuracy(n.Predict(xtbatch), ttbatch)
+	trainer.Train(&trainer.Input{
+		Model:      m,
+		Train:      x,
+		TrainLabel: t,
+		Test:       xt,
+		TestLabel:  tt,
+		Iter:       1000,
+		BatchSize:  10,
+		Verbose: func(i int, m trainer.Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix) {
+			loss := m.Loss(xbatch, tbatch)
+			acc := trainer.Accuracy(m.Predict(xbatch), tbatch)
+			yt := m.Predict(xtbatch)
+			tacc := trainer.Accuracy(yt, ttbatch)
 
 			fmt.Printf("loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", loss, acc, tacc)
-		}
-	}
+		},
+	})
 
 	// Output:
 	// loss=[[2.2971]], train_acc=0.3000, test_acc=0.2000
-	// loss=[[0.3096]], train_acc=1.0000, test_acc=0.5000
-	// loss=[[0.1905]], train_acc=1.0000, test_acc=1.0000
-	// loss=[[0.0858]], train_acc=1.0000, test_acc=1.0000
-	// loss=[[0.0340]], train_acc=1.0000, test_acc=0.9000
+	// loss=[[0.8492]], train_acc=0.7000, test_acc=0.3000
+	// loss=[[0.5543]], train_acc=0.9000, test_acc=0.6000
+	// loss=[[0.0819]], train_acc=1.0000, test_acc=1.0000
+	// loss=[[0.2348]], train_acc=1.0000, test_acc=0.9000
+	// loss=[[0.0808]], train_acc=1.0000, test_acc=0.8000
+	// loss=[[0.1479]], train_acc=1.0000, test_acc=0.8000
+	// loss=[[0.0523]], train_acc=1.0000, test_acc=1.0000
+	// loss=[[0.1776]], train_acc=1.0000, test_acc=1.0000
+	// loss=[[0.3604]], train_acc=0.9000, test_acc=0.9000
+	// loss=[[0.0976]], train_acc=1.0000, test_acc=0.9000
 
 }
 
@@ -86,7 +84,7 @@ func Example_gradientCheck() {
 		InputSize:  inSize,
 		HiddenSize: []int{hiddenSize},
 		OutputSize: outSize,
-		WeightInit: winit.Std(0.01),
+		WeightInit: weight.Std(0.01),
 		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
 	})
 

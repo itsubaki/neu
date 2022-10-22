@@ -8,7 +8,7 @@ import (
 	"github.com/itsubaki/neu/math/numerical"
 	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/trainer"
-	"github.com/itsubaki/neu/winit"
+	"github.com/itsubaki/neu/weight"
 )
 
 var (
@@ -20,9 +20,9 @@ var (
 	_ Layer         = (*layer.SoftmaxWithLoss)(nil)
 	_ Optimizer     = (*optimizer.SGD)(nil)
 	_ Optimizer     = (*optimizer.Momentum)(nil)
-	_ WeightInit    = winit.Xavier
-	_ WeightInit    = winit.He
-	_ WeightInit    = winit.Std(0.01)
+	_ WeightInit    = weight.Xavier
+	_ WeightInit    = weight.He
+	_ WeightInit    = weight.Std(0.01)
 	_ trainer.Model = (*Neu)(nil)
 )
 

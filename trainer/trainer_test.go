@@ -5,95 +5,56 @@ import (
 	"math/rand"
 	"sort"
 
-	"github.com/itsubaki/neu"
 	"github.com/itsubaki/neu/math/matrix"
-	"github.com/itsubaki/neu/mnist"
-	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/trainer"
-	"github.com/itsubaki/neu/winit"
 )
 
+type TestModel struct{}
+
+func (m *TestModel) Predict(x matrix.Matrix) matrix.Matrix { return matrix.New() }
+func (m *TestModel) Loss(x, t matrix.Matrix) matrix.Matrix { return matrix.New() }
+func (m *TestModel) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
+	return make(map[string]matrix.Matrix)
+}
+func (m *TestModel) Optimize(grads map[string]matrix.Matrix) {}
+
 func ExampleTrain() {
-	// FIXME: no use pacakge neu
+	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
+	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
 
-	// data
-	train, test := mnist.Must(mnist.Load("../testdata"))
-
-	x := matrix.New(mnist.Normalize(train.Image)...)
-	t := matrix.New(mnist.OneHot(train.Label)...)
-
-	xt := matrix.New(mnist.Normalize(test.Image)...)
-	tt := matrix.New(mnist.OneHot(test.Label)...)
-
-	// init
-	rand.Seed(1)
-	m := neu.New(&neu.Config{
-		InputSize:         784, // 24 * 24
-		HiddenSize:        []int{100},
-		OutputSize:        10, // 0 ~ 9
-		WeightDecayLambda: 1e-6,
-		WeightInit:        winit.He,
-		Optimizer:         &optimizer.AdaGrad{LearningRate: 0.01},
-	})
-
-	// training
 	trainer.Train(&trainer.Input{
-		Model:     m,
-		X:         x,
-		T:         t,
-		XT:        xt,
-		TT:        tt,
-		Iter:      20,
-		BatchSize: 20,
+		Model:      &TestModel{},
+		Train:      x,
+		TrainLabel: t,
+		Test:       x,
+		TestLabel:  t,
+		Iter:       10,
+		BatchSize:  1,
 	})
-
-	fmt.Printf("test_acc=%v\n", trainer.Accuracy(m.Predict(xt), tt))
 
 	// Output:
-	// test_acc=0.787
 }
 
 func ExampleTrain_verbose() {
-	// FIXME: no use pacakge neu
+	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
+	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
 
-	// data
-	train, test := mnist.Must(mnist.Load("../testdata"))
-
-	x := matrix.New(mnist.Normalize(train.Image)...)
-	t := matrix.New(mnist.OneHot(train.Label)...)
-
-	xt := matrix.New(mnist.Normalize(test.Image)...)
-	tt := matrix.New(mnist.OneHot(test.Label)...)
-
-	// init
-	rand.Seed(1)
-	m := neu.New(&neu.Config{
-		InputSize:         784, // 24 * 24
-		HiddenSize:        []int{100},
-		OutputSize:        10, // 0 ~ 9
-		WeightDecayLambda: 1e-6,
-		WeightInit:        winit.He,
-		Optimizer:         &optimizer.AdaGrad{LearningRate: 0.01},
-	})
-
-	// training
 	trainer.Train(&trainer.Input{
-		Model:     m,
-		X:         x,
-		T:         t,
-		XT:        xt,
-		TT:        tt,
-		Iter:      20,
-		BatchSize: 20,
+		Model:      &TestModel{},
+		Train:      x,
+		TrainLabel: t,
+		Test:       x,
+		TestLabel:  t,
+		Iter:       10,
+		BatchSize:  1,
 		Verbose: func(i int, m trainer.Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix) {
-			fmt.Printf("%d, ", i)
+			fmt.Printf("%2v: %T\n", i, m)
 		},
 	})
 
-	fmt.Printf("test_acc=%v\n", trainer.Accuracy(m.Predict(xt), tt))
-
 	// Output:
-	// 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, test_acc=0.7976
+	// 	0: *trainer_test.TestModel
+	// 10: *trainer_test.TestModel
 }
 
 func ExampleAccuracy() {

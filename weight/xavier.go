@@ -1,4 +1,4 @@
-package winit
+package weight
 
 import "math"
 

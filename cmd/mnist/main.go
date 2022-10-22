@@ -11,7 +11,7 @@ import (
 	"github.com/itsubaki/neu/mnist"
 	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/trainer"
-	"github.com/itsubaki/neu/winit"
+	"github.com/itsubaki/neu/weight"
 )
 
 func main() {
@@ -35,19 +35,19 @@ func main() {
 		HiddenSize:        []int{50, 50, 50},
 		OutputSize:        10, // 0 ~ 9
 		WeightDecayLambda: 1e-6,
-		WeightInit:        winit.He,
+		WeightInit:        weight.He,
 		Optimizer:         &optimizer.AdaGrad{LearningRate: 0.01},
 	})
 
 	// training
 	trainer.Train(&trainer.Input{
-		Model:     m,
-		X:         x,
-		T:         t,
-		XT:        xt,
-		TT:        tt,
-		Iter:      1000,
-		BatchSize: 100,
+		Model:      m,
+		Train:      x,
+		TrainLabel: t,
+		Test:       xt,
+		TestLabel:  tt,
+		Iter:       1000,
+		BatchSize:  100,
 		Verbose: func(i int, m trainer.Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix) {
 			loss := m.Loss(xbatch, tbatch)
 			acc := trainer.Accuracy(m.Predict(xbatch), tbatch)
