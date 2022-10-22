@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -38,38 +39,6 @@ func main() {
 	})
 
 	// training
-	batchSize := 100
-	iter := 1000
-
-	for i := 0; i < iter+1; i++ {
-		// batch
-		mask := neu.Random(train.N, batchSize)
-		xbatch := matrix.Batch(x, mask)
-		tbatch := matrix.Batch(t, mask)
-
-		// update
-		grads := n.Gradient(xbatch, tbatch)
-		n.Optimize(grads)
-
-		if i%(iter/batchSize) == 0 {
-			// train data
-			loss := n.Loss(xbatch, tbatch)
-			acc := neu.Accuracy(n.Predict(xbatch), tbatch)
-
-			// test data
-			mask := neu.Random(test.N, batchSize)
-			xtbatch := matrix.Batch(xt, mask)
-			ttbatch := matrix.Batch(tt, mask)
-			yt := n.Predict(xtbatch)
-			tacc := neu.Accuracy(yt, ttbatch)
-
-			// print
-			fmt.Printf("%4d: loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", i, loss, acc, tacc)
-			fmt.Printf("predict: %v\n", yt.Argmax()[:20])
-			fmt.Printf("label  : %v\n", ttbatch.Argmax()[:20])
-			fmt.Println()
-		}
-	}
-
-	fmt.Printf("test_acc=%v\n", neu.Accuracy(n.Predict(xt), tt))
+	t_acc, acc := trainer.Train(m, x, t, xt, tt, 1000, 100, true)
+	fmt.Printf("train_acc=%v, test_acc=%v\n", t_acc, acc)
 }
