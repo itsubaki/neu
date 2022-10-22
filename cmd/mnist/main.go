@@ -10,6 +10,8 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/mnist"
 	"github.com/itsubaki/neu/optimizer"
+	"github.com/itsubaki/neu/trainer"
+	"github.com/itsubaki/neu/weight"
 )
 
 func main() {
@@ -28,48 +30,36 @@ func main() {
 
 	// init
 	rand.Seed(time.Now().Unix())
-	n := neu.New(&neu.Config{
+	m := neu.New(&neu.Config{
 		InputSize:         784, // 24 * 24
 		HiddenSize:        []int{50, 50, 50},
 		OutputSize:        10, // 0 ~ 9
 		WeightDecayLambda: 1e-6,
-		WeightInit:        neu.He,
+		WeightInit:        weight.He,
 		Optimizer:         &optimizer.AdaGrad{LearningRate: 0.01},
 	})
 
 	// training
-	batchSize := 100
-	iter := 1000
+	trainer.Train(&trainer.Input{
+		Model:      m,
+		Train:      x,
+		TrainLabel: t,
+		Test:       xt,
+		TestLabel:  tt,
+		Iter:       1000,
+		BatchSize:  100,
+		Verbose: func(i int, m trainer.Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix) {
+			loss := m.Loss(xbatch, tbatch)
+			acc := trainer.Accuracy(m.Predict(xbatch), tbatch)
+			yt := m.Predict(xtbatch)
+			tacc := trainer.Accuracy(yt, ttbatch)
 
-	for i := 0; i < iter+1; i++ {
-		// batch
-		mask := neu.Random(train.N, batchSize)
-		xbatch := matrix.Batch(x, mask)
-		tbatch := matrix.Batch(t, mask)
-
-		// update
-		grads := n.Gradient(xbatch, tbatch)
-		n.Optimize(grads)
-
-		if i%(iter/batchSize) == 0 {
-			// train data
-			loss := n.Loss(xbatch, tbatch)
-			acc := neu.Accuracy(n.Predict(xbatch), tbatch)
-
-			// test data
-			mask := neu.Random(test.N, batchSize)
-			xtbatch := matrix.Batch(xt, mask)
-			ttbatch := matrix.Batch(tt, mask)
-			yt := n.Predict(xtbatch)
-			tacc := neu.Accuracy(yt, ttbatch)
-
-			// print
 			fmt.Printf("%4d: loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", i, loss, acc, tacc)
 			fmt.Printf("predict: %v\n", yt.Argmax()[:20])
 			fmt.Printf("label  : %v\n", ttbatch.Argmax()[:20])
 			fmt.Println()
-		}
-	}
+		},
+	})
 
-	fmt.Printf("test_acc=%v\n", neu.Accuracy(n.Predict(xt), tt))
+	fmt.Printf("test_acc=%v\n", trainer.Accuracy(m.Predict(xt), tt))
 }

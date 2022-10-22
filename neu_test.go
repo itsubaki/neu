@@ -13,6 +13,8 @@ import (
 	"github.com/itsubaki/neu/math/numerical"
 	"github.com/itsubaki/neu/mnist"
 	"github.com/itsubaki/neu/optimizer"
+	"github.com/itsubaki/neu/trainer"
+	"github.com/itsubaki/neu/weight"
 )
 
 func Example_mnist() {
@@ -27,84 +29,46 @@ func Example_mnist() {
 
 	// init
 	rand.Seed(1) // for test
-	n := neu.New(&neu.Config{
+	m := neu.New(&neu.Config{
 		InputSize:  784,
 		HiddenSize: []int{50},
 		OutputSize: 10,
-		WeightInit: neu.Std(0.01),
+		WeightInit: weight.Std(0.01),
 		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
 	})
 
 	// training
-	batchSize := 10
-	iter := 1000
-
-	for i := 0; i < iter; i++ {
-		// batch
-		mask := neu.Random(train.N, batchSize)
-		xbatch := matrix.Batch(x, mask)
-		tbatch := matrix.Batch(t, mask)
-
-		// update
-		grads := n.Gradient(xbatch, tbatch)
-		n.Optimize(grads)
-
-		if i%200 == 0 {
-			loss := n.Loss(xbatch, tbatch)
-			acc := neu.Accuracy(n.Predict(xbatch), tbatch)
-
-			mask := neu.Random(test.N, batchSize)
-			xtbatch := matrix.Batch(xt, mask)
-			ttbatch := matrix.Batch(tt, mask)
-			tacc := neu.Accuracy(n.Predict(xtbatch), ttbatch)
+	trainer.Train(&trainer.Input{
+		Model:      m,
+		Train:      x,
+		TrainLabel: t,
+		Test:       xt,
+		TestLabel:  tt,
+		Iter:       1000,
+		BatchSize:  10,
+		Verbose: func(i int, m trainer.Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix) {
+			loss := m.Loss(xbatch, tbatch)
+			acc := trainer.Accuracy(m.Predict(xbatch), tbatch)
+			yt := m.Predict(xtbatch)
+			tacc := trainer.Accuracy(yt, ttbatch)
 
 			fmt.Printf("loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", loss, acc, tacc)
-		}
-	}
+		},
+	})
 
 	// Output:
 	// loss=[[2.2971]], train_acc=0.3000, test_acc=0.2000
-	// loss=[[0.3096]], train_acc=1.0000, test_acc=0.5000
-	// loss=[[0.1905]], train_acc=1.0000, test_acc=1.0000
-	// loss=[[0.0858]], train_acc=1.0000, test_acc=1.0000
-	// loss=[[0.0340]], train_acc=1.0000, test_acc=0.9000
+	// loss=[[0.8492]], train_acc=0.7000, test_acc=0.3000
+	// loss=[[0.5543]], train_acc=0.9000, test_acc=0.6000
+	// loss=[[0.0819]], train_acc=1.0000, test_acc=1.0000
+	// loss=[[0.2348]], train_acc=1.0000, test_acc=0.9000
+	// loss=[[0.0808]], train_acc=1.0000, test_acc=0.8000
+	// loss=[[0.1479]], train_acc=1.0000, test_acc=0.8000
+	// loss=[[0.0523]], train_acc=1.0000, test_acc=1.0000
+	// loss=[[0.1776]], train_acc=1.0000, test_acc=1.0000
+	// loss=[[0.3604]], train_acc=0.9000, test_acc=0.9000
+	// loss=[[0.0976]], train_acc=1.0000, test_acc=0.9000
 
-}
-
-func Example_accuracy() {
-	// data
-	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
-	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
-	_, inSize := x.Dimension()
-	hiddenSize, outSize := t.Dimension()
-
-	// init
-	rand.Seed(1) // for test
-	n := neu.New(&neu.Config{
-		InputSize:  inSize,
-		HiddenSize: []int{hiddenSize},
-		OutputSize: outSize,
-		WeightInit: neu.Std(0.01),
-		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
-	})
-
-	// training
-	for i := 0; i < 1000; i++ {
-		y := n.Predict(x)
-		loss := n.Loss(x, t)
-		grads := n.Gradient(x, t)
-		n.Optimize(grads)
-
-		if i%250 == 0 {
-			fmt.Printf("predict=%.04f, loss=%.04f, acc=%.4f\n", layer.Softmax(y), loss, neu.Accuracy(y, t))
-		}
-	}
-
-	// Output:
-	// predict=[[0.5000 0.5000] [0.5000 0.5000] [0.5000 0.5000]], loss=[[0.6931]], acc=0.3333
-	// predict=[[0.3373 0.6627] [0.3373 0.6627] [0.3203 0.6797]], loss=[[0.6281]], acc=0.6667
-	// predict=[[0.4506 0.5494] [0.4505 0.5495] [0.0703 0.9297]], loss=[[0.4896]], acc=0.6667
-	// predict=[[0.5120 0.4880] [0.4824 0.5176] [0.0191 0.9809]], loss=[[0.4491]], acc=1.0000
 }
 
 func Example_gradientCheck() {
@@ -120,7 +84,7 @@ func Example_gradientCheck() {
 		InputSize:  inSize,
 		HiddenSize: []int{hiddenSize},
 		OutputSize: outSize,
-		WeightInit: neu.Std(0.01),
+		WeightInit: weight.Std(0.01),
 		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
 	})
 
@@ -404,149 +368,5 @@ func Example_perceptron() {
 	// 1
 	// 0
 	//
-
-}
-
-func ExampleXavier() {
-	fmt.Println(neu.Xavier(1))
-	fmt.Println(neu.Xavier(2))
-	fmt.Println(neu.Xavier(4))
-
-	// Output:
-	// 1
-	// 0.7071067811865476
-	// 0.5
-
-}
-
-func ExampleHe() {
-	fmt.Println(neu.He(1))
-	fmt.Println(neu.He(2))
-	fmt.Println(neu.He(4))
-
-	// Output:
-	// 1.4142135623730951
-	// 1
-	// 0.7071067811865476
-
-}
-
-func Example_multiLayer() {
-	rand.Seed(1) // for test
-
-	input := 784
-	hidden := []int{100, 100, 100}
-	out := 10
-	weightDecayLambda := 1e-6
-
-	// size
-	size := append([]int{input}, hidden...)
-	size = append(size, out)
-
-	fmt.Println(size)
-	fmt.Println()
-
-	// params
-	params := make(map[string]matrix.Matrix)
-	for i := 0; i < len(size)-1; i++ {
-		W, B := fmt.Sprintf("W%v", i+1), fmt.Sprintf("B%v", i+1)
-		params[W] = matrix.Randn(size[i], size[i+1])
-		params[B] = matrix.Zero(1, size[i+1])
-	}
-
-	for k, v := range params {
-		a, b := v.Dimension()
-		fmt.Printf("%v: %v, %v\n", k, a, b)
-	}
-	fmt.Println()
-
-	// weight init
-	for i := 0; i < len(size)-1; i++ {
-		W := fmt.Sprintf("W%v", i+1)
-		params[W] = params[W].Func(func(v float64) float64 {
-			return neu.He(size[i]) * v
-		})
-
-		fmt.Printf("%v: He(%v)\n", W, size[i])
-	}
-	fmt.Println()
-
-	// layer
-	layers := make([]neu.Layer, 0)
-	for i := 0; i < len(size)-1; i++ {
-		W, B := fmt.Sprintf("W%v", i+1), fmt.Sprintf("B%v", i+1)
-		layers = append(layers, &layer.Affine{W: params[W], B: params[B]})
-		layers = append(layers, &layer.ReLU{})
-	}
-	layers = layers[:len(layers)-1] // remove last ReLu
-
-	for i, l := range layers {
-		fmt.Printf("%v: %T\n", i, l)
-	}
-	fmt.Println()
-
-	// decay
-	var decay float64
-	for i := 0; i < len(size)-1; i++ {
-		W := fmt.Sprintf("W%v", i+1)
-		sump2 := params[W].Func(func(v float64) float64 { return v * v }).Sum()
-		decay = decay + 0.5*weightDecayLambda*sump2
-
-		fmt.Printf("%v: decay=%v\n", W, decay)
-	}
-	fmt.Println()
-
-	// gradient
-	var j int
-	for i := 0; i < len(layers); i++ {
-		if _, ok := layers[i].(*layer.Affine); !ok {
-			continue
-		}
-
-		W, B := fmt.Sprintf("W%v", j+1), fmt.Sprintf("B%v", j+1)
-		fmt.Printf("grads[%v]=(%T)layer[%v].DW + %v * %v\n", W, layers[i], i, weightDecayLambda, W)
-		fmt.Printf("grads[%v]=(%T)layer[%v].DB\n", B, layers[i], i)
-		j++
-	}
-	fmt.Println()
-
-	// Unordered output:
-	// [784 100 100 100 10]
-	//
-	// W1: 784, 100
-	// B1: 1, 100
-	// W2: 100, 100
-	// B2: 1, 100
-	// W3: 100, 100
-	// B3: 1, 100
-	// W4: 100, 10
-	// B4: 1, 10
-	//
-	// W1: He(784)
-	// W2: He(100)
-	// W3: He(100)
-	// W4: He(100)
-	//
-	// 0: *layer.Affine
-	// 1: *layer.ReLU
-	// 2: *layer.Affine
-	// 3: *layer.ReLU
-	// 4: *layer.Affine
-	// 5: *layer.ReLU
-	// 6: *layer.Affine
-	//
-	// W1: decay=0.00010047182907097258
-	// W2: decay=0.00019823447431020557
-	// W3: decay=0.0002991742587073469
-	// W4: decay=0.00030882534324749964
-	//
-	// grads[W1]=(*layer.Affine)layer[0].DW + 1e-06 * W1
-	// grads[B1]=(*layer.Affine)layer[0].DB
-	// grads[W2]=(*layer.Affine)layer[2].DW + 1e-06 * W2
-	// grads[B2]=(*layer.Affine)layer[2].DB
-	// grads[W3]=(*layer.Affine)layer[4].DW + 1e-06 * W3
-	// grads[B3]=(*layer.Affine)layer[4].DB
-	// grads[W4]=(*layer.Affine)layer[6].DW + 1e-06 * W4
-	// grads[B4]=(*layer.Affine)layer[6].DB
 
 }
