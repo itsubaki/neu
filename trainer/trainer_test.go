@@ -14,6 +14,8 @@ import (
 )
 
 func ExampleTrain() {
+	// FIXME: no use pacakge neu
+
 	// data
 	train, test := mnist.Must(mnist.Load("../testdata"))
 
@@ -52,6 +54,8 @@ func ExampleTrain() {
 }
 
 func ExampleTrain_verbose() {
+	// FIXME: no use pacakge neu
+
 	// data
 	train, test := mnist.Must(mnist.Load("../testdata"))
 
