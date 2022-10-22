@@ -49,8 +49,7 @@ func Example_mnist() {
 		Verbose: func(i int, m trainer.Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix) {
 			loss := m.Loss(xbatch, tbatch)
 			acc := trainer.Accuracy(m.Predict(xbatch), tbatch)
-			yt := m.Predict(xtbatch)
-			tacc := trainer.Accuracy(yt, ttbatch)
+			tacc := trainer.Accuracy(m.Predict(xtbatch), ttbatch)
 
 			fmt.Printf("loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", loss, acc, tacc)
 		},

@@ -40,6 +40,7 @@ func main() {
 	})
 
 	// training
+	now := time.Now()
 	trainer.Train(&trainer.Input{
 		Model:      m,
 		Train:      x,
@@ -61,5 +62,5 @@ func main() {
 		},
 	})
 
-	fmt.Printf("test_acc=%v\n", trainer.Accuracy(m.Predict(xt), tt))
+	fmt.Printf("elasped=%v\n", time.Since(now))
 }
