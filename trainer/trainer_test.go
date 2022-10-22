@@ -43,8 +43,6 @@ func ExampleTrain() {
 		TT:        tt,
 		Iter:      20,
 		BatchSize: 20,
-		Verbose:   false,
-		Func:      func(i int, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix) {},
 	})
 
 	fmt.Printf("test_acc=%v\n", trainer.Accuracy(m.Predict(xt), tt))
@@ -83,8 +81,7 @@ func ExampleTrain_verbose() {
 		TT:        tt,
 		Iter:      20,
 		BatchSize: 20,
-		Verbose:   true,
-		Func: func(i int, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix) {
+		Verbose: func(i int, m trainer.Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix) {
 			fmt.Printf("%d, ", i)
 		},
 	})

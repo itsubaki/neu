@@ -48,8 +48,7 @@ func main() {
 		TT:        tt,
 		Iter:      1000,
 		BatchSize: 100,
-		Verbose:   true,
-		Func: func(i int, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix) {
+		Verbose: func(i int, m trainer.Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix) {
 			loss := m.Loss(xbatch, tbatch)
 			acc := trainer.Accuracy(m.Predict(xbatch), tbatch)
 			yt := m.Predict(xtbatch)

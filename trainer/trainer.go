@@ -18,8 +18,7 @@ type Input struct {
 	X, T, XT, TT matrix.Matrix
 	Iter         int
 	BatchSize    int
-	Verbose      bool
-	Func         func(i int, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix)
+	Verbose      func(i int, m Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix)
 }
 
 func Train(in *Input) {
@@ -33,7 +32,7 @@ func Train(in *Input) {
 		grads := in.Model.Gradient(xbatch, tbatch)
 		in.Model.Optimize(grads)
 
-		if !in.Verbose {
+		if in.Verbose == nil {
 			continue
 		}
 
@@ -44,7 +43,7 @@ func Train(in *Input) {
 			ttbatch := matrix.Batch(in.TT, mask)
 
 			// func
-			in.Func(i, xbatch, tbatch, xtbatch, ttbatch)
+			in.Verbose(i, in.Model, xbatch, tbatch, xtbatch, ttbatch)
 		}
 	}
 }
