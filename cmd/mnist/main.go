@@ -29,7 +29,7 @@ func main() {
 
 	// init
 	rand.Seed(time.Now().Unix())
-	m := model.New(&model.Config{
+	m := model.NewMulti(&model.MultiConfig{
 		InputSize:         784, // 24 * 24
 		HiddenSize:        []int{50, 50, 50},
 		OutputSize:        10, // 0 ~ 9

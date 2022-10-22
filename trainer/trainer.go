@@ -8,6 +8,8 @@ import (
 	"github.com/itsubaki/neu/model"
 )
 
+var _ Model = (*model.MultiLayer)(nil)
+
 type Model interface {
 	Predict(x matrix.Matrix) matrix.Matrix
 	Loss(x, t matrix.Matrix) matrix.Matrix
