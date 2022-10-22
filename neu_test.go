@@ -2,12 +2,114 @@ package neu_test
 
 import (
 	"fmt"
+	"math/rand"
 
 	"github.com/itsubaki/neu/activation"
+	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/loss"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/math/numerical"
+	"github.com/itsubaki/neu/mnist"
+	"github.com/itsubaki/neu/model"
+	"github.com/itsubaki/neu/optimizer"
+	"github.com/itsubaki/neu/trainer"
 )
+
+func Example_mnist() {
+	// data
+	train, test := mnist.Must(mnist.Load("./testdata"))
+
+	x := matrix.New(mnist.Normalize(train.Image)...)
+	t := matrix.New(mnist.OneHot(train.Label)...)
+
+	xt := matrix.New(mnist.Normalize(test.Image)...)
+	tt := matrix.New(mnist.OneHot(test.Label)...)
+
+	// init
+	rand.Seed(1) // for test
+	n := model.New(&model.Config{
+		InputSize:  784,
+		HiddenSize: []int{50},
+		OutputSize: 10,
+		WeightInit: model.Std(0.01),
+		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
+	})
+
+	// training
+	batchSize := 10
+	iter := 1000
+
+	for i := 0; i < iter; i++ {
+		// batch
+		mask := trainer.Random(train.N, batchSize)
+		xbatch := matrix.Batch(x, mask)
+		tbatch := matrix.Batch(t, mask)
+
+		// update
+		grads := n.Gradient(xbatch, tbatch)
+		n.Optimize(grads)
+
+		if i%200 == 0 {
+			loss := n.Loss(xbatch, tbatch)
+			acc := model.Accuracy(n.Predict(xbatch), tbatch)
+
+			mask := trainer.Random(test.N, batchSize)
+			xtbatch := matrix.Batch(xt, mask)
+			ttbatch := matrix.Batch(tt, mask)
+			tacc := model.Accuracy(n.Predict(xtbatch), ttbatch)
+
+			fmt.Printf("loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", loss, acc, tacc)
+		}
+	}
+
+	// Output:
+	// loss=[[2.2971]], train_acc=0.3000, test_acc=0.2000
+	// loss=[[0.3096]], train_acc=1.0000, test_acc=0.5000
+	// loss=[[0.1905]], train_acc=1.0000, test_acc=1.0000
+	// loss=[[0.0858]], train_acc=1.0000, test_acc=1.0000
+	// loss=[[0.0340]], train_acc=1.0000, test_acc=0.9000
+
+}
+
+func Example_layer() {
+	// weight
+	W1 := matrix.New([]float64{0.1, 0.3, 0.5}, []float64{0.2, 0.4, 0.6})
+	B1 := matrix.New([]float64{0.1, 0.2, 0.3})
+	W2 := matrix.New([]float64{0.1, 0.4}, []float64{0.2, 0.5}, []float64{0.3, 0.6})
+	B2 := matrix.New([]float64{0.1, 0.2})
+	W3 := matrix.New([]float64{0.1, 0.3}, []float64{0.2, 0.4})
+	B3 := matrix.New([]float64{0.1, 0.2})
+
+	// layer
+	layers := []model.Layer{
+		&layer.Affine{W: W1, B: B1},
+		&layer.Sigmoid{},
+		&layer.Affine{W: W2, B: B2},
+		&layer.Sigmoid{},
+		&layer.Affine{W: W3, B: B3},
+	}
+
+	// forward
+	x := matrix.New([]float64{1.0, 0.5})
+	for _, l := range layers {
+		x = l.Forward(x, nil)
+	}
+
+	// backward
+	dout := matrix.New([]float64{1})
+	for i := len(layers) - 1; i > -1; i-- {
+		dout, _ = layers[i].Backward(dout)
+	}
+
+	// print
+	fmt.Println(x)
+	fmt.Println(dout)
+
+	// Output:
+	// [[0.3168270764110298 0.6962790898619668]]
+	// [[0.004530872169552449 0.005957136450888734]]
+
+}
 
 func Example_simpleNet() {
 	// https://github.com/oreilly-japan/deep-learning-from-scratch/wiki/errata#%E7%AC%AC7%E5%88%B7%E3%81%BE%E3%81%A7
