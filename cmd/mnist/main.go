@@ -62,5 +62,5 @@ func main() {
 		},
 	})
 
-	fmt.Printf("elasped=%v\n", time.Since(now))
+	fmt.Printf("elapsed=%v\n", time.Since(now))
 }
