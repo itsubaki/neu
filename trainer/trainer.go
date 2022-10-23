@@ -4,7 +4,10 @@ import (
 	"math/rand"
 
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/model/multi"
 )
+
+var _ Model = (*multi.Model)(nil)
 
 type Model interface {
 	Predict(x matrix.Matrix) matrix.Matrix

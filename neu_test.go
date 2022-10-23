@@ -5,12 +5,12 @@ import (
 	"math"
 	"math/rand"
 
-	"github.com/itsubaki/neu"
 	"github.com/itsubaki/neu/activation"
 	"github.com/itsubaki/neu/loss"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/math/numerical"
 	"github.com/itsubaki/neu/mnist"
+	"github.com/itsubaki/neu/model/multi"
 	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/trainer"
 	"github.com/itsubaki/neu/weight"
@@ -28,7 +28,7 @@ func Example_mnist() {
 
 	// init
 	rand.Seed(1) // for test
-	m := neu.New(&neu.Config{
+	m := multi.New(&multi.Config{
 		InputSize:  784,
 		HiddenSize: []int{50},
 		OutputSize: 10,
@@ -43,7 +43,7 @@ func Example_mnist() {
 		TrainLabel: t,
 		Test:       xt,
 		TestLabel:  tt,
-		Iter:       1000,
+		Iter:       100,
 		BatchSize:  10,
 		Verbose: func(i int, m trainer.Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix) {
 			loss := m.Loss(xbatch, tbatch)
@@ -56,16 +56,16 @@ func Example_mnist() {
 
 	// Output:
 	// loss=[[2.2971]], train_acc=0.3000, test_acc=0.2000
-	// loss=[[0.8492]], train_acc=0.7000, test_acc=0.3000
-	// loss=[[0.5543]], train_acc=0.9000, test_acc=0.6000
-	// loss=[[0.0819]], train_acc=1.0000, test_acc=1.0000
-	// loss=[[0.2348]], train_acc=1.0000, test_acc=0.9000
-	// loss=[[0.0808]], train_acc=1.0000, test_acc=0.8000
-	// loss=[[0.1479]], train_acc=1.0000, test_acc=0.8000
-	// loss=[[0.0523]], train_acc=1.0000, test_acc=1.0000
-	// loss=[[0.1776]], train_acc=1.0000, test_acc=1.0000
-	// loss=[[0.3604]], train_acc=0.9000, test_acc=0.9000
-	// loss=[[0.0976]], train_acc=1.0000, test_acc=0.9000
+	// loss=[[2.2996]], train_acc=0.2000, test_acc=0.3000
+	// loss=[[2.2841]], train_acc=0.2000, test_acc=0.0000
+	// loss=[[2.2302]], train_acc=0.3000, test_acc=0.3000
+	// loss=[[2.2375]], train_acc=0.3000, test_acc=0.6000
+	// loss=[[1.9794]], train_acc=0.4000, test_acc=0.2000
+	// loss=[[2.0235]], train_acc=0.4000, test_acc=0.7000
+	// loss=[[2.0646]], train_acc=0.2000, test_acc=0.6000
+	// loss=[[1.4424]], train_acc=0.7000, test_acc=0.6000
+	// loss=[[1.1426]], train_acc=0.8000, test_acc=0.5000
+	// loss=[[1.0175]], train_acc=0.9000, test_acc=0.7000
 
 }
 
@@ -78,7 +78,7 @@ func Example_gradientCheck() {
 
 	// init
 	rand.Seed(1) // for test
-	n := neu.New(&neu.Config{
+	n := multi.New(&multi.Config{
 		InputSize:  inSize,
 		HiddenSize: []int{hiddenSize},
 		OutputSize: outSize,

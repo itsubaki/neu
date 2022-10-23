@@ -7,9 +7,9 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/itsubaki/neu"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/mnist"
+	"github.com/itsubaki/neu/model/multi"
 	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/trainer"
 	"github.com/itsubaki/neu/weight"
@@ -31,7 +31,7 @@ func main() {
 
 	// init
 	rand.Seed(time.Now().Unix())
-	m := neu.New(&neu.Config{
+	m := multi.New(&multi.Config{
 		InputSize:         784, // 24 * 24
 		HiddenSize:        []int{50, 50, 50},
 		OutputSize:        10, // 0 ~ 9
