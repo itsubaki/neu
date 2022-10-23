@@ -32,7 +32,6 @@ func Example_optimize() {
 	for i := 0; i < 10; i++ {
 		m.Optimize(m.Gradient(x, t))
 		fmt.Printf("%.4f\n", m.Loss(x, t))
-
 	}
 
 	// Output:
