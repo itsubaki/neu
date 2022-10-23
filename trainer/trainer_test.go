@@ -9,6 +9,8 @@ import (
 	"github.com/itsubaki/neu/trainer"
 )
 
+var _ trainer.Model = (*TestModel)(nil)
+
 type TestModel struct{}
 
 func (m *TestModel) Predict(x matrix.Matrix) matrix.Matrix { return matrix.New() }

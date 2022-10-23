@@ -20,6 +20,7 @@ var (
 	_ Layer         = (*layer.SoftmaxWithLoss)(nil)
 	_ Optimizer     = (*optimizer.SGD)(nil)
 	_ Optimizer     = (*optimizer.Momentum)(nil)
+	_ Optimizer     = (*optimizer.AdaGrad)(nil)
 	_ WeightInit    = weight.Xavier
 	_ WeightInit    = weight.He
 	_ WeightInit    = weight.Std(0.01)
