@@ -10,7 +10,7 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/math/numerical"
 	"github.com/itsubaki/neu/mnist"
-	"github.com/itsubaki/neu/model/multi"
+	"github.com/itsubaki/neu/model/mlp"
 	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/trainer"
 	"github.com/itsubaki/neu/weight"
@@ -28,7 +28,7 @@ func Example_mnist() {
 
 	// init
 	rand.Seed(1) // for test
-	m := multi.New(&multi.Config{
+	m := mlp.New(&mlp.Config{
 		InputSize:  784,
 		HiddenSize: []int{50},
 		OutputSize: 10,
@@ -78,7 +78,7 @@ func Example_gradientCheck() {
 
 	// init
 	rand.Seed(1) // for test
-	n := multi.New(&multi.Config{
+	n := mlp.New(&mlp.Config{
 		InputSize:  inSize,
 		HiddenSize: []int{hiddenSize},
 		OutputSize: outSize,

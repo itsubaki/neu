@@ -1,4 +1,4 @@
-package multi
+package mlp
 
 import (
 	"fmt"
