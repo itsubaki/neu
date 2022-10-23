@@ -8,7 +8,7 @@ import (
 
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/mnist"
-	"github.com/itsubaki/neu/model/mlp"
+	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/trainer"
 	"github.com/itsubaki/neu/weight"
@@ -30,7 +30,7 @@ func main() {
 
 	// init
 	rand.Seed(time.Now().Unix())
-	m := mlp.New(&mlp.Config{
+	m := model.NewMLP(&model.MLPConfig{
 		InputSize:         784, // 24 * 24
 		HiddenSize:        []int{50, 50, 50},
 		OutputSize:        10, // 0 ~ 9

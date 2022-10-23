@@ -9,7 +9,7 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/math/numerical"
 	"github.com/itsubaki/neu/mnist"
-	"github.com/itsubaki/neu/model/mlp"
+	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/trainer"
 	"github.com/itsubaki/neu/weight"
@@ -27,7 +27,7 @@ func Example_mnist() {
 
 	// init
 	rand.Seed(1) // for test
-	m := mlp.New(&mlp.Config{
+	m := model.NewMLP(&model.MLPConfig{
 		InputSize:  784,
 		HiddenSize: []int{50},
 		OutputSize: 10,

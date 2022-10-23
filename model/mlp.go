@@ -1,4 +1,4 @@
-package mlp
+package model
 
 import (
 	"fmt"
@@ -6,40 +6,9 @@ import (
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/math/numerical"
-	"github.com/itsubaki/neu/optimizer"
-	"github.com/itsubaki/neu/weight"
 )
 
-var (
-	_ Layer      = (*layer.Add)(nil)
-	_ Layer      = (*layer.Affine)(nil)
-	_ Layer      = (*layer.Dot)(nil)
-	_ Layer      = (*layer.Dropout)(nil)
-	_ Layer      = (*layer.Mul)(nil)
-	_ Layer      = (*layer.ReLU)(nil)
-	_ Layer      = (*layer.Sigmoid)(nil)
-	_ Layer      = (*layer.SoftmaxWithLoss)(nil)
-	_ Optimizer  = (*optimizer.AdaGrad)(nil)
-	_ Optimizer  = (*optimizer.Momentum)(nil)
-	_ Optimizer  = (*optimizer.SGD)(nil)
-	_ WeightInit = weight.Std(0.01)
-	_ WeightInit = weight.He
-	_ WeightInit = weight.Xavier
-	_ WeightInit = weight.Glorot
-)
-
-type Layer interface {
-	Forward(x, y matrix.Matrix) matrix.Matrix
-	Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix)
-}
-
-type Optimizer interface {
-	Update(params, grads map[string]matrix.Matrix) map[string]matrix.Matrix
-}
-
-type WeightInit func(prevNodeNum int) float64
-
-type Config struct {
+type MLPConfig struct {
 	InputSize         int
 	HiddenSize        []int
 	OutputSize        int
@@ -48,7 +17,7 @@ type Config struct {
 	Optimizer         Optimizer
 }
 
-type Model struct {
+type MLP struct {
 	size              []int
 	params            map[string]matrix.Matrix
 	layer             []Layer
@@ -57,7 +26,7 @@ type Model struct {
 	optimizer         Optimizer
 }
 
-func New(c *Config) *Model {
+func NewMLP(c *MLPConfig) *MLP {
 	// size
 	size := append([]int{c.InputSize}, c.HiddenSize...)
 	size = append(size, c.OutputSize)
@@ -78,7 +47,7 @@ func New(c *Config) *Model {
 	}
 
 	// new
-	return &Model{
+	return &MLP{
 		size:              size,
 		params:            params,
 		layer:             make([]Layer, 0),
@@ -88,7 +57,7 @@ func New(c *Config) *Model {
 	}
 }
 
-func (m *Model) Predict(x matrix.Matrix) matrix.Matrix {
+func (m *MLP) Predict(x matrix.Matrix) matrix.Matrix {
 	m.layer = make([]Layer, 0) // init
 	for i := 0; i < len(m.size)-1; i++ {
 		m.layer = append(m.layer, &layer.Affine{
@@ -106,7 +75,7 @@ func (m *Model) Predict(x matrix.Matrix) matrix.Matrix {
 	return x
 }
 
-func (m *Model) Loss(x, t matrix.Matrix) matrix.Matrix {
+func (m *MLP) Loss(x, t matrix.Matrix) matrix.Matrix {
 	y := m.Predict(x)
 	loss := m.last.Forward(y, t)
 
@@ -122,7 +91,7 @@ func (m *Model) Loss(x, t matrix.Matrix) matrix.Matrix {
 	return loss.Func(func(v float64) float64 { return v + decay })
 }
 
-func (m *Model) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
+func (m *MLP) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 	// forward
 	m.Loss(x, t)
 
@@ -156,7 +125,7 @@ func (m *Model) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 	return grads
 }
 
-func (m *Model) NumericalGradient(x, t matrix.Matrix) map[string]matrix.Matrix {
+func (m *MLP) NumericalGradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 	lossW := func(w ...float64) float64 {
 		return m.Loss(x, t)[0][0]
 	}
@@ -189,6 +158,6 @@ func (m *Model) NumericalGradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 	return grads
 }
 
-func (m *Model) Optimize(grads map[string]matrix.Matrix) {
+func (m *MLP) Optimize(grads map[string]matrix.Matrix) {
 	m.params = m.optimizer.Update(m.params, grads)
 }

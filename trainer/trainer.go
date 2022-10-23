@@ -4,10 +4,10 @@ import (
 	"math/rand"
 
 	"github.com/itsubaki/neu/math/matrix"
-	"github.com/itsubaki/neu/model/mlp"
+	"github.com/itsubaki/neu/model"
 )
 
-var _ Model = (*mlp.Model)(nil)
+var _ Model = (*model.MLP)(nil)
 
 type Model interface {
 	Predict(x matrix.Matrix) matrix.Matrix

@@ -1,4 +1,4 @@
-package mlp_test
+package model_test
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"math/rand"
 
 	"github.com/itsubaki/neu/math/matrix"
-	"github.com/itsubaki/neu/model/mlp"
+	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/weight"
 )
@@ -20,7 +20,7 @@ func Example_optimize() {
 
 	// init
 	rand.Seed(1) // for test
-	m := mlp.New(&mlp.Config{
+	m := model.NewMLP(&model.MLPConfig{
 		InputSize:  inSize,
 		HiddenSize: []int{hiddenSize},
 		OutputSize: outSize,
@@ -57,7 +57,7 @@ func Example_gradientCheck() {
 
 	// init
 	rand.Seed(1) // for test
-	m := mlp.New(&mlp.Config{
+	m := model.NewMLP(&model.MLPConfig{
 		InputSize:  inSize,
 		HiddenSize: []int{hiddenSize},
 		OutputSize: outSize,
