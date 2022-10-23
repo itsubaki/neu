@@ -13,17 +13,20 @@ import (
 
 var (
 	_ Layer         = (*layer.Add)(nil)
+	_ Layer         = (*layer.Affine)(nil)
+	_ Layer         = (*layer.Dot)(nil)
+	_ Layer         = (*layer.Dropout)(nil)
 	_ Layer         = (*layer.Mul)(nil)
 	_ Layer         = (*layer.ReLU)(nil)
 	_ Layer         = (*layer.Sigmoid)(nil)
-	_ Layer         = (*layer.Affine)(nil)
 	_ Layer         = (*layer.SoftmaxWithLoss)(nil)
-	_ Optimizer     = (*optimizer.SGD)(nil)
-	_ Optimizer     = (*optimizer.Momentum)(nil)
 	_ Optimizer     = (*optimizer.AdaGrad)(nil)
-	_ WeightInit    = weight.Xavier
-	_ WeightInit    = weight.He
+	_ Optimizer     = (*optimizer.Momentum)(nil)
+	_ Optimizer     = (*optimizer.SGD)(nil)
 	_ WeightInit    = weight.Std(0.01)
+	_ WeightInit    = weight.He
+	_ WeightInit    = weight.Xavier
+	_ WeightInit    = weight.Glorot
 	_ trainer.Model = (*Neu)(nil)
 )
 
