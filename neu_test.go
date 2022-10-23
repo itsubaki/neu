@@ -137,7 +137,7 @@ func Example_neuralNetwork() {
 	A2 := matrix.Dot(Z1, W2).Add(B2)
 	Z2 := matrix.Func(A2, activation.Sigmoid)
 	A3 := matrix.Dot(Z2, W3).Add(B3)
-	y := matrix.Func(A3, func(v float64) float64 { return v }) // identity
+	y := matrix.Func(A3, activation.Identity)
 
 	// print
 	fmt.Println(A1)
