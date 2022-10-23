@@ -17,3 +17,15 @@ func ExampleXavier() {
 	// 0.5
 
 }
+
+func ExampleGlorot() {
+	fmt.Println(weight.Glorot(1))
+	fmt.Println(weight.Glorot(2))
+	fmt.Println(weight.Glorot(4))
+
+	// Output:
+	// 1
+	// 0.7071067811865476
+	// 0.5
+
+}
