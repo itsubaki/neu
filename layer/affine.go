@@ -10,7 +10,7 @@ type Affine struct {
 	DB matrix.Matrix
 }
 
-func (l *Affine) Forward(x, _ matrix.Matrix) matrix.Matrix {
+func (l *Affine) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
 	l.x = x
 	bB := Broadcast(l.B, len(l.x))
 	return matrix.Dot(l.x, l.W).Add(bB) // x.W + b

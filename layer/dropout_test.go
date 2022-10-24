@@ -12,12 +12,11 @@ func ExampleDropout() {
 	x := matrix.New([]float64{1.0, -0.5}, []float64{-2.0, 3.0})
 
 	rand.Seed(1)
-	drop := layer.Dropout{Ratio: 0.5, TrainFlag: true}
-	fmt.Println(drop.Forward(x, nil))
+	drop := layer.Dropout{Ratio: 0.5}
+	fmt.Println(drop.Forward(x, nil, layer.Opts{Train: true}))
 	fmt.Println(drop.Backward(x))
 
-	drop.TrainFlag = false
-	fmt.Println(drop.Forward(x, nil))
+	fmt.Println(drop.Forward(x, nil, layer.Opts{Train: false}))
 	fmt.Println(drop.Backward(x))
 
 	// Output:

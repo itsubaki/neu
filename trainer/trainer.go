@@ -3,6 +3,7 @@ package trainer
 import (
 	"math/rand"
 
+	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/model"
 )
@@ -10,8 +11,8 @@ import (
 var _ Model = (*model.MLP)(nil)
 
 type Model interface {
-	Predict(x matrix.Matrix) matrix.Matrix
-	Loss(x, t matrix.Matrix) matrix.Matrix
+	Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix
+	Loss(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix
 	Gradient(x, t matrix.Matrix) map[string]matrix.Matrix
 	Optimize(grads map[string]matrix.Matrix)
 }

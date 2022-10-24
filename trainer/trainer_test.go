@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"sort"
 
+	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/trainer"
 )
@@ -13,8 +14,8 @@ var _ trainer.Model = (*TestModel)(nil)
 
 type TestModel struct{}
 
-func (m *TestModel) Predict(x matrix.Matrix) matrix.Matrix { return matrix.New() }
-func (m *TestModel) Loss(x, t matrix.Matrix) matrix.Matrix { return matrix.New() }
+func (m *TestModel) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix { return matrix.New() }
+func (m *TestModel) Loss(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix { return matrix.New() }
 func (m *TestModel) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 	return make(map[string]matrix.Matrix)
 }

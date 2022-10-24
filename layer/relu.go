@@ -6,7 +6,7 @@ type ReLU struct {
 	mask matrix.Matrix
 }
 
-func (l *ReLU) Forward(x, _ matrix.Matrix) matrix.Matrix {
+func (l *ReLU) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
 	l.mask = matrix.Mask(x, func(x float64) bool { return x <= 0 })
 	return x.Mul(l.mask)
 }

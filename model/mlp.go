@@ -57,7 +57,7 @@ func NewMLP(c *MLPConfig) *MLP {
 	}
 }
 
-func (m *MLP) Predict(x matrix.Matrix) matrix.Matrix {
+func (m *MLP) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
 	m.layer = make([]Layer, 0) // init
 	for i := 0; i < len(m.size)-1; i++ {
 		m.layer = append(m.layer, &layer.Affine{
@@ -65,19 +65,20 @@ func (m *MLP) Predict(x matrix.Matrix) matrix.Matrix {
 			B: m.params[fmt.Sprintf("B%v", i+1)],
 		})
 		m.layer = append(m.layer, &layer.ReLU{})
+
 	}
 	m.layer = m.layer[:len(m.layer)-1] // remove last ReLU
 
 	for _, l := range m.layer {
-		x = l.Forward(x, nil)
+		x = l.Forward(x, nil, opts...)
 	}
 
 	return x
 }
 
-func (m *MLP) Loss(x, t matrix.Matrix) matrix.Matrix {
-	y := m.Predict(x)
-	loss := m.last.Forward(y, t)
+func (m *MLP) Loss(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
+	y := m.Predict(x, opts...)
+	loss := m.last.Forward(y, t, opts...)
 
 	// decay
 	var decay float64
@@ -93,7 +94,7 @@ func (m *MLP) Loss(x, t matrix.Matrix) matrix.Matrix {
 
 func (m *MLP) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 	// forward
-	m.Loss(x, t)
+	m.Loss(x, t, layer.Opts{Train: true})
 
 	// backward
 	dout, _ := m.last.Backward(matrix.New([]float64{1}))
@@ -127,7 +128,7 @@ func (m *MLP) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 
 func (m *MLP) NumericalGradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 	lossW := func(w ...float64) float64 {
-		return m.Loss(x, t)[0][0]
+		return m.Loss(x, t, layer.Opts{Train: true})[0][0]
 	}
 
 	grad := func(f func(x ...float64) float64, x matrix.Matrix) matrix.Matrix {

@@ -7,7 +7,7 @@ type Mul struct {
 	y matrix.Matrix
 }
 
-func (l *Mul) Forward(x, y matrix.Matrix) matrix.Matrix {
+func (l *Mul) Forward(x, y matrix.Matrix, opts ...Opts) matrix.Matrix {
 	l.x, l.y = x, y
 	return l.x.Mul(l.y)
 }

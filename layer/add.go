@@ -4,7 +4,7 @@ import "github.com/itsubaki/neu/math/matrix"
 
 type Add struct{}
 
-func (l *Add) Forward(x, y matrix.Matrix) matrix.Matrix {
+func (l *Add) Forward(x, y matrix.Matrix, opts ...Opts) matrix.Matrix {
 	return x.Add(y)
 }
 

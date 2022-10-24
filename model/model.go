@@ -10,6 +10,7 @@ import (
 var (
 	_ Layer      = (*layer.Add)(nil)
 	_ Layer      = (*layer.Affine)(nil)
+	_ Layer      = (*layer.BatchNorm)(nil)
 	_ Layer      = (*layer.Dot)(nil)
 	_ Layer      = (*layer.Dropout)(nil)
 	_ Layer      = (*layer.Mul)(nil)
@@ -26,7 +27,7 @@ var (
 )
 
 type Layer interface {
-	Forward(x, y matrix.Matrix) matrix.Matrix
+	Forward(x, y matrix.Matrix, opts ...layer.Opts) matrix.Matrix
 	Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix)
 }
 

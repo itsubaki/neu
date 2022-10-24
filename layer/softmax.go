@@ -12,7 +12,7 @@ type SoftmaxWithLoss struct {
 	loss float64
 }
 
-func (l *SoftmaxWithLoss) Forward(x, t matrix.Matrix) matrix.Matrix {
+func (l *SoftmaxWithLoss) Forward(x, t matrix.Matrix, opts ...Opts) matrix.Matrix {
 	l.t = t
 	l.y = Softmax(x)
 	l.loss = CrossEntropyError(l.y, l.t)
