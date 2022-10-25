@@ -22,11 +22,11 @@ func (l *BatchNorm) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
 	var xn matrix.Matrix
 	if len(opts) > 0 && opts[0].Train {
 		// (x - mu) / sqrt(var + eps)
-		mu := MeanAxis0(x)                  // mean(x, axis=0)
-		xc := x.Sub(Broadcast(mu, len(x)))  // x - mu
-		va := MeanAxis0(xc.Pow2())          // mean(xc**2, axis=0)
-		std := va.Sqrt(1e-7)                // sqrt(var + 1e-7)
-		xn = xc.Div(Broadcast(std, len(x))) // xc/std
+		mu := MeanAxis0(x)                   // mean(x, axis=0)
+		xc := x.Sub(Broadcast(mu, len(x)))   // x - mu
+		va := MeanAxis0(xc.Pow2())           // mean(xc**2, axis=0)
+		std := va.Sqrt(1e-7)                 // sqrt(var + 1e-7)
+		xn = xc.Div(Broadcast(std, len(xc))) // xc/std
 
 		// for backword
 		l.batchSize = len(x)
@@ -39,11 +39,11 @@ func (l *BatchNorm) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
 		// (x - mu) / sqrt(var + eps)
 		xc := x.Sub(Broadcast(l.mu, len(x))) // x - mu
 		std := l.va.Sqrt(1e-7)               // sqrt(var + 1e-7)
-		xn = xc.Div(Broadcast(std, len(x)))  // xc/std
+		xn = xc.Div(Broadcast(std, len(xc))) // xc/std
 	}
 
 	// gamma * xn + beta
-	return xn.Mul(Broadcast(l.Gamma, len(x))).Add(Broadcast(l.Beta, len(x)))
+	return xn.Mul(Broadcast(l.Gamma, len(xn))).Add(Broadcast(l.Beta, len(xn)))
 }
 
 func (l *BatchNorm) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
