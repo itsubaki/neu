@@ -8,7 +8,7 @@ type Dropout struct {
 }
 
 func (l *Dropout) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
-	if opts[0].Train {
+	if len(opts) > 0 && opts[0].Train {
 		l.mask = matrix.Mask(matrix.Rand(x.Dimension()), func(x float64) bool { return x > l.Ratio })
 		return x.Mul(l.mask)
 	}

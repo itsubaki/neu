@@ -101,6 +101,59 @@ func ExampleMatrix_Mul() {
 
 }
 
+func ExampleMatrix_Div() {
+	A := matrix.New(
+		[]float64{1, 2},
+		[]float64{3, 4},
+	)
+
+	B := matrix.New(
+		[]float64{5, 2},
+		[]float64{1, 8},
+	)
+
+	for _, r := range A.Div(B) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [0.2 1]
+	// [3 0.5]
+
+}
+
+func ExampleMatrix_Pow2() {
+	A := matrix.New(
+		[]float64{1, 2},
+		[]float64{3, 4},
+	)
+
+	for _, r := range A.Pow2() {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [1 4]
+	// [9 16]
+
+}
+
+func ExampleMatrix_Sqrt() {
+	A := matrix.New(
+		[]float64{1, 2},
+		[]float64{3, 4},
+	)
+
+	for _, r := range A.Sqrt(0) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [1 1.4142135623730951]
+	// [1.7320508075688772 2]
+
+}
+
 func ExampleMatrix_Func() {
 	A := matrix.New(
 		[]float64{1, 2},
@@ -163,6 +216,17 @@ func ExampleZero() {
 	// Output:
 	// [0 0 0]
 	// [0 0 0]
+
+}
+
+func ExampleOne() {
+	for _, r := range matrix.One(2, 3) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [1 1 1]
+	// [1 1 1]
 
 }
 

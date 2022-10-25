@@ -65,9 +65,8 @@ func (m *MLP) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
 			B: m.params[fmt.Sprintf("B%v", i+1)],
 		})
 		m.layer = append(m.layer, &layer.ReLU{})
-
 	}
-	m.layer = m.layer[:len(m.layer)-1] // remove last ReLU
+	m.layer = m.layer[:len(m.layer)-1] // remove last ReLU, Dropout
 
 	for _, l := range m.layer {
 		x = l.Forward(x, nil, opts...)
@@ -83,10 +82,8 @@ func (m *MLP) Loss(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
 	// decay
 	var decay float64
 	for i := 0; i < len(m.size)-1; i++ {
-		sumw2 := m.params[fmt.Sprintf("W%v", i+1)].Func(func(v float64) float64 {
-			return v * v
-		}).Sum() // sum(W**2)
-		decay = decay + 0.5*m.weightDecayLambda*sumw2 // 1/2 * lambda * sum(W**2)
+		sumw2 := m.params[fmt.Sprintf("W%v", i+1)].Pow2().Sum() // sum(W**2)
+		decay = decay + 0.5*m.weightDecayLambda*sumw2           // 1/2 * lambda * sum(W**2)
 	}
 
 	return loss.Func(func(v float64) float64 { return v + decay })

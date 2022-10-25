@@ -23,6 +23,21 @@ func Zero(n, m int) Matrix {
 	return out
 }
 
+// One returns a matrix with all elements 1.
+func One(n, m int) Matrix {
+	out := make(Matrix, n)
+	for i := 0; i < n; i++ {
+		v := make([]float64, 0)
+		for j := 0; j < m; j++ {
+			v = append(v, 1)
+		}
+
+		out[i] = v
+	}
+
+	return out
+}
+
 // Rand returns a matrix with elements that pseudo-random number in the half-open interval [0.0,1.0).
 func Rand(n, m int) Matrix {
 	out := make(Matrix, 0)
@@ -128,6 +143,18 @@ func (m Matrix) Sub(n Matrix) Matrix {
 
 func (m Matrix) Mul(n Matrix) Matrix {
 	return m.FuncWith(n, func(a, b float64) float64 { return a * b })
+}
+
+func (m Matrix) Div(n Matrix) Matrix {
+	return m.FuncWith(n, func(a, b float64) float64 { return a / b })
+}
+
+func (m Matrix) Pow2() Matrix {
+	return m.Func(func(v float64) float64 { return v * v })
+}
+
+func (m Matrix) Sqrt(eps float64) Matrix {
+	return m.Func(func(v float64) float64 { return math.Sqrt(v + eps) })
 }
 
 func (m Matrix) Transpose() Matrix {
