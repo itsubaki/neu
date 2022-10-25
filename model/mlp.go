@@ -66,7 +66,7 @@ func (m *MLP) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
 		})
 		m.layer = append(m.layer, &layer.ReLU{})
 	}
-	m.layer = m.layer[:len(m.layer)-1] // remove last ReLU, Dropout
+	m.layer = m.layer[:len(m.layer)-1] // remove last ReLU
 
 	for _, l := range m.layer {
 		x = l.Forward(x, nil, opts...)
