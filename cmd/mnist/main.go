@@ -16,7 +16,10 @@ import (
 
 func main() {
 	var dir string
+	var iter, batchSize int
 	flag.StringVar(&dir, "dir", "./testdata", "")
+	flag.IntVar(&iter, "iter", 1000, "")
+	flag.IntVar(&batchSize, "batchsize", 100, "")
 	flag.Parse()
 
 	// data
@@ -47,8 +50,8 @@ func main() {
 		TrainLabel: t,
 		Test:       xt,
 		TestLabel:  tt,
-		Iter:       1000,
-		BatchSize:  100,
+		Iter:       iter,
+		BatchSize:  batchSize,
 		Verbose: func(i int, m trainer.Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix) {
 			loss := m.Loss(xbatch, tbatch)
 			acc := trainer.Accuracy(m.Predict(xbatch), tbatch)
