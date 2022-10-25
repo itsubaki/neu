@@ -34,16 +34,13 @@ func NewMLP(c *MLPConfig) *MLP {
 	// params
 	params := make(map[string]matrix.Matrix)
 	for i := 0; i < len(size)-1; i++ {
-		params[fmt.Sprintf("W%v", i+1)] = matrix.Randn(size[i], size[i+1])
-		params[fmt.Sprintf("B%v", i+1)] = matrix.Zero(1, size[i+1])
+		params[W(i)] = matrix.Randn(size[i], size[i+1])
+		params[B(i)] = matrix.Zero(1, size[i+1])
 	}
 
 	// weight init
 	for i := 0; i < len(size)-1; i++ {
-		W := fmt.Sprintf("W%v", i+1)
-		params[W] = matrix.Func(params[W], func(v float64) float64 {
-			return c.WeightInit(size[i]) * v
-		})
+		params[W(i)] = params[W(i)].Func(func(v float64) float64 { return c.WeightInit(size[i]) * v })
 	}
 
 	// new
@@ -60,10 +57,7 @@ func NewMLP(c *MLPConfig) *MLP {
 func (m *MLP) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
 	m.layer = make([]Layer, 0) // init
 	for i := 0; i < len(m.size)-1; i++ {
-		m.layer = append(m.layer, &layer.Affine{
-			W: m.params[fmt.Sprintf("W%v", i+1)],
-			B: m.params[fmt.Sprintf("B%v", i+1)],
-		})
+		m.layer = append(m.layer, &layer.Affine{W: m.params[W(i)], B: m.params[B(i)]})
 		m.layer = append(m.layer, &layer.ReLU{})
 	}
 	m.layer = m.layer[:len(m.layer)-1] // remove last ReLU
@@ -82,8 +76,7 @@ func (m *MLP) Loss(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
 	// decay
 	var decay float64
 	for i := 0; i < len(m.size)-1; i++ {
-		sumw2 := m.params[fmt.Sprintf("W%v", i+1)].Pow2().Sum() // sum(W**2)
-		decay = decay + 0.5*m.weightDecayLambda*sumw2           // 1/2 * lambda * sum(W**2)
+		decay = decay + 0.5*m.weightDecayLambda*m.params[W(i)].Pow2().Sum() // decay = decay + 1/2 * lambda * sum(W**2)
 	}
 
 	return loss.Func(func(v float64) float64 { return v + decay })
@@ -107,17 +100,14 @@ func (m *MLP) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 			continue
 		}
 
-		grads[fmt.Sprintf("W%v", i+1)] = m.layer[j].(*layer.Affine).DW
-		grads[fmt.Sprintf("B%v", i+1)] = m.layer[j].(*layer.Affine).DB
+		grads[W(i)] = m.layer[j].(*layer.Affine).DW
+		grads[B(i)] = m.layer[j].(*layer.Affine).DB
 		i++
 	}
 
 	// decay
 	for i := 0; i < len(m.size)-1; i++ {
-		W := fmt.Sprintf("W%v", i+1)
-		grads[W] = grads[W].FuncWith(m.params[W], func(a, b float64) float64 {
-			return a + m.weightDecayLambda*b // grads[W] + lambda * params[W]
-		})
+		grads[W(i)] = matrix.FuncWith(grads[W(i)], m.params[W(i)], func(a, b float64) float64 { return a + m.weightDecayLambda*b }) // grads[W] + lambda * params[W]
 	}
 
 	return grads
@@ -140,17 +130,13 @@ func (m *MLP) NumericalGradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 	// gradient
 	grads := make(map[string]matrix.Matrix)
 	for i := 0; i < len(m.size)-1; i++ {
-		W, B := fmt.Sprintf("W%v", i+1), fmt.Sprintf("B%v", i+1)
-		grads[W] = grad(lossW, m.params[W])
-		grads[B] = grad(lossW, m.params[B])
+		grads[W(i)] = grad(lossW, m.params[W(i)])
+		grads[B(i)] = grad(lossW, m.params[B(i)])
 	}
 
 	// decay
 	for i := 0; i < len(m.size)-1; i++ {
-		W := fmt.Sprintf("W%v", i+1)
-		grads[W] = grads[W].FuncWith(m.params[W], func(a, b float64) float64 {
-			return a + m.weightDecayLambda*b // grads[W] + lambda * params[W]
-		})
+		grads[W(i)] = matrix.FuncWith(grads[W(i)], m.params[W(i)], func(a, b float64) float64 { return a + m.weightDecayLambda*b }) // grads[W] + lambda * params[W]
 	}
 
 	return grads
@@ -158,4 +144,12 @@ func (m *MLP) NumericalGradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 
 func (m *MLP) Optimize(grads map[string]matrix.Matrix) {
 	m.params = m.optimizer.Update(m.params, grads)
+}
+
+func W(i int) string {
+	return fmt.Sprintf("W%v", i+1)
+}
+
+func B(i int) string {
+	return fmt.Sprintf("B%v", i+1)
 }
