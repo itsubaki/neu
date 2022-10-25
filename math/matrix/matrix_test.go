@@ -314,3 +314,17 @@ func ExampleFuncWith() {
 	// [21 32]
 
 }
+
+func ExampleBroadcast() {
+	m := matrix.New([]float64{1, 2}, []float64{3, 4})
+	for _, r := range matrix.Broadcast(m, 5) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [1 2]
+	// [3 4]
+	// [1 2]
+	// [3 4]
+	// [1 2]
+}
