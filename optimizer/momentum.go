@@ -18,8 +18,8 @@ func (o *Momentum) Update(params, grads map[string]matrix.Matrix) map[string]mat
 
 	out := make(map[string]matrix.Matrix)
 	for k := range params {
-		o.v[k] = o.v[k].FuncWith(grads[k], momentum(o.Momentum, o.LearningRate)) // v[k] = momentum * v[k] - learningRate * grads[k]
-		out[k] = params[k].Add(o.v[k])                                           // params[k] = params[k] + v[k]
+		o.v[k] = matrix.FuncWith(o.v[k], grads[k], momentum(o.Momentum, o.LearningRate)) // v[k] = momentum * v[k] - learningRate * grads[k]
+		out[k] = params[k].Add(o.v[k])                                                   // params[k] = params[k] + v[k]
 	}
 
 	return out

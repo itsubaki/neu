@@ -7,7 +7,7 @@ type Dot struct {
 	w matrix.Matrix
 }
 
-func (l *Dot) Forward(x, w matrix.Matrix, opts ...Opts) matrix.Matrix {
+func (l *Dot) Forward(x, w matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.x = x
 	l.w = w
 	return matrix.Dot(l.x, l.w)

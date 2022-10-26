@@ -30,11 +30,3 @@ func ExampleAffine() {
 	// [[0.79 1]] []
 
 }
-
-func ExampleSumAxis0() {
-	x := matrix.New([]float64{1, 2, 3}, []float64{4, 5, 6})
-	fmt.Println(layer.SumAxis0(x))
-
-	// Output:
-	// [[5 7 9]]
-}

@@ -9,7 +9,7 @@ type Sigmoid struct {
 	out matrix.Matrix
 }
 
-func (l *Sigmoid) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
+func (l *Sigmoid) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.out = x.Func(activation.Sigmoid)
 	return l.out
 }

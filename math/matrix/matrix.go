@@ -69,17 +69,17 @@ func Randn(n, m int) Matrix {
 }
 
 // Mask returns a matrix with elements that 1 if f() is true and 0 otherwise.
-func Mask(x Matrix, f func(x float64) bool) Matrix {
+func Mask(m Matrix, f func(x float64) bool) Matrix {
 	out := make(Matrix, 0)
-	for i := range x {
+	for i := range m {
 		v := make([]float64, 0)
-		for j := range x[i] {
-			if f(x[i][j]) {
-				v = append(v, 0)
+		for j := range m[i] {
+			if f(m[i][j]) {
+				v = append(v, 1)
 				continue
 			}
 
-			v = append(v, 1)
+			v = append(v, 0)
 		}
 
 		out = append(out, v)
@@ -157,6 +157,14 @@ func (m Matrix) Sqrt(eps float64) Matrix {
 	return m.Func(func(v float64) float64 { return math.Sqrt(v + eps) })
 }
 
+func (m Matrix) AddC(c float64) Matrix {
+	return m.Func(func(v float64) float64 { return c + v })
+}
+
+func (m Matrix) MulC(c float64) Matrix {
+	return m.Func(func(v float64) float64 { return c * v })
+}
+
 func (m Matrix) Transpose() Matrix {
 	p, q := m.Dimension()
 
@@ -194,14 +202,14 @@ func (m Matrix) Avg() float64 {
 	return m.Sum() / float64(a*b)
 }
 
-func (x Matrix) Argmax() []int {
+func (m Matrix) Argmax() []int {
 	out := make([]int, 0)
-	for i := range x {
+	for i := range m {
 		max := -math.MaxFloat64
 		var index int
-		for j := range x[i] {
-			if x[i][j] > max {
-				max = x[i][j]
+		for j := range m[i] {
+			if m[i][j] > max {
+				max = m[i][j]
 				index = j
 			}
 		}
@@ -210,6 +218,23 @@ func (x Matrix) Argmax() []int {
 	}
 
 	return out
+}
+
+func (m Matrix) SumAxis0() Matrix {
+	p, q := m.Dimension()
+
+	v := make([]float64, q)
+	for i := 0; i < q; i++ {
+		for j := 0; j < p; j++ {
+			v[i] = v[i] + m[j][i]
+		}
+	}
+
+	return New(v)
+}
+
+func (m Matrix) MeanAxis0() Matrix {
+	return m.SumAxis0().MulC(1.0 / float64(len(m)))
 }
 
 func (m Matrix) Func(f func(v float64) float64) Matrix {

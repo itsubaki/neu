@@ -14,6 +14,7 @@ import (
 	"github.com/itsubaki/neu/weight"
 )
 
+// go run cmd/mnist/main.go --iter 10000
 func main() {
 	var dir string
 	var iter, batchSize int

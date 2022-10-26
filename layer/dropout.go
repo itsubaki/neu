@@ -13,7 +13,7 @@ func (l *Dropout) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
 		return x.Mul(l.mask)
 	}
 
-	return x.Func(func(v float64) float64 { return v * (1.0 - l.Ratio) })
+	return x.MulC(1.0 - l.Ratio) // x * (1.0 - ratio)
 }
 
 func (l *Dropout) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {

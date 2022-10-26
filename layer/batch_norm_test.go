@@ -25,13 +25,3 @@ func ExampleBatchNorm() {
 	// [[3.529820863224588 6.375869334352251] [9.854373021286058 12.70042149241372]]
 	// [[0.2500000124999972 0.5000000249999944]] []
 }
-
-func ExampleMeanAxis0() {
-	x := matrix.New([]float64{1, 2, 3}, []float64{4, 5, 6})
-	fmt.Println(layer.SumAxis0(x))
-	fmt.Println(layer.MeanAxis0(x))
-
-	// Output:
-	// [[5 7 9]]
-	// [[2.5 3.5 4.5]]
-}

@@ -21,8 +21,8 @@ func (o *AdaGrad) Update(params, grads map[string]matrix.Matrix) map[string]matr
 
 	out := make(map[string]matrix.Matrix)
 	for k := range params {
-		o.h[k] = o.h[k].Add(grads[k].Mul(grads[k]))                                // h[k] = h[k] + grads[k] * grads[k]
-		out[k] = params[k].Sub(grads[k].FuncWith(o.h[k], adagrad(o.LearningRate))) // params[k] = params[k] - learningRate * grads[k] / sqrt(h[k])
+		o.h[k] = o.h[k].Add(grads[k].Mul(grads[k]))                                        // h[k] = h[k] + grads[k] * grads[k]
+		out[k] = params[k].Sub(matrix.FuncWith(grads[k], o.h[k], adagrad(o.LearningRate))) // params[k] = params[k] - learningRate * grads[k] / sqrt(h[k])
 	}
 
 	return out
