@@ -15,7 +15,6 @@ type MLPConfig struct {
 }
 
 type MLP struct {
-	size      []int
 	layer     []Layer
 	loss      Layer
 	optimizer Optimizer
@@ -39,7 +38,6 @@ func NewMLP(c *MLPConfig) *MLP {
 
 	// new
 	return &MLP{
-		size:      size,
 		layer:     layers,
 		loss:      &layer.SoftmaxWithLoss{},
 		optimizer: c.Optimizer,
