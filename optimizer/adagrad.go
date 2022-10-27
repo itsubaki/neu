@@ -16,11 +16,6 @@ func (o *AdaGrad) Update(params, grads [][]matrix.Matrix) [][]matrix.Matrix {
 		o.h = make([][]matrix.Matrix, 0)
 		for i := range params {
 			h := make([]matrix.Matrix, 0)
-			if len(params[i]) == 0 {
-				o.h = append(o.h, h)
-				continue
-			}
-
 			for j := range params[i] {
 				h = append(h, matrix.Zero(params[i][j].Dimension()))
 			}
@@ -32,11 +27,6 @@ func (o *AdaGrad) Update(params, grads [][]matrix.Matrix) [][]matrix.Matrix {
 	out := make([][]matrix.Matrix, 0)
 	for i := range params {
 		v := make([]matrix.Matrix, 0)
-		if len(params[i]) == 0 {
-			out = append(out, v)
-			continue
-		}
-
 		for j := range params[i] {
 			o.h[i][j] = o.h[i][j].Add(grads[i][j].Mul(grads[i][j]))                                 // h[k] = h[k] + grads[k] * grads[k]
 			p := params[i][j].Sub(matrix.FuncWith(grads[i][j], o.h[i][j], adagrad(o.LearningRate))) // params[k] = params[k] - o.LearningRate * grads[k]

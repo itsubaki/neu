@@ -13,11 +13,6 @@ func (o *Momentum) Update(params, grads [][]matrix.Matrix) [][]matrix.Matrix {
 		o.v = make([][]matrix.Matrix, 0)
 		for i := range params {
 			v := make([]matrix.Matrix, 0)
-			if len(params[i]) == 0 {
-				o.v = append(o.v, v)
-				continue
-			}
-
 			for j := range params[i] {
 				v = append(v, matrix.Zero(params[i][j].Dimension()))
 			}
@@ -29,11 +24,6 @@ func (o *Momentum) Update(params, grads [][]matrix.Matrix) [][]matrix.Matrix {
 	out := make([][]matrix.Matrix, 0)
 	for i := range params {
 		v := make([]matrix.Matrix, 0)
-		if len(params[i]) == 0 {
-			out = append(out, v)
-			continue
-		}
-
 		for j := range params[i] {
 			o.v[i][j] = matrix.FuncWith(o.v[i][j], grads[i][j], momentum(o.Momentum, o.LearningRate)) // v[k] = momentum * v[k] - learningRate * grads[k]
 			p := params[i][j].Add(o.v[i][j])                                                          //  params[k] = params[k] + v[k]
