@@ -100,11 +100,6 @@ func (m *MLP) NumericalGradient(x, t matrix.Matrix) [][]matrix.Matrix {
 	grads := make([][]matrix.Matrix, 0)
 	for _, l := range m.layer {
 		g := make([]matrix.Matrix, 0)
-		if len(l.Params()) == 0 {
-			grads = append(grads, g)
-			continue
-		}
-
 		for _, p := range l.Params() {
 			g = append(g, grad(lossW, p))
 		}
