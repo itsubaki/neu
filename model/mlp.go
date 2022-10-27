@@ -7,20 +7,18 @@ import (
 )
 
 type MLPConfig struct {
-	InputSize         int
-	HiddenSize        []int
-	OutputSize        int
-	WeightDecayLambda float64
-	WeightInit        WeightInit
-	Optimizer         Optimizer
+	InputSize  int
+	HiddenSize []int
+	OutputSize int
+	WeightInit WeightInit
+	Optimizer  Optimizer
 }
 
 type MLP struct {
-	size              []int
-	layer             []Layer
-	last              Layer
-	weightDecayLambda float64
-	optimizer         Optimizer
+	size      []int
+	layer     []Layer
+	loss      Layer
+	optimizer Optimizer
 }
 
 func NewMLP(c *MLPConfig) *MLP {
@@ -41,11 +39,10 @@ func NewMLP(c *MLPConfig) *MLP {
 
 	// new
 	return &MLP{
-		size:              size,
-		layer:             layers,
-		last:              &layer.SoftmaxWithLoss{},
-		weightDecayLambda: c.WeightDecayLambda,
-		optimizer:         c.Optimizer,
+		size:      size,
+		layer:     layers,
+		loss:      &layer.SoftmaxWithLoss{},
+		optimizer: c.Optimizer,
 	}
 }
 
@@ -59,8 +56,7 @@ func (m *MLP) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
 
 func (m *MLP) Loss(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
 	y := m.Predict(x, opts...)
-	loss := m.last.Forward(y, t, opts...)
-	return loss
+	return m.loss.Forward(y, t, opts...)
 }
 
 func (m *MLP) Gradient(x, t matrix.Matrix) [][]matrix.Matrix {
@@ -68,7 +64,7 @@ func (m *MLP) Gradient(x, t matrix.Matrix) [][]matrix.Matrix {
 	m.Loss(x, t, layer.Opts{Train: true})
 
 	// backward
-	dout, _ := m.last.Backward(matrix.New([]float64{1}))
+	dout, _ := m.loss.Backward(matrix.New([]float64{1}))
 	for i := len(m.layer) - 1; i > -1; i-- {
 		dout, _ = m.layer[i].Backward(dout)
 	}

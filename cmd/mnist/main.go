@@ -35,12 +35,11 @@ func main() {
 	// init
 	rand.Seed(time.Now().Unix())
 	m := model.NewMLP(&model.MLPConfig{
-		InputSize:         784, // 24 * 24
-		HiddenSize:        []int{50, 50, 50},
-		OutputSize:        10, // 0 ~ 9
-		WeightDecayLambda: 1e-6,
-		WeightInit:        weight.He,
-		Optimizer:         &optimizer.AdaGrad{LearningRate: 0.01},
+		InputSize:  784, // 24 * 24
+		HiddenSize: []int{50, 50, 50},
+		OutputSize: 10, // 0 ~ 9
+		WeightInit: weight.He,
+		Optimizer:  &optimizer.AdaGrad{LearningRate: 0.01},
 	})
 
 	// training
