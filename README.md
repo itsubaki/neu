@@ -39,3 +39,4 @@ label  : [4 1 2 6 7 1 8 7 5 5 7 6 7 5 8 4 7 4 3 2]
 # Reference
 
  1. [oreilly-japan/deep-learning-from-scratch](https://github.com/oreilly-japan/deep-learning-from-scratch)
+ 2. [oreilly-japan/deep-learning-from-scratch-2](https://github.com/oreilly-japan/deep-learning-from-scratch-2)
