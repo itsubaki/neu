@@ -7,6 +7,11 @@ type Dot struct {
 	w matrix.Matrix
 }
 
+func (l *Dot) Params() []matrix.Matrix     { return make([]matrix.Matrix, 0) }
+func (l *Dot) SetParams(p []matrix.Matrix) {}
+func (l *Dot) Grads() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
+func (l *Dot) SetGrads(g []matrix.Matrix)  {}
+
 func (l *Dot) Forward(x, w matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.x = x
 	l.w = w

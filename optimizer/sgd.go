@@ -6,10 +6,15 @@ type SGD struct {
 	LearningRate float64
 }
 
-func (o *SGD) Update(params, grads map[string]matrix.Matrix) map[string]matrix.Matrix {
-	out := make(map[string]matrix.Matrix)
-	for k := range params {
-		out[k] = matrix.FuncWith(params[k], grads[k], sgd(o.LearningRate)) // params[k] = params[k] - o.LearningRate * grads[k]
+func (o *SGD) Update(params, grads [][]matrix.Matrix) [][]matrix.Matrix {
+	out := make([][]matrix.Matrix, 0)
+	for i := range params {
+		v := make([]matrix.Matrix, 0)
+		for j := range params[i] {
+			v = append(v, matrix.FuncWith(params[i][j], grads[i][j], sgd(o.LearningRate))) // params[k] = params[k] - o.LearningRate * grads[k]
+		}
+
+		out = append(out, v)
 	}
 
 	return out

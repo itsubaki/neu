@@ -1,8 +1,6 @@
 package model
 
 import (
-	"fmt"
-
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/math/numerical"
@@ -19,7 +17,6 @@ type MLPConfig struct {
 
 type MLP struct {
 	size              []int
-	params            map[string]matrix.Matrix
 	layer             []Layer
 	last              Layer
 	weightDecayLambda float64
@@ -31,22 +28,13 @@ func NewMLP(c *MLPConfig) *MLP {
 	size := append([]int{c.InputSize}, c.HiddenSize...)
 	size = append(size, c.OutputSize)
 
-	// params
-	params := make(map[string]matrix.Matrix)
-	for i := 0; i < len(size)-1; i++ {
-		params[W(i)] = matrix.Randn(size[i], size[i+1])
-		params[B(i)] = matrix.Zero(1, size[i+1])
-	}
-
-	// weight init
-	for i := 0; i < len(size)-1; i++ {
-		params[W(i)] = params[W(i)].MulC(c.WeightInit(size[i]))
-	}
-
 	// layers
 	layers := make([]Layer, 0) // init
 	for i := 0; i < len(size)-1; i++ {
-		layers = append(layers, &layer.Affine{W: params[W(i)], B: params[B(i)]})
+		layers = append(layers, &layer.Affine{
+			W: matrix.Randn(size[i], size[i+1]).MulC(c.WeightInit(size[i])),
+			B: matrix.Zero(1, size[i+1]),
+		})
 		layers = append(layers, &layer.ReLU{})
 	}
 	layers = layers[:len(layers)-1] // remove last ReLU
@@ -54,7 +42,6 @@ func NewMLP(c *MLPConfig) *MLP {
 	// new
 	return &MLP{
 		size:              size,
-		params:            params,
 		layer:             layers,
 		last:              &layer.SoftmaxWithLoss{},
 		weightDecayLambda: c.WeightDecayLambda,
@@ -73,17 +60,10 @@ func (m *MLP) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
 func (m *MLP) Loss(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
 	y := m.Predict(x, opts...)
 	loss := m.last.Forward(y, t, opts...)
-
-	// decay
-	var decay float64
-	for i := 0; i < len(m.size)-1; i++ {
-		decay = decay + 0.5*m.weightDecayLambda*m.params[W(i)].Pow2().Sum() // decay = decay + 1/2 * lambda * sum(W**2)
-	}
-
-	return loss.AddC(decay)
+	return loss
 }
 
-func (m *MLP) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
+func (m *MLP) Gradient(x, t matrix.Matrix) [][]matrix.Matrix {
 	// forward
 	m.Loss(x, t, layer.Opts{Train: true})
 
@@ -94,24 +74,15 @@ func (m *MLP) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 	}
 
 	// gradient
-	grads := make(map[string]matrix.Matrix)
-	var i int
-	for j := 0; j < len(m.layer); j++ {
-		if affine, ok := m.layer[j].(*layer.Affine); ok {
-			grads[W(i)], grads[B(i)] = affine.DW, affine.DB
-			i++
-		}
-	}
-
-	// decay
-	for i := 0; i < len(m.size)-1; i++ {
-		grads[W(i)] = matrix.FuncWith(grads[W(i)], m.params[W(i)], decay(m.weightDecayLambda)) // grads[W] + lambda * params[W]
+	grads := make([][]matrix.Matrix, 0)
+	for _, l := range m.layer {
+		grads = append(grads, l.Grads())
 	}
 
 	return grads
 }
 
-func (m *MLP) NumericalGradient(x, t matrix.Matrix) map[string]matrix.Matrix {
+func (m *MLP) NumericalGradient(x, t matrix.Matrix) [][]matrix.Matrix {
 	lossW := func(w ...float64) float64 {
 		return m.Loss(x, t, layer.Opts{Train: true})[0][0]
 	}
@@ -126,35 +97,34 @@ func (m *MLP) NumericalGradient(x, t matrix.Matrix) map[string]matrix.Matrix {
 	}
 
 	// gradient
-	grads := make(map[string]matrix.Matrix)
-	for i := 0; i < len(m.size)-1; i++ {
-		grads[W(i)], grads[B(i)] = grad(lossW, m.params[W(i)]), grad(lossW, m.params[B(i)])
-	}
+	grads := make([][]matrix.Matrix, 0)
+	for _, l := range m.layer {
+		g := make([]matrix.Matrix, 0)
+		if len(l.Params()) == 0 {
+			grads = append(grads, g)
+			continue
+		}
 
-	// decay
-	for i := 0; i < len(m.size)-1; i++ {
-		grads[W(i)] = matrix.FuncWith(grads[W(i)], m.params[W(i)], decay(m.weightDecayLambda)) // grads[W] + lambda * params[W]
+		for _, p := range l.Params() {
+			g = append(g, grad(lossW, p))
+		}
+
+		grads = append(grads, g)
 	}
 
 	return grads
 }
 
-func (m *MLP) Optimize(grads map[string]matrix.Matrix) {
-	m.params = m.optimizer.Update(m.params, grads)
-
-	var i int
-	for j := 0; j < len(m.layer); j++ {
-		if affine, ok := m.layer[j].(*layer.Affine); ok {
-			affine.W, affine.B = m.params[W(i)], m.params[B(i)]
-			i++
-		}
+func (m *MLP) Optimize(grads [][]matrix.Matrix) {
+	// params
+	params := make([][]matrix.Matrix, 0)
+	for _, l := range m.layer {
+		params = append(params, l.Params())
 	}
-}
 
-func W(i int) string { return fmt.Sprintf("W%v", i+1) }
-
-func B(i int) string { return fmt.Sprintf("B%v", i+1) }
-
-func decay(lambda float64) func(a, b float64) float64 {
-	return func(a, b float64) float64 { return a + lambda*b }
+	// update
+	updated := m.optimizer.Update(params, grads)
+	for i, l := range m.layer {
+		l.SetParams(updated[i])
+	}
 }

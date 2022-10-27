@@ -68,15 +68,18 @@ func Example_gradientCheck() {
 	grads := m.Gradient(x, t)
 
 	// check
-	for _, k := range []string{"W1", "W2", "B1", "B2"} {
-		diff := matrix.FuncWith(ngrads[k], grads[k], func(a, b float64) float64 { return math.Abs(a - b) })
-		fmt.Printf("%v: %v\n", k, diff.Avg())
+	for i := range ngrads {
+		// 10, 11 is ReLU. empty
+		for j := range ngrads[i] {
+			diff := matrix.FuncWith(ngrads[i][j], grads[i][j], func(a, b float64) float64 { return math.Abs(a - b) })
+			fmt.Printf("%v%v: %v\n", i, j, diff.Avg())
+		}
 	}
 
 	// Output:
-	// W1: 1.6658328893821156e-10
-	// W2: 2.8191449832846066e-10
-	// B1: 7.510020527910314e-13
-	// B2: 3.3325323139932195e-08
+	// 00: 1.6658328893821156e-10
+	// 01: 7.510020527910314e-13
+	// 20: 2.8191449832846066e-10
+	// 21: 3.3325323139932195e-08
 
 }

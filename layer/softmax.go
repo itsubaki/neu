@@ -12,6 +12,11 @@ type SoftmaxWithLoss struct {
 	loss float64
 }
 
+func (l *SoftmaxWithLoss) Params() []matrix.Matrix     { return make([]matrix.Matrix, 0) }
+func (l *SoftmaxWithLoss) SetParams(p []matrix.Matrix) {}
+func (l *SoftmaxWithLoss) Grads() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
+func (l *SoftmaxWithLoss) SetGrads(g []matrix.Matrix)  {}
+
 func (l *SoftmaxWithLoss) Forward(x, t matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.t = t
 	l.y = Softmax(x)

@@ -45,7 +45,7 @@ func main() {
 
 	// training
 	now := time.Now()
-	trainer.Train(&trainer.Input{
+	trainer.Fit(&trainer.Input{
 		Model:      m,
 		Train:      x,
 		TrainLabel: t,

@@ -8,21 +8,42 @@ import (
 
 type AdaGrad struct {
 	LearningRate float64
-	h            map[string]matrix.Matrix
+	h            [][]matrix.Matrix
 }
 
-func (o *AdaGrad) Update(params, grads map[string]matrix.Matrix) map[string]matrix.Matrix {
-	if o.h == nil {
-		o.h = make(map[string]matrix.Matrix)
-		for k, v := range params {
-			o.h[k] = matrix.Zero(v.Dimension())
+func (o *AdaGrad) Update(params, grads [][]matrix.Matrix) [][]matrix.Matrix {
+	if len(o.h) == 0 {
+		o.h = make([][]matrix.Matrix, 0)
+		for i := range params {
+			h := make([]matrix.Matrix, 0)
+			if len(params[i]) == 0 {
+				o.h = append(o.h, h)
+				continue
+			}
+
+			for j := range params[i] {
+				h = append(h, matrix.Zero(params[i][j].Dimension()))
+			}
+
+			o.h = append(o.h, h)
 		}
 	}
 
-	out := make(map[string]matrix.Matrix)
-	for k := range params {
-		o.h[k] = o.h[k].Add(grads[k].Mul(grads[k]))                                        // h[k] = h[k] + grads[k] * grads[k]
-		out[k] = params[k].Sub(matrix.FuncWith(grads[k], o.h[k], adagrad(o.LearningRate))) // params[k] = params[k] - learningRate * grads[k] / sqrt(h[k])
+	out := make([][]matrix.Matrix, 0)
+	for i := range params {
+		v := make([]matrix.Matrix, 0)
+		if len(params[i]) == 0 {
+			out = append(out, v)
+			continue
+		}
+
+		for j := range params[i] {
+			o.h[i][j] = o.h[i][j].Add(grads[i][j].Mul(grads[i][j]))                                 // h[k] = h[k] + grads[k] * grads[k]
+			p := params[i][j].Sub(matrix.FuncWith(grads[i][j], o.h[i][j], adagrad(o.LearningRate))) // params[k] = params[k] - o.LearningRate * grads[k]
+			v = append(v, p)
+		}
+
+		out = append(out, v)
 	}
 
 	return out
