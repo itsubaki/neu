@@ -13,8 +13,8 @@ var _ Model = (*model.MLP)(nil)
 type Model interface {
 	Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix
 	Loss(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix
-	Gradient(x, t matrix.Matrix) map[string]matrix.Matrix
-	Optimize(grads map[string]matrix.Matrix)
+	Gradient(x, t matrix.Matrix) [][]matrix.Matrix
+	Optimize(grads [][]matrix.Matrix)
 }
 
 type Input struct {
@@ -26,7 +26,7 @@ type Input struct {
 	Verbose           func(i int, m Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix)
 }
 
-func Train(in *Input) {
+func Fit(in *Input) {
 	for i := 0; i < in.Iter+1; i++ {
 		// batch
 		mask := Random(len(in.Train), in.BatchSize)

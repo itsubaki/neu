@@ -27,12 +27,16 @@ var (
 )
 
 type Layer interface {
+	Params() []matrix.Matrix
+	SetParams(p []matrix.Matrix)
+	Grads() []matrix.Matrix
+	SetGrads(g []matrix.Matrix)
 	Forward(x, y matrix.Matrix, opts ...layer.Opts) matrix.Matrix
 	Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix)
 }
 
 type Optimizer interface {
-	Update(params, grads map[string]matrix.Matrix) map[string]matrix.Matrix
+	Update(params, grads [][]matrix.Matrix) [][]matrix.Matrix
 }
 
 type WeightInit func(prevNodeNum int) float64

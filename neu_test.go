@@ -36,7 +36,7 @@ func Example_mnist() {
 	})
 
 	// training
-	trainer.Train(&trainer.Input{
+	trainer.Fit(&trainer.Input{
 		Model:      m,
 		Train:      x,
 		TrainLabel: t,

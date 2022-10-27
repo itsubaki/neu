@@ -31,3 +31,17 @@ func ExampleMul() {
 	// [[2.2]] [[110.00000000000001]] [[200]]
 
 }
+
+func ExampleMul_Params() {
+	mul := layer.Mul{}
+
+	mul.SetParams(make([]matrix.Matrix, 0))
+	mul.SetGrads(make([]matrix.Matrix, 0))
+
+	fmt.Println(mul.Params())
+	fmt.Println(mul.Grads())
+
+	// Output:
+	// []
+	// []
+}

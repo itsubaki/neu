@@ -18,3 +18,17 @@ func ExampleSigmoid() {
 	// [[0.5]]
 	// [[0]] []
 }
+
+func ExampleSigmoid_Params() {
+	sigmoid := layer.Sigmoid{}
+
+	sigmoid.SetParams(make([]matrix.Matrix, 0))
+	sigmoid.SetGrads(make([]matrix.Matrix, 0))
+
+	fmt.Println(sigmoid.Params())
+	fmt.Println(sigmoid.Grads())
+
+	// Output:
+	// []
+	// []
+}

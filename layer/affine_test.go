@@ -21,12 +21,25 @@ func ExampleAffine() {
 		B: B,
 	}
 
-	A := affine.Forward(x, nil)
-	fmt.Println(A)
-	fmt.Println(affine.Backward(A))
+	fmt.Println(affine.Forward(x, nil))
+	fmt.Println(affine.Backward(x))
 
 	// Output:
 	// [[0.30000000000000004 0.7 1.1]]
-	// [[0.79 1]] []
+	// [[0.25 0.4]] []
 
+}
+
+func ExampleAffine_Params() {
+	affine := layer.Affine{}
+
+	affine.SetParams(make([]matrix.Matrix, 2))
+	affine.SetGrads(make([]matrix.Matrix, 2))
+
+	fmt.Println(affine.Params())
+	fmt.Println(affine.Grads())
+
+	// Output:
+	// [[] []]
+	// [[] []]
 }

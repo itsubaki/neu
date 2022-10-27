@@ -44,3 +44,17 @@ func ExampleDot() {
 	// [1 3]
 	// [2 4]
 }
+
+func ExampleDot_Params() {
+	dot := layer.Dot{}
+
+	dot.SetParams(make([]matrix.Matrix, 0))
+	dot.SetGrads(make([]matrix.Matrix, 0))
+
+	fmt.Println(dot.Params())
+	fmt.Println(dot.Grads())
+
+	// Output:
+	// []
+	// []
+}

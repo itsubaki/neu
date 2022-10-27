@@ -16,16 +16,14 @@ type TestModel struct{}
 
 func (m *TestModel) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix { return matrix.New() }
 func (m *TestModel) Loss(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix { return matrix.New() }
-func (m *TestModel) Gradient(x, t matrix.Matrix) map[string]matrix.Matrix {
-	return make(map[string]matrix.Matrix)
-}
-func (m *TestModel) Optimize(grads map[string]matrix.Matrix) {}
+func (m *TestModel) Gradient(x, t matrix.Matrix) [][]matrix.Matrix             { return [][]matrix.Matrix{} }
+func (m *TestModel) Optimize(grads [][]matrix.Matrix)                          {}
 
-func ExampleTrain() {
+func ExampleFit() {
 	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
 
-	trainer.Train(&trainer.Input{
+	trainer.Fit(&trainer.Input{
 		Model:      &TestModel{},
 		Train:      x,
 		TrainLabel: t,
@@ -38,11 +36,11 @@ func ExampleTrain() {
 	// Output:
 }
 
-func ExampleTrain_verbose() {
+func ExampleFit_verbose() {
 	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
 
-	trainer.Train(&trainer.Input{
+	trainer.Fit(&trainer.Input{
 		Model:      &TestModel{},
 		Train:      x,
 		TrainLabel: t,

@@ -13,6 +13,11 @@ type BatchNorm struct {
 	DGamma, DBeta matrix.Matrix
 }
 
+func (l *BatchNorm) Params() []matrix.Matrix     { return []matrix.Matrix{l.Gamma, l.Beta} }
+func (l *BatchNorm) SetParams(p []matrix.Matrix) { l.Gamma, l.Beta = p[0], p[1] }
+func (l *BatchNorm) Grads() []matrix.Matrix      { return []matrix.Matrix{l.DGamma, l.DBeta} }
+func (l *BatchNorm) SetGrads(g []matrix.Matrix)  { l.DGamma, l.DBeta = g[0], g[1] }
+
 func (l *BatchNorm) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
 	if l.mu == nil {
 		_, d := x.Dimension()
@@ -41,16 +46,16 @@ func (l *BatchNorm) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
 		xn = xc.Div(std)       // (x - mu) / sqrt(var + eps)
 	}
 
-	return xn.Mul(l.Gamma).Add(l.Beta) // gamma * xn + beta
+	return xn.Mul(l.Gamma).Add(l.Beta) // xn * gamma + beta
 }
 
 func (l *BatchNorm) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	// DBeta, DGamma
-	l.DBeta = dout.SumAxis0()            // sum(dout)
 	l.DGamma = l.xn.Mul(dout).SumAxis0() // sum(xn * dout)
+	l.DBeta = dout.SumAxis0()            // sum(dout)
 
 	// dxn, dxc
-	dxn := dout.Mul(l.Gamma) // gamma * dout
+	dxn := dout.Mul(l.Gamma) // dout * gamma
 	dxc := dxn.Div(l.std)    // dxn / std
 
 	// dstd, dvar
@@ -59,10 +64,9 @@ func (l *BatchNorm) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) 
 	dvar := dstd.Div(l.std).MulC(0.5)           // 0.5 * (dstd / std)
 
 	// dxc, dmu
-	xcdvar := l.xc.Mul(dvar)                           // xc * dvar
-	xcdvar2 := xcdvar.MulC(2.0 / float64(l.batchSize)) // 2.0/batchSize * xc * dvar
-	dxc = dxc.Add(xcdvar2)                             // dxc = dxc + 2.0/batchSize * xc * dvar
-	dmu := dxc.SumAxis0()                              // dmu = sum(dxc)
+	xcdv := l.xc.Mul(dvar).MulC(2.0 / float64(l.batchSize)) // 2.0/batchSize * xc * dvar
+	dxc = dxc.Add(xcdv)                                     // dxc = dxc + 2.0/batchSize * xc * dvar
+	dmu := dxc.SumAxis0()                                   // dmu = sum(dxc)
 
 	// dx
 	dx := dxc.Sub(dmu.MulC(1.0 / float64(l.batchSize))) // dxc - dmu / batchSize

@@ -48,3 +48,17 @@ func ExampleDropout() {
 	// [[0.5 -0.25] [-1 1.5]]
 	// [[0 -0] [-2 3]] []
 }
+
+func ExampleDropout_Params() {
+	dropout := layer.Dropout{}
+
+	dropout.SetParams(make([]matrix.Matrix, 0))
+	dropout.SetGrads(make([]matrix.Matrix, 0))
+
+	fmt.Println(dropout.Params())
+	fmt.Println(dropout.Grads())
+
+	// Output:
+	// []
+	// []
+}
