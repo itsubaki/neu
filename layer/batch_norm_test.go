@@ -29,3 +29,17 @@ func ExampleBatchNorm() {
 	// [[0.9999998000000601 0.9999998000000601]]
 	// [[3 3]]
 }
+
+func ExampleBatchNorm_Params() {
+	n := layer.BatchNorm{}
+
+	n.SetParams(make([]matrix.Matrix, 2))
+	n.SetGrads(make([]matrix.Matrix, 2))
+
+	fmt.Println(n.Params())
+	fmt.Println(n.Grads())
+
+	// Output:
+	// [[] []]
+	// [[] []]
+}

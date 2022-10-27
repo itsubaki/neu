@@ -29,3 +29,17 @@ func ExampleAffine() {
 	// [[0.25 0.4]] []
 
 }
+
+func ExampleAffine_Params() {
+	affine := layer.Affine{}
+
+	affine.SetParams(make([]matrix.Matrix, 2))
+	affine.SetGrads(make([]matrix.Matrix, 2))
+
+	fmt.Println(affine.Params())
+	fmt.Println(affine.Grads())
+
+	// Output:
+	// [[] []]
+	// [[] []]
+}

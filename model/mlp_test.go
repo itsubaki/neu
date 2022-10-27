@@ -11,7 +11,7 @@ import (
 	"github.com/itsubaki/neu/weight"
 )
 
-func Example_optimize() {
+func ExampleMLP_Optimize() {
 	// data
 	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
