@@ -23,9 +23,6 @@ func (m *TestModel) Optimize(opt model.Optimizer, grads [][]matrix.Matrix)     {
 func ExampleTrainer_Fit() {
 	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
-	v := func(i int, m trainer.Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix) {
-		fmt.Printf("%2v: %T\n", i, m)
-	}
 
 	tr := &trainer.Trainer{
 		Model:     &TestModel{},
@@ -39,7 +36,9 @@ func ExampleTrainer_Fit() {
 		TestLabel:  t,
 		Epochs:     5,
 		BatchSize:  1,
-		Verbose:    v,
+		Verbose: func(i int, m trainer.Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix) {
+			fmt.Printf("%2v: %T\n", i, m)
+		},
 	})
 
 	// Output:
