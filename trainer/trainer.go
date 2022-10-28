@@ -34,10 +34,10 @@ type Trainer struct {
 }
 
 func (t *Trainer) Fit(in *Input) {
-	per := len(in.Train) / in.BatchSize
+	epoch := len(in.Train) / in.BatchSize
 
 	// iter
-	for i := 0; i < (in.Epochs*per)+1; i++ {
+	for i := 0; i < (in.Epochs*epoch)+1; i++ {
 		// batch
 		mask := Random(len(in.Train), in.BatchSize)
 		xbatch := matrix.Batch(in.Train, mask)
@@ -47,11 +47,7 @@ func (t *Trainer) Fit(in *Input) {
 		grads := t.Model.Gradient(xbatch, tbatch)
 		t.Model.Optimize(t.Optimizer, grads)
 
-		if in.Verbose == nil {
-			continue
-		}
-
-		if i%per == 0 {
+		if i%epoch == 0 {
 			// test data
 			mask := Random(len(in.Test), in.BatchSize)
 			xtbatch := matrix.Batch(in.Test, mask)
