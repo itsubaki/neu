@@ -32,14 +32,17 @@ func Example_mnist() {
 		HiddenSize: []int{50},
 		OutputSize: 10,
 		WeightInit: weight.Std(0.01),
-		Optimizer:  &optimizer.SGD{LearningRate: 0.1},
 	})
 
 	// training
-	trainer.Fit(&trainer.Input{
-		Model:      m,
-		Train:      x,
-		TrainLabel: t,
+	tr := trainer.Trainer{
+		Model:     m,
+		Optimizer: &optimizer.SGD{LearningRate: 0.1},
+	}
+
+	tr.Fit(&trainer.Input{
+		Train:      x[:100],
+		TrainLabel: t[:100],
 		Test:       xt,
 		TestLabel:  tt,
 		Iter:       100,
@@ -54,17 +57,17 @@ func Example_mnist() {
 	})
 
 	// Output:
-	// loss=[[2.2971]], train_acc=0.3000, test_acc=0.2000
-	// loss=[[2.2996]], train_acc=0.2000, test_acc=0.3000
-	// loss=[[2.2841]], train_acc=0.2000, test_acc=0.0000
-	// loss=[[2.2302]], train_acc=0.3000, test_acc=0.3000
-	// loss=[[2.2375]], train_acc=0.3000, test_acc=0.6000
-	// loss=[[1.9794]], train_acc=0.4000, test_acc=0.2000
-	// loss=[[2.0235]], train_acc=0.4000, test_acc=0.7000
-	// loss=[[2.0646]], train_acc=0.2000, test_acc=0.6000
-	// loss=[[1.4424]], train_acc=0.7000, test_acc=0.6000
-	// loss=[[1.1426]], train_acc=0.8000, test_acc=0.5000
-	// loss=[[1.0175]], train_acc=0.9000, test_acc=0.7000
+	// loss=[[2.2961]], train_acc=0.3000, test_acc=0.4000
+	// loss=[[2.2638]], train_acc=0.4000, test_acc=0.2000
+	// loss=[[2.2243]], train_acc=0.3000, test_acc=0.3000
+	// loss=[[2.0903]], train_acc=0.4000, test_acc=0.1000
+	// loss=[[1.9699]], train_acc=0.2000, test_acc=0.1000
+	// loss=[[1.9522]], train_acc=0.4000, test_acc=0.2000
+	// loss=[[1.5927]], train_acc=0.5000, test_acc=0.2000
+	// loss=[[0.9446]], train_acc=0.7000, test_acc=0.3000
+	// loss=[[0.8378]], train_acc=0.8000, test_acc=0.3000
+	// loss=[[0.4816]], train_acc=1.0000, test_acc=0.5000
+	// loss=[[0.8772]], train_acc=0.8000, test_acc=0.9000
 
 }
 

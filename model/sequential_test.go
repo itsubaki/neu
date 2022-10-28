@@ -5,27 +5,34 @@ import (
 	"math"
 	"math/rand"
 
+	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/weight"
 )
 
-func ExampleMLP_Optimize() {
+func ExampleSequential_Optimize() {
 	// data
 	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
-	_, inSize := x.Dimension()
-	hiddenSize, outSize := t.Dimension()
 
-	// init
+	// weight
 	rand.Seed(1) // for test
-	m := model.NewMLP(&model.MLPConfig{
-		InputSize:  inSize,
-		HiddenSize: []int{hiddenSize},
-		OutputSize: outSize,
-		WeightInit: weight.Std(0.01),
-	})
+	W1 := matrix.Randn(2, 3).MulC(weight.Std(0.01)(2))
+	B1 := matrix.Zero(1, 3)
+	W2 := matrix.Randn(3, 2).MulC(weight.Std(0.01)(3))
+	B2 := matrix.Zero(1, 2)
+
+	// model
+	m := model.Sequential{
+		Layer: []model.Layer{
+			&layer.Affine{W: W1, B: B1},
+			&layer.ReLU{},
+			&layer.Affine{W: W2, B: B2},
+			&layer.SoftmaxWithLoss{},
+		},
+	}
 
 	// optimizer
 	opt := &optimizer.SGD{LearningRate: 0.1}
@@ -45,24 +52,29 @@ func ExampleMLP_Optimize() {
 	// [[0.5432]]
 	// [[0.4741]]
 	// [[0.4045]]
-
 }
 
-func ExampleMLP_gradientCheck() {
+func ExampleSequential_gradientCheck() {
 	// data
 	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
-	_, inSize := x.Dimension()
-	hiddenSize, outSize := t.Dimension()
 
-	// init
+	// weight
 	rand.Seed(1) // for test
-	m := model.NewMLP(&model.MLPConfig{
-		InputSize:  inSize,
-		HiddenSize: []int{hiddenSize},
-		OutputSize: outSize,
-		WeightInit: weight.Std(0.01),
-	})
+	W1 := matrix.Randn(2, 3).MulC(weight.Std(0.01)(2))
+	B1 := matrix.Zero(1, 3)
+	W2 := matrix.Randn(3, 2).MulC(weight.Std(0.01)(3))
+	B2 := matrix.Zero(1, 2)
+
+	// model
+	m := model.Sequential{
+		Layer: []model.Layer{
+			&layer.Affine{W: W1, B: B1},
+			&layer.ReLU{},
+			&layer.Affine{W: W2, B: B2},
+			&layer.SoftmaxWithLoss{},
+		},
+	}
 
 	// gradient
 	ngrads := m.NumericalGradient(x, t)

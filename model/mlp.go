@@ -3,7 +3,6 @@ package model
 import (
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
-	"github.com/itsubaki/neu/math/numerical"
 )
 
 type MLPConfig struct {
@@ -11,13 +10,10 @@ type MLPConfig struct {
 	HiddenSize []int
 	OutputSize int
 	WeightInit WeightInit
-	Optimizer  Optimizer
 }
 
 type MLP struct {
-	layer     []Layer
-	loss      Layer
-	optimizer Optimizer
+	seq *Sequential
 }
 
 func NewMLP(c *MLPConfig) *MLP {
@@ -34,86 +30,33 @@ func NewMLP(c *MLPConfig) *MLP {
 		})
 		layers = append(layers, &layer.ReLU{})
 	}
-	layers = layers[:len(layers)-1] // remove last ReLU
+	layers = layers[:len(layers)-1]                   // remove last ReLU
+	layers = append(layers, &layer.SoftmaxWithLoss{}) // loss function
 
 	// new
 	return &MLP{
-		layer:     layers,
-		loss:      &layer.SoftmaxWithLoss{},
-		optimizer: c.Optimizer,
+		seq: &Sequential{
+			Layer: layers,
+		},
 	}
 }
 
 func (m *MLP) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
-	for _, l := range m.layer {
-		x = l.Forward(x, nil, opts...)
-	}
-
-	return x
+	return m.seq.Predict(x, opts...)
 }
 
 func (m *MLP) Loss(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
-	y := m.Predict(x, opts...)
-	return m.loss.Forward(y, t, opts...)
+	return m.seq.Loss(x, t, opts...)
 }
 
 func (m *MLP) Gradient(x, t matrix.Matrix) [][]matrix.Matrix {
-	// forward
-	m.Loss(x, t, layer.Opts{Train: true})
-
-	// backward
-	dout, _ := m.loss.Backward(matrix.New([]float64{1}))
-	for i := len(m.layer) - 1; i > -1; i-- {
-		dout, _ = m.layer[i].Backward(dout)
-	}
-
-	// gradient
-	grads := make([][]matrix.Matrix, 0)
-	for _, l := range m.layer {
-		grads = append(grads, l.Grads())
-	}
-
-	return grads
+	return m.seq.Gradient(x, t)
 }
 
 func (m *MLP) NumericalGradient(x, t matrix.Matrix) [][]matrix.Matrix {
-	lossW := func(w ...float64) float64 {
-		return m.Loss(x, t, layer.Opts{Train: true})[0][0]
-	}
-
-	grad := func(f func(x ...float64) float64, x matrix.Matrix) matrix.Matrix {
-		out := make(matrix.Matrix, 0)
-		for _, r := range x {
-			out = append(out, numerical.Gradient(f, r))
-		}
-
-		return out
-	}
-
-	// gradient
-	grads := make([][]matrix.Matrix, 0)
-	for _, l := range m.layer {
-		g := make([]matrix.Matrix, 0)
-		for _, p := range l.Params() {
-			g = append(g, grad(lossW, p))
-		}
-
-		grads = append(grads, g)
-	}
-
-	return grads
+	return m.seq.NumericalGradient(x, t)
 }
 
-func (m *MLP) Optimize(grads [][]matrix.Matrix) {
-	// params
-	params := make([][]matrix.Matrix, 0)
-	for _, l := range m.layer {
-		params = append(params, l.Params())
-	}
-
-	// update
-	updated := m.optimizer.Update(params, grads)
-	for i, l := range m.layer {
-		l.SetParams(updated[i])
-	}
+func (m *MLP) Optimize(opt Optimizer, grads [][]matrix.Matrix) {
+	m.seq.Optimize(opt, grads)
 }

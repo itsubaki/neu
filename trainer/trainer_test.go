@@ -7,6 +7,7 @@ import (
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/trainer"
 )
 
@@ -17,14 +18,18 @@ type TestModel struct{}
 func (m *TestModel) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix { return matrix.New() }
 func (m *TestModel) Loss(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix { return matrix.New() }
 func (m *TestModel) Gradient(x, t matrix.Matrix) [][]matrix.Matrix             { return [][]matrix.Matrix{} }
-func (m *TestModel) Optimize(grads [][]matrix.Matrix)                          {}
+func (m *TestModel) Optimize(opt model.Optimizer, grads [][]matrix.Matrix)     {}
 
-func ExampleFit() {
+func ExampleTrainer_Fit() {
 	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
 
-	trainer.Fit(&trainer.Input{
-		Model:      &TestModel{},
+	tr := trainer.Trainer{
+		Model:     &TestModel{},
+		Optimizer: nil,
+	}
+
+	tr.Fit(&trainer.Input{
 		Train:      x,
 		TrainLabel: t,
 		Test:       x,
@@ -36,12 +41,16 @@ func ExampleFit() {
 	// Output:
 }
 
-func ExampleFit_verbose() {
+func ExampleTrainer_verbose() {
 	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
 
-	trainer.Fit(&trainer.Input{
-		Model:      &TestModel{},
+	tr := trainer.Trainer{
+		Model:     &TestModel{},
+		Optimizer: nil,
+	}
+
+	tr.Fit(&trainer.Input{
 		Train:      x,
 		TrainLabel: t,
 		Test:       x,

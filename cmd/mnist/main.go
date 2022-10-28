@@ -14,12 +14,12 @@ import (
 	"github.com/itsubaki/neu/weight"
 )
 
-// go run cmd/mnist/main.go --iter 10000
+// go run cmd/mnist/main.go --iter 12000
 func main() {
 	var dir string
 	var iter, batchSize int
 	flag.StringVar(&dir, "dir", "./testdata", "")
-	flag.IntVar(&iter, "iter", 1000, "")
+	flag.IntVar(&iter, "iter", 1200, "")
 	flag.IntVar(&batchSize, "batchsize", 100, "")
 	flag.Parse()
 
@@ -39,13 +39,16 @@ func main() {
 		HiddenSize: []int{50, 50, 50},
 		OutputSize: 10, // 0 ~ 9
 		WeightInit: weight.He,
-		Optimizer:  &optimizer.AdaGrad{LearningRate: 0.01},
 	})
 
 	// training
+	tr := trainer.Trainer{
+		Model:     m,
+		Optimizer: &optimizer.AdaGrad{LearningRate: 0.01},
+	}
+
 	now := time.Now()
-	trainer.Fit(&trainer.Input{
-		Model:      m,
+	tr.Fit(&trainer.Input{
 		Train:      x,
 		TrainLabel: t,
 		Test:       xt,

@@ -8,17 +8,19 @@ import (
 	"github.com/itsubaki/neu/model"
 )
 
-var _ Model = (*model.MLP)(nil)
+var (
+	_ Model = (*model.Sequential)(nil)
+	_ Model = (*model.MLP)(nil)
+)
 
 type Model interface {
 	Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix
 	Loss(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix
 	Gradient(x, t matrix.Matrix) [][]matrix.Matrix
-	Optimize(grads [][]matrix.Matrix)
+	Optimize(opt model.Optimizer, grads [][]matrix.Matrix)
 }
 
 type Input struct {
-	Model             Model
 	Train, TrainLabel matrix.Matrix
 	Test, TestLabel   matrix.Matrix
 	Iter              int
@@ -26,7 +28,15 @@ type Input struct {
 	Verbose           func(i int, m Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix)
 }
 
-func Fit(in *Input) {
+type Trainer struct {
+	Model     Model
+	Optimizer model.Optimizer
+}
+
+func (t *Trainer) Fit(in *Input) {
+	epoch := len(in.Train) / in.BatchSize
+
+	// iter
 	for i := 0; i < in.Iter+1; i++ {
 		// batch
 		mask := Random(len(in.Train), in.BatchSize)
@@ -34,21 +44,21 @@ func Fit(in *Input) {
 		tbatch := matrix.Batch(in.TrainLabel, mask)
 
 		// update
-		grads := in.Model.Gradient(xbatch, tbatch)
-		in.Model.Optimize(grads)
+		grads := t.Model.Gradient(xbatch, tbatch)
+		t.Model.Optimize(t.Optimizer, grads)
 
 		if in.Verbose == nil {
 			continue
 		}
 
-		if i%(in.Iter/in.BatchSize) == 0 {
+		if i%epoch == 0 {
 			// test data
 			mask := Random(len(in.Test), in.BatchSize)
 			xtbatch := matrix.Batch(in.Test, mask)
 			ttbatch := matrix.Batch(in.TestLabel, mask)
 
 			// verbose
-			in.Verbose(i, in.Model, xbatch, tbatch, xtbatch, ttbatch)
+			in.Verbose(i, t.Model, xbatch, tbatch, xtbatch, ttbatch)
 		}
 	}
 }
