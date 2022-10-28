@@ -27,7 +27,7 @@ type Input struct {
 	Test, TestLabel   matrix.Matrix
 	Epochs            int
 	BatchSize         int
-	Verbose           func(epoch int, m Model)
+	Verbose           func(epoch, j int, m Model)
 }
 
 type Trainer struct {
@@ -48,10 +48,10 @@ func (t *Trainer) Fit(in *Input) {
 			t.Model.Forward(xbatch, tbatch)
 			t.Model.Backward(xbatch, tbatch)
 			t.Model.Optimize(t.Optimizer)
-		}
 
-		// verbose
-		in.Verbose(i, t.Model)
+			// verbose
+			in.Verbose(i, j, t.Model)
+		}
 	}
 }
 

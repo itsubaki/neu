@@ -36,19 +36,24 @@ func ExampleTrainer_Fit() {
 		TrainLabel: t,
 		Test:       x,
 		TestLabel:  t,
-		Epochs:     5,
+		Epochs:     3,
 		BatchSize:  1,
-		Verbose: func(i int, m trainer.Model) {
-			fmt.Printf("%2v: %T\n", i, m)
+		Verbose: func(epoch, j int, m trainer.Model) {
+			fmt.Printf("%v,%v: %T\n", epoch, j, m)
 		},
 	})
 
 	// Output:
-	//  0: *trainer_test.Test
-	//  1: *trainer_test.Test
-	//  2: *trainer_test.Test
-	//  3: *trainer_test.Test
-	//  4: *trainer_test.Test
+	// 0,0: *trainer_test.Test
+	// 0,1: *trainer_test.Test
+	// 0,2: *trainer_test.Test
+	// 1,0: *trainer_test.Test
+	// 1,1: *trainer_test.Test
+	// 1,2: *trainer_test.Test
+	// 2,0: *trainer_test.Test
+	// 2,1: *trainer_test.Test
+	// 2,2: *trainer_test.Test
+
 }
 
 func ExampleAccuracy() {

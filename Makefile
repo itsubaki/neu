@@ -10,7 +10,7 @@ test:
 
 .PHONY: mnist
 mnist:
-	go run cmd/mnist/main.go --dir ./testdata --epochs 3
+	go run cmd/mnist/main.go --dir ./testdata
 
 mnistdl:
 	curl -s -o testdata/train-images-idx3-ubyte.gz http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz

@@ -47,7 +47,11 @@ func Example_mnist() {
 		TestLabel:  tt,
 		Epochs:     10,
 		BatchSize:  10,
-		Verbose: func(i int, m trainer.Model) {
+		Verbose: func(epoch, j int, m trainer.Model) {
+			if j%(train.N/10/10) != 0 {
+				return
+			}
+
 			loss := m.Forward(x[:100], t[:100])
 			acc := trainer.Accuracy(m.Predict(x[:100]), t[:100])
 			tacc := trainer.Accuracy(m.Predict(xt[:100]), tt[:100])
@@ -57,16 +61,16 @@ func Example_mnist() {
 	})
 
 	// Output:
-	// loss=[[2.2858]], train_acc=0.2600, test_acc=0.2200
-	// loss=[[2.2521]], train_acc=0.2200, test_acc=0.2100
-	// loss=[[2.1712]], train_acc=0.2500, test_acc=0.2200
-	// loss=[[2.0358]], train_acc=0.2800, test_acc=0.2400
-	// loss=[[1.8654]], train_acc=0.5300, test_acc=0.4200
-	// loss=[[1.6468]], train_acc=0.5500, test_acc=0.4700
-	// loss=[[1.3764]], train_acc=0.6300, test_acc=0.5200
-	// loss=[[1.1171]], train_acc=0.7400, test_acc=0.5800
-	// loss=[[0.9209]], train_acc=0.7700, test_acc=0.5500
-	// loss=[[0.7368]], train_acc=0.8700, test_acc=0.6300
+	// loss=[[2.3010]], train_acc=0.1100, test_acc=0.1100
+	// loss=[[2.2835]], train_acc=0.2300, test_acc=0.1700
+	// loss=[[2.2416]], train_acc=0.1500, test_acc=0.1000
+	// loss=[[2.1437]], train_acc=0.2200, test_acc=0.1800
+	// loss=[[2.0248]], train_acc=0.3400, test_acc=0.2600
+	// loss=[[1.8574]], train_acc=0.4900, test_acc=0.3600
+	// loss=[[1.6298]], train_acc=0.5500, test_acc=0.4800
+	// loss=[[1.3510]], train_acc=0.6200, test_acc=0.5400
+	// loss=[[1.1032]], train_acc=0.7600, test_acc=0.6200
+	// loss=[[0.9004]], train_acc=0.7500, test_acc=0.5500
 
 }
 

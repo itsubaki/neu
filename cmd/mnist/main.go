@@ -19,7 +19,7 @@ func main() {
 	var dir string
 	var epochs, batchSize int
 	flag.StringVar(&dir, "dir", "./testdata", "")
-	flag.IntVar(&epochs, "epochs", 10, "")
+	flag.IntVar(&epochs, "epochs", 1, "")
 	flag.IntVar(&batchSize, "batchsize", 100, "")
 	flag.Parse()
 
@@ -58,7 +58,11 @@ func main() {
 		TestLabel:  tt,
 		Epochs:     epochs,
 		BatchSize:  batchSize,
-		Verbose: func(i int, m trainer.Model) {
+		Verbose: func(epoch, j int, m trainer.Model) {
+			if j%(train.N/batchSize/10) != 0 {
+				return
+			}
+
 			// batch
 			mask := trainer.Random(train.N, batchSize)
 			xbatch := matrix.Batch(x, mask)
@@ -75,7 +79,7 @@ func main() {
 			tacc := trainer.Accuracy(yt, ttbatch)
 
 			// print
-			fmt.Printf("%4d: loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", i, loss, acc, tacc)
+			fmt.Printf("%4d,%4d: loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", epoch, j, loss, acc, tacc)
 			fmt.Printf("predict: %v\n", yt.Argmax()[:20])
 			fmt.Printf("label  : %v\n", ttbatch.Argmax()[:20])
 			fmt.Println()
