@@ -25,7 +25,7 @@ type Input struct {
 	Test, TestLabel   matrix.Matrix
 	Epochs            int
 	BatchSize         int
-	Verbose           func(i int, m Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix)
+	Verbose           func(epoch int, m Model)
 }
 
 type Trainer struct {
@@ -34,28 +34,20 @@ type Trainer struct {
 }
 
 func (t *Trainer) Fit(in *Input) {
-	epoch := len(in.Train) / in.BatchSize
+	for i := 0; i < in.Epochs; i++ {
+		for j := 0; j < len(in.Train)/in.BatchSize; j++ {
+			// batch
+			mask := Random(len(in.Train), in.BatchSize)
+			xbatch := matrix.Batch(in.Train, mask)
+			tbatch := matrix.Batch(in.TrainLabel, mask)
 
-	// iter
-	for i := 0; i < (in.Epochs*epoch)+1; i++ {
-		// batch
-		mask := Random(len(in.Train), in.BatchSize)
-		xbatch := matrix.Batch(in.Train, mask)
-		tbatch := matrix.Batch(in.TrainLabel, mask)
-
-		// update
-		grads := t.Model.Gradient(xbatch, tbatch)
-		t.Model.Optimize(t.Optimizer, grads)
-
-		if i%epoch == 0 {
-			// test data
-			mask := Random(len(in.Test), in.BatchSize)
-			xtbatch := matrix.Batch(in.Test, mask)
-			ttbatch := matrix.Batch(in.TestLabel, mask)
-
-			// verbose
-			in.Verbose(i, t.Model, xbatch, tbatch, xtbatch, ttbatch)
+			// update
+			grads := t.Model.Gradient(xbatch, tbatch)
+			t.Model.Optimize(t.Optimizer, grads)
 		}
+
+		// verbose
+		in.Verbose(i, t.Model)
 	}
 }
 

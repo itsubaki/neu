@@ -36,7 +36,7 @@ func ExampleTrainer_Fit() {
 		TestLabel:  t,
 		Epochs:     5,
 		BatchSize:  1,
-		Verbose: func(i int, m trainer.Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix) {
+		Verbose: func(i int, m trainer.Model) {
 			fmt.Printf("%2v: %T\n", i, m)
 		},
 	})

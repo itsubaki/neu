@@ -58,12 +58,23 @@ func main() {
 		TestLabel:  tt,
 		Epochs:     epochs,
 		BatchSize:  batchSize,
-		Verbose: func(i int, m trainer.Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix) {
+		Verbose: func(i int, m trainer.Model) {
+			// batch
+			mask := trainer.Random(len(x), batchSize)
+			xbatch := matrix.Batch(x, mask)
+			tbatch := matrix.Batch(t, mask)
+
+			maskt := trainer.Random(len(xt), batchSize)
+			xtbatch := matrix.Batch(xt, maskt)
+			ttbatch := matrix.Batch(tt, maskt)
+
+			// loss, accuracy
 			loss := m.Loss(xbatch, tbatch)
 			acc := trainer.Accuracy(m.Predict(xbatch), tbatch)
 			yt := m.Predict(xtbatch)
 			tacc := trainer.Accuracy(yt, ttbatch)
 
+			// print
 			fmt.Printf("%4d: loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", i, loss, acc, tacc)
 			fmt.Printf("predict: %v\n", yt.Argmax()[:20])
 			fmt.Printf("label  : %v\n", ttbatch.Argmax()[:20])
