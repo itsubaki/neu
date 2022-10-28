@@ -96,3 +96,20 @@ func ExampleRandom() {
 	// [0 1 2]
 	// [0 1 2 3]
 }
+
+func ExampleShuffle() {
+	x := matrix.New([]float64{0, 1}, []float64{0, 2}, []float64{0, 3}, []float64{0, 4})
+
+	rand.Seed(1234) // for test
+	fmt.Println(trainer.Shuffle(x))
+	fmt.Println(trainer.Shuffle(x))
+	fmt.Println(trainer.Shuffle(x))
+	fmt.Println(x)
+
+	// Output:
+	// [[0 4] [0 2] [0 3] [0 1]]
+	// [[0 2] [0 3] [0 1] [0 4]]
+	// [[0 2] [0 4] [0 3] [0 1]]
+	// [[0 1] [0 2] [0 3] [0 4]]
+
+}

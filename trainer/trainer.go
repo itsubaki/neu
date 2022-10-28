@@ -54,6 +54,20 @@ func (t *Trainer) Fit(in *Input) {
 	}
 }
 
+func Shuffle(m matrix.Matrix) matrix.Matrix {
+	shuffled := make(matrix.Matrix, 0)
+	for i := 0; i < len(m); i++ {
+		shuffled = append(shuffled, m[i])
+	}
+
+	for i := 0; i < len(shuffled); i++ {
+		j := rand.Intn(i + 1)
+		shuffled[i], shuffled[j] = shuffled[j], shuffled[i]
+	}
+
+	return shuffled
+}
+
 func Random(trainSize, batchSize int) []int {
 	tmp := make(map[int]bool)
 
