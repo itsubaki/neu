@@ -43,11 +43,10 @@ func ExampleTrainer_Fit() {
 
 	// Output:
 	//  0: *trainer_test.TestModel
+	//  1: *trainer_test.TestModel
+	//  2: *trainer_test.TestModel
 	//  3: *trainer_test.TestModel
-	//  6: *trainer_test.TestModel
-	//  9: *trainer_test.TestModel
-	// 12: *trainer_test.TestModel
-	// 15: *trainer_test.TestModel
+	//  4: *trainer_test.TestModel
 }
 
 func ExampleAccuracy() {
