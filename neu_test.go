@@ -57,16 +57,16 @@ func Example_mnist() {
 	})
 
 	// Output:
-	// loss=[[2.2762]], train_acc=0.1800, test_acc=0.1900
-	// loss=[[2.2449]], train_acc=0.2500, test_acc=0.2100
-	// loss=[[2.1604]], train_acc=0.2700, test_acc=0.2200
-	// loss=[[1.9869]], train_acc=0.2700, test_acc=0.2200
-	// loss=[[1.7871]], train_acc=0.4400, test_acc=0.3400
-	// loss=[[1.5499]], train_acc=0.4900, test_acc=0.4200
-	// loss=[[1.2837]], train_acc=0.6300, test_acc=0.5600
-	// loss=[[1.1640]], train_acc=0.5800, test_acc=0.4600
-	// loss=[[0.9766]], train_acc=0.6700, test_acc=0.5000
-	// loss=[[0.7537]], train_acc=0.8500, test_acc=0.6200
+	// loss=[[2.2858]], train_acc=0.2600, test_acc=0.2200
+	// loss=[[2.2521]], train_acc=0.2200, test_acc=0.2100
+	// loss=[[2.1712]], train_acc=0.2500, test_acc=0.2200
+	// loss=[[2.0358]], train_acc=0.2800, test_acc=0.2400
+	// loss=[[1.8654]], train_acc=0.5300, test_acc=0.4200
+	// loss=[[1.6468]], train_acc=0.5500, test_acc=0.4700
+	// loss=[[1.3764]], train_acc=0.6300, test_acc=0.5200
+	// loss=[[1.1171]], train_acc=0.7400, test_acc=0.5800
+	// loss=[[0.9209]], train_acc=0.7700, test_acc=0.5500
+	// loss=[[0.7368]], train_acc=0.8700, test_acc=0.6300
 
 }
 

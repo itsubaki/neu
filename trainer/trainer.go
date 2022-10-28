@@ -37,11 +37,12 @@ type Trainer struct {
 
 func (t *Trainer) Fit(in *Input) {
 	for i := 0; i < in.Epochs; i++ {
+		// shuffle dataset
+		xs, ts := Shuffle(in.Train, in.TrainLabel)
 		for j := 0; j < len(in.Train)/in.BatchSize; j++ {
 			// batch
-			mask := Random(len(in.Train), in.BatchSize)
-			xbatch := matrix.Batch(in.Train, mask)
-			tbatch := matrix.Batch(in.TrainLabel, mask)
+			begin, end := Range(j, in.BatchSize)
+			xbatch, tbatch := xs[begin:end], ts[begin:end]
 
 			// update
 			t.Model.Forward(xbatch, tbatch)
@@ -54,18 +55,27 @@ func (t *Trainer) Fit(in *Input) {
 	}
 }
 
-func Shuffle(m matrix.Matrix) matrix.Matrix {
-	shuffled := make(matrix.Matrix, 0)
-	for i := 0; i < len(m); i++ {
-		shuffled = append(shuffled, m[i])
+func Range(i, batchSize int) (int, int) {
+	begin := i * batchSize
+	end := begin + batchSize
+	return begin, end
+}
+
+func Shuffle(x, t matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
+	xs, ts := make(matrix.Matrix, 0), make(matrix.Matrix, 0)
+	for i := 0; i < len(x); i++ {
+		xs, ts = append(xs, x[i]), append(ts, t[i])
 	}
 
-	for i := 0; i < len(shuffled); i++ {
+	for i := 0; i < len(x); i++ {
 		j := rand.Intn(i + 1)
-		shuffled[i], shuffled[j] = shuffled[j], shuffled[i]
+
+		// swap
+		xs[i], xs[j] = xs[j], xs[i]
+		ts[i], ts[j] = ts[j], ts[i]
 	}
 
-	return shuffled
+	return xs, ts
 }
 
 func Random(trainSize, batchSize int) []int {

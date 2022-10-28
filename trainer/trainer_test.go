@@ -99,17 +99,18 @@ func ExampleRandom() {
 
 func ExampleShuffle() {
 	x := matrix.New([]float64{0, 1}, []float64{0, 2}, []float64{0, 3}, []float64{0, 4})
+	t := matrix.New([]float64{1, 0}, []float64{2, 0}, []float64{3, 0}, []float64{4, 0})
 
 	rand.Seed(1234) // for test
-	fmt.Println(trainer.Shuffle(x))
-	fmt.Println(trainer.Shuffle(x))
-	fmt.Println(trainer.Shuffle(x))
-	fmt.Println(x)
+	fmt.Println(trainer.Shuffle(x, t))
+	fmt.Println(trainer.Shuffle(x, t))
+	fmt.Println(trainer.Shuffle(x, t))
+	fmt.Println(x, t)
 
 	// Output:
-	// [[0 4] [0 2] [0 3] [0 1]]
-	// [[0 2] [0 3] [0 1] [0 4]]
-	// [[0 2] [0 4] [0 3] [0 1]]
-	// [[0 1] [0 2] [0 3] [0 4]]
+	// [[0 4] [0 2] [0 3] [0 1]] [[4 0] [2 0] [3 0] [1 0]]
+	// [[0 2] [0 3] [0 1] [0 4]] [[2 0] [3 0] [1 0] [4 0]]
+	// [[0 2] [0 4] [0 3] [0 1]] [[2 0] [4 0] [3 0] [1 0]]
+	// [[0 1] [0 2] [0 3] [0 4]] [[1 0] [2 0] [3 0] [4 0]]
 
 }
