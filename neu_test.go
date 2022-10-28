@@ -45,7 +45,7 @@ func Example_mnist() {
 		TrainLabel: t[:100],
 		Test:       xt,
 		TestLabel:  tt,
-		Iter:       100,
+		Epochs:     10,
 		BatchSize:  10,
 		Verbose: func(i int, m trainer.Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix) {
 			loss := m.Loss(xbatch, tbatch)

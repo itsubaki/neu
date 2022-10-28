@@ -23,7 +23,7 @@ type Model interface {
 type Input struct {
 	Train, TrainLabel matrix.Matrix
 	Test, TestLabel   matrix.Matrix
-	Iter              int
+	Epochs            int
 	BatchSize         int
 	Verbose           func(i int, m Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix)
 }
@@ -34,10 +34,10 @@ type Trainer struct {
 }
 
 func (t *Trainer) Fit(in *Input) {
-	epoch := len(in.Train) / in.BatchSize
+	per := len(in.Train) / in.BatchSize
 
 	// iter
-	for i := 0; i < in.Iter+1; i++ {
+	for i := 0; i < (in.Epochs*per)+1; i++ {
 		// batch
 		mask := Random(len(in.Train), in.BatchSize)
 		xbatch := matrix.Batch(in.Train, mask)
@@ -51,7 +51,7 @@ func (t *Trainer) Fit(in *Input) {
 			continue
 		}
 
-		if i%epoch == 0 {
+		if i%per == 0 {
 			// test data
 			mask := Random(len(in.Test), in.BatchSize)
 			xtbatch := matrix.Batch(in.Test, mask)

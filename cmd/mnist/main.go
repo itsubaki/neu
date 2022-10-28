@@ -14,12 +14,12 @@ import (
 	"github.com/itsubaki/neu/weight"
 )
 
-// go run cmd/mnist/main.go --iter 12000
+// go run cmd/mnist/main.go
 func main() {
 	var dir string
-	var iter, batchSize int
+	var epochs, batchSize int
 	flag.StringVar(&dir, "dir", "./testdata", "")
-	flag.IntVar(&iter, "iter", 1200, "")
+	flag.IntVar(&epochs, "epochs", 10, "")
 	flag.IntVar(&batchSize, "batchsize", 100, "")
 	flag.Parse()
 
@@ -53,7 +53,7 @@ func main() {
 		TrainLabel: t,
 		Test:       xt,
 		TestLabel:  tt,
-		Iter:       iter,
+		Epochs:     epochs,
 		BatchSize:  batchSize,
 		Verbose: func(i int, m trainer.Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix) {
 			loss := m.Loss(xbatch, tbatch)

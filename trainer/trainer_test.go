@@ -34,7 +34,7 @@ func ExampleTrainer_Fit() {
 		TrainLabel: t,
 		Test:       x,
 		TestLabel:  t,
-		Iter:       10,
+		Epochs:     10,
 		BatchSize:  1,
 	})
 
@@ -55,7 +55,7 @@ func ExampleTrainer_verbose() {
 		TrainLabel: t,
 		Test:       x,
 		TestLabel:  t,
-		Iter:       10,
+		Epochs:     5,
 		BatchSize:  1,
 		Verbose: func(i int, m trainer.Model, xbatch, tbatch, xtbatch, ttbatch matrix.Matrix) {
 			fmt.Printf("%2v: %T\n", i, m)
@@ -63,8 +63,12 @@ func ExampleTrainer_verbose() {
 	})
 
 	// Output:
-	// 	0: *trainer_test.TestModel
-	// 10: *trainer_test.TestModel
+	//  0: *trainer_test.TestModel
+	//  3: *trainer_test.TestModel
+	//  6: *trainer_test.TestModel
+	//  9: *trainer_test.TestModel
+	// 12: *trainer_test.TestModel
+	// 15: *trainer_test.TestModel
 }
 
 func ExampleAccuracy() {
