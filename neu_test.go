@@ -35,7 +35,7 @@ func Example_mnist() {
 	})
 
 	// training
-	tr := trainer.Trainer{
+	tr := &trainer.Trainer{
 		Model:     m,
 		Optimizer: &optimizer.SGD{LearningRate: 0.1},
 	}

@@ -24,7 +24,7 @@ func ExampleTrainer_Fit() {
 	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
 
-	tr := trainer.Trainer{
+	tr := &trainer.Trainer{
 		Model:     &TestModel{},
 		Optimizer: nil,
 	}
@@ -45,7 +45,7 @@ func ExampleTrainer_verbose() {
 	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
 
-	tr := trainer.Trainer{
+	tr := &trainer.Trainer{
 		Model:     &TestModel{},
 		Optimizer: nil,
 	}

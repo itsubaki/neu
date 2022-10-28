@@ -42,7 +42,7 @@ func main() {
 	})
 
 	// training
-	tr := trainer.Trainer{
+	tr := &trainer.Trainer{
 		Model: m,
 		Optimizer: &optimizer.AdaGrad{
 			LearningRate: 0.01,
