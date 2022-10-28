@@ -45,18 +45,22 @@ func (m *MLP) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
 	return m.seq.Predict(x, opts...)
 }
 
-func (m *MLP) Loss(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
-	return m.seq.Loss(x, t, opts...)
+func (m *MLP) Forward(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
+	return m.seq.Forward(x, t, opts...)
 }
 
-func (m *MLP) Gradient(x, t matrix.Matrix) [][]matrix.Matrix {
-	return m.seq.Gradient(x, t)
+func (m *MLP) Backward(x, t matrix.Matrix) matrix.Matrix {
+	return m.seq.Backward(x, t)
 }
 
-func (m *MLP) NumericalGradient(x, t matrix.Matrix) [][]matrix.Matrix {
-	return m.seq.NumericalGradient(x, t)
+func (m *MLP) Optimize(opt Optimizer) [][]matrix.Matrix {
+	return m.seq.Optimize(opt)
 }
 
-func (m *MLP) Optimize(opt Optimizer, grads [][]matrix.Matrix) {
-	m.seq.Optimize(opt, grads)
+func (m *MLP) Params() [][]matrix.Matrix {
+	return m.seq.Params()
+}
+
+func (m *MLP) Grads() [][]matrix.Matrix {
+	return m.seq.Grads()
 }

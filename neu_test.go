@@ -48,7 +48,7 @@ func Example_mnist() {
 		Epochs:     10,
 		BatchSize:  10,
 		Verbose: func(i int, m trainer.Model) {
-			loss := m.Loss(x[:100], t[:100])
+			loss := m.Forward(x[:100], t[:100])
 			acc := trainer.Accuracy(m.Predict(x[:100]), t[:100])
 			tacc := trainer.Accuracy(m.Predict(xt[:100]), tt[:100])
 

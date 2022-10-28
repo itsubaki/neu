@@ -60,16 +60,16 @@ func main() {
 		BatchSize:  batchSize,
 		Verbose: func(i int, m trainer.Model) {
 			// batch
-			mask := trainer.Random(len(x), batchSize)
+			mask := trainer.Random(train.N, batchSize)
 			xbatch := matrix.Batch(x, mask)
 			tbatch := matrix.Batch(t, mask)
 
-			maskt := trainer.Random(len(xt), batchSize)
+			maskt := trainer.Random(test.N, batchSize)
 			xtbatch := matrix.Batch(xt, maskt)
 			ttbatch := matrix.Batch(tt, maskt)
 
 			// loss, accuracy
-			loss := m.Loss(xbatch, tbatch)
+			loss := m.Forward(xbatch, tbatch)
 			acc := trainer.Accuracy(m.Predict(xbatch), tbatch)
 			yt := m.Predict(xtbatch)
 			tacc := trainer.Accuracy(yt, ttbatch)

@@ -15,9 +15,11 @@ var (
 
 type Model interface {
 	Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix
-	Loss(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix
-	Gradient(x, t matrix.Matrix) [][]matrix.Matrix
-	Optimize(opt model.Optimizer, grads [][]matrix.Matrix)
+	Forward(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix
+	Backward(x, t matrix.Matrix) matrix.Matrix
+	Optimize(opt model.Optimizer) [][]matrix.Matrix
+	Params() [][]matrix.Matrix
+	Grads() [][]matrix.Matrix
 }
 
 type Input struct {
@@ -42,8 +44,9 @@ func (t *Trainer) Fit(in *Input) {
 			tbatch := matrix.Batch(in.TrainLabel, mask)
 
 			// update
-			grads := t.Model.Gradient(xbatch, tbatch)
-			t.Model.Optimize(t.Optimizer, grads)
+			t.Model.Forward(xbatch, tbatch)
+			t.Model.Backward(xbatch, tbatch)
+			t.Model.Optimize(t.Optimizer)
 		}
 
 		// verbose

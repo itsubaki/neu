@@ -11,21 +11,23 @@ import (
 	"github.com/itsubaki/neu/trainer"
 )
 
-var _ trainer.Model = (*TestModel)(nil)
+var _ trainer.Model = (*Test)(nil)
 
-type TestModel struct{}
+type Test struct{}
 
-func (m *TestModel) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix { return matrix.New() }
-func (m *TestModel) Loss(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix { return matrix.New() }
-func (m *TestModel) Gradient(x, t matrix.Matrix) [][]matrix.Matrix             { return [][]matrix.Matrix{} }
-func (m *TestModel) Optimize(opt model.Optimizer, grads [][]matrix.Matrix)     {}
+func (m *Test) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix    { return matrix.New() }
+func (m *Test) Forward(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix { return matrix.New() }
+func (m *Test) Backward(x, t matrix.Matrix) matrix.Matrix                    { return matrix.New() }
+func (m *Test) Optimize(opt model.Optimizer) [][]matrix.Matrix               { return [][]matrix.Matrix{} }
+func (m *Test) Params() [][]matrix.Matrix                                    { return [][]matrix.Matrix{} }
+func (m *Test) Grads() [][]matrix.Matrix                                     { return [][]matrix.Matrix{} }
 
 func ExampleTrainer_Fit() {
 	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
 
 	tr := &trainer.Trainer{
-		Model:     &TestModel{},
+		Model:     &Test{},
 		Optimizer: nil,
 	}
 
@@ -42,11 +44,11 @@ func ExampleTrainer_Fit() {
 	})
 
 	// Output:
-	//  0: *trainer_test.TestModel
-	//  1: *trainer_test.TestModel
-	//  2: *trainer_test.TestModel
-	//  3: *trainer_test.TestModel
-	//  4: *trainer_test.TestModel
+	//  0: *trainer_test.Test
+	//  1: *trainer_test.Test
+	//  2: *trainer_test.Test
+	//  3: *trainer_test.Test
+	//  4: *trainer_test.Test
 }
 
 func ExampleAccuracy() {
