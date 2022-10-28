@@ -5,10 +5,15 @@ import "github.com/itsubaki/neu/math/matrix"
 type Momentum struct {
 	LearningRate float64
 	Momentum     float64
+	Hooks        []Hook
 	v            [][]matrix.Matrix
 }
 
 func (o *Momentum) Update(params, grads [][]matrix.Matrix) [][]matrix.Matrix {
+	for _, h := range o.Hooks {
+		grads = h(params, grads)
+	}
+
 	if len(o.v) == 0 {
 		o.v = make([][]matrix.Matrix, 0)
 		for i := range params {

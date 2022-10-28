@@ -12,6 +12,6 @@ func Decay(lambda float64) func(params, grads [][]matrix.Matrix) [][]matrix.Matr
 			}
 		}
 
-		return out
+		return out // grads
 	}
 }

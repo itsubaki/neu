@@ -4,9 +4,14 @@ import "github.com/itsubaki/neu/math/matrix"
 
 type SGD struct {
 	LearningRate float64
+	Hooks        []Hook
 }
 
 func (o *SGD) Update(params, grads [][]matrix.Matrix) [][]matrix.Matrix {
+	for _, h := range o.Hooks {
+		grads = h(params, grads)
+	}
+
 	out := make([][]matrix.Matrix, 0)
 	for i := range params {
 		v := make([]matrix.Matrix, 0)

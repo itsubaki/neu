@@ -5,6 +5,7 @@ import (
 
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/optimizer"
+	"github.com/itsubaki/neu/weight"
 )
 
 func ExampleAdaGrad() {
@@ -16,7 +17,7 @@ func ExampleAdaGrad() {
 	})
 
 	for _, lr := range []float64{0.0, 0.5, 1.0} {
-		opt := optimizer.AdaGrad{LearningRate: lr}
+		opt := optimizer.AdaGrad{LearningRate: lr, Hooks: []optimizer.Hook{weight.Decay(0.0)}}
 		fmt.Println(opt.Update(params, grads)[0][0])
 	}
 	fmt.Println()

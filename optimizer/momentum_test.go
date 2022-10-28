@@ -5,6 +5,7 @@ import (
 
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/optimizer"
+	"github.com/itsubaki/neu/weight"
 )
 
 func ExampleMomentum() {
@@ -16,7 +17,7 @@ func ExampleMomentum() {
 	})
 
 	for _, lr := range []float64{0.0, 0.5, 1.0} {
-		opt := optimizer.Momentum{LearningRate: lr, Momentum: 1.0}
+		opt := optimizer.Momentum{LearningRate: lr, Momentum: 1.0, Hooks: []optimizer.Hook{weight.Decay(0.0)}}
 		fmt.Println(opt.Update(params, grads)[0][0])
 	}
 	fmt.Println()

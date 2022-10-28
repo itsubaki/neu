@@ -43,8 +43,11 @@ func main() {
 
 	// training
 	tr := trainer.Trainer{
-		Model:     m,
-		Optimizer: &optimizer.AdaGrad{LearningRate: 0.01},
+		Model: m,
+		Optimizer: &optimizer.AdaGrad{
+			LearningRate: 0.01,
+			Hooks:        []optimizer.Hook{weight.Decay(1e-6)},
+		},
 	}
 
 	now := time.Now()

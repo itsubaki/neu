@@ -8,10 +8,15 @@ import (
 
 type AdaGrad struct {
 	LearningRate float64
+	Hooks        []Hook
 	h            [][]matrix.Matrix
 }
 
 func (o *AdaGrad) Update(params, grads [][]matrix.Matrix) [][]matrix.Matrix {
+	for _, h := range o.Hooks {
+		grads = h(params, grads)
+	}
+
 	if len(o.h) == 0 {
 		o.h = make([][]matrix.Matrix, 0)
 		for i := range params {
