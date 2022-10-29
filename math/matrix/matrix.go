@@ -149,6 +149,14 @@ func (m Matrix) Div(n Matrix) Matrix {
 	return m.FuncWith(Broadcast(n, len(m)), func(a, b float64) float64 { return a / b })
 }
 
+func (m Matrix) AddC(c float64) Matrix {
+	return m.Func(func(v float64) float64 { return c + v })
+}
+
+func (m Matrix) MulC(c float64) Matrix {
+	return m.Func(func(v float64) float64 { return c * v })
+}
+
 func (m Matrix) Pow2() Matrix {
 	return m.Func(func(v float64) float64 { return v * v })
 }
@@ -157,12 +165,8 @@ func (m Matrix) Sqrt(eps float64) Matrix {
 	return m.Func(func(v float64) float64 { return math.Sqrt(v + eps) })
 }
 
-func (m Matrix) AddC(c float64) Matrix {
-	return m.Func(func(v float64) float64 { return c + v })
-}
-
-func (m Matrix) MulC(c float64) Matrix {
-	return m.Func(func(v float64) float64 { return c * v })
+func (m Matrix) Abs() Matrix {
+	return m.Func(func(v float64) float64 { return math.Abs(v) })
 }
 
 func (m Matrix) Transpose() Matrix {

@@ -2,7 +2,6 @@ package model_test
 
 import (
 	"fmt"
-	"math"
 	"math/rand"
 
 	"github.com/itsubaki/neu/layer"
@@ -89,8 +88,8 @@ func ExampleSequential_gradientCheck() {
 	for i := range gradsn {
 		// 10, 11 is ReLU. empty
 		for j := range gradsn[i] {
-			diff := matrix.FuncWith(gradsn[i][j], grads[i][j], func(a, b float64) float64 { return math.Abs(a - b) })
-			fmt.Printf("%v%v: %v\n", i, j, diff.Avg())
+			eps := gradsn[i][j].Sub(grads[i][j]).Abs().Avg() // avg(| A - B |)
+			fmt.Printf("%v%v: %v\n", i, j, eps)
 		}
 	}
 

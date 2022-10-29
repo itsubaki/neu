@@ -192,38 +192,6 @@ func ExampleMatrix_Div() {
 
 }
 
-func ExampleMatrix_Pow2() {
-	A := matrix.New(
-		[]float64{1, 2},
-		[]float64{3, 4},
-	)
-
-	for _, r := range A.Pow2() {
-		fmt.Println(r)
-	}
-
-	// Output:
-	// [1 4]
-	// [9 16]
-
-}
-
-func ExampleMatrix_Sqrt() {
-	A := matrix.New(
-		[]float64{1, 2},
-		[]float64{3, 4},
-	)
-
-	for _, r := range A.Sqrt(0) {
-		fmt.Println(r)
-	}
-
-	// Output:
-	// [1 1.4142135623730951]
-	// [1.7320508075688772 2]
-
-}
-
 func ExampleMatrix_AddC() {
 	A := matrix.New(
 		[]float64{1, 2},
@@ -256,36 +224,52 @@ func ExampleMatrix_MulC() {
 
 }
 
-func ExampleMatrix_Func() {
+func ExampleMatrix_Pow2() {
 	A := matrix.New(
 		[]float64{1, 2},
 		[]float64{3, 4},
 	)
 
-	for _, r := range A.Func(func(v float64) float64 { return v * 3.0 }) {
-		fmt.Println(r)
-	}
-
-	// Output:
-	// [3 6]
-	// [9 12]
-
-}
-
-func ExampleMatrix_T() {
-	A := matrix.New(
-		[]float64{1, 2, 3},
-		[]float64{4, 5, 6},
-	)
-
-	for _, r := range A.T() {
+	for _, r := range A.Pow2() {
 		fmt.Println(r)
 	}
 
 	// Output:
 	// [1 4]
-	// [2 5]
-	// [3 6]
+	// [9 16]
+
+}
+
+func ExampleMatrix_Sqrt() {
+	A := matrix.New(
+		[]float64{1, 2},
+		[]float64{3, 4},
+	)
+
+	for _, r := range A.Sqrt(0) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [1 1.4142135623730951]
+	// [1.7320508075688772 2]
+
+}
+
+func ExampleMatrix_Abs() {
+	A := matrix.New(
+		[]float64{-1, 2},
+		[]float64{3, -4},
+	)
+
+	for _, r := range A.Abs() {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [1 2]
+	// [3 4]
+
 }
 
 func ExampleMatrix_Avg() {
@@ -326,6 +310,38 @@ func ExampleMatrix_MeanAxis0() {
 	// Output:
 	// [[5 7 9]]
 	// [[2.5 3.5 4.5]]
+}
+
+func ExampleMatrix_T() {
+	A := matrix.New(
+		[]float64{1, 2, 3},
+		[]float64{4, 5, 6},
+	)
+
+	for _, r := range A.T() {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [1 4]
+	// [2 5]
+	// [3 6]
+}
+
+func ExampleMatrix_Func() {
+	A := matrix.New(
+		[]float64{1, 2},
+		[]float64{3, 4},
+	)
+
+	for _, r := range A.Func(func(v float64) float64 { return v * 3.0 }) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [3 6]
+	// [9 12]
+
 }
 
 func ExampleFunc() {
