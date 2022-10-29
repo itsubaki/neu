@@ -54,8 +54,6 @@ func main() {
 	tr.Fit(&trainer.Input{
 		Train:      x,
 		TrainLabel: t,
-		Test:       xt,
-		TestLabel:  tt,
 		Epochs:     epochs,
 		BatchSize:  batchSize,
 		Verbose: func(epoch, j int, m trainer.Model) {

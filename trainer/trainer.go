@@ -23,11 +23,11 @@ type Model interface {
 }
 
 type Input struct {
-	Train, TrainLabel matrix.Matrix
-	Test, TestLabel   matrix.Matrix
-	Epochs            int
-	BatchSize         int
-	Verbose           func(epoch, j int, m Model)
+	Train      matrix.Matrix
+	TrainLabel matrix.Matrix
+	Epochs     int
+	BatchSize  int
+	Verbose    func(epoch, j int, m Model)
 }
 
 type Trainer struct {

@@ -43,8 +43,6 @@ func Example_mnist() {
 	tr.Fit(&trainer.Input{
 		Train:      x[:100],
 		TrainLabel: t[:100],
-		Test:       xt,
-		TestLabel:  tt,
 		Epochs:     10,
 		BatchSize:  10,
 		Verbose: func(epoch, j int, m trainer.Model) {

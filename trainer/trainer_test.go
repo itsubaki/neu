@@ -34,8 +34,6 @@ func ExampleTrainer_Fit() {
 	tr.Fit(&trainer.Input{
 		Train:      x,
 		TrainLabel: t,
-		Test:       x,
-		TestLabel:  t,
 		Epochs:     3,
 		BatchSize:  1,
 		Verbose: func(epoch, j int, m trainer.Model) {
