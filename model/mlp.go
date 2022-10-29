@@ -45,8 +45,8 @@ func (m *MLP) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
 	return m.seq.Predict(x, opts...)
 }
 
-func (m *MLP) Forward(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
-	return m.seq.Forward(x, t, opts...)
+func (m *MLP) Forward(x, t matrix.Matrix) matrix.Matrix {
+	return m.seq.Forward(x, t)
 }
 
 func (m *MLP) Backward(x, t matrix.Matrix) matrix.Matrix {

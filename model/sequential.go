@@ -17,9 +17,9 @@ func (m *Sequential) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix 
 	return x
 }
 
-func (m *Sequential) Forward(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
-	y := m.Predict(x, opts...)
-	return m.Layer[len(m.Layer)-1].Forward(y, t, opts...)
+func (m *Sequential) Forward(x, t matrix.Matrix) matrix.Matrix {
+	y := m.Predict(x, layer.Opts{Train: true})
+	return m.Layer[len(m.Layer)-1].Forward(y, t, layer.Opts{Train: true})
 }
 
 func (m *Sequential) Backward(x, t matrix.Matrix) matrix.Matrix {

@@ -15,12 +15,12 @@ var _ trainer.Model = (*Test)(nil)
 
 type Test struct{}
 
-func (m *Test) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix    { return matrix.New() }
-func (m *Test) Forward(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix { return matrix.New() }
-func (m *Test) Backward(x, t matrix.Matrix) matrix.Matrix                    { return matrix.New() }
-func (m *Test) Optimize(opt model.Optimizer) [][]matrix.Matrix               { return [][]matrix.Matrix{} }
-func (m *Test) Params() [][]matrix.Matrix                                    { return [][]matrix.Matrix{} }
-func (m *Test) Grads() [][]matrix.Matrix                                     { return [][]matrix.Matrix{} }
+func (m *Test) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix { return matrix.New() }
+func (m *Test) Forward(x, t matrix.Matrix) matrix.Matrix                  { return matrix.New() }
+func (m *Test) Backward(x, t matrix.Matrix) matrix.Matrix                 { return matrix.New() }
+func (m *Test) Optimize(opt model.Optimizer) [][]matrix.Matrix            { return [][]matrix.Matrix{} }
+func (m *Test) Params() [][]matrix.Matrix                                 { return [][]matrix.Matrix{} }
+func (m *Test) Grads() [][]matrix.Matrix                                  { return [][]matrix.Matrix{} }
 
 func ExampleTrainer_Fit() {
 	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})

@@ -103,7 +103,7 @@ func ExampleSequential_gradientCheck() {
 
 func numericalGrads(m *model.Sequential, x, t matrix.Matrix) [][]matrix.Matrix {
 	lossW := func(w ...float64) float64 {
-		return m.Forward(x, t, layer.Opts{Train: true})[0][0]
+		return m.Forward(x, t)[0][0]
 	}
 
 	grad := func(f func(x ...float64) float64, x matrix.Matrix) matrix.Matrix {

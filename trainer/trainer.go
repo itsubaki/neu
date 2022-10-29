@@ -15,7 +15,7 @@ var (
 
 type Model interface {
 	Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix
-	Forward(x, t matrix.Matrix, opts ...layer.Opts) matrix.Matrix
+	Forward(x, t matrix.Matrix) matrix.Matrix
 	Backward(x, t matrix.Matrix) matrix.Matrix
 	Optimize(opt model.Optimizer) [][]matrix.Matrix
 	Params() [][]matrix.Matrix
