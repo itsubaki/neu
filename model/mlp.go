@@ -28,9 +28,13 @@ func NewMLP(c *MLPConfig) *MLP {
 			W: matrix.Randn(size[i], size[i+1]).MulC(c.WeightInit(size[i])),
 			B: matrix.Zero(1, size[i+1]),
 		})
+		layers = append(layers, &layer.BatchNorm{
+			Gamma: matrix.One(1, size[i+1]),
+			Beta:  matrix.Zero(1, size[i+1]),
+		})
 		layers = append(layers, &layer.ReLU{})
 	}
-	layers = layers[:len(layers)-1]                   // remove last ReLU
+	layers = layers[:len(layers)-2]                   // remove last ReLU, BatchNorm
 	layers = append(layers, &layer.SoftmaxWithLoss{}) // loss function
 
 	// new
