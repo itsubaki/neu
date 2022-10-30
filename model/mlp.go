@@ -40,6 +40,7 @@ func NewMLP(c *MLPConfig) *MLP {
 
 		layers = append(layers, &layer.ReLU{})
 	}
+
 	layers = append(layers, &layer.Affine{
 		W: matrix.Randn(size[len(size)-2], size[len(size)-1]).MulC(c.WeightInit(size[len(size)-2])),
 		B: matrix.Zero(1, size[len(size)-1]),
