@@ -35,6 +35,12 @@ func Example_mnist() {
 		UseBatchNorm: true,
 	})
 
+	fmt.Printf("%T\n", m)
+	for i, l := range m.Layers() {
+		fmt.Printf("%2d: %v\n", i, l)
+	}
+	fmt.Println()
+
 	// training
 	tr := &trainer.Trainer{
 		Model:     m,
@@ -60,6 +66,13 @@ func Example_mnist() {
 	})
 
 	// Output:
+	// *model.MLP
+	//  0: *layer.Affine: W(784, 50), B(1, 50): 39250
+	//  1: *layer.BatchNorm: G(1, 50), B(1, 50): 100
+	//  2: *layer.ReLU
+	//  3: *layer.Affine: W(50, 10), B(1, 10): 510
+	//  4: *layer.SoftmaxWithLoss
+	//
 	// loss=[[2.1924]], train_acc=0.3500, test_acc=0.2100
 	// loss=[[1.4434]], train_acc=0.7200, test_acc=0.5500
 	// loss=[[0.9227]], train_acc=0.8600, test_acc=0.6100
@@ -124,7 +137,7 @@ func Example_simpleNet() {
 
 }
 
-func Example_neuralNetwork() {
+func Example_neuralNet() {
 	// weight
 	W1 := matrix.New([]float64{0.1, 0.3, 0.5}, []float64{0.2, 0.4, 0.6})
 	B1 := matrix.New([]float64{0.1, 0.2, 0.3})
