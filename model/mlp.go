@@ -61,8 +61,8 @@ func (m *MLP) Forward(x, t matrix.Matrix) matrix.Matrix {
 	return m.seq.Forward(x, t)
 }
 
-func (m *MLP) Backward(x, t matrix.Matrix) matrix.Matrix {
-	return m.seq.Backward(x, t)
+func (m *MLP) Backward() matrix.Matrix {
+	return m.seq.Backward()
 }
 
 func (m *MLP) Layers() []Layer {

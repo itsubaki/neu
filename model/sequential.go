@@ -28,7 +28,7 @@ func (m *Sequential) Forward(x, t matrix.Matrix) matrix.Matrix {
 	return m.Layer[len(m.Layer)-1].Forward(y, t, layer.Opts{Train: true})
 }
 
-func (m *Sequential) Backward(x, t matrix.Matrix) matrix.Matrix {
+func (m *Sequential) Backward() matrix.Matrix {
 	dout := matrix.New([]float64{1})
 	for i := len(m.Layer) - 1; i > -1; i-- {
 		dout, _ = m.Layer[i].Backward(dout)

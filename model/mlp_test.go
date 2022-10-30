@@ -25,7 +25,7 @@ func ExampleMLP() {
 	})
 
 	loss := m.Forward(x, t)
-	m.Backward(x, t)
+	m.Backward()
 
 	fmt.Printf("%.4f %.4f\n", loss, m.Predict(x))
 
@@ -51,7 +51,7 @@ func ExampleMLP_gradientCheck() {
 
 	// gradients
 	m.Forward(x, t)
-	m.Backward(x, t)
+	m.Backward()
 	grads := m.Grads()
 	gradsn := numericalGrads(m, x, t)
 

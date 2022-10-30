@@ -32,7 +32,7 @@ func ExampleSequential_gradientCheck() {
 
 	// gradients
 	m.Forward(x, t)
-	m.Backward(x, t)
+	m.Backward()
 	grads := m.Grads()
 	gradsn := numericalGrads(m, x, t)
 
