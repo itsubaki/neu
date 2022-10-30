@@ -9,6 +9,31 @@ import (
 	"github.com/itsubaki/neu/weight"
 )
 
+func ExampleMLP() {
+	// data
+	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
+	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
+
+	// model
+	rand.Seed(1) // for test
+	m := model.NewMLP(&model.MLPConfig{
+		InputSize:    2,
+		HiddenSize:   []int{3},
+		OutputSize:   2,
+		WeightInit:   weight.Std(0.01),
+		UseBatchNorm: false,
+	})
+
+	loss := m.Forward(x, t)
+	m.Backward(x, t)
+
+	fmt.Printf("%.4f %.4f\n", loss, m.Predict(x))
+
+	// Output:
+	// [[0.6931]] [[0.0000 0.0001] [0.0000 0.0000] [0.0001 0.0003]]
+
+}
+
 func ExampleMLP_gradientCheck() {
 	// data
 	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
