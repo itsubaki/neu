@@ -25,7 +25,7 @@ func ExampleSequential_Optimize() {
 	B2 := matrix.Zero(1, 2)
 
 	// model
-	m := model.Sequential{
+	m := &model.Sequential{
 		Layer: []model.Layer{
 			&layer.Affine{W: W1, B: B1},
 			&layer.ReLU{},
