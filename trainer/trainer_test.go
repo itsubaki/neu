@@ -12,7 +12,7 @@ import (
 	"github.com/itsubaki/neu/trainer"
 )
 
-var _ optimizer.Model = (*Test)(nil)
+var _ trainer.Model = (*Test)(nil)
 
 type Test struct{}
 
