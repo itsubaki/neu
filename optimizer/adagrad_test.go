@@ -9,22 +9,24 @@ import (
 )
 
 func ExampleAdaGrad() {
-	params := append(make([][]matrix.Matrix, 0), []matrix.Matrix{
-		matrix.New([]float64{1, 2, 3}, []float64{4, 5, 6}),
-	})
-	grads := append(make([][]matrix.Matrix, 0), []matrix.Matrix{
-		matrix.New([]float64{2, 4, 6}, []float64{8, 10, 12}),
-	})
+	m := &Test{
+		params: append(make([][]matrix.Matrix, 0), []matrix.Matrix{
+			matrix.New([]float64{1, 2, 3}, []float64{4, 5, 6}),
+		}),
+		grads: append(make([][]matrix.Matrix, 0), []matrix.Matrix{
+			matrix.New([]float64{2, 4, 6}, []float64{8, 10, 12}),
+		}),
+	}
 
 	for _, lr := range []float64{0.0, 0.5, 1.0} {
 		opt := optimizer.AdaGrad{LearningRate: lr, Hooks: []optimizer.Hook{weight.Decay(0.0)}}
-		fmt.Println(opt.Update(params, grads)[0][0])
+		fmt.Println(opt.Update(m)[0][0])
 	}
 	fmt.Println()
 
 	opt := optimizer.AdaGrad{LearningRate: 0.5}
-	fmt.Println(opt.Update(params, grads)[0][0])
-	fmt.Println(opt.Update(params, grads)[0][0])
+	fmt.Println(opt.Update(m)[0][0])
+	fmt.Println(opt.Update(m)[0][0])
 
 	// Output:
 	// [[1 2 3] [4 5 6]]

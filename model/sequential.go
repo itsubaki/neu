@@ -9,6 +9,12 @@ type Sequential struct {
 	Layer []Layer
 }
 
+func NewSequential(layer ...Layer) *Sequential {
+	return &Sequential{
+		Layer: layer,
+	}
+}
+
 func (m *Sequential) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
 	for _, l := range m.Layer[:len(m.Layer)-1] {
 		x = l.Forward(x, nil, opts...)
@@ -31,13 +37,8 @@ func (m *Sequential) Backward(x, t matrix.Matrix) matrix.Matrix {
 	return dout
 }
 
-func (m *Sequential) Optimize(opt Optimizer) [][]matrix.Matrix {
-	updated := opt.Update(m.Params(), m.Grads())
-	for i, l := range m.Layer {
-		l.SetParams(updated[i])
-	}
-
-	return updated
+func (m *Sequential) Layers() []Layer {
+	return m.Layer
 }
 
 func (m *Sequential) Params() [][]matrix.Matrix {

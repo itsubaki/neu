@@ -6,56 +6,55 @@ import (
 
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/model"
-	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/weight"
 )
 
-func ExampleMLP_Optimize() {
+func ExampleMLP_gradientCheck() {
 	// data
 	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
-	_, inSize := x.Dimension()
-	hiddenSize, outSize := t.Dimension()
 
-	// init
+	// model
 	rand.Seed(1) // for test
 	m := model.NewMLP(&model.MLPConfig{
-		InputSize:  inSize,
-		HiddenSize: []int{hiddenSize},
-		OutputSize: outSize,
-		WeightInit: weight.Std(0.01),
+		InputSize:    2,
+		HiddenSize:   []int{3},
+		OutputSize:   2,
+		WeightInit:   weight.Std(0.01),
+		UseBatchNorm: false,
 	})
 
-	// optimizer
-	opt := &optimizer.SGD{LearningRate: 0.1}
+	// gradients
+	m.Forward(x, t)
+	m.Backward(x, t)
+	grads := m.Grads()
+	gradsn := numericalGrads(m, x, t)
 
-	// gradient
-	for i := 0; i < 1000; i++ {
-		loss := m.Forward(x, t)
-		m.Backward(x, t)
-		m.Optimize(opt)
-
-		if i%200 == 0 {
-			fmt.Printf("%.4f, %.4f\n", m.Predict(x), loss)
+	// check
+	for i := range gradsn {
+		// 10, 11 is ReLU. empty
+		for j := range gradsn[i] {
+			eps := gradsn[i][j].Sub(grads[i][j]).Abs().Avg() // avg(| A - B |)
+			fmt.Printf("%v%v: %v\n", i, j, eps)
 		}
 	}
 
 	// Output:
-	// [[-0.0165 0.0165] [-0.0165 0.0165] [-0.1041 0.1464]], [[0.6901]]
-	// [[-0.0148 0.0148] [-0.0148 0.0148] [-2.2205 2.2730]], [[0.4659]]
-	// [[-0.0052 0.0052] [-0.0052 0.0052] [-2.6585 2.7135]], [[0.4637]]
-	// [[-0.0030 0.0030] [-0.0030 0.0030] [-2.8907 2.9469]], [[0.4631]]
-	// [[-0.0021 0.0021] [-0.0021 0.0021] [-3.0637 3.1208]], [[0.4628]]
+	// 00: 1.6658328893821156e-10
+	// 01: 7.510020527910314e-13
+	// 20: 2.8191449832846066e-10
+	// 21: 3.3325323139932195e-08
 
 }
 
 func ExampleMLP_Params() {
 	rand.Seed(1) // for test
 	m := model.NewMLP(&model.MLPConfig{
-		InputSize:  1,
-		HiddenSize: []int{2},
-		OutputSize: 1,
-		WeightInit: weight.Std(0.01),
+		InputSize:    1,
+		HiddenSize:   []int{2},
+		OutputSize:   1,
+		WeightInit:   weight.Std(0.01),
+		UseBatchNorm: true,
 	})
 
 	for _, p := range m.Params() {

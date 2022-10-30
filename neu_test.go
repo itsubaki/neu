@@ -28,10 +28,11 @@ func Example_mnist() {
 	// init
 	rand.Seed(1) // for test
 	m := model.NewMLP(&model.MLPConfig{
-		InputSize:  784,
-		HiddenSize: []int{50},
-		OutputSize: 10,
-		WeightInit: weight.Std(0.01),
+		InputSize:    784,
+		HiddenSize:   []int{50},
+		OutputSize:   10,
+		WeightInit:   weight.Std(0.01),
+		UseBatchNorm: true,
 	})
 
 	// training
