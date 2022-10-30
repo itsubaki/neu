@@ -1,6 +1,10 @@
 package layer
 
-import "github.com/itsubaki/neu/math/matrix"
+import (
+	"fmt"
+
+	"github.com/itsubaki/neu/math/matrix"
+)
 
 type ReLU struct {
 	mask matrix.Matrix
@@ -19,4 +23,8 @@ func (l *ReLU) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 func (l *ReLU) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	dx := dout.Mul(l.mask)
 	return dx, matrix.New()
+}
+
+func (l *ReLU) String() string {
+	return fmt.Sprintf("%T", l)
 }

@@ -1,6 +1,10 @@
 package layer
 
-import "github.com/itsubaki/neu/math/matrix"
+import (
+	"fmt"
+
+	"github.com/itsubaki/neu/math/matrix"
+)
 
 type Dot struct {
 	x matrix.Matrix
@@ -22,4 +26,8 @@ func (l *Dot) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	dx := matrix.Dot(dout, l.w.T())
 	dy := matrix.Dot(l.x.T(), dout)
 	return dx, dy
+}
+
+func (l *Dot) String() string {
+	return fmt.Sprintf("%T", l)
 }

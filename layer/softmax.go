@@ -1,6 +1,8 @@
 package layer
 
 import (
+	"fmt"
+
 	"github.com/itsubaki/neu/activation"
 	"github.com/itsubaki/neu/loss"
 	"github.com/itsubaki/neu/math/matrix"
@@ -28,6 +30,10 @@ func (l *SoftmaxWithLoss) Backward(_ matrix.Matrix) (matrix.Matrix, matrix.Matri
 	size, _ := l.t.Dimension()
 	dx := matrix.FuncWith(l.y, l.t, func(y, t float64) float64 { return (y - t) / float64(size) }) // (y - t)/batch_size
 	return dx, matrix.New()
+}
+
+func (l *SoftmaxWithLoss) String() string {
+	return fmt.Sprintf("%T", l)
 }
 
 func CrossEntropyError(y, t matrix.Matrix) float64 {

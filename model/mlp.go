@@ -24,7 +24,7 @@ func NewMLP(c *MLPConfig) *MLP {
 
 	// layers
 	// Affine -> BatchNorm -> ReLU -> ... -> Affine -> SoftmaxWithLoss
-	layers := make([]Layer, 0) // init
+	layers := make([]Layer, 0)
 	for i := 0; i < len(size)-2; i++ {
 		layers = append(layers, &layer.Affine{
 			W: matrix.Randn(size[i], size[i+1]).MulC(c.WeightInit(size[i])),

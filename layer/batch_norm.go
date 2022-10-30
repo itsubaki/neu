@@ -1,6 +1,8 @@
 package layer
 
 import (
+	"fmt"
+
 	"github.com/itsubaki/neu/math/matrix"
 )
 
@@ -71,4 +73,10 @@ func (l *BatchNorm) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) 
 	// dx
 	dx := dxc.Sub(dmu.MulC(1.0 / float64(l.batchSize))) // dxc - dmu / batchSize
 	return dx, matrix.New()
+}
+
+func (l *BatchNorm) String() string {
+	a, b := l.Gamma.Dimension()
+	c, d := l.Beta.Dimension()
+	return fmt.Sprintf("%T: G(%v, %v), B(%v, %v): %v", l, a, b, c, d, a*b+c*d)
 }

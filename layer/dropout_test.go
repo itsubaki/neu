@@ -12,7 +12,7 @@ func ExampleDropout() {
 	x := matrix.New([]float64{1.0, -0.5}, []float64{-2.0, 3.0})
 
 	rand.Seed(1)
-	drop := layer.Dropout{Ratio: 0}
+	drop := &layer.Dropout{Ratio: 0}
 	fmt.Println(drop.Forward(x, nil, layer.Opts{Train: true}))
 	fmt.Println(drop.Backward(x))
 	fmt.Println(drop.Forward(x, nil, layer.Opts{Train: false}))
@@ -50,15 +50,17 @@ func ExampleDropout() {
 }
 
 func ExampleDropout_Params() {
-	dropout := layer.Dropout{}
+	dropout := &layer.Dropout{Ratio: 0.5}
 
 	dropout.SetParams(make([]matrix.Matrix, 0))
 	dropout.SetGrads(make([]matrix.Matrix, 0))
 
+	fmt.Println(dropout)
 	fmt.Println(dropout.Params())
 	fmt.Println(dropout.Grads())
 
 	// Output:
+	// *layer.Dropout: Ratio(0.5)
 	// []
 	// []
 }

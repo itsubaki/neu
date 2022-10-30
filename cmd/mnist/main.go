@@ -32,14 +32,21 @@ func main() {
 	xt := matrix.New(mnist.Normalize(test.Image)...)
 	tt := matrix.New(mnist.OneHot(test.Label)...)
 
-	// init
+	// model
 	rand.Seed(time.Now().Unix())
 	m := model.NewMLP(&model.MLPConfig{
-		InputSize:  784, // 24 * 24
-		HiddenSize: []int{50, 50, 50},
-		OutputSize: 10, // 0 ~ 9
-		WeightInit: weight.He,
+		InputSize:    784, // 24 * 24
+		HiddenSize:   []int{50, 50, 50},
+		OutputSize:   10, // 0 ~ 9
+		WeightInit:   weight.He,
+		UseBatchNorm: true,
 	})
+
+	fmt.Printf("%T\n", m)
+	for i, l := range m.Layers() {
+		fmt.Printf("%2d: %v\n", i, l)
+	}
+	fmt.Println()
 
 	// training
 	tr := &trainer.Trainer{
@@ -75,12 +82,12 @@ func main() {
 			// loss, accuracy
 			loss := m.Forward(xbatch, tbatch)
 			acc := trainer.Accuracy(m.Predict(xbatch), tbatch)
-			yt := m.Predict(xtbatch)
-			tacc := trainer.Accuracy(yt, ttbatch)
+			y := m.Predict(xtbatch)
+			acct := trainer.Accuracy(y, ttbatch)
 
 			// print
-			fmt.Printf("%4d,%4d: loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", epoch, j, loss, acc, tacc)
-			fmt.Printf("predict: %v\n", yt.Argmax()[:20])
+			fmt.Printf("%4d,%4d: loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", epoch, j, loss, acc, acct)
+			fmt.Printf("predict: %v\n", y.Argmax()[:20])
 			fmt.Printf("label  : %v\n", ttbatch.Argmax()[:20])
 			fmt.Println()
 		},

@@ -1,6 +1,8 @@
 package layer
 
 import (
+	"fmt"
+
 	"github.com/itsubaki/neu/activation"
 	"github.com/itsubaki/neu/math/matrix"
 )
@@ -22,4 +24,8 @@ func (l *Sigmoid) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 func (l *Sigmoid) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	dx := matrix.FuncWith(dout, l.out, func(do, o float64) float64 { return do * (1.0 - o) * o }) // dout * (1.0 - out) * out
 	return dx, matrix.New()
+}
+
+func (l *Sigmoid) String() string {
+	return fmt.Sprintf("%T", l)
 }

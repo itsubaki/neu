@@ -25,7 +25,7 @@ func Example_mnist() {
 	xt := matrix.New(mnist.Normalize(test.Image)...)
 	tt := matrix.New(mnist.OneHot(test.Label)...)
 
-	// init
+	// model
 	rand.Seed(1) // for test
 	m := model.NewMLP(&model.MLPConfig{
 		InputSize:    784,
@@ -53,9 +53,9 @@ func Example_mnist() {
 
 			loss := m.Forward(x[:100], t[:100])
 			acc := trainer.Accuracy(m.Predict(x[:100]), t[:100])
-			tacc := trainer.Accuracy(m.Predict(xt[:100]), tt[:100])
+			acct := trainer.Accuracy(m.Predict(xt[:100]), tt[:100])
 
-			fmt.Printf("loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", loss, acc, tacc)
+			fmt.Printf("loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", loss, acc, acct)
 		},
 	})
 

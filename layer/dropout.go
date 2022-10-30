@@ -1,6 +1,10 @@
 package layer
 
-import "github.com/itsubaki/neu/math/matrix"
+import (
+	"fmt"
+
+	"github.com/itsubaki/neu/math/matrix"
+)
 
 type Dropout struct {
 	Ratio float64
@@ -24,4 +28,8 @@ func (l *Dropout) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
 func (l *Dropout) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	dx := dout.Mul(l.mask)
 	return dx, matrix.New()
+}
+
+func (l *Dropout) String() string {
+	return fmt.Sprintf("%T: Ratio(%v)", l, l.Ratio)
 }

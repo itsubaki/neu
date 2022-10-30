@@ -12,8 +12,8 @@ func ExampleMul() {
 	appleNum := matrix.New([]float64{2.0})
 	tax := matrix.New([]float64{1.1})
 
-	appleLayer := layer.Mul{}
-	taxLayer := layer.Mul{}
+	appleLayer := &layer.Mul{}
+	taxLayer := &layer.Mul{}
 
 	applePrice := appleLayer.Forward(apple, appleNum)
 	price := taxLayer.Forward(applePrice, tax)
@@ -33,15 +33,17 @@ func ExampleMul() {
 }
 
 func ExampleMul_Params() {
-	mul := layer.Mul{}
+	mul := &layer.Mul{}
 
 	mul.SetParams(make([]matrix.Matrix, 0))
 	mul.SetGrads(make([]matrix.Matrix, 0))
 
+	fmt.Println(mul)
 	fmt.Println(mul.Params())
 	fmt.Println(mul.Grads())
 
 	// Output:
+	// *layer.Mul
 	// []
 	// []
 }

@@ -31,15 +31,17 @@ func ExampleBatchNorm() {
 }
 
 func ExampleBatchNorm_Params() {
-	n := layer.BatchNorm{}
+	n := &layer.BatchNorm{}
 
 	n.SetParams(make([]matrix.Matrix, 2))
 	n.SetGrads(make([]matrix.Matrix, 2))
 
+	fmt.Println(n)
 	fmt.Println(n.Params())
 	fmt.Println(n.Grads())
 
 	// Output:
+	// *layer.BatchNorm: G(0, 0), B(0, 0): 0
 	// [[] []]
 	// [[] []]
 }

@@ -1,6 +1,10 @@
 package layer
 
-import "github.com/itsubaki/neu/math/matrix"
+import (
+	"fmt"
+
+	"github.com/itsubaki/neu/math/matrix"
+)
 
 type Mul struct {
 	x matrix.Matrix
@@ -21,4 +25,8 @@ func (l *Mul) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	dx := dout.Mul(l.y)
 	dy := dout.Mul(l.x)
 	return dx, dy
+}
+
+func (l *Mul) String() string {
+	return fmt.Sprintf("%T", l)
 }

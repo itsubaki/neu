@@ -1,6 +1,10 @@
 package layer
 
-import "github.com/itsubaki/neu/math/matrix"
+import (
+	"fmt"
+
+	"github.com/itsubaki/neu/math/matrix"
+)
 
 type Affine struct {
 	W  matrix.Matrix
@@ -25,4 +29,10 @@ func (l *Affine) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	l.DW = matrix.Dot(l.x.T(), dout)
 	l.DB = dout.SumAxis0()
 	return dx, matrix.New()
+}
+
+func (l *Affine) String() string {
+	a, b := l.W.Dimension()
+	c, d := l.B.Dimension()
+	return fmt.Sprintf("%T: W(%v, %v), B(%v, %v): %v", l, a, b, c, d, a*b+c*d)
 }
