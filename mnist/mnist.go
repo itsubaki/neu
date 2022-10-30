@@ -4,6 +4,7 @@ import (
 	"compress/gzip"
 	"encoding/binary"
 	"fmt"
+	"math"
 	"os"
 	"path"
 	"path/filepath"
@@ -174,7 +175,7 @@ func Normalize(img []Image) [][]float64 {
 	for i := range img {
 		v := make([]float64, 0)
 		for j := range img[i] {
-			v = append(v, float64(img[i][j])/float64(255))
+			v = append(v, float64(img[i][j])/float64(math.MaxUint8))
 		}
 
 		out = append(out, v)
