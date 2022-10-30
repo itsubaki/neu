@@ -27,10 +27,10 @@ func ExampleMLP() {
 	loss := m.Forward(x, t)
 	m.Backward()
 
-	fmt.Printf("%.4f %.4f\n", loss, m.Predict(x))
+	fmt.Printf("%.4f %v\n", loss, m.Predict(x).Argmax())
 
 	// Output:
-	// [[0.6931]] [[0.0000 0.0001] [0.0000 0.0000] [0.0001 0.0003]]
+	// [[0.6931]] [1 0 1]
 
 }
 
