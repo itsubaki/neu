@@ -6,20 +6,28 @@ import (
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/model"
+	"github.com/itsubaki/neu/optimizer"
 )
 
 var (
-	_ Model = (*model.Sequential)(nil)
-	_ Model = (*model.MLP)(nil)
+	_ Model     = (*model.Sequential)(nil)
+	_ Model     = (*model.MLP)(nil)
+	_ Optimizer = (*optimizer.AdaGrad)(nil)
+	_ Optimizer = (*optimizer.Momentum)(nil)
+	_ Optimizer = (*optimizer.SGD)(nil)
 )
 
 type Model interface {
 	Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix
 	Forward(x, t matrix.Matrix) matrix.Matrix
 	Backward(x, t matrix.Matrix) matrix.Matrix
-	Optimize(opt model.Optimizer) [][]matrix.Matrix
+	Layers() []model.Layer
 	Params() [][]matrix.Matrix
 	Grads() [][]matrix.Matrix
+}
+
+type Optimizer interface {
+	Update(m optimizer.Model) [][]matrix.Matrix
 }
 
 type Input struct {
@@ -32,7 +40,7 @@ type Input struct {
 
 type Trainer struct {
 	Model     Model
-	Optimizer model.Optimizer
+	Optimizer Optimizer
 }
 
 func (t *Trainer) Fit(in *Input) {
@@ -47,7 +55,7 @@ func (t *Trainer) Fit(in *Input) {
 			// update
 			t.Model.Forward(xbatch, tbatch)
 			t.Model.Backward(xbatch, tbatch)
-			t.Model.Optimize(t.Optimizer)
+			t.Optimizer.Update(t.Model)
 
 			// verbose
 			in.Verbose(i, j, t.Model)

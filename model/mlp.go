@@ -6,10 +6,11 @@ import (
 )
 
 type MLPConfig struct {
-	InputSize  int
-	HiddenSize []int
-	OutputSize int
-	WeightInit WeightInit
+	InputSize    int
+	HiddenSize   []int
+	OutputSize   int
+	WeightInit   WeightInit
+	UseBatchNorm bool
 }
 
 type MLP struct {
@@ -29,10 +30,14 @@ func NewMLP(c *MLPConfig) *MLP {
 			W: matrix.Randn(size[i], size[i+1]).MulC(c.WeightInit(size[i])),
 			B: matrix.Zero(1, size[i+1]),
 		})
-		layers = append(layers, &layer.BatchNorm{
-			Gamma: matrix.One(1, size[i+1]),
-			Beta:  matrix.Zero(1, size[i+1]),
-		})
+
+		if c.UseBatchNorm {
+			layers = append(layers, &layer.BatchNorm{
+				Gamma: matrix.One(1, size[i+1]),
+				Beta:  matrix.Zero(1, size[i+1]),
+			})
+		}
+
 		layers = append(layers, &layer.ReLU{})
 	}
 	layers = append(layers, &layer.Affine{
@@ -43,9 +48,7 @@ func NewMLP(c *MLPConfig) *MLP {
 
 	// new
 	return &MLP{
-		seq: &Sequential{
-			Layer: layers,
-		},
+		seq: NewSequential(layers...),
 	}
 }
 
@@ -61,8 +64,8 @@ func (m *MLP) Backward(x, t matrix.Matrix) matrix.Matrix {
 	return m.seq.Backward(x, t)
 }
 
-func (m *MLP) Optimize(opt Optimizer) [][]matrix.Matrix {
-	return m.seq.Optimize(opt)
+func (m *MLP) Layers() []Layer {
+	return m.seq.Layers()
 }
 
 func (m *MLP) Params() [][]matrix.Matrix {

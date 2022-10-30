@@ -8,27 +8,28 @@ import (
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/model"
+	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/trainer"
 )
 
-var _ trainer.Model = (*Test)(nil)
+var _ trainer.Model = (*TestModel)(nil)
 
-type Test struct{}
+type TestModel struct{}
 
-func (m *Test) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix { return matrix.New() }
-func (m *Test) Forward(x, t matrix.Matrix) matrix.Matrix                  { return matrix.New() }
-func (m *Test) Backward(x, t matrix.Matrix) matrix.Matrix                 { return matrix.New() }
-func (m *Test) Optimize(opt model.Optimizer) [][]matrix.Matrix            { return [][]matrix.Matrix{} }
-func (m *Test) Params() [][]matrix.Matrix                                 { return [][]matrix.Matrix{} }
-func (m *Test) Grads() [][]matrix.Matrix                                  { return [][]matrix.Matrix{} }
+func (m *TestModel) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix { return matrix.New() }
+func (m *TestModel) Forward(x, t matrix.Matrix) matrix.Matrix                  { return matrix.New() }
+func (m *TestModel) Backward(x, t matrix.Matrix) matrix.Matrix                 { return matrix.New() }
+func (m *TestModel) Layers() []model.Layer                                     { return make([]model.Layer, 0) }
+func (m *TestModel) Params() [][]matrix.Matrix                                 { return [][]matrix.Matrix{} }
+func (m *TestModel) Grads() [][]matrix.Matrix                                  { return [][]matrix.Matrix{} }
 
 func ExampleTrainer_Fit() {
 	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
 
 	tr := &trainer.Trainer{
-		Model:     &Test{},
-		Optimizer: nil,
+		Model:     &TestModel{},
+		Optimizer: &optimizer.SGD{},
 	}
 
 	tr.Fit(&trainer.Input{
@@ -42,15 +43,15 @@ func ExampleTrainer_Fit() {
 	})
 
 	// Output:
-	// 0,0: *trainer_test.Test
-	// 0,1: *trainer_test.Test
-	// 0,2: *trainer_test.Test
-	// 1,0: *trainer_test.Test
-	// 1,1: *trainer_test.Test
-	// 1,2: *trainer_test.Test
-	// 2,0: *trainer_test.Test
-	// 2,1: *trainer_test.Test
-	// 2,2: *trainer_test.Test
+	// 0,0: *trainer_test.TestModel
+	// 0,1: *trainer_test.TestModel
+	// 0,2: *trainer_test.TestModel
+	// 1,0: *trainer_test.TestModel
+	// 1,1: *trainer_test.TestModel
+	// 1,2: *trainer_test.TestModel
+	// 2,0: *trainer_test.TestModel
+	// 2,1: *trainer_test.TestModel
+	// 2,2: *trainer_test.TestModel
 
 }
 

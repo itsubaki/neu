@@ -46,7 +46,9 @@ func main() {
 		Model: m,
 		Optimizer: &optimizer.AdaGrad{
 			LearningRate: 0.01,
-			Hooks:        []optimizer.Hook{weight.Decay(1e-6)},
+			Hooks: []optimizer.Hook{
+				weight.Decay(1e-6),
+			},
 		},
 	}
 
