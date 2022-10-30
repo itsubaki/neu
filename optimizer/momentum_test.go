@@ -9,7 +9,7 @@ import (
 )
 
 func ExampleMomentum() {
-	m := &Test{
+	m := &TestModel{
 		params: append(make([][]matrix.Matrix, 0), []matrix.Matrix{
 			matrix.New([]float64{1, 2, 3}, []float64{4, 5, 6}),
 		}),

@@ -7,16 +7,16 @@ import (
 	"github.com/itsubaki/neu/optimizer"
 )
 
-var _ optimizer.Model = (*Test)(nil)
+var _ optimizer.Model = (*TestModel)(nil)
 
-type Test struct {
+type TestModel struct {
 	params [][]matrix.Matrix
 	grads  [][]matrix.Matrix
 }
 
-func (m *Test) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix { return matrix.New() }
-func (m *Test) Forward(x, t matrix.Matrix) matrix.Matrix                  { return matrix.New() }
-func (m *Test) Backward(x, t matrix.Matrix) matrix.Matrix                 { return matrix.New() }
-func (m *Test) Layers() []model.Layer                                     { return []model.Layer{&layer.ReLU{}} }
-func (m *Test) Params() [][]matrix.Matrix                                 { return m.params }
-func (m *Test) Grads() [][]matrix.Matrix                                  { return m.grads }
+func (m *TestModel) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix { return matrix.New() }
+func (m *TestModel) Forward(x, t matrix.Matrix) matrix.Matrix                  { return matrix.New() }
+func (m *TestModel) Backward(x, t matrix.Matrix) matrix.Matrix                 { return matrix.New() }
+func (m *TestModel) Layers() []model.Layer                                     { return []model.Layer{&layer.ReLU{}} }
+func (m *TestModel) Params() [][]matrix.Matrix                                 { return m.params }
+func (m *TestModel) Grads() [][]matrix.Matrix                                  { return m.grads }
