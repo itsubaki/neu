@@ -34,7 +34,7 @@ jobs:
       - name: MNIST
         run: |
           make mnistdl
-          make mnist
+          make mnist1
 
       - name: Codecov
         uses: codecov/codecov-action@v3

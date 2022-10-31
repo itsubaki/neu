@@ -12,6 +12,9 @@ test:
 mnist:
 	go run cmd/mnist/main.go --dir ./testdata
 
+mnist1:
+	go run cmd/mnist/main.go --dir ./testdata --epochs 1
+
 mnistdl:
 	curl -s -o testdata/train-images-idx3-ubyte.gz http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz
 	curl -s -o testdata/train-labels-idx1-ubyte.gz http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz
