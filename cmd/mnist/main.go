@@ -65,7 +65,7 @@ func main() {
 		TrainLabel: t,
 		Epochs:     epochs,
 		BatchSize:  batchSize,
-		Verbose: func(epoch, j int, m trainer.Model) {
+		Verbose: func(epoch, j int, loss float64, m trainer.Model) {
 			if j%(train.N/batchSize/10) != 0 {
 				return
 			}
@@ -79,14 +79,13 @@ func main() {
 			xtbatch := matrix.Batch(xt, maskt)
 			ttbatch := matrix.Batch(tt, maskt)
 
-			// loss, accuracy
-			loss := m.Forward(xbatch, tbatch)
+			// accuracy
 			acc := trainer.Accuracy(m.Predict(xbatch), tbatch)
 			y := m.Predict(xtbatch)
 			acct := trainer.Accuracy(y, ttbatch)
 
 			// print
-			fmt.Printf("%4d,%4d: loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", epoch, j, loss, acc, acct)
+			fmt.Printf("%3d,%4d: loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", epoch, j, loss, acc, acct)
 			fmt.Printf("predict: %v\n", y.Argmax()[:20])
 			fmt.Printf("label  : %v\n", ttbatch.Argmax()[:20])
 			fmt.Println()

@@ -17,7 +17,7 @@ var _ trainer.Model = (*TestModel)(nil)
 type TestModel struct{}
 
 func (m *TestModel) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix { return matrix.New() }
-func (m *TestModel) Forward(x, t matrix.Matrix) matrix.Matrix                  { return matrix.New() }
+func (m *TestModel) Forward(x, t matrix.Matrix) matrix.Matrix                  { return matrix.New([]float64{1}) }
 func (m *TestModel) Backward() matrix.Matrix                                   { return matrix.New() }
 func (m *TestModel) Layers() []model.Layer                                     { return make([]model.Layer, 0) }
 func (m *TestModel) Params() [][]matrix.Matrix                                 { return [][]matrix.Matrix{} }
@@ -37,7 +37,7 @@ func ExampleTrainer_Fit() {
 		TrainLabel: t,
 		Epochs:     3,
 		BatchSize:  1,
-		Verbose: func(epoch, j int, m trainer.Model) {
+		Verbose: func(epoch, j int, loss float64, m trainer.Model) {
 			fmt.Printf("%v,%v: %T\n", epoch, j, m)
 		},
 	})
