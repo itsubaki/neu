@@ -8,10 +8,9 @@ import (
 
 type Add struct{}
 
-func (l *Add) Params() []matrix.Matrix     { return make([]matrix.Matrix, 0) }
-func (l *Add) SetParams(p []matrix.Matrix) {}
-func (l *Add) Grads() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
-func (l *Add) SetGrads(g []matrix.Matrix)  {}
+func (l *Add) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
+func (l *Add) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
+func (l *Add) SetParams(p ...matrix.Matrix) {}
 
 func (l *Add) Forward(x, y matrix.Matrix, _ ...Opts) matrix.Matrix {
 	return x.Add(y)

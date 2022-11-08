@@ -24,9 +24,8 @@ var (
 
 type Layer interface {
 	Params() []matrix.Matrix
-	SetParams(p []matrix.Matrix)
+	SetParams(p ...matrix.Matrix)
 	Grads() []matrix.Matrix
-	SetGrads(g []matrix.Matrix)
 	Forward(x, y matrix.Matrix, opts ...layer.Opts) matrix.Matrix
 	Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix)
 }

@@ -43,7 +43,7 @@ func (o *AdaGrad) Update(m Model) [][]matrix.Matrix {
 	}
 
 	for i, l := range m.Layers() {
-		l.SetParams(updated[i])
+		l.SetParams(updated[i]...)
 	}
 
 	return updated

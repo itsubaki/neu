@@ -78,9 +78,7 @@ func Example_crossEntropyErrorLabel() {
 
 func ExampleSoftmaxWithLoss_Params() {
 	softmax := &layer.SoftmaxWithLoss{}
-
-	softmax.SetParams(make([]matrix.Matrix, 0))
-	softmax.SetGrads(make([]matrix.Matrix, 0))
+	softmax.SetParams(make([]matrix.Matrix, 0)...)
 
 	fmt.Println(softmax)
 	fmt.Println(softmax.Params())

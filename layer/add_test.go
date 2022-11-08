@@ -46,9 +46,7 @@ func ExampleAdd() {
 
 func ExampleAdd_Params() {
 	add := &layer.Add{}
-
-	add.SetParams(make([]matrix.Matrix, 0))
-	add.SetGrads(make([]matrix.Matrix, 0))
+	add.SetParams(make([]matrix.Matrix, 0)...)
 
 	fmt.Println(add)
 	fmt.Println(add.Params())

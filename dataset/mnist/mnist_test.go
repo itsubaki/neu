@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/itsubaki/neu/mnist"
+	"github.com/itsubaki/neu/dataset/mnist"
 )
 
 func ExampleLoad() {
-	train, test := mnist.Must(mnist.Load("../testdata"))
+	train, test := mnist.Must(mnist.Load("../../testdata"))
 
 	fmt.Println(train.N)
 	fmt.Println(test.N)

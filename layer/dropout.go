@@ -11,10 +11,9 @@ type Dropout struct {
 	mask  matrix.Matrix
 }
 
-func (l *Dropout) Params() []matrix.Matrix     { return make([]matrix.Matrix, 0) }
-func (l *Dropout) SetParams(p []matrix.Matrix) {}
-func (l *Dropout) Grads() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
-func (l *Dropout) SetGrads(g []matrix.Matrix)  {}
+func (l *Dropout) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
+func (l *Dropout) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
+func (l *Dropout) SetParams(p ...matrix.Matrix) {}
 
 func (l *Dropout) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
 	if len(opts) > 0 && opts[0].Train {

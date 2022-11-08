@@ -7,18 +7,16 @@ import (
 )
 
 type BatchNorm struct {
-	Gamma, Beta   matrix.Matrix
-	Momentum      float64
-	batchSize     int
-	xc, xn        matrix.Matrix
-	std, mu, va   matrix.Matrix
-	DGamma, DBeta matrix.Matrix
+	Gamma, Beta         matrix.Matrix // params
+	DGamma, DBeta       matrix.Matrix // grads
+	Momentum            float64
+	batchSize           int
+	xc, xn, std, mu, va matrix.Matrix
 }
 
-func (l *BatchNorm) Params() []matrix.Matrix     { return []matrix.Matrix{l.Gamma, l.Beta} }
-func (l *BatchNorm) SetParams(p []matrix.Matrix) { l.Gamma, l.Beta = p[0], p[1] }
-func (l *BatchNorm) Grads() []matrix.Matrix      { return []matrix.Matrix{l.DGamma, l.DBeta} }
-func (l *BatchNorm) SetGrads(g []matrix.Matrix)  { l.DGamma, l.DBeta = g[0], g[1] }
+func (l *BatchNorm) Params() []matrix.Matrix      { return []matrix.Matrix{l.Gamma, l.Beta} }
+func (l *BatchNorm) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DGamma, l.DBeta} }
+func (l *BatchNorm) SetParams(p ...matrix.Matrix) { l.Gamma, l.Beta = p[0], p[1] }
 
 func (l *BatchNorm) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
 	if l.mu == nil {

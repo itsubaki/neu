@@ -32,9 +32,7 @@ func ExampleBatchNorm() {
 
 func ExampleBatchNorm_Params() {
 	n := &layer.BatchNorm{}
-
-	n.SetParams(make([]matrix.Matrix, 2))
-	n.SetGrads(make([]matrix.Matrix, 2))
+	n.SetParams(make([]matrix.Matrix, 2)...)
 
 	fmt.Println(n)
 	fmt.Println(n.Params())

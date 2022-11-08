@@ -5,10 +5,10 @@ import (
 	"math/rand"
 
 	"github.com/itsubaki/neu/activation"
+	"github.com/itsubaki/neu/dataset/mnist"
 	"github.com/itsubaki/neu/loss"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/math/numerical"
-	"github.com/itsubaki/neu/mnist"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/trainer"

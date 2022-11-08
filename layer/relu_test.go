@@ -23,9 +23,7 @@ func ExampleReLU() {
 
 func ExampleReLU_Params() {
 	relu := &layer.ReLU{}
-
-	relu.SetParams(make([]matrix.Matrix, 0))
-	relu.SetGrads(make([]matrix.Matrix, 0))
+	relu.SetParams(make([]matrix.Matrix, 0)...)
 
 	fmt.Println(relu.Params())
 	fmt.Println(relu.Grads())

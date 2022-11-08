@@ -11,10 +11,9 @@ type Sigmoid struct {
 	out matrix.Matrix
 }
 
-func (l *Sigmoid) Params() []matrix.Matrix     { return make([]matrix.Matrix, 0) }
-func (l *Sigmoid) SetParams(p []matrix.Matrix) {}
-func (l *Sigmoid) Grads() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
-func (l *Sigmoid) SetGrads(g []matrix.Matrix)  {}
+func (l *Sigmoid) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
+func (l *Sigmoid) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
+func (l *Sigmoid) SetParams(p ...matrix.Matrix) {}
 
 func (l *Sigmoid) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.out = x.Func(activation.Sigmoid)

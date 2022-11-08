@@ -11,10 +11,9 @@ type Mul struct {
 	y matrix.Matrix
 }
 
-func (l *Mul) Params() []matrix.Matrix     { return make([]matrix.Matrix, 0) }
-func (l *Mul) SetParams(p []matrix.Matrix) {}
-func (l *Mul) Grads() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
-func (l *Mul) SetGrads(g []matrix.Matrix)  {}
+func (l *Mul) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
+func (l *Mul) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
+func (l *Mul) SetParams(p ...matrix.Matrix) {}
 
 func (l *Mul) Forward(x, y matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.x, l.y = x, y

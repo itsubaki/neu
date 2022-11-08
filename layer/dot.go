@@ -7,27 +7,28 @@ import (
 )
 
 type Dot struct {
-	x matrix.Matrix
-	w matrix.Matrix
+	W  matrix.Matrix // params
+	DW matrix.Matrix // grads
+	x  matrix.Matrix
 }
 
-func (l *Dot) Params() []matrix.Matrix     { return make([]matrix.Matrix, 0) }
-func (l *Dot) SetParams(p []matrix.Matrix) {}
-func (l *Dot) Grads() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
-func (l *Dot) SetGrads(g []matrix.Matrix)  {}
+func (l *Dot) Params() []matrix.Matrix      { return []matrix.Matrix{l.W} }
+func (l *Dot) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DW} }
+func (l *Dot) SetParams(p ...matrix.Matrix) { l.W = p[0] }
 
-func (l *Dot) Forward(x, w matrix.Matrix, _ ...Opts) matrix.Matrix {
+func (l *Dot) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.x = x
-	l.w = w
-	return matrix.Dot(l.x, l.w)
+	return matrix.Dot(l.x, l.W)
 }
 
 func (l *Dot) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	dx := matrix.Dot(dout, l.w.T())
-	dy := matrix.Dot(l.x.T(), dout)
-	return dx, dy
+	dx := matrix.Dot(dout, l.W.T())
+	dW := matrix.Dot(l.x.T(), dout)
+	l.DW = dW
+	return dx, matrix.New()
 }
 
 func (l *Dot) String() string {
-	return fmt.Sprintf("%T", l)
+	a, b := l.W.Dimension()
+	return fmt.Sprintf("%T: W(%v, %v): %v", l, a, b, a*b)
 }

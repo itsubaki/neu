@@ -34,9 +34,7 @@ func ExampleMul() {
 
 func ExampleMul_Params() {
 	mul := &layer.Mul{}
-
-	mul.SetParams(make([]matrix.Matrix, 0))
-	mul.SetGrads(make([]matrix.Matrix, 0))
+	mul.SetParams(make([]matrix.Matrix, 0)...)
 
 	fmt.Println(mul)
 	fmt.Println(mul.Params())

@@ -18,45 +18,41 @@ func ExampleDot() {
 		[]float64{7, 8},
 	)
 
-	dot := &layer.Dot{}
-	for _, r := range dot.Forward(A, B) {
+	dot := &layer.Dot{W: B}
+	fmt.Println(dot)
+	fmt.Println()
+
+	for _, r := range dot.Forward(A, nil) {
 		fmt.Println(r)
 	}
 	fmt.Println()
 
-	dx, dy := dot.Backward(matrix.New([]float64{1, 0}, []float64{0, 1}))
+	dx, _ := dot.Backward(matrix.New([]float64{1, 0}, []float64{0, 1}))
 	for _, r := range dx {
 		fmt.Println(r)
 	}
 	fmt.Println()
 
-	for _, r := range dy {
-		fmt.Println(r)
-	}
-
 	// Output:
+	// *layer.Dot: W(2, 2): 4
+	//
 	// [19 22]
 	// [43 50]
 	//
 	// [5 7]
 	// [6 8]
 	//
-	// [1 3]
-	// [2 4]
+
 }
 
 func ExampleDot_Params() {
 	dot := &layer.Dot{}
+	dot.SetParams(make([]matrix.Matrix, 1)...)
 
-	dot.SetParams(make([]matrix.Matrix, 0))
-	dot.SetGrads(make([]matrix.Matrix, 0))
-
-	fmt.Println(dot)
 	fmt.Println(dot.Params())
 	fmt.Println(dot.Grads())
 
 	// Output:
-	// *layer.Dot
-	// []
-	// []
+	// [[]]
+	// [[]]
 }

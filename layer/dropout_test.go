@@ -52,8 +52,7 @@ func ExampleDropout() {
 func ExampleDropout_Params() {
 	dropout := &layer.Dropout{Ratio: 0.5}
 
-	dropout.SetParams(make([]matrix.Matrix, 0))
-	dropout.SetGrads(make([]matrix.Matrix, 0))
+	dropout.SetParams(make([]matrix.Matrix, 0)...)
 
 	fmt.Println(dropout)
 	fmt.Println(dropout.Params())

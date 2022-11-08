@@ -6,8 +6,8 @@ import (
 	"math/rand"
 	"time"
 
+	"github.com/itsubaki/neu/dataset/mnist"
 	"github.com/itsubaki/neu/math/matrix"
-	"github.com/itsubaki/neu/mnist"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/trainer"
