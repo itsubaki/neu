@@ -54,10 +54,31 @@ func Example_im2col() {
 	im2col := func(x matrix.Matrix, fh, fw, pad, stride int) matrix.Matrix {
 		outh, outw := outhw(len(x), len(x[0]), fh, fw, pad, stride)
 		img := matrix.Padding(x, 1)
+		col := matrix.Zero(outh, outw)
 
 		fmt.Printf("%v %v\n", outh, outw)
 		for _, r := range img {
 			fmt.Println(r)
+		}
+		for _, r := range col {
+			fmt.Println(r)
+		}
+
+		for y := 0; y < fh; y++ {
+			ymax := y + stride*outh
+			for x := 0; x < fw; x++ {
+				xmax := x + stride*outw
+
+				// row:column
+				// 0:0, 0:2, 2:0, 2:2
+				// 0:1, 0:3, 2:1, 2:3
+				// 1:0, 1:2, 3:0, 3:2
+				// 1:1, 1:3, 3:1, 3:3
+				//
+				// a, b, c, d, e, f, g
+				// stride=1 is a, c, e, g
+				fmt.Printf("x:%v, y:%v ~ x:%v, y:%v. stride=%v\n", x, y, xmax-1, ymax-1, stride)
+			}
 		}
 
 		return matrix.New()
@@ -74,5 +95,12 @@ func Example_im2col() {
 	// [0 1 2 0]
 	// [0 3 4 0]
 	// [0 0 0 0]
+	// [0 0 0]
+	// [0 0 0]
+	// [0 0 0]
+	// x:0, y:0 ~ x:2, y:2. stride=1
+	// x:1, y:0 ~ x:3, y:2. stride=1
+	// x:0, y:1 ~ x:2, y:3. stride=1
+	// x:1, y:1 ~ x:3, y:3. stride=1
 
 }
