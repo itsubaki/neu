@@ -394,3 +394,17 @@ func ExampleBroadcast() {
 	// [3 4]
 	// [1 2]
 }
+
+func ExamplePadding() {
+	x := matrix.New([]float64{1, 2}, []float64{3, 4})
+	for _, v := range matrix.Padding(x, 1) {
+		fmt.Println(v)
+	}
+
+	// Output:
+	// [0 0 0 0]
+	// [0 1 2 0]
+	// [0 3 4 0]
+	// [0 0 0 0]
+
+}

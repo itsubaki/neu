@@ -306,3 +306,28 @@ func Broadcast(m Matrix, size int) Matrix {
 
 	return out
 }
+
+func Padding(x Matrix, pad int) Matrix {
+	_, q := x.Dimension()
+	pw := q + pad + pad // right + row + left
+
+	// top
+	out := New()
+	for i := 0; i < pad; i++ {
+		out = append(out, make([]float64, pw))
+	}
+
+	// right, left
+	for i := range x {
+		v := append(make([]float64, pad), x[i]...) // right + row
+		v = append(v, make([]float64, pad)...)     // right + row + left
+		out = append(out, v)
+	}
+
+	// bottom
+	for i := 0; i < pad; i++ {
+		out = append(out, make([]float64, pw))
+	}
+
+	return out
+}
