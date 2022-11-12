@@ -54,13 +54,9 @@ func Example_im2col() {
 	im2col := func(x matrix.Matrix, fh, fw, pad, stride int) matrix.Matrix {
 		outh, outw := outhw(len(x), len(x[0]), fh, fw, pad, stride)
 		img := matrix.Padding(x, 1)
-		col := matrix.Zero(outh, outw)
 
 		fmt.Printf("%v %v\n", outh, outw)
 		for _, r := range img {
-			fmt.Println(r)
-		}
-		for _, r := range col {
 			fmt.Println(r)
 		}
 
@@ -95,9 +91,6 @@ func Example_im2col() {
 	// [0 1 2 0]
 	// [0 3 4 0]
 	// [0 0 0 0]
-	// [0 0 0]
-	// [0 0 0]
-	// [0 0 0]
 	// y:0, x:0 ~ y:2, x:2. stride=1
 	// y:0, x:1 ~ y:2, x:3. stride=1
 	// y:1, x:0 ~ y:3, x:2. stride=1
