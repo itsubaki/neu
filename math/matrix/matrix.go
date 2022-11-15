@@ -241,6 +241,22 @@ func (m Matrix) MeanAxis0() Matrix {
 	return m.SumAxis0().MulC(1.0 / float64(len(m)))
 }
 
+func (m Matrix) MaxAxis1() []float64 {
+	out := make([]float64, 0)
+	for i := range m {
+		max := -math.MaxFloat64
+		for j := range m[i] {
+			if m[i][j] > max {
+				max = m[i][j]
+			}
+		}
+
+		out = append(out, max)
+	}
+
+	return out
+}
+
 func (m Matrix) Func(f func(v float64) float64) Matrix {
 	p, q := m.Dimension()
 

@@ -17,3 +17,6 @@ coverage.html
 
 # mnist
 *.gz
+
+# codespaces
+oryxBuildBinary

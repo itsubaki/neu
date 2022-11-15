@@ -312,6 +312,14 @@ func ExampleMatrix_MeanAxis0() {
 	// [[2.5 3.5 4.5]]
 }
 
+func ExampleMatrix_MaxAxis1() {
+	x := matrix.New([]float64{1, 2, 3}, []float64{4, 5, 6})
+	fmt.Println(x.MaxAxis1())
+
+	// Output:
+	// [3 6]
+}
+
 func ExampleMatrix_T() {
 	A := matrix.New(
 		[]float64{1, 2, 3},
