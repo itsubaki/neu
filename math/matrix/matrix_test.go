@@ -405,8 +405,17 @@ func ExampleBroadcast() {
 
 func ExamplePadding() {
 	x := matrix.New([]float64{1, 2}, []float64{3, 4})
-	for _, v := range matrix.Padding(x, 1) {
+	xh, xw := x.Dimension()
+	pad := 1
+
+	o := matrix.Padding(x, pad)
+	for _, v := range o {
 		fmt.Println(v)
+	}
+	fmt.Println()
+
+	for _, v := range o[pad : xh+pad] {
+		fmt.Println(v[pad : xw+pad])
 	}
 
 	// Output:
@@ -414,5 +423,8 @@ func ExamplePadding() {
 	// [0 1 2 0]
 	// [0 3 4 0]
 	// [0 0 0 0]
+	//
+	// [1 2]
+	// [3 4]
 
 }
