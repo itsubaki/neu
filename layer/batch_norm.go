@@ -27,6 +27,7 @@ func (l *BatchNorm) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
 
 	var xn matrix.Matrix
 	if len(opts) > 0 && opts[0].Train {
+		// var, std, norm
 		mu := x.MeanAxis0()         // mean(x, axis=0)
 		xc := x.Sub(mu)             // x - mu
 		va := xc.Pow2().MeanAxis0() // mean(xc**2, axis=0)

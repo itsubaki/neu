@@ -312,6 +312,14 @@ func ExampleMatrix_MeanAxis0() {
 	// [[2.5 3.5 4.5]]
 }
 
+func ExampleMatrix_MaxAxis1() {
+	x := matrix.New([]float64{1, 2, 3}, []float64{4, 5, 6})
+	fmt.Println(x.MaxAxis1())
+
+	// Output:
+	// [3 6]
+}
+
 func ExampleMatrix_T() {
 	A := matrix.New(
 		[]float64{1, 2, 3},
@@ -397,7 +405,15 @@ func ExampleBroadcast() {
 
 func ExamplePadding() {
 	x := matrix.New([]float64{1, 2}, []float64{3, 4})
-	for _, v := range matrix.Padding(x, 1) {
+	pad := 1
+
+	p := matrix.Padding(x, pad)
+	for _, v := range p {
+		fmt.Println(v)
+	}
+	fmt.Println()
+
+	for _, v := range matrix.Unpadding(p, pad) {
 		fmt.Println(v)
 	}
 
@@ -406,5 +422,8 @@ func ExamplePadding() {
 	// [0 1 2 0]
 	// [0 3 4 0]
 	// [0 0 0 0]
+	//
+	// [1 2]
+	// [3 4]
 
 }

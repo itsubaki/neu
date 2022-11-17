@@ -241,6 +241,22 @@ func (m Matrix) MeanAxis0() Matrix {
 	return m.SumAxis0().MulC(1.0 / float64(len(m)))
 }
 
+func (m Matrix) MaxAxis1() []float64 {
+	out := make([]float64, 0)
+	for i := range m {
+		max := -math.MaxFloat64
+		for j := range m[i] {
+			if m[i][j] > max {
+				max = m[i][j]
+			}
+		}
+
+		out = append(out, max)
+	}
+
+	return out
+}
+
 func (m Matrix) Func(f func(v float64) float64) Matrix {
 	p, q := m.Dimension()
 
@@ -309,7 +325,7 @@ func Broadcast(m Matrix, size int) Matrix {
 
 func Padding(x Matrix, pad int) Matrix {
 	_, q := x.Dimension()
-	pw := q + pad + pad // right + row + left
+	pw := pad + q + pad // right + row + left
 
 	// top
 	out := New()
@@ -327,6 +343,17 @@ func Padding(x Matrix, pad int) Matrix {
 	// bottom
 	for i := 0; i < pad; i++ {
 		out = append(out, make([]float64, pw))
+	}
+
+	return out
+}
+
+func Unpadding(x Matrix, pad int) Matrix {
+	n, m := x.Dimension()
+
+	out := New()
+	for _, r := range x[pad : n-pad] {
+		out = append(out, r[pad:m-pad])
 	}
 
 	return out
