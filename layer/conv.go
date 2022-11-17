@@ -90,7 +90,7 @@ func col2im(col matrix.Matrix, xh, xw, fh, fw, pad, stride int) matrix.Matrix {
 	// [0 0 0 1 2 0 3 4 0]
 	// [0 1 2 0 3 4 0 0 0]
 	// [1 2 0 3 4 0 0 0 0]
-	colT := col.Transpose()
+	colT := col.T()
 
 	// [0  0  0 0]
 	// [0  4  8 0]
