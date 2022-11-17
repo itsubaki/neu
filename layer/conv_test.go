@@ -99,11 +99,3 @@ func Example_col2im() {
 	// [ 4  8]
 	// [12 16]
 }
-
-func ExampleConvolution() {
-	c := &layer.Convolution{}
-	fmt.Println(c.Forward(nil, nil))
-
-	// Output
-	// nil
-}

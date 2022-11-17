@@ -2,14 +2,6 @@ package layer
 
 import "github.com/itsubaki/neu/math/matrix"
 
-type Convolution struct {
-	W, B []matrix.Matrix // params. W(FN, FH, FW), B(FN, 1, 1)
-}
-
-func (l *Convolution) Forward(x, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
-	return nil
-}
-
 func outhw(xh, xw, fh, fw, pad, stride int) (int, int) {
 	outh := 1 + int((xh+2*pad-fh)/stride)
 	outw := 1 + int((xw+2*pad-fw)/stride)
@@ -133,10 +125,5 @@ func col2im(col matrix.Matrix, xh, xw, fh, fw, pad, stride int) matrix.Matrix {
 	// pad := 1
 	// [ 4  8]
 	// [12 16]
-	out := matrix.New()
-	for _, r := range img[pad : xh+pad] {
-		out = append(out, r[pad:xw+pad])
-	}
-
-	return out
+	return matrix.Unpadding(img, 1)
 }

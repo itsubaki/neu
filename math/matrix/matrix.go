@@ -325,7 +325,7 @@ func Broadcast(m Matrix, size int) Matrix {
 
 func Padding(x Matrix, pad int) Matrix {
 	_, q := x.Dimension()
-	pw := q + pad + pad // right + row + left
+	pw := pad + q + pad // right + row + left
 
 	// top
 	out := New()
@@ -343,6 +343,17 @@ func Padding(x Matrix, pad int) Matrix {
 	// bottom
 	for i := 0; i < pad; i++ {
 		out = append(out, make([]float64, pw))
+	}
+
+	return out
+}
+
+func Unpadding(x Matrix, pad int) Matrix {
+	n, m := x.Dimension()
+
+	out := New()
+	for _, r := range x[pad : n-pad] {
+		out = append(out, r[pad:m-pad])
 	}
 
 	return out
