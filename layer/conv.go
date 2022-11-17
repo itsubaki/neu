@@ -30,7 +30,7 @@ func im2col(im matrix.Matrix, fh, fw, pad, stride int) matrix.Matrix {
 	// [0 1 2 0]
 	// [0 3 4 0]
 	// [0 0 0 0]
-	img := matrix.Padding(im, 1)
+	img := matrix.Padding(im, pad)
 
 	// FC, FH, FW, stride := 1, 2, 2, 1
 	// [0 0 0 0 1 2 0 3 4]
@@ -125,5 +125,5 @@ func col2im(col matrix.Matrix, xh, xw, fh, fw, pad, stride int) matrix.Matrix {
 	// pad := 1
 	// [ 4  8]
 	// [12 16]
-	return matrix.Unpadding(img, 1)
+	return matrix.Unpadding(img, pad)
 }
