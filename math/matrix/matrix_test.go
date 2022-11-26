@@ -434,15 +434,28 @@ func ExampleReshape() {
 	fmt.Println(matrix.Reshape(x, 1, 4))
 	fmt.Println(matrix.Reshape(x, 4, 1))
 	fmt.Println(matrix.Reshape(x, 2, 2))
+	fmt.Println()
+
 	fmt.Println(matrix.Reshape(x, 1, -1))
 	fmt.Println(matrix.Reshape(x, 4, -1))
 	fmt.Println(matrix.Reshape(x, 2, -1))
+	fmt.Println()
+
+	fmt.Println(matrix.Reshape(x, -1, 1))
+	fmt.Println(matrix.Reshape(x, -1, 4))
+	fmt.Println(matrix.Reshape(x, -1, 2))
+	fmt.Println()
 
 	// Output:
 	// [[1 2 3 4]]
 	// [[1] [2] [3] [4]]
 	// [[1 2] [3 4]]
+	//
 	// [[1 2 3 4]]
 	// [[1] [2] [3] [4]]
+	// [[1 2] [3 4]]
+	//
+	// [[1] [2] [3] [4]]
+	// [[1 2 3 4]]
 	// [[1 2] [3 4]]
 }

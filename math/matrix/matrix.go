@@ -371,6 +371,11 @@ func Flatten(x Matrix) []float64 {
 func Reshape(x Matrix, m, n int) Matrix {
 	v := Flatten(x)
 
+	if m < 1 {
+		p, q := x.Dimension()
+		m = p * q / n
+	}
+
 	if n < 1 {
 		p, q := x.Dimension()
 		n = p * q / m
