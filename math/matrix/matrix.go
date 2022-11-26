@@ -14,21 +14,21 @@ func New(v ...[]float64) Matrix {
 }
 
 // Zero returns a matrix with all elements 0.
-func Zero(n, m int) Matrix {
-	out := make(Matrix, n)
-	for i := 0; i < n; i++ {
-		out[i] = make([]float64, m)
+func Zero(m, n int) Matrix {
+	out := make(Matrix, m)
+	for i := 0; i < m; i++ {
+		out[i] = make([]float64, n)
 	}
 
 	return out
 }
 
 // One returns a matrix with all elements 1.
-func One(n, m int) Matrix {
-	out := make(Matrix, n)
-	for i := 0; i < n; i++ {
+func One(m, n int) Matrix {
+	out := make(Matrix, m)
+	for i := 0; i < m; i++ {
 		v := make([]float64, 0)
-		for j := 0; j < m; j++ {
+		for j := 0; j < n; j++ {
 			v = append(v, 1)
 		}
 
@@ -39,11 +39,11 @@ func One(n, m int) Matrix {
 }
 
 // Rand returns a matrix with elements that pseudo-random number in the half-open interval [0.0,1.0).
-func Rand(n, m int) Matrix {
+func Rand(m, n int) Matrix {
 	out := make(Matrix, 0)
-	for i := 0; i < n; i++ {
+	for i := 0; i < m; i++ {
 		v := make([]float64, 0)
-		for j := 0; j < m; j++ {
+		for j := 0; j < n; j++ {
 			v = append(v, rand.Float64())
 		}
 
@@ -54,11 +54,11 @@ func Rand(n, m int) Matrix {
 }
 
 // Randn returns a matrix with elements that normally distributed float64 in the range [-math.MaxFloat64, +math.MaxFloat64] with standard normal distribution.
-func Randn(n, m int) Matrix {
+func Randn(m, n int) Matrix {
 	out := make(Matrix, 0)
-	for i := 0; i < n; i++ {
+	for i := 0; i < m; i++ {
 		v := make([]float64, 0)
-		for j := 0; j < m; j++ {
+		for j := 0; j < n; j++ {
 			v = append(v, rand.NormFloat64())
 		}
 
@@ -349,11 +349,11 @@ func Padding(x Matrix, pad int) Matrix {
 }
 
 func Unpadding(x Matrix, pad int) Matrix {
-	n, m := x.Dimension()
+	m, n := x.Dimension()
 
 	out := New()
-	for _, r := range x[pad : n-pad] {
-		out = append(out, r[pad:m-pad])
+	for _, r := range x[pad : m-pad] {
+		out = append(out, r[pad:n-pad])
 	}
 
 	return out
