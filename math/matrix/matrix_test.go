@@ -427,3 +427,22 @@ func ExamplePadding() {
 	// [3 4]
 
 }
+
+func ExampleReshape() {
+	x := matrix.New([]float64{1, 2}, []float64{3, 4})
+
+	fmt.Println(matrix.Reshape(x, 1, 4))
+	fmt.Println(matrix.Reshape(x, 4, 1))
+	fmt.Println(matrix.Reshape(x, 2, 2))
+	fmt.Println(matrix.Reshape(x, 1, -1))
+	fmt.Println(matrix.Reshape(x, 4, -1))
+	fmt.Println(matrix.Reshape(x, 2, -1))
+
+	// Output:
+	// [[1 2 3 4]]
+	// [[1] [2] [3] [4]]
+	// [[1 2] [3 4]]
+	// [[1 2 3 4]]
+	// [[1] [2] [3] [4]]
+	// [[1 2] [3 4]]
+}

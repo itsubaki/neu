@@ -358,3 +358,29 @@ func Unpadding(x Matrix, pad int) Matrix {
 
 	return out
 }
+
+func Flatten(x Matrix) []float64 {
+	out := make([]float64, 0)
+	for _, r := range x {
+		out = append(out, r...)
+	}
+
+	return out
+}
+
+func Reshape(x Matrix, m, n int) Matrix {
+	v := Flatten(x)
+
+	if n < 1 {
+		p, q := x.Dimension()
+		n = p * q / m
+	}
+
+	out := New()
+	for i := 0; i < m; i++ {
+		begin, end := i*n, (i+1)*n
+		out = append(out, v[begin:end])
+	}
+
+	return out
+}
