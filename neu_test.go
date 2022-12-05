@@ -28,9 +28,9 @@ func Example_mnist() {
 	// model
 	rand.Seed(1) // for test
 	m := model.NewMLP(&model.MLPConfig{
-		InputSize:    784,
+		InputSize:    mnist.Width * mnist.Height, // 24 * 24 = 784
+		OutputSize:   mnist.Labels,               // 0 ~ 9
 		HiddenSize:   []int{50},
-		OutputSize:   10,
 		WeightInit:   weight.Std(0.01),
 		UseBatchNorm: true,
 	})

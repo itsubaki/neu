@@ -20,6 +20,7 @@ const (
 const (
 	Width  = 28
 	Height = 28
+	Labels = 10 // 0 ~ 9
 )
 
 type (

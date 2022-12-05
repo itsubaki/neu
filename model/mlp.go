@@ -7,8 +7,8 @@ import (
 
 type MLPConfig struct {
 	InputSize    int
-	HiddenSize   []int
 	OutputSize   int
+	HiddenSize   []int
 	WeightInit   WeightInit
 	UseBatchNorm bool
 }
