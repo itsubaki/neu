@@ -8,6 +8,7 @@ func outhw(xh, xw, fh, fw, pad, stride int) (int, int) {
 	return outh, outw
 }
 
+// TODO: "チャンネル方向に複数の特徴マップがある場合、チャンネルごとに入力データとフィルターの畳み込み演算を行い、それらの結果を加算してひとつの出力を得ます。" ゼロから作るDeepLearning　p214
 func im2col(im matrix.Matrix, fh, fw, pad, stride int) matrix.Matrix {
 	pick := func(img matrix.Matrix, y, x, ymax, xmax, stride int) []float64 {
 		// NOTE: double loop. no loop (m[y:ymax:stride, x:xmax:stride]) in numpy.
