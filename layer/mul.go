@@ -6,6 +6,7 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 )
 
+// Mul is a layer that performs an element-wise multiplication.
 type Mul struct {
 	x matrix.Matrix
 	y matrix.Matrix

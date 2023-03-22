@@ -27,6 +27,7 @@ type (
 	Label uint8
 )
 
+// Dataset is a dataset of MNIST.
 type Dataset struct {
 	N     int
 	Image []Image
@@ -131,6 +132,7 @@ func load(imageFileName, labelFileName string) (*Dataset, error) {
 	}, nil
 }
 
+// Must returns training and test dataset or panic.
 func Must(train, test *Dataset, err error) (*Dataset, *Dataset) {
 	if err != nil {
 		panic(err)
@@ -139,6 +141,7 @@ func Must(train, test *Dataset, err error) (*Dataset, *Dataset) {
 	return train, test
 }
 
+// Load returns training and test dataset.
 func Load(dir string) (*Dataset, *Dataset, error) {
 	train, err := load(
 		path.Join(dir, TrainImageGZ),
@@ -159,6 +162,7 @@ func Load(dir string) (*Dataset, *Dataset, error) {
 	return train, test, nil
 }
 
+// OneHot returns one-hot vector.
 func OneHot(label []Label) [][]float64 {
 	out := make([][]float64, 0, len(label))
 	for _, l := range label {
@@ -170,6 +174,7 @@ func OneHot(label []Label) [][]float64 {
 	return out
 }
 
+// Normalize returns normalized image.
 func Normalize(img []Image) [][]float64 {
 	out := make([][]float64, 0)
 	for i := range img {

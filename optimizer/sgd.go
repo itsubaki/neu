@@ -2,11 +2,13 @@ package optimizer
 
 import "github.com/itsubaki/neu/math/matrix"
 
+// SGD is an optimizer that the Stochastic Gradient Descent algorithm.
 type SGD struct {
 	LearningRate float64
 	Hooks        []Hook
 }
 
+// Update updates the parameters of the model.
 func (o *SGD) Update(m Model) [][]matrix.Matrix {
 	params, grads := m.Params(), m.Grads()
 	for _, h := range o.Hooks {

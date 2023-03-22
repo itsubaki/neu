@@ -2,6 +2,7 @@ package loss
 
 import "math"
 
+// SumSquaredError returns the sum squared error.
 func SumSquaredError(y, t []float64) float64 {
 	var sum float64
 	for i := range y {

@@ -1,5 +1,6 @@
 package numerical
 
+// Diff returns the numerical differentiation of f at x.
 func Diff(f func(x float64) float64, x []float64, h float64) []float64 {
 	out := make([]float64, 0)
 	for _, xi := range x {

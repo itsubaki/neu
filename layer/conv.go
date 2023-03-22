@@ -8,6 +8,7 @@ func outhw(xh, xw, fh, fw, pad, stride int) (int, int) {
 	return outh, outw
 }
 
+// im2col converts image to column.
 func im2col(im matrix.Matrix, fh, fw, pad, stride int) matrix.Matrix {
 	pick := func(img matrix.Matrix, y, x, ymax, xmax, stride int) []float64 {
 		// NOTE: double loop. no loop (m[y:ymax:stride, x:xmax:stride]) in numpy.
@@ -61,6 +62,7 @@ func im2col(im matrix.Matrix, fh, fw, pad, stride int) matrix.Matrix {
 	return out.T()
 }
 
+// col2im converts column to image.
 func col2im(col matrix.Matrix, xh, xw, fh, fw, pad, stride int) matrix.Matrix {
 	var ycount int
 	add := func(img, colT matrix.Matrix, y, x, ymax, xmax, stride int) {

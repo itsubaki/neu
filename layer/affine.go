@@ -6,6 +6,7 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 )
 
+// Affine is a layer that performs an affine transformation.
 type Affine struct {
 	W, B   matrix.Matrix // params
 	DW, DB matrix.Matrix // grads

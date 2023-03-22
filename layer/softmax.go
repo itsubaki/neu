@@ -8,6 +8,7 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 )
 
+// SoftmaxWithLoss is a layer that performs a softmax and a cross-entropy loss.
 type SoftmaxWithLoss struct {
 	t    matrix.Matrix
 	y    matrix.Matrix

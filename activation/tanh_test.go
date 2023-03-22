@@ -20,7 +20,7 @@ func ExampleTanh() {
 }
 
 func ExampleTanh_step() {
-	x := plot.XRange(-6, 6, 0.1)
+	x := plot.Range(-6, 6, 0.1)
 	y := make([]float64, 0)
 
 	for _, xi := range x {

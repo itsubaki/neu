@@ -6,6 +6,7 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 )
 
+// ReLU is a layer that performs an element-wise ReLU.
 type ReLU struct {
 	mask matrix.Matrix
 }

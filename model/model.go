@@ -22,6 +22,7 @@ var (
 	_ WeightInit = weight.Glorot
 )
 
+// Layer is an interface that represents a layer.
 type Layer interface {
 	Params() []matrix.Matrix
 	SetParams(p ...matrix.Matrix)
@@ -30,4 +31,5 @@ type Layer interface {
 	Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix)
 }
 
+// WeightInit is an interface that represents a weight initializer.
 type WeightInit func(prevNodeNum int) float64

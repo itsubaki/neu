@@ -2,6 +2,7 @@ package loss
 
 import "math"
 
+// CrossEntropyError returns the cross entropy error.
 func CrossEntropyError(y, t []float64) float64 {
 	var sum float64
 	for i := range y {

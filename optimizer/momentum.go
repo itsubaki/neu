@@ -2,6 +2,7 @@ package optimizer
 
 import "github.com/itsubaki/neu/math/matrix"
 
+// Momemtum is an optimizer that the Momentum algorithm.
 type Momentum struct {
 	LearningRate float64
 	Momentum     float64
@@ -9,6 +10,7 @@ type Momentum struct {
 	v            [][]matrix.Matrix
 }
 
+// Update updates the parameters of the model.
 func (o *Momentum) Update(m Model) [][]matrix.Matrix {
 	params, grads := m.Params(), m.Grads()
 	for _, h := range o.Hooks {

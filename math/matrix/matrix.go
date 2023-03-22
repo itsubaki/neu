@@ -190,6 +190,7 @@ func (m Matrix) T() Matrix {
 	return m.Transpose()
 }
 
+// Sum returns the sum of all elements.
 func (m Matrix) Sum() float64 {
 	var sum float64
 	for i := range m {
@@ -201,11 +202,13 @@ func (m Matrix) Sum() float64 {
 	return sum
 }
 
+// Avg returns the average of all elements.
 func (m Matrix) Avg() float64 {
 	a, b := m.Dimension()
 	return m.Sum() / float64(a*b)
 }
 
+// Argmax returns the index of the maximum value of each row.
 func (m Matrix) Argmax() []int {
 	out := make([]int, 0)
 	for i := range m {
@@ -224,6 +227,7 @@ func (m Matrix) Argmax() []int {
 	return out
 }
 
+// SumAxis0 returns the sum of each column.
 func (m Matrix) SumAxis0() Matrix {
 	p, q := m.Dimension()
 
@@ -237,10 +241,12 @@ func (m Matrix) SumAxis0() Matrix {
 	return New(v)
 }
 
+// MeanAxis0 returns the mean of each column.
 func (m Matrix) MeanAxis0() Matrix {
 	return m.SumAxis0().MulC(1.0 / float64(len(m)))
 }
 
+// MaxAxis1 returns the maximum value of each row.
 func (m Matrix) MaxAxis1() []float64 {
 	out := make([]float64, 0)
 	for i := range m {
@@ -257,6 +263,7 @@ func (m Matrix) MaxAxis1() []float64 {
 	return out
 }
 
+// Func applies a function to each element of the matrix.
 func (m Matrix) Func(f func(v float64) float64) Matrix {
 	p, q := m.Dimension()
 
@@ -291,10 +298,12 @@ func (m Matrix) FuncWith(n Matrix, f func(a, b float64) float64) Matrix {
 	return out
 }
 
+// Dot returns the dot product of m and n.
 func Dot(m, n Matrix) Matrix {
 	return m.Dot(n)
 }
 
+// Func applies a function to each element of the matrix.
 func Func(m Matrix, f func(a float64) float64) Matrix {
 	return m.Func(f)
 }
@@ -303,6 +312,7 @@ func FuncWith(m, n Matrix, f func(a, b float64) float64) Matrix {
 	return m.FuncWith(n, f)
 }
 
+// Broadcast returns the broadcasted matrix.
 func Broadcast(m Matrix, size int) Matrix {
 	out := make(Matrix, 0)
 	for {
@@ -323,6 +333,7 @@ func Broadcast(m Matrix, size int) Matrix {
 	return out
 }
 
+// Padding returns the padded matrix.
 func Padding(x Matrix, pad int) Matrix {
 	_, q := x.Dimension()
 	pw := pad + q + pad // right + row + left
@@ -348,6 +359,7 @@ func Padding(x Matrix, pad int) Matrix {
 	return out
 }
 
+// Unpadding returns the unpadded matrix.
 func Unpadding(x Matrix, pad int) Matrix {
 	m, n := x.Dimension()
 
@@ -368,6 +380,7 @@ func Flatten(x Matrix) []float64 {
 	return out
 }
 
+// Reshape returns the matrix with the given shape.
 func Reshape(x Matrix, m, n int) Matrix {
 	v := Flatten(x)
 

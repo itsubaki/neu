@@ -6,6 +6,7 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 )
 
+// Add is a layer that performs an element-wise addition.
 type Add struct{}
 
 func (l *Add) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
