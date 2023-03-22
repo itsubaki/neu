@@ -35,13 +35,14 @@ func main() {
 	// model
 	rand.Seed(time.Now().Unix())
 	m := model.NewMLP(&model.MLPConfig{
-		InputSize:    784, // 24 * 24
+		InputSize:    mnist.Width * mnist.Height, // 24 * 24 = 784
+		OutputSize:   mnist.Labels,               // 0 ~ 9
 		HiddenSize:   []int{50, 50, 50},
-		OutputSize:   10, // 0 ~ 9
 		WeightInit:   weight.He,
 		UseBatchNorm: true,
 	})
 
+	// print layer
 	fmt.Printf("%T\n", m)
 	for i, l := range m.Layers() {
 		fmt.Printf("%2d: %v\n", i, l)

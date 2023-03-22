@@ -18,8 +18,8 @@ func ExampleMLP() {
 	rand.Seed(1) // for test
 	m := model.NewMLP(&model.MLPConfig{
 		InputSize:    2,
-		HiddenSize:   []int{3},
 		OutputSize:   2,
+		HiddenSize:   []int{3},
 		WeightInit:   weight.Std(0.01),
 		UseBatchNorm: false,
 	})
@@ -55,8 +55,8 @@ func ExampleMLP_gradientCheck() {
 	rand.Seed(1) // for test
 	m := model.NewMLP(&model.MLPConfig{
 		InputSize:    2,
-		HiddenSize:   []int{3},
 		OutputSize:   2,
+		HiddenSize:   []int{3},
 		WeightInit:   weight.Std(0.01),
 		UseBatchNorm: false,
 	})
