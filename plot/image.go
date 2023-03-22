@@ -8,7 +8,8 @@ import (
 	"gonum.org/v1/plot/vg"
 )
 
-func XRange(begin, end, delta float64) []float64 {
+// XRange returns a slice of float64 values from begin to end with a specified delta.
+func Range(begin, end, delta float64) []float64 {
 	out := []float64{begin}
 	for {
 		begin = begin + delta

@@ -7,6 +7,7 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 )
 
+// Sigmoid is a layer that performs an element-wise sigmoid.
 type Sigmoid struct {
 	out matrix.Matrix
 }

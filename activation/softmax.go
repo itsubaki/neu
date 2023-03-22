@@ -2,6 +2,7 @@ package activation
 
 import "math"
 
+// Softmax returns the softmax of the input vector.
 func Softmax(a []float64) []float64 {
 	var max float64
 	for i := range a {

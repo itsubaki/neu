@@ -6,6 +6,7 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 )
 
+// Dot is a layer that performs a dot product.
 type Dot struct {
 	W  matrix.Matrix // params
 	DW matrix.Matrix // grads

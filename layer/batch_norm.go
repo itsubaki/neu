@@ -6,6 +6,7 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 )
 
+// BatchNorm is a layer that performs batch normalization.
 type BatchNorm struct {
 	Gamma, Beta         matrix.Matrix // params
 	DGamma, DBeta       matrix.Matrix // grads

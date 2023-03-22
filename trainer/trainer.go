@@ -43,6 +43,7 @@ type Trainer struct {
 	Optimizer Optimizer
 }
 
+// Fit trains the model using the provided optimizer.
 func (t *Trainer) Fit(in *Input) {
 	for i := 0; i < in.Epochs; i++ {
 		// shuffle dataset
@@ -63,12 +64,14 @@ func (t *Trainer) Fit(in *Input) {
 	}
 }
 
+// Range returns begin and end index of batch.
 func Range(i, batchSize int) (int, int) {
 	begin := i * batchSize
 	end := begin + batchSize
 	return begin, end
 }
 
+// Shuffle shuffles the dataset.
 func Shuffle(x, t matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	xs, ts := make(matrix.Matrix, 0), make(matrix.Matrix, 0)
 	for i := 0; i < len(x); i++ {
@@ -86,6 +89,7 @@ func Shuffle(x, t matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	return xs, ts
 }
 
+// Random returns random index.
 func Random(trainSize, batchSize int) []int {
 	tmp := make(map[int]bool)
 

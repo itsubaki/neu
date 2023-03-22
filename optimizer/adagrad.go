@@ -6,12 +6,14 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 )
 
+// AdaGrad is an optimizer that implements the AdaGrad algorithm.
 type AdaGrad struct {
 	LearningRate float64
 	Hooks        []Hook
 	h            [][]matrix.Matrix
 }
 
+// Update updates the parameters of the model.
 func (o *AdaGrad) Update(m Model) [][]matrix.Matrix {
 	params, grads := m.Params(), m.Grads()
 	for _, h := range o.Hooks {

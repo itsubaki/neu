@@ -6,6 +6,7 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 )
 
+// Dropout is a layer that performs a dropout.
 type Dropout struct {
 	Ratio float64
 	mask  matrix.Matrix
