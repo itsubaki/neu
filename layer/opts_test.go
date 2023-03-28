@@ -10,5 +10,5 @@ func ExampleOpts() {
 	fmt.Println(layer.Opts{Train: true})
 
 	// Output:
-	// {true}
+	// {true <nil>}
 }
