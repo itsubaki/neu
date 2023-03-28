@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"math/rand"
 	"time"
 
 	"github.com/itsubaki/neu/dataset/mnist"
@@ -33,7 +32,6 @@ func main() {
 	tt := matrix.New(mnist.OneHot(test.Label)...)
 
 	// model
-	rand.Seed(time.Now().Unix())
 	m := model.NewMLP(&model.MLPConfig{
 		InputSize:    mnist.Width * mnist.Height, // 24 * 24 = 784
 		OutputSize:   mnist.Labels,               // 0 ~ 9

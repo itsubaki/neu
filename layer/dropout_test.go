@@ -11,23 +11,23 @@ import (
 func ExampleDropout() {
 	x := matrix.New([]float64{1.0, -0.5}, []float64{-2.0, 3.0})
 
-	rand.Seed(1)
+	s := rand.NewSource(1)
 	drop := &layer.Dropout{Ratio: 0}
-	fmt.Println(drop.Forward(x, nil, layer.Opts{Train: true}))
+	fmt.Println(drop.Forward(x, nil, layer.Opts{Train: true, Source: s}))
 	fmt.Println(drop.Backward(x))
 	fmt.Println(drop.Forward(x, nil, layer.Opts{Train: false}))
 	fmt.Println(drop.Backward(x))
 	fmt.Println()
 
 	drop.Ratio = 1.0
-	fmt.Println(drop.Forward(x, nil, layer.Opts{Train: true}))
+	fmt.Println(drop.Forward(x, nil, layer.Opts{Train: true, Source: s}))
 	fmt.Println(drop.Backward(x))
 	fmt.Println(drop.Forward(x, nil, layer.Opts{Train: false}))
 	fmt.Println(drop.Backward(x))
 	fmt.Println()
 
 	drop.Ratio = 0.5
-	fmt.Println(drop.Forward(x, nil, layer.Opts{Train: true}))
+	fmt.Println(drop.Forward(x, nil, layer.Opts{Train: true, Source: s}))
 	fmt.Println(drop.Backward(x))
 	fmt.Println(drop.Forward(x, nil, layer.Opts{Train: false}))
 	fmt.Println(drop.Backward(x))

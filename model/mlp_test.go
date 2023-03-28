@@ -15,14 +15,14 @@ func ExampleMLP() {
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
 
 	// model
-	rand.Seed(1) // for test
+	s := rand.NewSource(1)
 	m := model.NewMLP(&model.MLPConfig{
 		InputSize:    2,
 		OutputSize:   2,
 		HiddenSize:   []int{3},
 		WeightInit:   weight.Std(0.01),
 		UseBatchNorm: false,
-	})
+	}, s)
 
 	fmt.Printf("%T\n", m)
 	for i, l := range m.Layers() {
@@ -52,14 +52,14 @@ func ExampleMLP_gradientCheck() {
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
 
 	// model
-	rand.Seed(1) // for test
+	s := rand.NewSource(1)
 	m := model.NewMLP(&model.MLPConfig{
 		InputSize:    2,
 		OutputSize:   2,
 		HiddenSize:   []int{3},
 		WeightInit:   weight.Std(0.01),
 		UseBatchNorm: false,
-	})
+	}, s)
 
 	// gradients
 	m.Forward(x, t)
@@ -85,14 +85,14 @@ func ExampleMLP_gradientCheck() {
 }
 
 func ExampleMLP_Params() {
-	rand.Seed(1) // for test
+	s := rand.NewSource(1)
 	m := model.NewMLP(&model.MLPConfig{
 		InputSize:    1,
 		HiddenSize:   []int{2},
 		OutputSize:   1,
 		WeightInit:   weight.Std(0.01),
 		UseBatchNorm: true,
-	})
+	}, s)
 
 	for _, p := range m.Params() {
 		// Affine: W1, B1

@@ -30,8 +30,8 @@ func ExampleOne() {
 }
 
 func ExampleRand() {
-	rand.Seed(1)
-	for _, r := range matrix.Rand(2, 3) {
+	s := rand.NewSource(1)
+	for _, r := range matrix.Rand(2, 3, s) {
 		fmt.Println(r)
 	}
 
@@ -41,8 +41,8 @@ func ExampleRand() {
 
 }
 func ExampleRandn() {
-	rand.Seed(1)
-	for _, r := range matrix.Randn(2, 3) {
+	s := rand.NewSource(1)
+	for _, r := range matrix.Randn(2, 3, s) {
 		fmt.Println(r)
 	}
 

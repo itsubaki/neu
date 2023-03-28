@@ -3,6 +3,7 @@ package matrix
 import (
 	"math"
 	"math/rand"
+	"time"
 )
 
 type Matrix [][]float64
@@ -39,12 +40,19 @@ func One(m, n int) Matrix {
 }
 
 // Rand returns a matrix with elements that pseudo-random number in the half-open interval [0.0,1.0).
-func Rand(m, n int) Matrix {
+// m, n is the dimension of the matrix.
+// s is the source of the pseudo-random number.
+func Rand(m, n int, s ...rand.Source) Matrix {
+	if len(s) == 0 {
+		s = append(s, rand.NewSource(time.Now().UnixNano()))
+	}
+	rng := rand.New(s[0])
+
 	out := make(Matrix, 0)
 	for i := 0; i < m; i++ {
 		v := make([]float64, 0)
 		for j := 0; j < n; j++ {
-			v = append(v, rand.Float64())
+			v = append(v, rng.Float64())
 		}
 
 		out = append(out, v)
@@ -54,12 +62,19 @@ func Rand(m, n int) Matrix {
 }
 
 // Randn returns a matrix with elements that normally distributed float64 in the range [-math.MaxFloat64, +math.MaxFloat64] with standard normal distribution.
-func Randn(m, n int) Matrix {
+// m, n is the dimension of the matrix.
+// s is the source of the pseudo-random number.
+func Randn(m, n int, s ...rand.Source) Matrix {
+	if len(s) == 0 {
+		s = append(s, rand.NewSource(time.Now().UnixNano()))
+	}
+	rng := rand.New(s[0])
+
 	out := make(Matrix, 0)
 	for i := 0; i < m; i++ {
 		v := make([]float64, 0)
 		for j := 0; j < n; j++ {
-			v = append(v, rand.NormFloat64())
+			v = append(v, rng.NormFloat64())
 		}
 
 		out = append(out, v)

@@ -78,11 +78,11 @@ func ExampleAccuracy() {
 func ExampleRandom() {
 	x := matrix.New([]float64{0, 1}, []float64{0, 2}, []float64{0, 3}, []float64{0, 4})
 
-	rand.Seed(1) // for test
-	r1 := trainer.Random(len(x), 1)
-	r2 := trainer.Random(len(x), 2)
-	r3 := trainer.Random(len(x), 3)
-	r4 := trainer.Random(len(x), 4)
+	s := rand.NewSource(1)
+	r1 := trainer.Random(len(x), 1, s)
+	r2 := trainer.Random(len(x), 2, s)
+	r3 := trainer.Random(len(x), 3, s)
+	r4 := trainer.Random(len(x), 4, s)
 
 	sort.Ints(r1)
 	sort.Ints(r2)
@@ -105,10 +105,10 @@ func ExampleShuffle() {
 	x := matrix.New([]float64{0, 1}, []float64{0, 2}, []float64{0, 3}, []float64{0, 4})
 	t := matrix.New([]float64{1, 0}, []float64{2, 0}, []float64{3, 0}, []float64{4, 0})
 
-	rand.Seed(1234) // for test
-	fmt.Println(trainer.Shuffle(x, t))
-	fmt.Println(trainer.Shuffle(x, t))
-	fmt.Println(trainer.Shuffle(x, t))
+	s := rand.NewSource(1234)
+	fmt.Println(trainer.Shuffle(x, t, s))
+	fmt.Println(trainer.Shuffle(x, t, s))
+	fmt.Println(trainer.Shuffle(x, t, s))
 	fmt.Println(x, t)
 
 	// Output:

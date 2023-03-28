@@ -16,10 +16,10 @@ func ExampleSequential_gradientCheck() {
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
 
 	// weight
-	rand.Seed(1) // for test
-	W1 := matrix.Randn(2, 3).MulC(weight.Std(0.01)(2))
+	s := rand.NewSource(1)
+	W1 := matrix.Randn(2, 3, s).MulC(weight.Std(0.01)(2))
 	B1 := matrix.Zero(1, 3)
-	W2 := matrix.Randn(3, 2).MulC(weight.Std(0.01)(3))
+	W2 := matrix.Randn(3, 2, s).MulC(weight.Std(0.01)(3))
 	B2 := matrix.Zero(1, 2)
 
 	// model

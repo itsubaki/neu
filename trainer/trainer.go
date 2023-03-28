@@ -2,6 +2,7 @@ package trainer
 
 import (
 	"math/rand"
+	"time"
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
@@ -44,10 +45,14 @@ type Trainer struct {
 }
 
 // Fit trains the model using the provided optimizer.
-func (t *Trainer) Fit(in *Input) {
+func (t *Trainer) Fit(in *Input, s ...rand.Source) {
+	if len(s) == 0 {
+		s = append(s, rand.NewSource(time.Now().UnixNano()))
+	}
+
 	for i := 0; i < in.Epochs; i++ {
 		// shuffle dataset
-		xs, ts := Shuffle(in.Train, in.TrainLabel)
+		xs, ts := Shuffle(in.Train, in.TrainLabel, s[0])
 		for j := 0; j < len(in.Train)/in.BatchSize; j++ {
 			// batch
 			begin, end := Range(j, in.BatchSize)
@@ -72,14 +77,19 @@ func Range(i, batchSize int) (int, int) {
 }
 
 // Shuffle shuffles the dataset.
-func Shuffle(x, t matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
+func Shuffle(x, t matrix.Matrix, s ...rand.Source) (matrix.Matrix, matrix.Matrix) {
+	if len(s) == 0 {
+		s = append(s, rand.NewSource(time.Now().UnixNano()))
+	}
+	rng := rand.New(s[0])
+
 	xs, ts := make(matrix.Matrix, 0), make(matrix.Matrix, 0)
 	for i := 0; i < len(x); i++ {
 		xs, ts = append(xs, x[i]), append(ts, t[i])
 	}
 
 	for i := 0; i < len(x); i++ {
-		j := rand.Intn(i + 1)
+		j := rng.Intn(i + 1)
 
 		// swap
 		xs[i], xs[j] = xs[j], xs[i]
@@ -90,11 +100,15 @@ func Shuffle(x, t matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 }
 
 // Random returns random index.
-func Random(trainSize, batchSize int) []int {
-	tmp := make(map[int]bool)
+func Random(trainSize, batchSize int, s ...rand.Source) []int {
+	if len(s) == 0 {
+		s = append(s, rand.NewSource(time.Now().UnixNano()))
+	}
+	rng := rand.New(s[0])
 
+	tmp := make(map[int]bool)
 	for c := 0; c < batchSize; {
-		n := rand.Intn(trainSize)
+		n := rng.Intn(trainSize)
 		if _, ok := tmp[n]; !ok {
 			tmp[n] = true
 			c++

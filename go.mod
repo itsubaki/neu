@@ -1,6 +1,6 @@
 module github.com/itsubaki/neu
 
-go 1.19
+go 1.20
 
 require gonum.org/v1/plot v0.12.0
 

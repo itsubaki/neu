@@ -26,14 +26,14 @@ func Example_mnist() {
 	tt := matrix.New(mnist.OneHot(test.Label)...)
 
 	// model
-	rand.Seed(1) // for test
+	s := rand.NewSource(1)
 	m := model.NewMLP(&model.MLPConfig{
 		InputSize:    mnist.Width * mnist.Height, // 24 * 24 = 784
 		OutputSize:   mnist.Labels,               // 0 ~ 9
 		HiddenSize:   []int{50},
 		WeightInit:   weight.Std(0.01),
 		UseBatchNorm: true,
-	})
+	}, s)
 
 	fmt.Printf("%T\n", m)
 	for i, l := range m.Layers() {
@@ -62,7 +62,7 @@ func Example_mnist() {
 
 			fmt.Printf("loss=%.04f, train_acc=%.04f, test_acc=%.04f\n", loss, acc, acct)
 		},
-	})
+	}, s)
 
 	// Output:
 	// *model.MLP

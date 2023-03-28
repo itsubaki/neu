@@ -1,6 +1,9 @@
 package model
 
 import (
+	"math/rand"
+	"time"
+
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
 )
@@ -17,7 +20,11 @@ type MLP struct {
 	seq *Sequential
 }
 
-func NewMLP(c *MLPConfig) *MLP {
+func NewMLP(c *MLPConfig, s ...rand.Source) *MLP {
+	if len(s) == 0 {
+		s = append(s, rand.NewSource(time.Now().UnixNano()))
+	}
+
 	// size
 	size := append([]int{c.InputSize}, c.HiddenSize...)
 	size = append(size, c.OutputSize)
@@ -27,7 +34,7 @@ func NewMLP(c *MLPConfig) *MLP {
 	layers := make([]Layer, 0)
 	for i := 0; i < len(size)-2; i++ {
 		layers = append(layers, &layer.Affine{
-			W: matrix.Randn(size[i], size[i+1]).MulC(c.WeightInit(size[i])),
+			W: matrix.Randn(size[i], size[i+1], s[0]).MulC(c.WeightInit(size[i])),
 			B: matrix.Zero(1, size[i+1]),
 		})
 
@@ -42,7 +49,7 @@ func NewMLP(c *MLPConfig) *MLP {
 	}
 
 	layers = append(layers, &layer.Affine{
-		W: matrix.Randn(size[len(size)-2], size[len(size)-1]).MulC(c.WeightInit(size[len(size)-2])),
+		W: matrix.Randn(size[len(size)-2], size[len(size)-1], s[0]).MulC(c.WeightInit(size[len(size)-2])),
 		B: matrix.Zero(1, size[len(size)-1]),
 	})
 	layers = append(layers, &layer.SoftmaxWithLoss{}) // loss function
