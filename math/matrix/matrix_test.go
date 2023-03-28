@@ -30,23 +30,29 @@ func ExampleOne() {
 }
 
 func ExampleRand() {
+	fmt.Println(matrix.Rand(2, 3).Dimension())
+
 	s := rand.NewSource(1)
 	for _, r := range matrix.Rand(2, 3, s) {
 		fmt.Println(r)
 	}
 
 	// Output:
+	// 2 3
 	// [0.6046602879796196 0.9405090880450124 0.6645600532184904]
 	// [0.4377141871869802 0.4246374970712657 0.6868230728671094]
 
 }
 func ExampleRandn() {
+	fmt.Println(matrix.Randn(2, 3).Dimension())
+
 	s := rand.NewSource(1)
 	for _, r := range matrix.Randn(2, 3, s) {
 		fmt.Println(r)
 	}
 
 	// Output:
+	// 2 3
 	// [-1.233758177597947 -0.12634751070237293 -0.5209945711531503]
 	// [2.28571911769958 0.3228052526115799 0.5900672875996937]
 

@@ -83,6 +83,7 @@ func ExampleRandom() {
 	r2 := trainer.Random(len(x), 2, s)
 	r3 := trainer.Random(len(x), 3, s)
 	r4 := trainer.Random(len(x), 4, s)
+	r5 := trainer.Random(1, 1)
 
 	sort.Ints(r1)
 	sort.Ints(r2)
@@ -93,12 +94,14 @@ func ExampleRandom() {
 	fmt.Println(r2)
 	fmt.Println(r3)
 	fmt.Println(r4)
+	fmt.Println(r5)
 
 	// Output:
 	// [1]
 	// [1 3]
 	// [0 1 2]
 	// [0 1 2 3]
+	// [0]
 }
 
 func ExampleShuffle() {
@@ -111,10 +114,13 @@ func ExampleShuffle() {
 	fmt.Println(trainer.Shuffle(x, t, s))
 	fmt.Println(x, t)
 
+	fmt.Println(trainer.Shuffle(matrix.New([]float64{0}), matrix.New([]float64{1})))
+
 	// Output:
 	// [[0 4] [0 2] [0 3] [0 1]] [[4 0] [2 0] [3 0] [1 0]]
 	// [[0 2] [0 3] [0 1] [0 4]] [[2 0] [3 0] [1 0] [4 0]]
 	// [[0 2] [0 4] [0 3] [0 1]] [[2 0] [4 0] [3 0] [1 0]]
 	// [[0 1] [0 2] [0 3] [0 4]] [[1 0] [2 0] [3 0] [4 0]]
+	// [[0]] [[1]]
 
 }
