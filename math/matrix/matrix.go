@@ -149,19 +149,19 @@ func (m Matrix) Dot(n Matrix) Matrix {
 }
 
 func (m Matrix) Add(n Matrix) Matrix {
-	return m.FuncWith(Broadcast(n, len(m)), func(a, b float64) float64 { return a + b })
+	return m.FuncWith(n.Broadcast(m.Dimension()), func(a, b float64) float64 { return a + b })
 }
 
 func (m Matrix) Sub(n Matrix) Matrix {
-	return m.FuncWith(Broadcast(n, len(m)), func(a, b float64) float64 { return a - b })
+	return m.FuncWith(n.Broadcast(m.Dimension()), func(a, b float64) float64 { return a - b })
 }
 
 func (m Matrix) Mul(n Matrix) Matrix {
-	return m.FuncWith(Broadcast(n, len(m)), func(a, b float64) float64 { return a * b })
+	return m.FuncWith(n.Broadcast(m.Dimension()), func(a, b float64) float64 { return a * b })
 }
 
 func (m Matrix) Div(n Matrix) Matrix {
-	return m.FuncWith(Broadcast(n, len(m)), func(a, b float64) float64 { return a / b })
+	return m.FuncWith(n.Broadcast(m.Dimension()), func(a, b float64) float64 { return a / b })
 }
 
 func (m Matrix) AddC(c float64) Matrix {
@@ -313,6 +313,20 @@ func (m Matrix) FuncWith(n Matrix, f func(a, b float64) float64) Matrix {
 	return out
 }
 
+// Broadcast returns the broadcasted matrix.
+func (m Matrix) Broadcast(a, b int) Matrix {
+	if len(m) == a && len(m[0]) == b {
+		return m
+	}
+
+	out := make(Matrix, 0)
+	for i := 0; i < a; i++ {
+		out = append(out, m[0])
+	}
+
+	return out
+}
+
 // Dot returns the dot product of m and n.
 func Dot(m, n Matrix) Matrix {
 	return m.Dot(n)
@@ -325,27 +339,6 @@ func Func(m Matrix, f func(a float64) float64) Matrix {
 
 func FuncWith(m, n Matrix, f func(a, b float64) float64) Matrix {
 	return m.FuncWith(n, f)
-}
-
-// Broadcast returns the broadcasted matrix.
-func Broadcast(m Matrix, size int) Matrix {
-	out := make(Matrix, 0)
-	for {
-		var fill bool
-		for j := range m {
-			out = append(out, m[j])
-			if len(out) == size {
-				fill = true
-				break
-			}
-		}
-
-		if fill {
-			break
-		}
-	}
-
-	return out
 }
 
 // Padding returns the padded matrix.
