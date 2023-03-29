@@ -32,12 +32,6 @@ func (l *SoftmaxWithLoss) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Ma
 	return dx, matrix.New()
 }
 
-func dx(dout float64, size int) func(y, t float64) float64 {
-	return func(y, t float64) float64 {
-		return (y - t) * dout / float64(size)
-	}
-}
-
 func (l *SoftmaxWithLoss) String() string {
 	return fmt.Sprintf("%T", l)
 }
