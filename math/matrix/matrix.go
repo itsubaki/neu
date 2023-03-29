@@ -315,16 +315,44 @@ func (m Matrix) FuncWith(n Matrix, f func(a, b float64) float64) Matrix {
 
 // Broadcast returns the broadcasted matrix.
 func (m Matrix) Broadcast(a, b int) Matrix {
-	if len(m) == a && len(m[0]) == b {
-		return m
-	}
-
 	out := make(Matrix, 0)
-	for i := 0; i < a; i++ {
-		out = append(out, m[0])
+	if len(m) == 1 && len(m[0]) == 1 {
+		for i := 0; i < a; i++ {
+			v := make([]float64, 0)
+			for j := 0; j < b; j++ {
+				v = append(v, m[0][0])
+			}
+
+			out = append(out, v)
+		}
+
+		return out
 	}
 
-	return out
+	if len(m) == 1 {
+		// b is ignored
+		for i := 0; i < a; i++ {
+			out = append(out, m[0])
+		}
+
+		return out
+	}
+
+	if len(m[0]) == 1 {
+		// a is ignored
+		for i := 0; i < len(m); i++ {
+			v := make([]float64, 0)
+			for j := 0; j < b; j++ {
+				v = append(v, m[i][0])
+			}
+
+			out = append(out, v)
+		}
+
+		return out
+	}
+
+	return m
 }
 
 // Dot returns the dot product of m and n.
