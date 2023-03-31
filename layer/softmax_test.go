@@ -22,7 +22,8 @@ func ExampleSoftmaxWithLoss() {
 	loss := softmax.Forward(x, t)
 	fmt.Println(loss)
 
-	dx, _ := softmax.Backward(nil)
+	dout := matrix.New([]float64{1})
+	dx, _ := softmax.Backward(dout)
 	for _, r := range dx {
 		fmt.Println(r)
 	}

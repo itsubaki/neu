@@ -358,6 +358,84 @@ func ExampleMatrix_Func() {
 
 }
 
+func ExampleMatrix_Broadcast_row() {
+	m := matrix.New([]float64{1, 2})
+	for _, r := range m {
+		fmt.Println(r)
+	}
+	fmt.Println()
+
+	for _, r := range m.Broadcast(5, -1) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [1 2]
+	//
+	// [1 2]
+	// [1 2]
+	// [1 2]
+	// [1 2]
+	// [1 2]
+}
+
+func ExampleMatrix_Broadcast_column() {
+	m := matrix.New([]float64{1}, []float64{2})
+	for _, r := range m {
+		fmt.Println(r)
+	}
+	fmt.Println()
+
+	for _, r := range m.Broadcast(-1, 5) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [1]
+	// [2]
+	//
+	// [1 1 1 1 1]
+	// [2 2 2 2 2]
+}
+
+func ExampleMatrix_Broadcast_dout() {
+	m := matrix.New([]float64{1})
+	for _, r := range m {
+		fmt.Println(r)
+	}
+	fmt.Println()
+
+	for _, r := range m.Broadcast(3, 5) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [1]
+	//
+	// [1 1 1 1 1]
+	// [1 1 1 1 1]
+	// [1 1 1 1 1]
+}
+
+func ExampleMatrix_Broadcast_noEffect() {
+	m := matrix.New([]float64{1, 2}, []float64{3, 4})
+	for _, r := range m {
+		fmt.Println(r)
+	}
+	fmt.Println()
+
+	for _, r := range m.Broadcast(2, 2) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [1 2]
+	// [3 4]
+	//
+	// [1 2]
+	// [3 4]
+}
+
 func ExampleFunc() {
 	A := matrix.New(
 		[]float64{1, 2},
@@ -393,20 +471,6 @@ func ExampleFuncWith() {
 	// [5 12]
 	// [21 32]
 
-}
-
-func ExampleBroadcast() {
-	m := matrix.New([]float64{1, 2}, []float64{3, 4})
-	for _, r := range matrix.Broadcast(m, 5) {
-		fmt.Println(r)
-	}
-
-	// Output:
-	// [1 2]
-	// [3 4]
-	// [1 2]
-	// [3 4]
-	// [1 2]
 }
 
 func ExamplePadding() {
