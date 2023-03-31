@@ -165,7 +165,7 @@ func Load(dir string) (*Dataset, *Dataset, error) {
 func OneHot(label []Label) [][]float64 {
 	out := make([][]float64, 0, len(label))
 	for _, l := range label {
-		v := make([]float64, 10)
+		v := make([]float64, Labels) // 0 ~ 9
 		v[l] = 1.0
 		out = append(out, v)
 	}
