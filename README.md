@@ -9,6 +9,7 @@
 # MNIST
 
 ```shell
+make mnistdl
 go run cmd/mnist/main.go --dir ./testdata
 ```
 

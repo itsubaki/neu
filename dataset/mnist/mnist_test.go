@@ -33,12 +33,13 @@ func ExampleLoad_notfound() {
 }
 
 func ExampleNormalize() {
-	img := []mnist.Image{{byte(10)}, {byte(20)}, {byte(255)}}
+	img := []mnist.Image{{byte(0)}, {byte(10)}, {byte(20)}, {byte(255)}}
 	for _, r := range mnist.Normalize(img) {
 		fmt.Printf("%.4f\n", r[0])
 	}
 
 	// Output:
+	// 0.0000
 	// 0.0392
 	// 0.0784
 	// 1.0000

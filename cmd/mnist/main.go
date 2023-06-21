@@ -15,6 +15,7 @@ import (
 
 // go run cmd/mnist/main.go
 func main() {
+	// flags
 	var dir string
 	var epochs, batchSize int
 	flag.StringVar(&dir, "dir", "./testdata", "")
@@ -25,9 +26,11 @@ func main() {
 	// data
 	train, test := mnist.Must(mnist.Load(dir))
 
+	// train data
 	x := matrix.New(mnist.Normalize(train.Image)...)
 	t := matrix.New(mnist.OneHot(train.Label)...)
 
+	// test data
 	xt := matrix.New(mnist.Normalize(test.Image)...)
 	tt := matrix.New(mnist.OneHot(test.Label)...)
 

@@ -54,7 +54,7 @@ func image(fileName string) ([]Image, error) {
 		Width  int32
 	}
 
-	h := header{}
+	var h header
 	if err := binary.Read(gzr, binary.BigEndian, &h); err != nil {
 		return nil, fmt.Errorf("binary read: %v", err)
 	}
@@ -90,7 +90,7 @@ func label(fileName string) ([]Label, error) {
 		N     int32
 	}
 
-	h := header{}
+	var h header
 	if err := binary.Read(gzr, binary.BigEndian, &h); err != nil {
 		return nil, fmt.Errorf("binary read: %v", err)
 	}

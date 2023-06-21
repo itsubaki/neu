@@ -19,9 +19,11 @@ func Example_mnist() {
 	// data
 	train, test := mnist.Must(mnist.Load("./testdata"))
 
+	// train data
 	x := matrix.New(mnist.Normalize(train.Image)...)
 	t := matrix.New(mnist.OneHot(train.Label)...)
 
+	// test data
 	xt := matrix.New(mnist.Normalize(test.Image)...)
 	tt := matrix.New(mnist.OneHot(test.Label)...)
 
@@ -35,6 +37,7 @@ func Example_mnist() {
 		UseBatchNorm: true,
 	}, s)
 
+	// print layers
 	fmt.Printf("%T\n", m)
 	for i, l := range m.Layers() {
 		fmt.Printf("%2d: %v\n", i, l)
