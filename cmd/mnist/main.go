@@ -23,7 +23,7 @@ func main() {
 	flag.IntVar(&batchSize, "batchsize", 100, "")
 	flag.Parse()
 
-	// data
+	// load mnist dataset
 	train, test := mnist.Must(mnist.Load(dir))
 
 	// train data
