@@ -13,12 +13,14 @@ func ExampleLoad() {
 	fmt.Println(train.N)
 	fmt.Println(test.N)
 
+	fmt.Println(len(train.Image))
 	fmt.Println(len(train.Image[0]))
 	fmt.Println(len(mnist.OneHot(train.Label)[0]))
 
 	// Output:
 	// 60000
 	// 10000
+	// 60000
 	// 784
 	// 10
 
