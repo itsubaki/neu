@@ -15,6 +15,19 @@ go run cmd/mnist/main.go --dir ./testdata
 ```
 
 ```shell
+*model.MLP
+ 0: *layer.Affine: W(784, 50), B(1, 50): 39250
+ 1: *layer.BatchNorm: G(1, 50), B(1, 50): 100
+ 2: *layer.ReLU
+ 3: *layer.Affine: W(50, 50), B(1, 50): 2550
+ 4: *layer.BatchNorm: G(1, 50), B(1, 50): 100
+ 5: *layer.ReLU
+ 6: *layer.Affine: W(50, 50), B(1, 50): 2550
+ 7: *layer.BatchNorm: G(1, 50), B(1, 50): 100
+ 8: *layer.ReLU
+ 9: *layer.Affine: W(50, 10), B(1, 10): 510
+10: *layer.SoftmaxWithLoss
+
    0: loss=[[2.2485]], train_acc=0.1800, test_acc=0.1300
 predict: [9 4 1 4 8 3 2 4 2 4 9 4 4 3 4 2 6 8 4 8]
 label  : [0 6 8 7 8 2 0 1 3 1 8 7 7 7 5 6 1 8 8 8]
