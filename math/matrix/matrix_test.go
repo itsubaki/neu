@@ -59,7 +59,10 @@ func ExampleRandn() {
 }
 
 func ExampleMask() {
-	x := matrix.New([]float64{1, -0.5}, []float64{-2, 3})
+	x := matrix.New(
+		[]float64{1, -0.5},
+		[]float64{-2, 3},
+	)
 	mask := matrix.Mask(x, func(x float64) bool { return x > 0 })
 
 	for _, r := range mask {
@@ -72,7 +75,13 @@ func ExampleMask() {
 }
 
 func ExampleBatch() {
-	x := matrix.New([]float64{1, 2}, []float64{3, 4}, []float64{5, 6}, []float64{7, 8}, []float64{9, 10})
+	x := matrix.New(
+		[]float64{1, 2},
+		[]float64{3, 4},
+		[]float64{5, 6},
+		[]float64{7, 8},
+		[]float64{9, 10},
+	)
 	for _, r := range matrix.Batch(x, []int{0, 2, 4}) {
 		fmt.Println(r)
 	}
@@ -293,7 +302,10 @@ func ExampleMatrix_Avg() {
 }
 
 func ExampleMatrix_Argmax() {
-	A := matrix.New([]float64{1, 2, 3}, []float64{6, 5, 4})
+	A := matrix.New(
+		[]float64{1, 2, 3},
+		[]float64{6, 5, 4},
+	)
 	fmt.Println(A.Argmax())
 
 	// Output:
@@ -301,7 +313,10 @@ func ExampleMatrix_Argmax() {
 }
 
 func ExampleMatrix_SumAxis0() {
-	x := matrix.New([]float64{1, 2, 3}, []float64{4, 5, 6})
+	x := matrix.New(
+		[]float64{1, 2, 3},
+		[]float64{4, 5, 6},
+	)
 	fmt.Println(x.SumAxis0())
 
 	// Output:
@@ -309,17 +324,22 @@ func ExampleMatrix_SumAxis0() {
 }
 
 func ExampleMatrix_MeanAxis0() {
-	x := matrix.New([]float64{1, 2, 3}, []float64{4, 5, 6})
-	fmt.Println(x.SumAxis0())
+	x := matrix.New(
+		[]float64{1, 2, 3},
+		[]float64{4, 5, 6},
+	)
+
 	fmt.Println(x.MeanAxis0())
 
 	// Output:
-	// [[5 7 9]]
 	// [[2.5 3.5 4.5]]
 }
 
 func ExampleMatrix_MaxAxis1() {
-	x := matrix.New([]float64{1, 2, 3}, []float64{4, 5, 6})
+	x := matrix.New(
+		[]float64{1, 2, 3},
+		[]float64{4, 5, 6},
+	)
 	fmt.Println(x.MaxAxis1())
 
 	// Output:
@@ -380,7 +400,10 @@ func ExampleMatrix_Broadcast_row() {
 }
 
 func ExampleMatrix_Broadcast_column() {
-	m := matrix.New([]float64{1}, []float64{2})
+	m := matrix.New(
+		[]float64{1},
+		[]float64{2},
+	)
 	for _, r := range m {
 		fmt.Println(r)
 	}
@@ -418,7 +441,10 @@ func ExampleMatrix_Broadcast_dout() {
 }
 
 func ExampleMatrix_Broadcast_noEffect() {
-	m := matrix.New([]float64{1, 2}, []float64{3, 4})
+	m := matrix.New(
+		[]float64{1, 2},
+		[]float64{3, 4},
+	)
 	for _, r := range m {
 		fmt.Println(r)
 	}
@@ -474,7 +500,10 @@ func ExampleFuncWith() {
 }
 
 func ExamplePadding() {
-	x := matrix.New([]float64{1, 2}, []float64{3, 4})
+	x := matrix.New(
+		[]float64{1, 2},
+		[]float64{3, 4},
+	)
 	pad := 1
 
 	p := matrix.Padding(x, pad)
@@ -499,7 +528,10 @@ func ExamplePadding() {
 }
 
 func ExampleReshape() {
-	x := matrix.New([]float64{1, 2}, []float64{3, 4})
+	x := matrix.New(
+		[]float64{1, 2},
+		[]float64{3, 4},
+	)
 
 	fmt.Println(matrix.Reshape(x, 1, 4))
 	fmt.Println(matrix.Reshape(x, 4, 1))
