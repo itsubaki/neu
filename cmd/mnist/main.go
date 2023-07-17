@@ -27,12 +27,12 @@ func main() {
 	train, test := mnist.Must(mnist.Load(dir))
 
 	// train data
-	x := matrix.New(mnist.Normalize(train.Image)...)
-	t := matrix.New(mnist.OneHot(train.Label)...)
+	x := matrix.New(mnist.Normalize(train.Image)...) // 60000 * 784
+	t := matrix.New(mnist.OneHot(train.Label)...)    // 60000 * 10
 
 	// test data
-	xt := matrix.New(mnist.Normalize(test.Image)...)
-	tt := matrix.New(mnist.OneHot(test.Label)...)
+	xt := matrix.New(mnist.Normalize(test.Image)...) // 10000 * 784
+	tt := matrix.New(mnist.OneHot(test.Label)...)    // 10000 * 10
 
 	// model
 	m := model.NewMLP(&model.MLPConfig{
