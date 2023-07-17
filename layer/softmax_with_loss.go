@@ -22,7 +22,7 @@ func (l *SoftmaxWithLoss) SetParams(p ...matrix.Matrix) {}
 func (l *SoftmaxWithLoss) Forward(x, t matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.t = t
 	l.y = Softmax(x)
-	l.loss = CrossEntropyError(l.y, l.t)
+	l.loss = Loss(l.y, l.t)
 	return matrix.New([]float64{l.loss})
 }
 
@@ -36,7 +36,7 @@ func (l *SoftmaxWithLoss) String() string {
 	return fmt.Sprintf("%T", l)
 }
 
-func CrossEntropyError(y, t matrix.Matrix) float64 {
+func Loss(y, t matrix.Matrix) float64 {
 	list := make([]float64, 0)
 	for i := range y {
 		list = append(list, loss.CrossEntropyError(y[i], t[i]))

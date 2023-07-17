@@ -18,12 +18,12 @@ func ExampleSoftmaxWithLoss() {
 		[]float64{0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
 	)
 
-	softmax := &layer.SoftmaxWithLoss{}
-	loss := softmax.Forward(x, t)
+	l := &layer.SoftmaxWithLoss{}
+	loss := l.Forward(x, t)
 	fmt.Println(loss)
 
 	dout := matrix.New([]float64{1})
-	dx, _ := softmax.Backward(dout)
+	dx, _ := l.Backward(dout)
 	for _, r := range dx {
 		fmt.Println(r)
 	}
@@ -35,7 +35,7 @@ func ExampleSoftmaxWithLoss() {
 
 }
 
-func ExampleCrossEntropyError() {
+func ExampleLoss() {
 	// https://github.com/oreilly-japan/deep-learning-from-scratch/wiki/errata#%E7%AC%AC3%E5%88%B7%E3%81%BE%E3%81%A7
 
 	t := matrix.New(
@@ -47,14 +47,14 @@ func ExampleCrossEntropyError() {
 		[]float64{0.1, 0.05, 0.1, 0.0, 0.05, 0.1, 0.0, 0.6, 0.0, 0.0},
 	)
 
-	fmt.Println(layer.CrossEntropyError(y, t))
+	fmt.Println(layer.Loss(y, t))
 
 	// Output:
 	// 1.406704775046942
 
 }
 
-func Example_crossEntropyErrorLabel() {
+func Example_lossLabel() {
 	t := []int{2, 2}
 	y := [][]float64{
 		{0.1, 0.05, 0.6, 0.0, 0.05, 0.1, 0.0, 0.1, 0.0, 0.0},
@@ -78,12 +78,12 @@ func Example_crossEntropyErrorLabel() {
 }
 
 func ExampleSoftmaxWithLoss_Params() {
-	softmax := &layer.SoftmaxWithLoss{}
-	softmax.SetParams(make([]matrix.Matrix, 0)...)
+	l := &layer.SoftmaxWithLoss{}
+	l.SetParams(make([]matrix.Matrix, 0)...)
 
-	fmt.Println(softmax)
-	fmt.Println(softmax.Params())
-	fmt.Println(softmax.Grads())
+	fmt.Println(l)
+	fmt.Println(l.Params())
+	fmt.Println(l.Grads())
 
 	// Output:
 	// *layer.SoftmaxWithLoss
