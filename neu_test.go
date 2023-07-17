@@ -6,6 +6,7 @@ import (
 
 	"github.com/itsubaki/neu/activation"
 	"github.com/itsubaki/neu/dataset/mnist"
+	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/loss"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/math/numerical"
@@ -14,6 +15,63 @@ import (
 	"github.com/itsubaki/neu/trainer"
 	"github.com/itsubaki/neu/weight"
 )
+
+func Example_cbow() {
+	// you, say, goodbye, and, I, hello, .
+
+	// context data
+	c0 := matrix.New([]float64{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0})
+	c1 := matrix.New([]float64{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0})
+	t := matrix.New([]float64{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0})
+
+	// weight init
+	s := rand.NewSource(1)
+	Win := matrix.Randn(7, 3, s).MulC(0.01)
+	Wout := matrix.Randn(3, 7, s).MulC(0.01)
+
+	// layer
+	layer0 := layer.Dot{W: Win}
+	layer1 := layer.Dot{W: Win}
+	layerOut := layer.Dot{W: Wout}
+	layerLoss := layer.SoftmaxWithLoss{}
+
+	{
+		// forward
+		h0 := layer0.Forward(c0, nil)
+		h1 := layer1.Forward(c1, nil)
+		h := h0.Add(h1).MulC(0.5)
+		score := layerOut.Forward(h, nil)
+		loss := layerLoss.Forward(score, t)
+
+		fmt.Println(score)
+		fmt.Println(loss)
+		fmt.Println()
+	}
+
+	{
+		// backword
+		dout := matrix.New([]float64{1})
+		ds, _ := layerLoss.Backward(dout)
+		da, _ := layerOut.Backward(ds)
+		da = da.MulC(0.5)
+		layer1.Backward(da)
+		layer0.Backward(da)
+
+		fmt.Println(layer0.DW)
+		fmt.Println(layer1.DW)
+		fmt.Println(layerOut.DW)
+		fmt.Println()
+	}
+
+	// Output:
+	// [[1.3251326572434878e-05 -8.405881006644185e-05 -4.818432722014935e-06 1.0201900650011818e-05 9.197559528019718e-05 -6.13432929827265e-06 1.83956353154049e-05]]
+	// [[1.945999053642938]]
+	//
+	// [[-0.006371274319013487 -0.0031880171692649957 -0.003882981174768553] [0 0 0] [0 0 0] [0 0 0] [0 0 0] [0 0 0] [0 0 0]]
+	// [[0 0 0] [0 0 0] [-0.006371274319013487 -0.0031880171692649957 -0.003882981174768553] [0 0 0] [0 0 0] [0 0 0] [0 0 0]]
+	// [[-0.0007678276574782452 0.004606999243408313 -0.0007678137831426482 -0.0007678253160482524 -0.0007678881065284462 -0.0007678127727797847 -0.0007678316074309366] [0.0006163294445236583 -0.0036980033956268486 0.0006163183076995697 0.0006163275650755389 0.0006163779665183658 0.0006163174966889525 0.0006163326151207636] [-0.000894490883411351 0.005366984092036936 -0.0008944747203224285 -0.0008944881557318224 -0.0008945613043238943 -0.0008944735432869811 -0.0008944954849604589]]
+	//
+}
 
 func Example_mnist() {
 	// data
