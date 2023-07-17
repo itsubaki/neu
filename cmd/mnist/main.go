@@ -51,15 +51,12 @@ func main() {
 	fmt.Println()
 
 	// training
-	tr := &trainer.Trainer{
-		Model: m,
-		Optimizer: &optimizer.AdaGrad{
-			LearningRate: 0.01,
-			Hooks: []optimizer.Hook{
-				weight.Decay(1e-6),
-			},
+	tr := trainer.New(m, &optimizer.AdaGrad{
+		LearningRate: 0.01,
+		Hooks: []optimizer.Hook{
+			weight.Decay(1e-6),
 		},
-	}
+	})
 
 	now := time.Now()
 	tr.Fit(&trainer.Input{

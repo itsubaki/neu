@@ -44,6 +44,13 @@ type Trainer struct {
 	Optimizer Optimizer
 }
 
+func New(m Model, o Optimizer) *Trainer {
+	return &Trainer{
+		Model:     m,
+		Optimizer: o,
+	}
+}
+
 // Fit trains the model using the provided optimizer.
 func (t *Trainer) Fit(in *Input, s ...rand.Source) {
 	if len(s) == 0 {

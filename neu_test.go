@@ -45,10 +45,9 @@ func Example_mnist() {
 	fmt.Println()
 
 	// training
-	tr := &trainer.Trainer{
-		Model:     m,
-		Optimizer: &optimizer.SGD{LearningRate: 0.1},
-	}
+	tr := trainer.New(m, &optimizer.SGD{
+		LearningRate: 0.1,
+	})
 
 	tr.Fit(&trainer.Input{
 		Train:      x[:100],

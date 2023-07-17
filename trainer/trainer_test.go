@@ -27,10 +27,7 @@ func ExampleTrainer_Fit() {
 	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
 
-	tr := &trainer.Trainer{
-		Model:     &TestModel{},
-		Optimizer: &optimizer.SGD{},
-	}
+	tr := trainer.New(&TestModel{}, &optimizer.SGD{})
 
 	tr.Fit(&trainer.Input{
 		Train:      x,
