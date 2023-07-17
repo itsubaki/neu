@@ -34,7 +34,6 @@ func (l *Embedding) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) 
 	l.DW = matrix.Zero(len(l.W), len(l.W[0]))
 
 	for i, v := range l.idx {
-		// NOTE: l.DW[v] = vector.Add(l.DW[v], dout[v]) ?
 		l.DW[v] = vector.Add(l.DW[v], dout[i])
 	}
 
