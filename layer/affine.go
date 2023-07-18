@@ -19,7 +19,7 @@ func (l *Affine) SetParams(p ...matrix.Matrix) { l.W, l.B = p[0], p[1] }
 
 func (l *Affine) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.x = x
-	return matrix.Dot(l.x, l.W).Add(l.B) // x.W + b
+	return matrix.Dot(l.x, l.W).Add(l.B) // x.W + B
 }
 
 func (l *Affine) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
