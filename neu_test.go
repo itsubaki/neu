@@ -20,9 +20,9 @@ func Example_cbow() {
 	// you, say, goodbye, and, I, hello, .
 
 	// context data
-	c0 := matrix.New([]float64{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0})
-	c1 := matrix.New([]float64{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0})
-	t := matrix.New([]float64{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0})
+	c0 := matrix.New([]float64{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}) // you
+	c1 := matrix.New([]float64{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0}) // goodbye
+	t := matrix.New([]float64{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0})  // say
 
 	// weight init
 	s := rand.NewSource(1)
