@@ -15,14 +15,12 @@ func (o *SGD) Update(m Model) [][]matrix.Matrix {
 		grads = h(params, grads)
 	}
 
-	updated := make([][]matrix.Matrix, 0)
+	updated := make([][]matrix.Matrix, len(params))
 	for i := range params {
-		v := make([]matrix.Matrix, 0)
+		updated[i] = make([]matrix.Matrix, len(params[i]))
 		for j := range params[i] {
-			v = append(v, matrix.FuncWith(params[i][j], grads[i][j], sgd(o.LearningRate))) // params[k] = params[k] - o.LearningRate * grads[k]
+			updated[i][j] = matrix.FuncWith(params[i][j], grads[i][j], sgd(o.LearningRate)) // params[k] = params[k] - o.LearningRate * grads[k]
 		}
-
-		updated = append(updated, v)
 	}
 
 	for i, l := range m.Layers() {

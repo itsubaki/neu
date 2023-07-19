@@ -28,12 +28,10 @@ func Zero(m, n int) Matrix {
 func One(m, n int) Matrix {
 	out := make(Matrix, m)
 	for i := 0; i < m; i++ {
-		v := make([]float64, 0)
+		out[i] = make([]float64, n)
 		for j := 0; j < n; j++ {
-			v = append(v, 1)
+			out[i][j] = 1
 		}
-
-		out[i] = v
 	}
 
 	return out
@@ -48,14 +46,12 @@ func Rand(m, n int, s ...rand.Source) Matrix {
 	}
 	rng := rand.New(s[0])
 
-	out := make(Matrix, 0)
+	out := make(Matrix, m)
 	for i := 0; i < m; i++ {
-		v := make([]float64, 0)
+		out[i] = make([]float64, n)
 		for j := 0; j < n; j++ {
-			v = append(v, rng.Float64())
+			out[i][j] = rng.Float64()
 		}
-
-		out = append(out, v)
 	}
 
 	return out
@@ -70,14 +66,12 @@ func Randn(m, n int, s ...rand.Source) Matrix {
 	}
 	rng := rand.New(s[0])
 
-	out := make(Matrix, 0)
+	out := make(Matrix, m)
 	for i := 0; i < m; i++ {
-		v := make([]float64, 0)
+		out[i] = make([]float64, n)
 		for j := 0; j < n; j++ {
-			v = append(v, rng.NormFloat64())
+			out[i][j] = rng.NormFloat64()
 		}
-
-		out = append(out, v)
 	}
 
 	return out
@@ -85,19 +79,14 @@ func Randn(m, n int, s ...rand.Source) Matrix {
 
 // Mask returns a matrix with elements that 1 if f() is true and 0 otherwise.
 func Mask(m Matrix, f func(x float64) bool) Matrix {
-	out := make(Matrix, 0)
+	out := make(Matrix, len(m))
 	for i := range m {
-		v := make([]float64, 0)
+		out[i] = make([]float64, len(m[i]))
 		for j := range m[i] {
 			if f(m[i][j]) {
-				v = append(v, 1)
-				continue
+				out[i][j] = 1
 			}
-
-			v = append(v, 0)
 		}
-
-		out = append(out, v)
 	}
 
 	return out
@@ -105,9 +94,9 @@ func Mask(m Matrix, f func(x float64) bool) Matrix {
 
 // Batch returns a matrix with rows of the specified index.
 func Batch(m Matrix, index []int) Matrix {
-	out := make(Matrix, 0)
-	for _, i := range index {
-		out = append(out, m[i])
+	out := make(Matrix, len(index))
+	for i, idx := range index {
+		out[i] = m[idx]
 	}
 
 	return out
@@ -125,20 +114,15 @@ func (m Matrix) Apply(n Matrix) Matrix {
 	a, b := n.Dimension()
 	_, p := m.Dimension()
 
-	out := Matrix{}
+	out := make(Matrix, a)
 	for i := 0; i < a; i++ {
-		v := make([]float64, 0)
+		out[i] = make([]float64, p)
 
 		for j := 0; j < p; j++ {
-			var c float64
 			for k := 0; k < b; k++ {
-				c = c + n[i][k]*m[k][j]
+				out[i][j] = out[i][j] + n[i][k]*m[k][j]
 			}
-
-			v = append(v, c)
 		}
-
-		out = append(out, v)
 	}
 
 	return out
@@ -225,18 +209,15 @@ func (m Matrix) Avg() float64 {
 
 // Argmax returns the index of the maximum value of each row.
 func (m Matrix) Argmax() []int {
-	out := make([]int, 0)
+	out := make([]int, len(m))
 	for i := range m {
 		max := -math.MaxFloat64
-		var index int
 		for j := range m[i] {
 			if m[i][j] > max {
 				max = m[i][j]
-				index = j
+				out[i] = j
 			}
 		}
-
-		out = append(out, index)
 	}
 
 	return out
@@ -263,16 +244,14 @@ func (m Matrix) MeanAxis0() Matrix {
 
 // MaxAxis1 returns the maximum value of each row.
 func (m Matrix) MaxAxis1() []float64 {
-	out := make([]float64, 0)
+	out := make([]float64, len(m))
 	for i := range m {
-		max := -math.MaxFloat64
+		out[i] = -math.MaxFloat64
 		for j := range m[i] {
-			if m[i][j] > max {
-				max = m[i][j]
+			if m[i][j] > out[i] {
+				out[i] = m[i][j]
 			}
 		}
-
-		out = append(out, max)
 	}
 
 	return out
@@ -315,15 +294,13 @@ func (m Matrix) FuncWith(n Matrix, f func(a, b float64) float64) Matrix {
 
 // Broadcast returns the broadcasted matrix.
 func (m Matrix) Broadcast(a, b int) Matrix {
-	out := make(Matrix, 0)
 	if len(m) == 1 && len(m[0]) == 1 {
+		out := make(Matrix, a)
 		for i := 0; i < a; i++ {
-			v := make([]float64, 0)
+			out[i] = make([]float64, b)
 			for j := 0; j < b; j++ {
-				v = append(v, m[0][0])
+				out[i][j] = m[0][0]
 			}
-
-			out = append(out, v)
 		}
 
 		return out
@@ -331,8 +308,9 @@ func (m Matrix) Broadcast(a, b int) Matrix {
 
 	if len(m) == 1 {
 		// b is ignored
+		out := make(Matrix, a)
 		for i := 0; i < a; i++ {
-			out = append(out, m[0])
+			out[i] = m[0]
 		}
 
 		return out
@@ -340,13 +318,13 @@ func (m Matrix) Broadcast(a, b int) Matrix {
 
 	if len(m[0]) == 1 {
 		// a is ignored
-		for i := 0; i < len(m); i++ {
-			v := make([]float64, 0)
-			for j := 0; j < b; j++ {
-				v = append(v, m[i][0])
-			}
 
-			out = append(out, v)
+		out := make(Matrix, len(m))
+		for i := 0; i < len(m); i++ {
+			out[i] = make([]float64, b)
+			for j := 0; j < b; j++ {
+				out[i][j] = m[i][0]
+			}
 		}
 
 		return out

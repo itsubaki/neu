@@ -163,11 +163,10 @@ func Load(dir string) (*Dataset, *Dataset, error) {
 
 // OneHot returns one-hot vector.
 func OneHot(label []Label) [][]float64 {
-	out := make([][]float64, 0, len(label))
-	for _, l := range label {
-		v := make([]float64, Labels) // 0 ~ 9
-		v[l] = 1.0
-		out = append(out, v)
+	out := make([][]float64, len(label))
+	for i, v := range label {
+		out[i] = make([]float64, Labels) // 0 ~ 9
+		out[i][v] = 1.0
 	}
 
 	return out
@@ -175,14 +174,12 @@ func OneHot(label []Label) [][]float64 {
 
 // Normalize returns normalized image.
 func Normalize(img []Image) [][]float64 {
-	out := make([][]float64, 0)
+	out := make([][]float64, len(img))
 	for i := range img {
-		v := make([]float64, 0)
+		out[i] = make([]float64, len(img[i]))
 		for j := range img[i] {
-			v = append(v, float64(img[i][j])/float64(math.MaxUint8))
+			out[i][j] = float64(img[i][j]) / float64(math.MaxUint8)
 		}
-
-		out = append(out, v)
 	}
 
 	return out

@@ -11,9 +11,9 @@ func Softmax(a []float64) []float64 {
 		}
 	}
 
-	expa := make([]float64, 0)
+	expa := make([]float64, len(a))
 	for i := range a {
-		expa = append(expa, math.Exp(a[i]-max))
+		expa[i] = math.Exp(a[i] - max)
 	}
 
 	var sum float64
@@ -21,9 +21,9 @@ func Softmax(a []float64) []float64 {
 		sum = sum + expa[i]
 	}
 
-	out := make([]float64, 0)
+	out := make([]float64, len(expa))
 	for i := range expa {
-		out = append(out, expa[i]/sum)
+		out[i] = expa[i] / sum
 	}
 
 	return out

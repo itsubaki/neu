@@ -3,7 +3,7 @@ package numerical
 // Gradient returns the numerical gradient of f at x.
 func Gradient(f func(x ...float64) float64, x []float64) []float64 {
 	h := 1e-4
-	grad := make([]float64, 0)
+	grad := make([]float64, len(x))
 
 	for i := range x {
 		xi := x[i]
@@ -17,7 +17,7 @@ func Gradient(f func(x ...float64) float64, x []float64) []float64 {
 		fxh2 := f(x...)
 
 		// grad
-		grad = append(grad, (fxh1-fxh2)/(2*h))
+		grad[i] = (fxh1 - fxh2) / (2 * h)
 		x[i] = xi
 	}
 

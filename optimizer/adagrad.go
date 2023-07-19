@@ -21,27 +21,22 @@ func (o *AdaGrad) Update(m Model) [][]matrix.Matrix {
 	}
 
 	if len(o.h) == 0 {
-		o.h = make([][]matrix.Matrix, 0)
+		o.h = make([][]matrix.Matrix, len(params))
 		for i := range params {
-			h := make([]matrix.Matrix, 0)
+			o.h[i] = make([]matrix.Matrix, len(params[i]))
 			for j := range params[i] {
-				h = append(h, matrix.Zero(params[i][j].Dimension()))
+				o.h[i][j] = matrix.Zero(params[i][j].Dimension())
 			}
-
-			o.h = append(o.h, h)
 		}
 	}
 
-	updated := make([][]matrix.Matrix, 0)
+	updated := make([][]matrix.Matrix, len(params))
 	for i := range params {
-		v := make([]matrix.Matrix, 0)
+		updated[i] = make([]matrix.Matrix, len(params[i]))
 		for j := range params[i] {
-			o.h[i][j] = o.h[i][j].Add(grads[i][j].Mul(grads[i][j]))                                 // h[k] = h[k] + grads[k] * grads[k]
-			p := params[i][j].Sub(matrix.FuncWith(grads[i][j], o.h[i][j], adagrad(o.LearningRate))) // params[k] = params[k] - o.LearningRate * grads[k]/sqrt(h[k])
-			v = append(v, p)
+			o.h[i][j] = o.h[i][j].Add(grads[i][j].Mul(grads[i][j]))                                            // h[k] = h[k] + grads[k] * grads[k]
+			updated[i][j] = params[i][j].Sub(matrix.FuncWith(grads[i][j], o.h[i][j], adagrad(o.LearningRate))) // params[k] = params[k] - o.LearningRate * grads[k]/sqrt(h[k])
 		}
-
-		updated = append(updated, v)
 	}
 
 	for i, l := range m.Layers() {

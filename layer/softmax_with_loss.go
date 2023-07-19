@@ -36,9 +36,9 @@ func (l *SoftmaxWithLoss) String() string {
 }
 
 func Loss(y, t matrix.Matrix) float64 {
-	list := make([]float64, 0)
+	list := make([]float64, len(y))
 	for i := range y {
-		list = append(list, loss.CrossEntropyError(y[i], t[i]))
+		list[i] = loss.CrossEntropyError(y[i], t[i])
 	}
 
 	var sum float64
@@ -50,9 +50,9 @@ func Loss(y, t matrix.Matrix) float64 {
 }
 
 func Softmax(x matrix.Matrix) matrix.Matrix {
-	out := make(matrix.Matrix, 0)
-	for _, r := range x {
-		out = append(out, activation.Softmax(r))
+	out := make(matrix.Matrix, len(x))
+	for i, r := range x {
+		out[i] = activation.Softmax(r)
 	}
 
 	return out

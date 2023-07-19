@@ -90,9 +90,9 @@ func Shuffle(x, t matrix.Matrix, s ...rand.Source) (matrix.Matrix, matrix.Matrix
 	}
 	rng := rand.New(s[0])
 
-	xs, ts := make(matrix.Matrix, 0), make(matrix.Matrix, 0)
+	xs, ts := make(matrix.Matrix, len(x)), make(matrix.Matrix, len(t))
 	for i := 0; i < len(x); i++ {
-		xs, ts = append(xs, x[i]), append(ts, t[i])
+		xs[i], ts[i] = x[i], t[i]
 	}
 
 	for i := 0; i < len(x); i++ {
