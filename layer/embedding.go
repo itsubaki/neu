@@ -16,11 +16,7 @@ func (l *Embedding) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DW}
 func (l *Embedding) SetParams(p ...matrix.Matrix) { l.W = p[0] }
 
 func (l *Embedding) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
-	idx := make([]int, 0)
-	for _, i := range x[0] {
-		idx = append(idx, int(i))
-	}
-	l.idx = idx
+	l.idx = vector.Int(x[0])
 
 	out := matrix.New()
 	for _, i := range l.idx {

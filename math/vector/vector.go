@@ -8,3 +8,12 @@ func Add(v, w []float64) []float64 {
 
 	return out
 }
+
+func Int(v []float64) []int {
+	out := make([]int, 0)
+	for _, i := range v {
+		out = append(out, int(i))
+	}
+
+	return out
+}
