@@ -46,3 +46,15 @@ func ExampleEmbedding() {
 	//
 	// [[18.2 18.4 18.6] [0 0 0] [9.1 9.2 9.3] [0 0 0] [9.3 9.4 9.5] [0 0 0]]
 }
+
+func ExampleEmbedding_Params() {
+	embed := &layer.Embedding{}
+	embed.SetParams(make([]matrix.Matrix, 2)...)
+
+	fmt.Println(embed.Params())
+	fmt.Println(embed.Grads())
+
+	// Output:
+	// [[]]
+	// [[]]
+}
