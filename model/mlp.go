@@ -9,11 +9,11 @@ import (
 )
 
 type MLPConfig struct {
-	InputSize    int
-	OutputSize   int
-	HiddenSize   []int
-	WeightInit   WeightInit
-	UseBatchNorm bool
+	InputSize         int
+	OutputSize        int
+	HiddenSize        []int
+	WeightInit        WeightInit
+	BatchNormMomentum float64
 }
 
 type MLP struct {
@@ -38,12 +38,11 @@ func NewMLP(c *MLPConfig, s ...rand.Source) *MLP {
 			B: matrix.Zero(1, size[i+1]),
 		})
 
-		if c.UseBatchNorm {
-			layers = append(layers, &layer.BatchNorm{
-				Gamma: matrix.One(1, size[i+1]),
-				Beta:  matrix.Zero(1, size[i+1]),
-			})
-		}
+		layers = append(layers, &layer.BatchNorm{
+			Gamma:    matrix.One(1, size[i+1]),
+			Beta:     matrix.Zero(1, size[i+1]),
+			Momentum: c.BatchNormMomentum,
+		})
 
 		layers = append(layers, &layer.ReLU{})
 	}

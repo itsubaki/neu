@@ -88,11 +88,11 @@ func Example_mnist() {
 	// model
 	s := rand.NewSource(1)
 	m := model.NewMLP(&model.MLPConfig{
-		InputSize:    mnist.Width * mnist.Height, // 24 * 24 = 784
-		OutputSize:   mnist.Labels,               // 0 ~ 9
-		HiddenSize:   []int{50},
-		WeightInit:   weight.Std(0.01),
-		UseBatchNorm: true,
+		InputSize:         mnist.Width * mnist.Height, // 24 * 24 = 784
+		OutputSize:        mnist.Labels,               // 0 ~ 9
+		HiddenSize:        []int{50},
+		WeightInit:        weight.Std(0.01),
+		BatchNormMomentum: 0.9,
 	}, s)
 
 	// print layers
@@ -132,16 +132,16 @@ func Example_mnist() {
 	//  3: *layer.Affine: W(50, 10), B(1, 10): 510
 	//  4: *layer.SoftmaxWithLoss
 	//
-	// loss=2.3129, train_acc=0.3700, test_acc=0.2200
-	// loss=1.7145, train_acc=0.6700, test_acc=0.5000
-	// loss=0.9382, train_acc=0.8800, test_acc=0.6200
-	// loss=0.8891, train_acc=0.8900, test_acc=0.5800
-	// loss=0.5807, train_acc=0.9500, test_acc=0.6900
-	// loss=0.4917, train_acc=0.8800, test_acc=0.6000
-	// loss=0.2948, train_acc=0.9800, test_acc=0.5900
-	// loss=0.2014, train_acc=0.9900, test_acc=0.6900
-	// loss=0.1978, train_acc=0.9900, test_acc=0.6000
-	// loss=0.0379, train_acc=1.0000, test_acc=0.7300
+	// loss=2.3129, train_acc=0.2700, test_acc=0.1900
+	// loss=1.7145, train_acc=0.7200, test_acc=0.5000
+	// loss=0.9382, train_acc=0.8600, test_acc=0.6500
+	// loss=0.8891, train_acc=0.9300, test_acc=0.6400
+	// loss=0.5807, train_acc=0.9300, test_acc=0.7000
+	// loss=0.4917, train_acc=0.9000, test_acc=0.7000
+	// loss=0.2948, train_acc=0.9900, test_acc=0.7100
+	// loss=0.2014, train_acc=1.0000, test_acc=0.7100
+	// loss=0.1978, train_acc=1.0000, test_acc=0.7000
+	// loss=0.0379, train_acc=1.0000, test_acc=0.6700
 
 }
 

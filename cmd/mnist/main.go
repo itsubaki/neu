@@ -36,11 +36,11 @@ func main() {
 
 	// model
 	m := model.NewMLP(&model.MLPConfig{
-		InputSize:    mnist.Width * mnist.Height, // 24 * 24 = 784
-		OutputSize:   mnist.Labels,               // 0 ~ 9
-		HiddenSize:   []int{50, 50, 50},
-		WeightInit:   weight.He,
-		UseBatchNorm: true,
+		InputSize:         mnist.Width * mnist.Height, // 24 * 24 = 784
+		OutputSize:        mnist.Labels,               // 0 ~ 9
+		HiddenSize:        []int{50, 50, 50},
+		WeightInit:        weight.He,
+		BatchNormMomentum: 0.9,
 	})
 
 	// print layer

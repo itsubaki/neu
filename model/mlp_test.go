@@ -17,11 +17,11 @@ func ExampleMLP() {
 	// model
 	s := rand.NewSource(1)
 	m := model.NewMLP(&model.MLPConfig{
-		InputSize:    2,
-		OutputSize:   2,
-		HiddenSize:   []int{3},
-		WeightInit:   weight.Std(0.01),
-		UseBatchNorm: false,
+		InputSize:         2,
+		OutputSize:        2,
+		HiddenSize:        []int{3},
+		WeightInit:        weight.Std(0.01),
+		BatchNormMomentum: 0.9,
 	}, s)
 
 	fmt.Printf("%T\n", m)
@@ -38,11 +38,12 @@ func ExampleMLP() {
 	// Output:
 	// *model.MLP
 	//  0: *layer.Affine: W(2, 3), B(1, 3): 9
-	//  1: *layer.ReLU
-	//  2: *layer.Affine: W(3, 2), B(1, 2): 8
-	//  3: *layer.SoftmaxWithLoss
+	//  1: *layer.BatchNorm: G(1, 3), B(1, 3): 6
+	//  2: *layer.ReLU
+	//  3: *layer.Affine: W(3, 2), B(1, 2): 8
+	//  4: *layer.SoftmaxWithLoss
 	//
-	// [[0.6931]] [1 0 1]
+	// [[0.6901]] [1 0 1]
 
 }
 
@@ -54,11 +55,11 @@ func ExampleMLP_gradientCheck() {
 	// model
 	s := rand.NewSource(1)
 	m := model.NewMLP(&model.MLPConfig{
-		InputSize:    2,
-		OutputSize:   2,
-		HiddenSize:   []int{3},
-		WeightInit:   weight.Std(0.01),
-		UseBatchNorm: false,
+		InputSize:         2,
+		OutputSize:        2,
+		HiddenSize:        []int{3},
+		WeightInit:        weight.Std(0.01),
+		BatchNormMomentum: 0.9,
 	}, s)
 
 	// gradients
@@ -77,21 +78,23 @@ func ExampleMLP_gradientCheck() {
 	}
 
 	// Output:
-	// 00: 1.6658328893821156e-10
-	// 01: 7.510020527910314e-13
-	// 20: 2.819144981296903e-10
-	// 21: 3.332532312605441e-08
+	// 00: 5.6597657680744024e-06
+	// 01: 3.0068540250264654e-17
+	// 10: 3.97423301588586e-10
+	// 11: 0.0008320159209412661
+	// 30: 3.985856805259017e-08
+	// 31: 3.273245081925058e-08
 
 }
 
 func ExampleMLP_Params() {
 	s := rand.NewSource(1)
 	m := model.NewMLP(&model.MLPConfig{
-		InputSize:    1,
-		HiddenSize:   []int{2},
-		OutputSize:   1,
-		WeightInit:   weight.Std(0.01),
-		UseBatchNorm: true,
+		InputSize:         1,
+		HiddenSize:        []int{2},
+		OutputSize:        1,
+		WeightInit:        weight.Std(0.01),
+		BatchNormMomentum: 0.9,
 	}, s)
 
 	for _, p := range m.Params() {
