@@ -31,7 +31,7 @@ func ExampleLoad_notfound() {
 	fmt.Println(err)
 
 	// Output:
-	// load training data: load=invalid_dir/train-images-idx3-ubyte.gz: file=invalid_dir/train-images-idx3-ubyte.gz open: open invalid_dir/train-images-idx3-ubyte.gz: no such file or directory
+	// load training data: load=invalid_dir/train-images-idx3-ubyte.gz: open file=invalid_dir/train-images-idx3-ubyte.gz: open invalid_dir/train-images-idx3-ubyte.gz: no such file or directory
 }
 
 func ExampleNormalize() {
