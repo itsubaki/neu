@@ -38,7 +38,7 @@ type Dataset struct {
 func image(fileName string) ([]Image, error) {
 	f, err := os.Open(filepath.Clean(fileName))
 	if err != nil {
-		return nil, fmt.Errorf("file=%v open: %v", fileName, err)
+		return nil, fmt.Errorf("open file=%v: %v", fileName, err)
 	}
 	defer f.Close()
 
@@ -56,7 +56,7 @@ func image(fileName string) ([]Image, error) {
 
 	var h header
 	if err := binary.Read(gzr, binary.BigEndian, &h); err != nil {
-		return nil, fmt.Errorf("binary read: %v", err)
+		return nil, fmt.Errorf("read binary: %v", err)
 	}
 
 	if h.Magic != 0x00000803 || h.Width != Width || h.Height != Height {
@@ -76,7 +76,7 @@ func image(fileName string) ([]Image, error) {
 func label(fileName string) ([]Label, error) {
 	f, err := os.Open(filepath.Clean(fileName))
 	if err != nil {
-		return nil, fmt.Errorf("file=%v open: %v", fileName, err)
+		return nil, fmt.Errorf("open file=%v: %v", fileName, err)
 	}
 	defer f.Close()
 
@@ -92,7 +92,7 @@ func label(fileName string) ([]Label, error) {
 
 	var h header
 	if err := binary.Read(gzr, binary.BigEndian, &h); err != nil {
-		return nil, fmt.Errorf("binary read: %v", err)
+		return nil, fmt.Errorf("read binary: %v", err)
 	}
 
 	if h.Magic != 0x00000801 {
