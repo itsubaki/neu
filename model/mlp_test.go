@@ -62,6 +62,12 @@ func ExampleMLP_gradientCheck() {
 		BatchNormMomentum: 0.9,
 	}, s)
 
+	fmt.Printf("%T\n", m)
+	for i, l := range m.Layers() {
+		fmt.Printf("%2d: %v\n", i, l)
+	}
+	fmt.Println()
+
 	// gradients
 	m.Forward(x, t)
 	m.Backward()
@@ -70,7 +76,7 @@ func ExampleMLP_gradientCheck() {
 
 	// check
 	for i := range gradsn {
-		// 10, 11 is ReLU. empty
+		// 20, 21 is ReLU. empty
 		for j := range gradsn[i] {
 			eps := gradsn[i][j].Sub(grads[i][j]).Abs().Avg() // avg(| A - B |)
 			fmt.Printf("%v%v: %v\n", i, j, eps)
@@ -78,6 +84,13 @@ func ExampleMLP_gradientCheck() {
 	}
 
 	// Output:
+	// *model.MLP
+	//  0: *layer.Affine: W(2, 3), B(1, 3): 9
+	//  1: *layer.BatchNorm: G(1, 3), B(1, 3): 6
+	//  2: *layer.ReLU
+	//  3: *layer.Affine: W(3, 2), B(1, 2): 8
+	//  4: *layer.SoftmaxWithLoss
+	//
 	// 00: 5.6597657680744024e-06
 	// 01: 3.0068540250264654e-17
 	// 10: 3.97423301588586e-10
