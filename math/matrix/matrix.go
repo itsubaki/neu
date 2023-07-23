@@ -227,11 +227,14 @@ func (m Matrix) Argmax() []int {
 func (m Matrix) SumAxis0() Matrix {
 	p, q := m.Dimension()
 
-	v := make([]float64, q)
-	for i := 0; i < q; i++ {
-		for j := 0; j < p; j++ {
-			v[i] = v[i] + m[j][i]
+	v := make([]float64, 0, q)
+	for j := 0; j < q; j++ {
+		var sum float64
+		for i := 0; i < p; i++ {
+			sum = sum + m[i][j]
 		}
+
+		v = append(v, sum)
 	}
 
 	return New(v)
@@ -241,11 +244,14 @@ func (m Matrix) SumAxis0() Matrix {
 func (m Matrix) SumAxis1() Matrix {
 	p, q := m.Dimension()
 
-	v := make([]float64, p)
-	for i := 0; i < q; i++ {
-		for j := 0; j < p; j++ {
-			v[j] = v[j] + m[i][j]
+	v := make([]float64, 0, p)
+	for i := 0; i < p; i++ {
+		var sum float64
+		for j := 0; j < q; j++ {
+			sum = sum + m[i][j]
 		}
+
+		v = append(v, sum)
 	}
 
 	return New(v)
