@@ -237,6 +237,20 @@ func (m Matrix) SumAxis0() Matrix {
 	return New(v)
 }
 
+// SumAxis1 returns the sum of each row.
+func (m Matrix) SumAxis1() Matrix {
+	p, q := m.Dimension()
+
+	v := make([]float64, p)
+	for i := 0; i < q; i++ {
+		for j := 0; j < p; j++ {
+			v[j] = v[j] + m[j][i]
+		}
+	}
+
+	return New(v)
+}
+
 // MeanAxis0 returns the mean of each column.
 func (m Matrix) MeanAxis0() Matrix {
 	return m.SumAxis0().MulC(1.0 / float64(len(m)))

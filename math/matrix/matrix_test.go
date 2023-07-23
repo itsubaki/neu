@@ -323,6 +323,18 @@ func ExampleMatrix_SumAxis0() {
 	// [[5 7 9]]
 }
 
+func ExampleMatrix_SumAxis1() {
+	x := matrix.New(
+		[]float64{0, 1, 4},
+		[]float64{27, 40, 55},
+		[]float64{18, 28, 40},
+	)
+	fmt.Println(x.SumAxis1())
+
+	// Output:
+	// [[5 122 86]]
+}
+
 func ExampleMatrix_MeanAxis0() {
 	x := matrix.New(
 		[]float64{1, 2, 3},

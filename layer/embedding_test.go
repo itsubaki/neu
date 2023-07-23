@@ -36,6 +36,7 @@ func ExampleEmbedding() {
 		[]float64{9.2, 9.3, 9.4},
 		[]float64{9.3, 9.4, 9.5},
 	)
+
 	embed.Backward(dh)
 	fmt.Println(embed.DW)
 

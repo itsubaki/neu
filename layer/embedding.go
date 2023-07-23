@@ -1,6 +1,8 @@
 package layer
 
 import (
+	"fmt"
+
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/math/vector"
 )
@@ -15,8 +17,8 @@ func (l *Embedding) Params() []matrix.Matrix      { return []matrix.Matrix{l.W} 
 func (l *Embedding) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DW} }
 func (l *Embedding) SetParams(p ...matrix.Matrix) { l.W = p[0] }
 
-func (l *Embedding) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
-	l.idx = vector.Int(x[0])
+func (l *Embedding) Forward(idx, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
+	l.idx = vector.Int(idx[0])
 
 	out := matrix.New()
 	for _, i := range l.idx {
@@ -34,4 +36,9 @@ func (l *Embedding) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) 
 	}
 
 	return matrix.New(), matrix.New()
+}
+
+func (l *Embedding) String() string {
+	a, b := l.W.Dimension()
+	return fmt.Sprintf("%T: W(%v, %v): %v", l, a, b, a*b)
 }
