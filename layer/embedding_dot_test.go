@@ -8,6 +8,7 @@ import (
 )
 
 func ExampleEmbeddingDot() {
+	// p150
 	l := &layer.EmbeddingDot{
 		Embedding: layer.Embedding{
 			W: matrix.New(
