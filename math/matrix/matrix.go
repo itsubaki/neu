@@ -244,7 +244,7 @@ func (m Matrix) SumAxis1() Matrix {
 	v := make([]float64, p)
 	for i := 0; i < q; i++ {
 		for j := 0; j < p; j++ {
-			v[j] = v[j] + m[j][i]
+			v[j] = v[j] + m[i][j]
 		}
 	}
 
