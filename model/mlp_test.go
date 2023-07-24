@@ -138,3 +138,27 @@ func ExampleMLP_Params() {
 	// [[] []]
 	// []
 }
+
+func ExampleMLP_rand() {
+	m := model.NewMLP(&model.MLPConfig{
+		InputSize:         2,
+		OutputSize:        2,
+		HiddenSize:        []int{3},
+		WeightInit:        weight.Std(0.01),
+		BatchNormMomentum: 0.9,
+	})
+
+	fmt.Printf("%T\n", m)
+	for i, l := range m.Layers() {
+		fmt.Printf("%2d: %v\n", i, l)
+	}
+	fmt.Println()
+
+	// Output:
+	// *model.MLP
+	//  0: *layer.Affine: W(2, 3), B(1, 3): 9
+	//  1: *layer.BatchNorm: G(1, 3), B(1, 3): 6
+	//  2: *layer.ReLU
+	//  3: *layer.Affine: W(3, 2), B(1, 2): 8
+	//  4: *layer.SoftmaxWithLoss
+}
