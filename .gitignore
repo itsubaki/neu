@@ -15,8 +15,9 @@
 coverage.txt
 coverage.html
 
-# mnist
-*.gz
-
 # codespaces
 oryxBuildBinary
+
+# testdata
+testdata/*.txt
+testdata/*.gz
