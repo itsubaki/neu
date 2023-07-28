@@ -23,17 +23,17 @@ type Dataset struct {
 func Load(dir string) (*Dataset, *Dataset, *Dataset, error) {
 	train, err := load(dir, TrainTxt)
 	if err != nil {
-		return nil, nil, nil, fmt.Errorf("load file=%v: %v", TrainTxt, err)
+		return nil, nil, nil, fmt.Errorf("load training data: %v", err)
 	}
 
 	test, err := load(dir, TestTxt)
 	if err != nil {
-		return nil, nil, nil, fmt.Errorf("load file=%v: %v", TestTxt, err)
+		return nil, nil, nil, fmt.Errorf("load test data: %v", err)
 	}
 
 	valid, err := load(dir, ValidTxt)
 	if err != nil {
-		return nil, nil, nil, fmt.Errorf("load file=%v: %v", ValidTxt, err)
+		return nil, nil, nil, fmt.Errorf("load valid data: %v", err)
 	}
 
 	return train, test, valid, nil

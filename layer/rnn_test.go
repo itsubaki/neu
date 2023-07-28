@@ -26,6 +26,8 @@ func ExampleRNN() {
 		Wh: matrix.New([]float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}),
 		B:  matrix.New([]float64{0}, []float64{0}),
 	}
+	fmt.Println(rnn)
+	fmt.Println()
 
 	// forward
 	hNext := rnn.Forward(x, hPrev)
@@ -42,6 +44,8 @@ func ExampleRNN() {
 	fmt.Println(dhPrev)
 
 	// Output:
+	// *layer.RNN: Wx(3, 3), Wh(3, 3), B(2, 1): 20
+	//
 	// 2 3
 	// 2 3
 	// [[0.1194272985343859 0.23549574953849797 0.3452140341355209] [0.23549574953849797 0.4462436102487797 0.6169093028770649]]

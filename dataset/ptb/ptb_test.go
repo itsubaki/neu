@@ -2,6 +2,7 @@ package ptb_test
 
 import (
 	"fmt"
+	"testing"
 
 	"github.com/itsubaki/neu/dataset/ptb"
 )
@@ -93,4 +94,30 @@ func ExampleLoad() {
 	// 1801
 	// 2014
 	// 1826
+}
+
+func ExampleLoad_notfound() {
+	_, _, _, err := ptb.Load("invalid_dir")
+	fmt.Println(err)
+
+	// Output:
+	// load training data: open file=invalid_dir/ptb.train.txt: open invalid_dir/ptb.train.txt: no such file or directory
+}
+
+func TestMust(t *testing.T) {
+	defer func() {
+		if rec := recover(); rec != nil {
+			err, ok := rec.(error)
+			if !ok {
+				t.Fail()
+			}
+
+			if err.Error() != "something went wrong" {
+				t.Fail()
+			}
+		}
+	}()
+
+	ptb.Must(nil, nil, nil, fmt.Errorf("something went wrong"))
+	t.Fail()
 }
