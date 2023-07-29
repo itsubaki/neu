@@ -33,9 +33,9 @@ func (l *RNN) Backward(dhNext matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	dx := matrix.Dot(dt, l.Wx.T())              // dot(dt(N, H), Wx.T(H, D)) -> dx(N, D)
 	dh := matrix.Dot(dt, l.Wh.T())              // dot(dt(N, H), Wh.T(H, H)) -> dh(N, H)
 
-	l.DWx = matrix.Dot(l.x.T(), dt)
-	l.DWh = matrix.Dot(l.hPrev.T(), dt)
-	l.DWB = dt.SumAxis0()
+	l.DWx = matrix.Dot(l.x.T(), dt)     // dot(x.T(D, N), dt(N, H)) -> (D, H)
+	l.DWh = matrix.Dot(l.hPrev.T(), dt) // dot(hPrev.T(H, N), dt(N, H)) -> (H, H)
+	l.DWB = dt.SumAxis0()               // sum(dt(N, H), axis=0) -> (1, H)
 	return dx, dh
 }
 
