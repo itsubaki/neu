@@ -8,19 +8,6 @@ import (
 )
 
 func ExampleRNN() {
-	x := matrix.New(
-		[]float64{0.1, 0.2, 0.3},
-		[]float64{0.3, 0.4, 0.5},
-	)
-	hPrev := matrix.New(
-		[]float64{0.1, 0.2, 0.3},
-		[]float64{0.3, 0.4, 0.5},
-	)
-	dhNext := matrix.New(
-		[]float64{0.1, 0.2, 0.3},
-		[]float64{0.3, 0.4, 0.5},
-	)
-
 	rnn := &layer.RNN{
 		Wx: matrix.New([]float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}),
 		Wh: matrix.New([]float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}),
@@ -30,6 +17,15 @@ func ExampleRNN() {
 	fmt.Println()
 
 	// forward
+	x := matrix.New(
+		[]float64{0.1, 0.2, 0.3},
+		[]float64{0.3, 0.4, 0.5},
+	)
+	hPrev := matrix.New(
+		[]float64{0.1, 0.2, 0.3},
+		[]float64{0.3, 0.4, 0.5},
+	)
+
 	hNext := rnn.Forward(x, hPrev)
 	fmt.Println(hPrev.Dimension())
 	fmt.Println(hNext.Dimension())
@@ -37,6 +33,11 @@ func ExampleRNN() {
 	fmt.Println()
 
 	// backward
+	dhNext := matrix.New(
+		[]float64{0.1, 0.2, 0.3},
+		[]float64{0.3, 0.4, 0.5},
+	)
+
 	dx, dhPrev := rnn.Backward(dhNext)
 	fmt.Println(dhNext.Dimension())
 	fmt.Println(dhPrev.Dimension())
