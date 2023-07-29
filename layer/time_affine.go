@@ -32,14 +32,14 @@ func (l *TimeAffine) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 
 func (l *TimeAffine) Backward(dout []matrix.Matrix) []matrix.Matrix {
 	dx := make([]matrix.Matrix, len(dout))
-	l.DW = matrix.Zero(len(l.x[0]), len(dout[0]))
-	l.DB = matrix.Zero(1, len(dout[0][0]))
+	l.DW = matrix.Zero(1, 1)
+	l.DB = matrix.Zero(1, 1)
 
 	// naive
 	for t := 0; t < len(dout); t++ {
 		dx[t] = matrix.Dot(dout[t], l.W.T())
-		l.DW = l.DW.Add(matrix.Dot(l.x[t].T(), dout[t]))
-		l.DB = l.DB.Add(dout[t].SumAxis0())
+		l.DW = matrix.Dot(l.x[t].T(), dout[t]).Add(l.DW) // Broadcast
+		l.DB = dout[t].SumAxis0().Add(l.DB)              // Broadcast
 	}
 
 	return dx

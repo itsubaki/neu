@@ -18,10 +18,17 @@ func ExampleTimeAffine() {
 	fmt.Println(affine.Forward(xs, nil))
 	fmt.Println(affine.Backward(xs))
 
+	// grads
+	for _, g := range affine.Grads() {
+		fmt.Println(g)
+	}
+
 	// Output:
 	// *layer.TimeAffine: W(2, 3)*T, B(1, 3)*T: 9*T
 	// [[[0.30000000000000004 0.7 1.1]]]
 	// [[[0.25 0.4]]]
+	// [[1 0.5] [0.5 0.25]]
+	// [[1 0.5]]
 }
 
 func ExampleTimeAffine_time2() {
@@ -35,10 +42,17 @@ func ExampleTimeAffine_time2() {
 	fmt.Println(affine.Forward(xs, nil))
 	fmt.Println(affine.Backward(xs))
 
+	// grads
+	for _, g := range affine.Grads() {
+		fmt.Println(g)
+	}
+
 	// Output:
 	// *layer.TimeAffine: W(2, 3)*T, B(1, 3)*T: 9*T
 	// [[[0.30000000000000004 0.7 1.1]] [[0.30000000000000004 0.7 1.1]]]
 	// [[[0.25 0.4]] [[0.25 0.4]]]
+	// [[2 1] [1 0.5]]
+	// [[2 1]]
 }
 
 func ExampleTimeAffine_Params() {

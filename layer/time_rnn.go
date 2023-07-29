@@ -43,9 +43,13 @@ func (l *TimeRNN) Backward(dhs []matrix.Matrix) []matrix.Matrix {
 	// dhs(Time, N, H)
 	T, N, H := len(dhs), len(dhs[0]), len(dhs[0][0])
 
+	dxs := make([]matrix.Matrix, T) // dxs(Time, N, D)
+	dh := matrix.Zero(N, H)         // dh(N, H)
+
 	grads := make([]matrix.Matrix, 3) // DWx(D, H), DWh(H, H), DWB(1, H)
-	dxs := make([]matrix.Matrix, T)   // dxs(Time, N, D)
-	dh := matrix.Zero(N, H)           // dh(N, H)
+	for i := range grads {
+		grads[i] = matrix.Zero(1, 1)
+	}
 
 	for t := T - 1; t > -1; t-- {
 		// dx(N, D), dh(N, H)
@@ -53,7 +57,7 @@ func (l *TimeRNN) Backward(dhs []matrix.Matrix) []matrix.Matrix {
 
 		// grads
 		for i, g := range l.layer[t].Grads() {
-			grads[i] = grads[i].Add(g)
+			grads[i] = g.Add(grads[i]) // Broadcast
 		}
 	}
 
