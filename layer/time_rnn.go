@@ -24,13 +24,12 @@ func (l *TimeRNN) Forward(xs []matrix.Matrix, opts ...Opts) []matrix.Matrix {
 	// xs(Time, N, D), Wx(D, H)
 	T, N, H := len(xs), len(xs[0]), len(l.Wx[0])
 
-	l.layer = make([]*RNN, T)
-	hs := make([]matrix.Matrix, 0)
-
 	if !l.Stateful || len(l.h) == 0 {
 		l.h = matrix.Zero(N, H)
 	}
 
+	l.layer = make([]*RNN, T)
+	hs := make([]matrix.Matrix, 0)
 	for t := 0; t < T; t++ {
 		l.layer[t] = &RNN{Wx: l.Wx, Wh: l.Wh, B: l.B}
 		l.h = l.layer[t].Forward(xs[t], l.h, opts...)
@@ -46,13 +45,13 @@ func (l *TimeRNN) Backward(dhs []matrix.Matrix) []matrix.Matrix {
 
 	// dxs(Time, N, D)
 	dxs := make([]matrix.Matrix, 0)
-	dh := matrix.Zero(N, H)
+	dhl := matrix.Zero(N, H)
 	grads := make([]matrix.Matrix, 3)
 
 	for t := T - 1; t > -1; t-- {
 		// dx(N, D), dh(N, H)
-		dx, dhtmp := l.layer[t].Backward(dhs[t].Add(dh))
-		dxs, dh = append(dxs, dx), dhtmp
+		dx, dh := l.layer[t].Backward(dhs[t].Add(dhl))
+		dxs, dhl = append(dxs, dx), dh
 
 		for i, g := range l.layer[t].Grads() {
 			grads[i] = grads[i].Add(g)
@@ -60,7 +59,7 @@ func (l *TimeRNN) Backward(dhs []matrix.Matrix) []matrix.Matrix {
 	}
 
 	l.DWx, l.DWh, l.DWB = grads[0], grads[1], grads[2]
-	l.dh = dh
+	l.dh = dhl
 	return dxs
 }
 

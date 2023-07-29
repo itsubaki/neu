@@ -18,28 +18,25 @@ func (l *RNN) Params() []matrix.Matrix      { return []matrix.Matrix{l.Wx, l.Wh,
 func (l *RNN) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DWx, l.DWh, l.DWB} }
 func (l *RNN) SetParams(p ...matrix.Matrix) { l.Wx, l.Wh, l.B = p[0], p[1], p[2] }
 
-func (l *RNN) Forward(x, hPrev matrix.Matrix, _ ...Opts) matrix.Matrix {
+func (l *RNN) Forward(x, h matrix.Matrix, _ ...Opts) matrix.Matrix {
 	// dot(h(N, H), Wh(H, H)) -> (N, H)
 	// dot(x(N, D), Wx(D, H)) -> (N, H)
-	t := matrix.Dot(hPrev, l.Wh).Add(matrix.Dot(x, l.Wx)).Add(l.B) // t = hPrev.Wh + x.Wx + b
-	hNext := matrix.Func(t, activation.Tanh)                       // hNext = tanh(t)
+	t := matrix.Dot(h, l.Wh).Add(matrix.Dot(x, l.Wx)).Add(l.B)
+	hNext := matrix.Func(t, activation.Tanh)
 
-	l.x, l.hPrev, l.hNext = x, hPrev, hNext // cache
+	l.x, l.hPrev, l.hNext = x, h, hNext // cache
 	return l.hNext
 }
 
 func (l *RNN) Backward(dhNext matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	// dot(dt(N, H), Wx.T(H, D)) -> dx(N, D)
-	// dot(dt(N, H), Wh.T(H, H)) -> dh(N, H)
-	f := func(a float64) float64 { return 1 - math.Pow(a, 2) } // f = 1 - a**2
-	dt := dhNext.Mul(matrix.Func(l.hNext, f))                  // dt = dhNext * (1 - hNext**2)
-	dx := matrix.Dot(dt, l.Wx.T())                             // dx = dt.Wx.T
-	dhPrev := matrix.Dot(dt, l.Wh.T())                         // dhPrev = dt.Wh.T
+	dt := dhNext.Mul(matrix.Func(l.hNext, rnn)) // dt = dhNext * (1 - hNext**2)
+	dx := matrix.Dot(dt, l.Wx.T())              // dot(dt(N, H), Wx.T(H, D)) -> dx(N, D)
+	dh := matrix.Dot(dt, l.Wh.T())              // dot(dt(N, H), Wh.T(H, H)) -> dh(N, H)
 
-	l.DWx = matrix.Dot(l.x.T(), dt)     // dWx = x.T.dt
-	l.DWh = matrix.Dot(l.hPrev.T(), dt) // dWh = hPrev.T.dt
+	l.DWx = matrix.Dot(l.x.T(), dt)
+	l.DWh = matrix.Dot(l.hPrev.T(), dt)
 	l.DWB = dt.SumAxis0()
-	return dx, dhPrev
+	return dx, dh
 }
 
 func (l *RNN) String() string {
@@ -48,3 +45,5 @@ func (l *RNN) String() string {
 	e, f := l.B.Dimension()
 	return fmt.Sprintf("%T: Wx(%v, %v), Wh(%v, %v), B(%v, %v): %v", l, a, b, c, d, e, f, a*b+c*d+e*f)
 }
+
+func rnn(a float64) float64 { return 1 - math.Pow(a, 2) }
