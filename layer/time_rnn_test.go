@@ -13,12 +13,42 @@ func ExampleTimeRNN() {
 			[]float64{0.1, 0.2, 0.3},
 			[]float64{0.3, 0.4, 0.5},
 		),
+	}
+
+	rnn := &layer.TimeRNN{
+		Wx: matrix.New([]float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}),
+		Wh: matrix.New([]float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}),
+		B:  matrix.New([]float64{0}, []float64{0}),
+	}
+	fmt.Println(rnn)
+
+	// forward
+	hs := rnn.Forward(xs, nil)
+	for i := range hs {
+		fmt.Print(hs[i].Dimension())
+		fmt.Println(":", hs[i])
+	}
+
+	// backward
+	dhs := []matrix.Matrix{
 		matrix.New(
 			[]float64{0.1, 0.2, 0.3},
 			[]float64{0.3, 0.4, 0.5},
 		),
 	}
+	dxs := rnn.Backward(dhs)
+	for i := range dxs {
+		fmt.Print(dxs[i].Dimension())
+		fmt.Println(":", dxs[i])
+	}
 
+	// Output:
+	// *layer.TimeRNN: Wx(3, 3)*T, Wh(3, 3)*T, B(2, 1)*T: 20*T
+	// 2 3: [[0.0599281035291435 0.1194272985343859 0.1780808681173302] [0.1194272985343859 0.23549574953849797 0.3452140341355209]]
+	// 2 3: [[0.13653941943561718 0.13653941943561718 0.13653941943561718] [0.23725954436226937 0.23725954436226937 0.23725954436226937]]
+}
+
+func ExampleTimeRNN_time2() {
 	rnn := &layer.TimeRNN{
 		Wx: matrix.New([]float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}),
 		Wh: matrix.New([]float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}),
@@ -28,6 +58,17 @@ func ExampleTimeRNN() {
 	fmt.Println()
 
 	// forward
+	xs := []matrix.Matrix{
+		matrix.New(
+			[]float64{0.1, 0.2, 0.3},
+			[]float64{0.3, 0.4, 0.5},
+		),
+		matrix.New(
+			[]float64{0.1, 0.2, 0.3},
+			[]float64{0.3, 0.4, 0.5},
+		),
+	}
+
 	hs := rnn.Forward(xs, nil)
 	for i := range hs {
 		fmt.Print(hs[i].Dimension())
@@ -46,6 +87,7 @@ func ExampleTimeRNN() {
 			[]float64{0.3, 0.4, 0.5},
 		),
 	}
+
 	dxs := rnn.Backward(dhs)
 	for i := range dxs {
 		fmt.Print(dxs[i].Dimension())

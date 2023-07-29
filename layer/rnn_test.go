@@ -14,7 +14,6 @@ func ExampleRNN() {
 		B:  matrix.New([]float64{0}, []float64{0}),
 	}
 	fmt.Println(rnn)
-	fmt.Println()
 
 	// forward
 	x := matrix.New(
@@ -22,15 +21,13 @@ func ExampleRNN() {
 		[]float64{0.3, 0.4, 0.5},
 	)
 	hPrev := matrix.New(
-		[]float64{0.1, 0.2, 0.3},
-		[]float64{0.3, 0.4, 0.5},
+		[]float64{0, 0, 0},
+		[]float64{0, 0, 0},
 	)
 
 	hNext := rnn.Forward(x, hPrev)
-	fmt.Println(hPrev.Dimension())
-	fmt.Println(hNext.Dimension())
-	fmt.Println(hNext)
-	fmt.Println()
+	fmt.Print(hNext.Dimension())
+	fmt.Println(":", hNext)
 
 	// backward
 	dhNext := matrix.New(
@@ -39,22 +36,16 @@ func ExampleRNN() {
 	)
 
 	dx, dhPrev := rnn.Backward(dhNext)
-	fmt.Println(dhNext.Dimension())
-	fmt.Println(dhPrev.Dimension())
-	fmt.Println(dx)
-	fmt.Println(dhPrev)
+	fmt.Print(dx.Dimension())
+	fmt.Println(":", dx)
+	fmt.Print(dhPrev.Dimension())
+	fmt.Println(":", dhPrev)
 
 	// Output:
 	// *layer.RNN: Wx(3, 3), Wh(3, 3), B(2, 1): 20
-	//
-	// 2 3
-	// 2 3
-	// [[0.1194272985343859 0.23549574953849797 0.3452140341355209] [0.23549574953849797 0.4462436102487797 0.6169093028770649]]
-	//
-	// 2 3
-	// 2 3
-	// [[0.12691349563884896 0.12691349563884896 0.12691349563884896] [0.1853190205870099 0.1853190205870099 0.1853190205870099]]
-	// [[0.12691349563884896 0.12691349563884896 0.12691349563884896] [0.1853190205870099 0.1853190205870099 0.1853190205870099]]
+	// 2 3: [[0.0599281035291435 0.1194272985343859 0.1780808681173302] [0.1194272985343859 0.23549574953849797 0.3452140341355209]]
+	// 2 3: [[0.13653941943561718 0.13653941943561718 0.13653941943561718] [0.23725954436226937 0.23725954436226937 0.23725954436226937]]
+	// 2 3: [[0.13653941943561718 0.13653941943561718 0.13653941943561718] [0.23725954436226937 0.23725954436226937 0.23725954436226937]]
 }
 
 func ExampleRNN_Params() {
