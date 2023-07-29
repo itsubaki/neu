@@ -7,6 +7,42 @@ import (
 	"github.com/itsubaki/neu/dataset/ptb"
 )
 
+func ExamplePreProcess() {
+	text := "You say goodbye and I say hello ."
+	corpus, w2id, id2w := ptb.PreProcess(text)
+
+	fmt.Println(corpus)
+	fmt.Println()
+
+	for k, v := range w2id {
+		fmt.Printf("%v: %v\n", k, v)
+	}
+	fmt.Println()
+
+	for k, v := range id2w {
+		fmt.Printf("%v: %v\n", k, v)
+	}
+
+	// Unordered output:
+	// [0 1 2 3 4 1 5 6]
+	//
+	// You: 0
+	// say: 1
+	// goodbye: 2
+	// and: 3
+	// I: 4
+	// hello: 5
+	// .: 6
+	//
+	// 0: You
+	// 1: say
+	// 2: goodbye
+	// 3: and
+	// 4: I
+	// 5: hello
+	// 6: .
+}
+
 func ExampleLoadFile() {
 	train, err := ptb.LoadFile("../../testdata", ptb.TrainTxt)
 	if err != nil {

@@ -46,11 +46,22 @@ func load(dir, fileName string) (*Dataset, error) {
 		return nil, fmt.Errorf("open file=%v: %v", path, err)
 	}
 
-	word := word(bytes)
+	corpus, w2id, id2w := preprocess(string(bytes))
+	return &Dataset{
+		WordToID: w2id,
+		IDToWord: id2w,
+		Corpus:   corpus,
+	}, nil
+}
+
+func preprocess(text string) ([]int, map[string]int, map[int]string) {
+	rep := strings.TrimSpace(strings.ReplaceAll(text, "\n", "<eos>"))
+	words := strings.Split(rep, " ")
+
 	w2id := make(map[string]int)
 	id2w := make(map[int]string)
 
-	for _, w := range word {
+	for _, w := range words {
 		if _, ok := w2id[w]; ok {
 			continue
 		}
@@ -61,21 +72,11 @@ func load(dir, fileName string) (*Dataset, error) {
 	}
 
 	corpus := make([]int, 0)
-	for _, w := range word {
+	for _, w := range words {
 		corpus = append(corpus, w2id[w])
 	}
 
-	return &Dataset{
-		WordToID: w2id,
-		IDToWord: id2w,
-		Corpus:   corpus,
-	}, nil
-}
-
-func word(bytes []byte) []string {
-	rep := strings.TrimSpace(strings.ReplaceAll(string(bytes), "\n", "<eos>"))
-	spl := strings.Split(rep, " ")
-	return spl
+	return corpus, w2id, id2w
 }
 
 func Must(train, test, valid *Dataset, err error) (*Dataset, *Dataset, *Dataset) {

@@ -1,3 +1,6 @@
 package ptb
 
-var LoadFile = load
+var (
+	LoadFile   = load
+	PreProcess = preprocess
+)
