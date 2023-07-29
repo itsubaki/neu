@@ -20,7 +20,7 @@ func (l *TimeRNN) SetParams(p ...matrix.Matrix) { l.Wx, l.Wh, l.B = p[0], p[1], 
 func (l *TimeRNN) SetState(h ...matrix.Matrix)  { l.h = h[0] }
 func (l *TimeRNN) ResetState()                  { l.h = matrix.New() }
 
-func (l *TimeRNN) Forward(xs []matrix.Matrix, opts ...Opts) []matrix.Matrix {
+func (l *TimeRNN) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matrix {
 	// xs(Time, N, D), Wx(D, H)
 	T, N, H := len(xs), len(xs[0]), len(l.Wx[0])
 

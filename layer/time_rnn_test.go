@@ -19,16 +19,16 @@ func ExampleTimeRNN() {
 		),
 	}
 
-	timernn := &layer.TimeRNN{
+	rnn := &layer.TimeRNN{
 		Wx: matrix.New([]float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}),
 		Wh: matrix.New([]float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}),
 		B:  matrix.New([]float64{0}, []float64{0}),
 	}
-	fmt.Println(timernn)
+	fmt.Println(rnn)
 	fmt.Println()
 
 	// forward
-	hs := timernn.Forward(xs)
+	hs := rnn.Forward(xs, nil)
 	for i := range hs {
 		fmt.Print(hs[i].Dimension())
 		fmt.Println(":", hs[i])
@@ -46,7 +46,7 @@ func ExampleTimeRNN() {
 			[]float64{0.3, 0.4, 0.5},
 		),
 	}
-	dxs := timernn.Backward(dhs)
+	dxs := rnn.Backward(dhs)
 	for i := range dxs {
 		fmt.Print(dxs[i].Dimension())
 		fmt.Println(":", dxs[i])
@@ -64,11 +64,11 @@ func ExampleTimeRNN() {
 }
 
 func ExampleTimeRNN_Params() {
-	timernn := &layer.TimeRNN{}
-	timernn.SetParams(make([]matrix.Matrix, 3)...)
+	rnn := &layer.TimeRNN{}
+	rnn.SetParams(make([]matrix.Matrix, 3)...)
 
-	fmt.Println(timernn.Params())
-	fmt.Println(timernn.Grads())
+	fmt.Println(rnn.Params())
+	fmt.Println(rnn.Grads())
 
 	// Output:
 	// [[] [] []]
@@ -76,9 +76,9 @@ func ExampleTimeRNN_Params() {
 }
 
 func ExampleTimeRNN_state() {
-	timernn := &layer.TimeRNN{}
-	timernn.SetState(matrix.New())
-	timernn.ResetState()
+	rnn := &layer.TimeRNN{}
+	rnn.SetState(matrix.New())
+	rnn.ResetState()
 
 	// Output:
 }
