@@ -9,7 +9,7 @@ import (
 type TimeAffine struct {
 	W, B   matrix.Matrix // params
 	DW, DB matrix.Matrix // grads
-	x      []matrix.Matrix
+	xs     []matrix.Matrix
 }
 
 func (l *TimeAffine) Params() []matrix.Matrix      { return []matrix.Matrix{l.W, l.B} }
@@ -19,7 +19,7 @@ func (l *TimeAffine) SetState(_ ...matrix.Matrix)  {}
 func (l *TimeAffine) ResetState()                  {}
 
 func (l *TimeAffine) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
-	l.x = xs
+	l.xs = xs
 
 	// naive
 	out := make([]matrix.Matrix, len(xs))
@@ -38,8 +38,8 @@ func (l *TimeAffine) Backward(dout []matrix.Matrix) []matrix.Matrix {
 	// naive
 	for t := 0; t < len(dout); t++ {
 		dx[t] = matrix.Dot(dout[t], l.W.T())
-		l.DW = matrix.Dot(l.x[t].T(), dout[t]).Add(l.DW) // Broadcast
-		l.DB = dout[t].SumAxis0().Add(l.DB)              // Broadcast
+		l.DW = matrix.Dot(l.xs[t].T(), dout[t]).Add(l.DW) // Broadcast
+		l.DB = dout[t].SumAxis0().Add(l.DB)               // Broadcast
 	}
 
 	return dx
