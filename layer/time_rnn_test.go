@@ -74,3 +74,11 @@ func ExampleTimeRNN_Params() {
 	// [[] [] []]
 	// [[] [] []]
 }
+
+func ExampleTimeRNN_state() {
+	timernn := &layer.TimeRNN{}
+	timernn.SetState(matrix.New())
+	timernn.ResetState()
+
+	// Output:
+}
