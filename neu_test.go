@@ -30,10 +30,10 @@ func Example_cbow() {
 	Wout := matrix.Randn(3, 7, s).MulC(0.01)
 
 	// layer
-	layer0 := layer.Dot{W: Win}
-	layer1 := layer.Dot{W: Win}
-	layerOut := layer.Dot{W: Wout}
-	layerLoss := layer.SoftmaxWithLoss{}
+	layer0 := &layer.Dot{W: Win}
+	layer1 := &layer.Dot{W: Win}
+	layerOut := &layer.Dot{W: Wout}
+	layerLoss := &layer.SoftmaxWithLoss{}
 
 	{
 		// forward
