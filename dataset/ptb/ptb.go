@@ -20,26 +20,7 @@ type Dataset struct {
 	Corpus   []int
 }
 
-func Load(dir string) (*Dataset, *Dataset, *Dataset, error) {
-	train, err := load(dir, TrainTxt)
-	if err != nil {
-		return nil, nil, nil, fmt.Errorf("load training data: %v", err)
-	}
-
-	test, err := load(dir, TestTxt)
-	if err != nil {
-		return nil, nil, nil, fmt.Errorf("load test data: %v", err)
-	}
-
-	valid, err := load(dir, ValidTxt)
-	if err != nil {
-		return nil, nil, nil, fmt.Errorf("load valid data: %v", err)
-	}
-
-	return train, test, valid, nil
-}
-
-func load(dir, fileName string) (*Dataset, error) {
+func Load(dir, fileName string) (*Dataset, error) {
 	path := filepath.Clean(path.Join(dir, fileName))
 	bytes, err := os.ReadFile(path)
 	if err != nil {
@@ -79,10 +60,10 @@ func preprocess(text string) ([]int, map[string]int, map[int]string) {
 	return corpus, w2id, id2w
 }
 
-func Must(train, test, valid *Dataset, err error) (*Dataset, *Dataset, *Dataset) {
+func Must(dataset *Dataset, err error) *Dataset {
 	if err != nil {
 		panic(err)
 	}
 
-	return train, test, valid
+	return dataset
 }

@@ -43,36 +43,8 @@ func ExamplePreProcess() {
 	// 6: .
 }
 
-func ExampleLoadFile() {
-	train, err := ptb.LoadFile("../../testdata", ptb.TrainTxt)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println(len(train.Corpus))
-	fmt.Println(train.Corpus[:20])
-
-	fmt.Println(train.IDToWord[0])
-	fmt.Println(train.IDToWord[1])
-	fmt.Println(train.IDToWord[2])
-
-	fmt.Println(train.WordToID["car"])
-	fmt.Println(train.WordToID["happy"])
-	fmt.Println(train.WordToID["lexus"])
-
-	// Output:
-	// 929589
-	// [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19]
-	// aer
-	// banknote
-	// berlitz
-	// 3856
-	// 4428
-	// 7426
-}
-
 func ExampleLoad() {
-	train, test, valid := ptb.Must(ptb.Load("../../testdata"))
+	train := ptb.Must(ptb.Load("../../testdata", ptb.TrainTxt))
 
 	fmt.Println(len(train.Corpus))
 	fmt.Println(train.Corpus[:20])
@@ -84,6 +56,7 @@ func ExampleLoad() {
 	fmt.Println(train.WordToID["lexus"])
 	fmt.Println()
 
+	test := ptb.Must(ptb.Load("../../testdata", ptb.TestTxt))
 	fmt.Println(len(test.Corpus))
 	fmt.Println(test.Corpus[:20])
 	fmt.Println(test.IDToWord[0])
@@ -94,6 +67,7 @@ func ExampleLoad() {
 	fmt.Println(test.WordToID["lexus"])
 	fmt.Println()
 
+	valid := ptb.Must(ptb.Load("../../testdata", ptb.ValidTxt))
 	fmt.Println(len(valid.Corpus))
 	fmt.Println(valid.Corpus[:20])
 	fmt.Println(valid.IDToWord[0])
@@ -133,7 +107,7 @@ func ExampleLoad() {
 }
 
 func ExampleLoad_notfound() {
-	_, _, _, err := ptb.Load("invalid_dir")
+	_, err := ptb.Load("invalid_dir", "invlid file")
 	fmt.Println(err)
 
 	// Output:
@@ -154,6 +128,6 @@ func TestMust(t *testing.T) {
 		}
 	}()
 
-	ptb.Must(nil, nil, nil, fmt.Errorf("something went wrong"))
+	ptb.Must(nil, fmt.Errorf("something went wrong"))
 	t.Fail()
 }

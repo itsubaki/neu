@@ -10,11 +10,6 @@ import (
 )
 
 func ExampleMLP() {
-	// data
-	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
-	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
-
-	// model
 	s := rand.NewSource(1)
 	m := model.NewMLP(&model.MLPConfig{
 		InputSize:         2,
@@ -29,6 +24,9 @@ func ExampleMLP() {
 		fmt.Printf("%2d: %v\n", i, l)
 	}
 	fmt.Println()
+
+	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
+	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
 
 	loss := m.Forward(x, t)
 	m.Backward()

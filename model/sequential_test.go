@@ -11,10 +11,6 @@ import (
 )
 
 func ExampleSequential_gradientCheck() {
-	// data
-	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
-	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
-
 	// weight
 	s := rand.NewSource(1)
 	W1 := matrix.Randn(2, 3, s).MulC(weight.Std(0.01)(2))
@@ -31,6 +27,9 @@ func ExampleSequential_gradientCheck() {
 	)
 
 	// gradients
+	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
+	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
+
 	m.Forward(x, t)
 	m.Backward()
 	grads := m.Grads()
