@@ -18,9 +18,16 @@ func ExampleAdd() {
 
 func ExampleInt() {
 	v := []float64{1, 2, 3}
-
 	fmt.Println(vector.Int(v))
 
 	// Output:
 	// [1 2 3]
+}
+
+func ExampleMax() {
+	v := []int{1, 2, 3}
+	fmt.Println(vector.Max(v))
+
+	// Output:
+	// 3
 }

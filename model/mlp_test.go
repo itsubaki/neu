@@ -119,8 +119,7 @@ func ExampleMLP_Params() {
 	fmt.Println()
 
 	for _, g := range m.Grads() {
-		// empty
-		fmt.Println(g)
+		fmt.Println(g) // empty
 	}
 
 	// Output:
