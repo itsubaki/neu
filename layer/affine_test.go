@@ -8,21 +8,17 @@ import (
 )
 
 func ExampleAffine() {
-	// weight
-	W := matrix.New([]float64{0.1, 0.3, 0.5}, []float64{0.2, 0.4, 0.6})
-	B := matrix.New([]float64{0.1, 0.2, 0.3})
-
-	// data
-	x := matrix.New([]float64{1.0, 0.5})
-
-	// layer
 	affine := &layer.Affine{
-		W: W,
-		B: B,
+		W: matrix.New([]float64{0.1, 0.3, 0.5}, []float64{0.2, 0.4, 0.6}),
+		B: matrix.New([]float64{0.1, 0.2, 0.3}),
 	}
-
 	fmt.Println(affine)
+
+	// forward
+	x := matrix.New([]float64{1.0, 0.5})
 	fmt.Println(affine.Forward(x, nil))
+
+	// backward
 	fmt.Println(affine.Backward(x))
 
 	// grads

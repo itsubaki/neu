@@ -12,10 +12,13 @@ func ExampleTimeAffine() {
 		W: matrix.New([]float64{0.1, 0.3, 0.5}, []float64{0.2, 0.4, 0.6}),
 		B: matrix.New([]float64{0.1, 0.2, 0.3}),
 	}
-
-	xs := []matrix.Matrix{matrix.New([]float64{1.0, 0.5})}
 	fmt.Println(affine)
+
+	// forward
+	xs := []matrix.Matrix{matrix.New([]float64{1.0, 0.5})}
 	fmt.Println(affine.Forward(xs, nil))
+
+	// backward
 	fmt.Println(affine.Backward(xs))
 
 	// grads
@@ -36,10 +39,13 @@ func ExampleTimeAffine_time2() {
 		W: matrix.New([]float64{0.1, 0.3, 0.5}, []float64{0.2, 0.4, 0.6}),
 		B: matrix.New([]float64{0.1, 0.2, 0.3}),
 	}
-
-	xs := []matrix.Matrix{matrix.New([]float64{1.0, 0.5}), matrix.New([]float64{1.0, 0.5})}
 	fmt.Println(affine)
+
+	// forward
+	xs := []matrix.Matrix{matrix.New([]float64{1.0, 0.5}), matrix.New([]float64{1.0, 0.5})}
 	fmt.Println(affine.Forward(xs, nil))
+
+	// backward
 	fmt.Println(affine.Backward(xs))
 
 	// grads

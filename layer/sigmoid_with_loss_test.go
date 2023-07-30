@@ -8,6 +8,9 @@ import (
 )
 
 func ExampleSigmoidWithLoss() {
+	l := &layer.SigmoidWithLoss{}
+
+	// forward
 	x := matrix.New(
 		[]float64{0.1, 0.05, 0.6, 0.0, 0.05, 0.1, 0.0, 0.1, 0.0, 0.0},
 		[]float64{0.1, 0.05, 0.1, 0.0, 0.05, 0.1, 0.0, 0.6, 0.0, 0.0},
@@ -16,12 +19,11 @@ func ExampleSigmoidWithLoss() {
 		[]float64{0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
 		[]float64{0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
 	)
-
-	l := &layer.SigmoidWithLoss{}
 	loss := l.Forward(x, t)
-	dx, _ := l.Backward(matrix.New([]float64{1.0}))
-
 	fmt.Println(loss)
+
+	// backward
+	dx, _ := l.Backward(matrix.New([]float64{1.0}))
 	fmt.Println(dx)
 
 	// Output:

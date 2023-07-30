@@ -8,13 +8,18 @@ import (
 )
 
 func ExampleSigmoid() {
-	x := matrix.New([]float64{0.0})
 	sigmoid := &layer.Sigmoid{}
+	fmt.Println(sigmoid)
 
+	// forward
+	x := matrix.New([]float64{0.0})
 	fmt.Println(sigmoid.Forward(x, nil))
+
+	// backward
 	fmt.Println(sigmoid.Backward(x))
 
 	// Output:
+	// *layer.Sigmoid
 	// [[0.5]]
 	// [[0]] []
 }

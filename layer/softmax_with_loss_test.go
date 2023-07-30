@@ -9,6 +9,9 @@ import (
 )
 
 func ExampleSoftmaxWithLoss() {
+	l := &layer.SoftmaxWithLoss{}
+
+	// forward
 	x := matrix.New(
 		[]float64{0.1, 0.05, 0.6, 0.0, 0.05, 0.1, 0.0, 0.1, 0.0, 0.0},
 		[]float64{0.1, 0.05, 0.1, 0.0, 0.05, 0.1, 0.0, 0.6, 0.0, 0.0},
@@ -17,11 +20,10 @@ func ExampleSoftmaxWithLoss() {
 		[]float64{0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
 		[]float64{0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
 	)
-
-	l := &layer.SoftmaxWithLoss{}
 	loss := l.Forward(x, t)
 	fmt.Println(loss)
 
+	// backward
 	dout := matrix.New([]float64{1})
 	dx, _ := l.Backward(dout)
 	for _, r := range dx {

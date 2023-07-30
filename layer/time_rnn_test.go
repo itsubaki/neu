@@ -8,13 +8,6 @@ import (
 )
 
 func ExampleTimeRNN() {
-	xs := []matrix.Matrix{
-		matrix.New(
-			[]float64{0.1, 0.2, 0.3},
-			[]float64{0.3, 0.4, 0.5},
-		),
-	}
-
 	rnn := &layer.TimeRNN{
 		Wx: matrix.New([]float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}),
 		Wh: matrix.New([]float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}, []float64{0.1, 0.2, 0.3}),
@@ -23,6 +16,13 @@ func ExampleTimeRNN() {
 	fmt.Println(rnn)
 
 	// forward
+	xs := []matrix.Matrix{
+		matrix.New(
+			[]float64{0.1, 0.2, 0.3},
+			[]float64{0.3, 0.4, 0.5},
+		),
+	}
+
 	hs := rnn.Forward(xs, nil)
 	for i := range hs {
 		fmt.Print(hs[i].Dimension())
@@ -36,6 +36,7 @@ func ExampleTimeRNN() {
 			[]float64{0.3, 0.4, 0.5},
 		),
 	}
+
 	dxs := rnn.Backward(dhs)
 	for i := range dxs {
 		fmt.Print(dxs[i].Dimension())

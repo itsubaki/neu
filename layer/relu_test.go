@@ -8,11 +8,14 @@ import (
 )
 
 func ExampleReLU() {
-	x := matrix.New([]float64{1.0, -0.5}, []float64{-2.0, 3.0})
 	relu := &layer.ReLU{}
-
 	fmt.Println(relu)
+
+	// forward
+	x := matrix.New([]float64{1.0, -0.5}, []float64{-2.0, 3.0})
 	fmt.Println(relu.Forward(x, nil))
+
+	// backward
 	fmt.Println(relu.Backward(x))
 
 	// Output:

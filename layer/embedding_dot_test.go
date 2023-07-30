@@ -24,6 +24,7 @@ func ExampleEmbeddingDot() {
 	}
 	fmt.Println(l)
 
+	// forward
 	h := matrix.New(
 		[]float64{0, 1, 2},
 		[]float64{3, 4, 5},
@@ -40,6 +41,7 @@ func ExampleEmbeddingDot() {
 	}
 	fmt.Println()
 
+	// backward
 	dout := matrix.New([]float64{1})
 	dh, _ := l.Backward(dout)
 	for _, r := range dh {

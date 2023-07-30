@@ -8,25 +8,26 @@ import (
 )
 
 func ExampleDot() {
+	W := matrix.New(
+		[]float64{5, 6},
+		[]float64{7, 8},
+	)
+	dot := &layer.Dot{W: W}
+	fmt.Println(dot)
+	fmt.Println()
+
+	// forward
 	A := matrix.New(
 		[]float64{1, 2},
 		[]float64{3, 4},
 	)
-
-	B := matrix.New(
-		[]float64{5, 6},
-		[]float64{7, 8},
-	)
-
-	dot := &layer.Dot{W: B}
-	fmt.Println(dot)
-	fmt.Println()
 
 	for _, r := range dot.Forward(A, nil) {
 		fmt.Println(r)
 	}
 	fmt.Println()
 
+	// backward
 	dx, _ := dot.Backward(matrix.New([]float64{1, 0}, []float64{0, 1}))
 	for _, r := range dx {
 		fmt.Println(r)

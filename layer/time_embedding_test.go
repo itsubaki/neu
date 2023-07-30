@@ -16,6 +16,7 @@ func ExampleTimeEmbedding() {
 		[]float64{0.4, 0.5, 0.6},
 		[]float64{0.5, 0.6, 0.7},
 	)}
+	fmt.Println(embed)
 	fmt.Println(embed.W)
 	fmt.Println(embed.DW)
 

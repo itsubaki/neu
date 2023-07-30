@@ -8,7 +8,7 @@ import (
 )
 
 func ExampleEmbedding() {
-	embed := layer.Embedding{W: matrix.New(
+	embed := &layer.Embedding{W: matrix.New(
 		[]float64{0.0, 0.1, 0.2},
 		[]float64{0.1, 0.2, 0.3},
 		[]float64{0.2, 0.3, 0.4},
@@ -16,6 +16,7 @@ func ExampleEmbedding() {
 		[]float64{0.4, 0.5, 0.6},
 		[]float64{0.5, 0.6, 0.7},
 	)}
+	fmt.Println(embed)
 	fmt.Println(embed.W)
 	fmt.Println(embed.DW)
 
@@ -37,6 +38,7 @@ func ExampleEmbedding() {
 	fmt.Println(embed.DW)
 
 	// Output:
+	// *layer.Embedding: W(6, 3): 18
 	// [[0 0.1 0.2] [0.1 0.2 0.3] [0.2 0.3 0.4] [0.3 0.4 0.5] [0.4 0.5 0.6] [0.5 0.6 0.7]]
 	// []
 	// [[0 0.1 0.2] [0.2 0.3 0.4] [0 0.1 0.2] [0.4 0.5 0.6]]
