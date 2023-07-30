@@ -22,8 +22,9 @@ func (l *TimeAffine) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 	l.xs = xs
 
 	// naive
-	out := make([]matrix.Matrix, len(xs))
-	for t := 0; t < len(xs); t++ {
+	T := len(xs)
+	out := make([]matrix.Matrix, T)
+	for t := 0; t < T; t++ {
 		out[t] = matrix.Dot(xs[t], l.W).Add(l.B) // x.W + B
 	}
 
@@ -31,12 +32,13 @@ func (l *TimeAffine) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 }
 
 func (l *TimeAffine) Backward(dout []matrix.Matrix) []matrix.Matrix {
-	dx := make([]matrix.Matrix, len(dout))
+	// naive
 	l.DW = matrix.Zero(1, 1)
 	l.DB = matrix.Zero(1, 1)
 
-	// naive
-	for t := 0; t < len(dout); t++ {
+	T := len(dout)
+	dx := make([]matrix.Matrix, T)
+	for t := 0; t < T; t++ {
 		dx[t] = matrix.Dot(dout[t], l.W.T())
 		l.DW = matrix.Dot(l.xs[t].T(), dout[t]).Add(l.DW) // Broadcast
 		l.DB = dout[t].SumAxis0().Add(l.DB)               // Broadcast
