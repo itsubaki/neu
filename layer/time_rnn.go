@@ -70,5 +70,5 @@ func (l *TimeRNN) String() string {
 	a, b := l.Wx.Dimension()
 	c, d := l.Wh.Dimension()
 	e, f := l.B.Dimension()
-	return fmt.Sprintf("%T: Wx(%v, %v)*T, Wh(%v, %v)*T, B(%v, %v)*T: %v*T", l, a, b, c, d, e, f, a*b+c*d+e*f)
+	return fmt.Sprintf("%T: Wx(%v, %v), Wh(%v, %v), B(%v, %v): %v", l, a, b, c, d, e, f, a*b+c*d+e*f)
 }

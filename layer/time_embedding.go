@@ -48,5 +48,5 @@ func (l *TimeEmbedding) Backward(dout []matrix.Matrix) []matrix.Matrix {
 
 func (l *TimeEmbedding) String() string {
 	a, b := l.W.Dimension()
-	return fmt.Sprintf("%T: W(%v, %v)*T: %v*T", l, a, b, a*b)
+	return fmt.Sprintf("%T: W(%v, %v): %v", l, a, b, a*b)
 }

@@ -19,19 +19,24 @@ type TimeRNNLM struct {
 }
 
 func NewTimeRNNLM(c *TimeRNNLMConfig, s ...rand.Source) *TimeRNNLM {
+	// size
+	V, D, H := c.VocabSize, c.WordVecSize, c.HiddenSize
+
+	// layers
+	// TimeEmbedding -> TimeRNN -> TimeAffine -> TimeSoftmaxWithLoss
 	layers := []TimeLayer{
 		&layer.TimeEmbedding{
-			W: matrix.Randn(c.VocabSize, c.WordVecSize, s[0]).MulC(1.0 / 100),
+			W: matrix.Randn(V, D, s[0]).MulC(1.0 / 100),
 		},
 		&layer.TimeRNN{
-			Wx:       matrix.Randn(c.WordVecSize, c.HiddenSize, s[0]).MulC(math.Sqrt(float64(c.WordVecSize))),
-			Wh:       matrix.Randn(c.HiddenSize, c.HiddenSize, s[0]).MulC(math.Sqrt(float64(c.HiddenSize))),
-			B:        matrix.Zero(1, c.HiddenSize),
+			Wx:       matrix.Randn(D, H, s[0]).MulC(math.Sqrt(float64(D))),
+			Wh:       matrix.Randn(H, H, s[0]).MulC(math.Sqrt(float64(H))),
+			B:        matrix.Zero(1, H),
 			Stateful: true,
 		},
 		&layer.TimeAffine{
-			W: matrix.Randn(c.HiddenSize, c.VocabSize, s[0]).MulC(math.Sqrt(float64(c.HiddenSize))),
-			B: matrix.Zero(1, c.VocabSize),
+			W: matrix.Randn(H, V, s[0]).MulC(math.Sqrt(float64(H))),
+			B: matrix.Zero(1, V),
 		},
 		&layer.TimeSoftmaxWithLoss{},
 	}

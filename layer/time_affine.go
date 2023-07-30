@@ -50,5 +50,5 @@ func (l *TimeAffine) Backward(dout []matrix.Matrix) []matrix.Matrix {
 func (l *TimeAffine) String() string {
 	a, b := l.W.Dimension()
 	c, d := l.B.Dimension()
-	return fmt.Sprintf("%T: W(%v, %v)*T, B(%v, %v)*T: %v*T", l, a, b, c, d, a*b+c*d)
+	return fmt.Sprintf("%T: W(%v, %v), B(%v, %v): %v", l, a, b, c, d, a*b+c*d)
 }

@@ -27,7 +27,7 @@ func ExampleTimeAffine() {
 	}
 
 	// Output:
-	// *layer.TimeAffine: W(2, 3)*T, B(1, 3)*T: 9*T
+	// *layer.TimeAffine: W(2, 3), B(1, 3): 9
 	// [[[0.30000000000000004 0.7 1.1]]]
 	// [[[0.25 0.4]]]
 	// [[1 0.5] [0.5 0.25]]
@@ -54,7 +54,7 @@ func ExampleTimeAffine_time2() {
 	}
 
 	// Output:
-	// *layer.TimeAffine: W(2, 3)*T, B(1, 3)*T: 9*T
+	// *layer.TimeAffine: W(2, 3), B(1, 3): 9
 	// [[[0.30000000000000004 0.7 1.1]] [[0.30000000000000004 0.7 1.1]]]
 	// [[[0.25 0.4]] [[0.25 0.4]]]
 	// [[2 1] [1 0.5]]
