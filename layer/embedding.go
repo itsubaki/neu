@@ -35,7 +35,7 @@ func (l *Embedding) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) 
 		l.DW[v] = vector.Add(l.DW[v], dout[i])
 	}
 
-	return matrix.New(), matrix.New()
+	return nil, nil
 }
 
 func (l *Embedding) String() string {
