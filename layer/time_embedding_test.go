@@ -8,7 +8,7 @@ import (
 )
 
 func ExampleTimeEmbedding() {
-	embed := layer.TimeEmbedding{W: matrix.New(
+	embed := &layer.TimeEmbedding{W: matrix.New(
 		[]float64{0.0, 0.1, 0.2},
 		[]float64{0.1, 0.2, 0.3},
 		[]float64{0.2, 0.3, 0.4},
@@ -38,6 +38,7 @@ func ExampleTimeEmbedding() {
 	fmt.Println(embed.DW)
 
 	// Output:
+	// *layer.TimeEmbedding: W(6, 3)*T: 18*T
 	// [[0 0.1 0.2] [0.1 0.2 0.3] [0.2 0.3 0.4] [0.3 0.4 0.5] [0.4 0.5 0.6] [0.5 0.6 0.7]]
 	// []
 	// [[[0 0.1 0.2] [0.2 0.3 0.4] [0 0.1 0.2] [0.4 0.5 0.6]]]
