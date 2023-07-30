@@ -11,7 +11,7 @@ type TimeRNN struct {
 	DWx, DWh, DWB matrix.Matrix // grads
 	h, dh         matrix.Matrix // hidden state
 	layer         []*RNN
-	stateful      bool
+	Stateful      bool
 }
 
 func (l *TimeRNN) Params() []matrix.Matrix      { return []matrix.Matrix{l.Wx, l.Wh, l.B} }
@@ -24,7 +24,7 @@ func (l *TimeRNN) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matrix {
 	// xs(Time, N, D), Wx(D, H)
 	T, N, H := len(xs), len(xs[0]), len(l.Wx[0])
 
-	if !l.stateful || len(l.h) == 0 {
+	if !l.Stateful || len(l.h) == 0 {
 		l.h = matrix.Zero(N, H)
 	}
 

@@ -35,10 +35,7 @@ func (l *TimeSoftmaxWithLoss) Forward(xs, ts []matrix.Matrix, _ ...Opts) []matri
 func (l *TimeSoftmaxWithLoss) Backward(dout []matrix.Matrix) []matrix.Matrix {
 	T := len(l.ts)
 	dx := make([]matrix.Matrix, T)
-
-	for t := 0; t < T; t++ {
-		dout = append(dout, dout[0])
-	}
+	dout = repeat(dout[0], T)
 
 	// naive
 	for t := T - 1; t > -1; t-- {
@@ -51,4 +48,13 @@ func (l *TimeSoftmaxWithLoss) Backward(dout []matrix.Matrix) []matrix.Matrix {
 
 func (l *TimeSoftmaxWithLoss) String() string {
 	return fmt.Sprintf("%T", l)
+}
+
+func repeat(m matrix.Matrix, n int) []matrix.Matrix {
+	out := make([]matrix.Matrix, n)
+	for i := 0; i < n; i++ {
+		out[i] = m
+	}
+
+	return out
 }
