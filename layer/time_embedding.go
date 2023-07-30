@@ -19,11 +19,10 @@ func (l *TimeEmbedding) SetState(_ ...matrix.Matrix)  {}
 func (l *TimeEmbedding) ResetState()                  {}
 
 func (l *TimeEmbedding) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matrix {
-	// xs(Time, N, D)
-	T := len(xs)
-
-	l.layer = make([]*Embedding, T)
+	T := len(xs) // xs(Time, N, D)
 	out := make([]matrix.Matrix, T)
+	l.layer = make([]*Embedding, T)
+
 	for t := 0; t < T; t++ {
 		l.layer[t] = &Embedding{W: l.W}
 		out[t] = l.layer[t].Forward(xs[t], nil, opts...)

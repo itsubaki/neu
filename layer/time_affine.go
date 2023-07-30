@@ -19,11 +19,11 @@ func (l *TimeAffine) SetState(_ ...matrix.Matrix)  {}
 func (l *TimeAffine) ResetState()                  {}
 
 func (l *TimeAffine) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
-	l.xs = xs
-
 	// naive
 	T := len(xs)
 	out := make([]matrix.Matrix, T)
+	l.xs = xs
+
 	for t := 0; t < T; t++ {
 		out[t] = matrix.Dot(xs[t], l.W).Add(l.B) // x.W + B
 	}
@@ -33,11 +33,11 @@ func (l *TimeAffine) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 
 func (l *TimeAffine) Backward(dout []matrix.Matrix) []matrix.Matrix {
 	// naive
+	T := len(dout)
+	dx := make([]matrix.Matrix, T)
 	l.DW = matrix.Zero(1, 1)
 	l.DB = matrix.Zero(1, 1)
 
-	T := len(dout)
-	dx := make([]matrix.Matrix, T)
 	for t := 0; t < T; t++ {
 		dx[t] = matrix.Dot(dout[t], l.W.T())
 		l.DW = matrix.Dot(l.xs[t].T(), dout[t]).Add(l.DW) // Broadcast
