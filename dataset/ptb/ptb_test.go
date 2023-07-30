@@ -107,11 +107,11 @@ func ExampleLoad() {
 }
 
 func ExampleLoad_notfound() {
-	_, err := ptb.Load("invalid_dir", "invlid file")
+	_, err := ptb.Load("invalid_dir", "invlid_file")
 	fmt.Println(err)
 
 	// Output:
-	// load training data: open file=invalid_dir/ptb.train.txt: open invalid_dir/ptb.train.txt: no such file or directory
+	// open file=invalid_dir/invlid_file: open invalid_dir/invlid_file: no such file or directory
 }
 
 func TestMust(t *testing.T) {

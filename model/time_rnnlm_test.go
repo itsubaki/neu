@@ -25,7 +25,7 @@ func ExampleTimeRNNLM() {
 
 	// data
 	xs := []matrix.Matrix{
-		matrix.New([]float64{0}),
+		matrix.New([]float64{0, 1, 2}),
 	}
 	ts := []matrix.Matrix{
 		matrix.New([]float64{0, 1, 2}),
@@ -44,7 +44,7 @@ func ExampleTimeRNNLM() {
 	//  2: *layer.TimeAffine: W(3, 3), B(1, 3): 12
 	//  3: *layer.TimeSoftmaxWithLoss
 	//
-	// [[3.3973]]
+	// [[1.0110]]
 	// []
 
 }
