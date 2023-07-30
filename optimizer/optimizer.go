@@ -3,13 +3,13 @@ package optimizer
 import (
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/model"
-	"github.com/itsubaki/neu/weight"
+	"github.com/itsubaki/neu/optimizer/hook"
 )
 
 var (
 	_ Model = (*model.Sequential)(nil)
 	_ Model = (*model.MLP)(nil)
-	_ Hook  = weight.Decay(0.1)
+	_ Hook  = hook.WeightDecay(0.1)
 )
 
 type Model interface {

@@ -9,6 +9,7 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
+	"github.com/itsubaki/neu/optimizer/hook"
 	"github.com/itsubaki/neu/trainer"
 	"github.com/itsubaki/neu/weight"
 )
@@ -54,7 +55,7 @@ func main() {
 	tr := trainer.New(m, &optimizer.AdaGrad{
 		LearningRate: 0.01,
 		Hooks: []optimizer.Hook{
-			weight.Decay(1e-6),
+			hook.WeightDecay(1e-6),
 		},
 	})
 
