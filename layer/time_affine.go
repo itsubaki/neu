@@ -33,7 +33,7 @@ func (l *TimeAffine) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 
 func (l *TimeAffine) Backward(dout []matrix.Matrix) []matrix.Matrix {
 	// naive
-	T := len(dout)
+	T := len(l.xs)
 	dx := make([]matrix.Matrix, T)
 	l.DW = matrix.Zero(1, 1)
 	l.DB = matrix.Zero(1, 1)
