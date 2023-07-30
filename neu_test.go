@@ -2,6 +2,7 @@ package neu_test
 
 import (
 	"fmt"
+	"math"
 	"math/rand"
 
 	"github.com/itsubaki/neu/activation"
@@ -55,6 +56,8 @@ func Example_rNNLM() {
 	xbatch := matrix.Zero(timeSize, bachSize)
 	tbatch := matrix.Zero(timeSize, bachSize)
 
+	var totalLoss float64
+	var lossCount int
 	var timeIdx int
 	for t := 0; t < timeSize; t++ {
 		for i, offset := range offsets {
@@ -70,10 +73,16 @@ func Example_rNNLM() {
 	// forward
 	loss := m.Forward([]matrix.Matrix{xbatch}, []matrix.Matrix{tbatch})
 	fmt.Println(loss)
+	totalLoss += loss[0][0]
+	lossCount++
 
 	// backward
 	dx := m.Backward()
 	fmt.Println(dx) // TimeEmbedding -> nil
+
+	// perplexity
+	ppl := math.Exp(totalLoss / float64(lossCount))
+	fmt.Println(ppl)
 
 	// Output:
 	// *model.TimeRNNLM
@@ -86,6 +95,7 @@ func Example_rNNLM() {
 	// [[1 76 26 32 209 79 275 303 35 359] [2 77 98 26 80 26 276 26 72 181] [3 64 56 175 197 80 42 304 350 328] [4 78 40 98 32 32 61 26 64 386] [5 79 128 61 82 241 24 32 27 387]]
 	// [[16.118095650958317]]
 	// []
+	// 9.99999999999997e+06
 
 }
 
