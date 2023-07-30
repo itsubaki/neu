@@ -12,14 +12,18 @@ func ExampleTimeSoftmaxWithLoss() {
 	fmt.Println(l)
 
 	// forward
-	xs := []matrix.Matrix{matrix.New(
-		[]float64{0.1, 0.05, 0.6, 0.0, 0.05, 0.1, 0.0, 0.1, 0.0, 0.0},
-		[]float64{0.1, 0.05, 0.1, 0.0, 0.05, 0.1, 0.0, 0.6, 0.0, 0.0},
-	)}
-	ts := []matrix.Matrix{matrix.New(
-		[]float64{0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
-		[]float64{0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
-	)}
+	xs := []matrix.Matrix{
+		matrix.New(
+			[]float64{0.1, 0.05, 0.6, 0.0, 0.05, 0.1, 0.0, 0.1, 0.0, 0.0},
+			[]float64{0.1, 0.05, 0.1, 0.0, 0.05, 0.1, 0.0, 0.6, 0.0, 0.0},
+		),
+	}
+	ts := []matrix.Matrix{
+		matrix.New(
+			[]float64{2},
+			[]float64{2},
+		),
+	}
 	loss := l.Forward(xs, ts)
 	fmt.Println(loss)
 

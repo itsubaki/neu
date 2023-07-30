@@ -6,15 +6,88 @@ import (
 
 	"github.com/itsubaki/neu/activation"
 	"github.com/itsubaki/neu/dataset/mnist"
+	"github.com/itsubaki/neu/dataset/ptb"
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/loss"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/math/numerical"
+	"github.com/itsubaki/neu/math/vector"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/trainer"
 	"github.com/itsubaki/neu/weight"
 )
+
+func Example_rNNLM() {
+	train := ptb.Must(ptb.Load("./testdata", ptb.TrainTxt))
+	corpusSize := 1000
+	corpus := train.Corpus[:corpusSize]
+
+	// model
+	s := rand.NewSource(1)
+	m := model.NewTimeRNNLM(&model.TimeRNNLMConfig{
+		VocabSize:   vector.Max(corpus) + 1,
+		WordVecSize: 100,
+		HiddenSize:  100,
+	}, s)
+
+	// print layers
+	fmt.Printf("%T\n", m)
+	for i, l := range m.Layers() {
+		fmt.Printf("%2d: %v\n", i, l)
+	}
+	fmt.Println()
+
+	// batch data
+	xs := corpus[:len(corpus)-1]
+	ts := corpus[1:]
+	dataSize := len(xs)
+	bachSize := 10
+	timeSize := 5
+
+	jump := (corpusSize - 1) / bachSize
+	offsets := make([]int, bachSize)
+	for i := 0; i < bachSize; i++ {
+		offsets[i] = i * jump
+	}
+
+	// batch data
+	xbatch := matrix.Zero(timeSize, bachSize)
+	tbatch := matrix.Zero(timeSize, bachSize)
+
+	var timeIdx int
+	for t := 0; t < timeSize; t++ {
+		for i, offset := range offsets {
+			xbatch[t][i] = float64(xs[(offset+timeIdx)%dataSize])
+			tbatch[t][i] = float64(ts[(offset+timeIdx)%dataSize])
+		}
+		timeIdx++
+	}
+
+	fmt.Println(xbatch) // (5, 10)
+	fmt.Println(tbatch) // (5, 10)
+
+	// forward
+	loss := m.Forward([]matrix.Matrix{xbatch}, []matrix.Matrix{tbatch})
+	fmt.Println(loss)
+
+	// backward
+	dx := m.Backward()
+	fmt.Println(dx) // TimeEmbedding -> nil
+
+	// Output:
+	// *model.TimeRNNLM
+	//  0: *layer.TimeEmbedding: W(418, 100): 41800
+	//  1: *layer.TimeRNN: Wx(100, 100), Wh(100, 100), B(1, 100): 20100
+	//  2: *layer.TimeAffine: W(100, 418), B(1, 418): 42218
+	//  3: *layer.TimeSoftmaxWithLoss
+	//
+	// [[0 42 26 24 208 26 274 88 42 339] [1 76 26 32 209 79 275 303 35 359] [2 77 98 26 80 26 276 26 72 181] [3 64 56 175 197 80 42 304 350 328] [4 78 40 98 32 32 61 26 64 386]]
+	// [[1 76 26 32 209 79 275 303 35 359] [2 77 98 26 80 26 276 26 72 181] [3 64 56 175 197 80 42 304 350 328] [4 78 40 98 32 32 61 26 64 386] [5 79 128 61 82 241 24 32 27 387]]
+	// [[16.118095650958317]]
+	// []
+
+}
 
 func Example_cbow() {
 	// you, say, goodbye, and, I, hello, .

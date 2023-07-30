@@ -1,5 +1,7 @@
 package vector
 
+import "math"
+
 func Add(v, w []float64) []float64 {
 	out := make([]float64, len(v))
 	for i := range v {
@@ -16,4 +18,15 @@ func Int(v []float64) []int {
 	}
 
 	return out
+}
+
+func Max(v []int) int {
+	max := math.MinInt
+	for _, e := range v {
+		if e > max {
+			max = e
+		}
+	}
+
+	return max
 }
