@@ -86,4 +86,3 @@ func (l *LSTM) String() string {
 }
 
 func subp2a(a float64) float64 { return a - a*a } // a * (1 - a)
-func subp2o(a float64) float64 { return 1 - a*a } // a * (1/a - a)

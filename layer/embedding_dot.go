@@ -28,9 +28,9 @@ func (l *EmbeddingDot) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matri
 	h, targetW := l.cacheH, l.cacheW
 	dout = matrix.Reshape(dout, len(dout), 1)
 
-	dtargetW := h.Mul(dout) // Broadcast
-	dh := targetW.Mul(dout) // Broadcast
-	l.Embedding.Backward(dtargetW)
+	dtargetW := h.Mul(dout)        // Broadcast
+	dh := targetW.Mul(dout)        // Broadcast
+	l.Embedding.Backward(dtargetW) //
 	return dh, nil
 }
 

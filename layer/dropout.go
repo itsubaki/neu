@@ -19,7 +19,9 @@ func (l *Dropout) SetParams(p ...matrix.Matrix) {}
 func (l *Dropout) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
 	if len(opts) > 0 && opts[0].Train {
 		a, b := x.Dimension()
-		l.mask = matrix.Mask(matrix.Rand(a, b, opts[0].Source), func(x float64) bool { return x > l.Ratio })
+		rnd := matrix.Rand(a, b, opts[0].Source)
+
+		l.mask = matrix.Mask(rnd, func(x float64) bool { return x > l.Ratio })
 		return x.Mul(l.mask)
 	}
 

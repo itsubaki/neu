@@ -2,7 +2,6 @@ package layer
 
 import (
 	"fmt"
-	"math"
 
 	"github.com/itsubaki/neu/activation"
 	"github.com/itsubaki/neu/math/matrix"
@@ -19,8 +18,8 @@ func (l *RNN) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DWx, l.DW
 func (l *RNN) SetParams(p ...matrix.Matrix) { l.Wx, l.Wh, l.B = p[0], p[1], p[2] }
 
 func (l *RNN) Forward(x, h matrix.Matrix, _ ...Opts) matrix.Matrix {
-	// dot(h(N, H), Wh(H, H)) -> (N, H)
-	// dot(x(N, D), Wx(D, H)) -> (N, H)
+	// h(N, H).Wh(H, H) -> (N, H)
+	// x(N, D).Wx(D, H) -> (N, H)
 	t := matrix.Dot(h, l.Wh).Add(matrix.Dot(x, l.Wx)).Add(l.B)
 	hNext := matrix.Func(t, activation.Tanh)
 
@@ -29,9 +28,9 @@ func (l *RNN) Forward(x, h matrix.Matrix, _ ...Opts) matrix.Matrix {
 }
 
 func (l *RNN) Backward(dhNext matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	dt := dhNext.Mul(matrix.Func(l.hNext, rnn)) // dt = dhNext * (1 - hNext**2)
-	dx := matrix.Dot(dt, l.Wx.T())              // dot(dt(N, H), Wx.T(H, D)) -> dx(N, D)
-	dh := matrix.Dot(dt, l.Wh.T())              // dot(dt(N, H), Wh.T(H, H)) -> dh(N, H)
+	dt := dhNext.Mul(matrix.Func(l.hNext, subp2o)) // dt = dhNext * (1 - hNext**2)
+	dx := matrix.Dot(dt, l.Wx.T())                 // dot(dt(N, H), Wx.T(H, D)) -> dx(N, D)
+	dh := matrix.Dot(dt, l.Wh.T())                 // dot(dt(N, H), Wh.T(H, H)) -> dh(N, H)
 
 	l.DWx = matrix.Dot(l.x.T(), dt)     // dot(x.T(D, N), dt(N, H)) -> (D, H)
 	l.DWh = matrix.Dot(l.hPrev.T(), dt) // dot(hPrev.T(H, N), dt(N, H)) -> (H, H)
@@ -46,4 +45,4 @@ func (l *RNN) String() string {
 	return fmt.Sprintf("%T: Wx(%v, %v), Wh(%v, %v), B(%v, %v): %v", l, a, b, c, d, e, f, a*b+c*d+e*f)
 }
 
-func rnn(a float64) float64 { return 1 - math.Pow(a, 2) }
+func subp2o(a float64) float64 { return 1 - a*a } // a * (1/a - a)
