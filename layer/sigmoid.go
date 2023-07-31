@@ -22,7 +22,7 @@ func (l *Sigmoid) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 }
 
 func (l *Sigmoid) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	dx := matrix.FuncWith(dout, l.out, dsigmoid)
+	dx := dout.Mul(matrix.Func(l.out, dsigmoid))
 	return dx, matrix.New()
 }
 
@@ -30,4 +30,4 @@ func (l *Sigmoid) String() string {
 	return fmt.Sprintf("%T", l)
 }
 
-func dsigmoid(dout, o float64) float64 { return dout * (1.0 - o) * o } // dout * (1.0 - out) * out
+func dsigmoid(a float64) float64 { return a * (1.0 - a) } // out * (1.0 - out)
