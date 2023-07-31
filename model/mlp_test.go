@@ -108,6 +108,7 @@ func ExampleMLP_Params() {
 		BatchNormMomentum: 0.9,
 	}, s)
 
+	// params
 	for _, p := range m.Params() {
 		// Affine: W1, B1
 		// BatchNrom: Gamma, Beta
@@ -118,15 +119,30 @@ func ExampleMLP_Params() {
 	}
 	fmt.Println()
 
+	// grads
 	for _, g := range m.Grads() {
 		fmt.Println(g) // empty
 	}
+	fmt.Println()
+
+	// set params
+	m.SetParams(m.Grads())
+	for _, p := range m.Params() {
+		fmt.Println(p)
+	}
+	fmt.Println()
 
 	// Output:
 	// [[[-0.01233758177597947 -0.0012634751070237293]] [[0 0]]]
 	// [[[1 1]] [[0 0]]]
 	// []
 	// [[[-0.005209945711531503] [0.022857191176995802]] [[0]]]
+	// []
+	//
+	// [[] []]
+	// [[] []]
+	// []
+	// [[] []]
 	// []
 	//
 	// [[] []]
