@@ -50,6 +50,7 @@ func ExampleTimeLSTM() {
 	// backward
 	dhs := []matrix.Matrix{
 		matrix.New(
+			// (N, H)
 			[]float64{0.1},
 			[]float64{0.3},
 		),
