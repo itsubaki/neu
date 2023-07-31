@@ -21,7 +21,7 @@ func main() {
 	var epochs, batchSize int
 	flag.StringVar(&dir, "dir", "./testdata", "")
 	flag.IntVar(&epochs, "epochs", 10, "")
-	flag.IntVar(&batchSize, "batchsize", 100, "")
+	flag.IntVar(&batchSize, "batch-size", 100, "")
 	flag.Parse()
 
 	// load mnist dataset

@@ -436,3 +436,14 @@ func Reshape(x Matrix, m, n int) Matrix {
 
 	return out
 }
+
+func HStack(x ...Matrix) Matrix {
+	out := Zero(len(x[0]), 0)
+	for _, m := range x {
+		for i, r := range m {
+			out[i] = append(out[i], r...)
+		}
+	}
+
+	return out
+}

@@ -58,3 +58,9 @@ func (m *Sequential) Grads() [][]matrix.Matrix {
 
 	return grads
 }
+
+func (m *Sequential) SetParams(p [][]matrix.Matrix) {
+	for i, l := range m.Layers() {
+		l.SetParams(p[i]...)
+	}
+}

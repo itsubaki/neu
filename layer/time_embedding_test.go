@@ -19,11 +19,11 @@ func ExampleTimeEmbedding() {
 	fmt.Println(embed)
 	fmt.Println(embed.W)
 	fmt.Println(embed.DW)
+	fmt.Println()
 
 	// forward
 	xs := []matrix.Matrix{matrix.New([]float64{0, 2, 0, 4})}
 	fmt.Println(embed.Forward(xs, nil))
-	fmt.Println()
 
 	// backward
 	// p138
@@ -41,8 +41,8 @@ func ExampleTimeEmbedding() {
 	// *layer.TimeEmbedding: W(6, 3): 18
 	// [[0 0.1 0.2] [0.1 0.2 0.3] [0.2 0.3 0.4] [0.3 0.4 0.5] [0.4 0.5 0.6] [0.5 0.6 0.7]]
 	// []
-	// [[[0 0.1 0.2] [0.2 0.3 0.4] [0 0.1 0.2] [0.4 0.5 0.6]]]
 	//
+	// [[[0 0.1 0.2] [0.2 0.3 0.4] [0 0.1 0.2] [0.4 0.5 0.6]]]
 	// [[18.2 18.4 18.6] [0 0 0] [9.1 9.2 9.3] [0 0 0] [9.3 9.4 9.5] [0 0 0]]
 }
 

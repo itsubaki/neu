@@ -21,12 +21,11 @@ func ExampleEmbedding() {
 	fmt.Println(embed.DW)
 
 	// forward
-	x := matrix.New([]float64{0, 2, 0, 4})
+	x := matrix.New([]float64{0, 2, 0, 4}) // p138
 	fmt.Println(embed.Forward(x, nil))
 	fmt.Println()
 
 	// backward
-	// p138
 	dh := matrix.New(
 		[]float64{9.0, 9.1, 9.2},
 		[]float64{9.1, 9.2, 9.3},

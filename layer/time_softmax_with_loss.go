@@ -35,11 +35,12 @@ func (l *TimeSoftmaxWithLoss) Forward(xs, ts []matrix.Matrix, _ ...Opts) []matri
 func (l *TimeSoftmaxWithLoss) Backward(dout []matrix.Matrix) []matrix.Matrix {
 	T := len(l.ys)
 	dx := make([]matrix.Matrix, T)
+	do := dout[0].MulC(1.0 / float64(T))
 
 	// naive
 	for t := T - 1; t > -1; t-- {
 		size, _ := l.ts[t].Dimension()
-		dx[t] = l.ys[t].Sub(l.ts[t]).Mul(dout[0]).MulC(1.0 / float64(size)) // (y - t) * dout / size
+		dx[t] = l.ys[t].Sub(l.ts[t]).Mul(do).MulC(1.0 / float64(size)) // (y - t) * dout / size
 	}
 
 	return dx

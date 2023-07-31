@@ -20,3 +20,9 @@ func (m *TestModel) Backward(x, t matrix.Matrix) matrix.Matrix                 {
 func (m *TestModel) Layers() []model.Layer                                     { return []model.Layer{&layer.ReLU{}} }
 func (m *TestModel) Params() [][]matrix.Matrix                                 { return m.params }
 func (m *TestModel) Grads() [][]matrix.Matrix                                  { return m.grads }
+
+func (m *TestModel) SetParams(p [][]matrix.Matrix) {
+	for i, l := range m.Layers() {
+		l.SetParams(p[i]...)
+	}
+}

@@ -36,10 +36,7 @@ func (o *Momentum) Update(m Model) [][]matrix.Matrix {
 		}
 	}
 
-	for i, l := range m.Layers() {
-		l.SetParams(updated[i]...)
-	}
-
+	m.SetParams(updated)
 	return updated
 }
 

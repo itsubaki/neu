@@ -9,14 +9,15 @@ import (
 var (
 	_ Model = (*model.Sequential)(nil)
 	_ Model = (*model.MLP)(nil)
+	_ Model = (*model.RNNLM)(nil)
 	_ Hook  = hook.WeightDecay(0.1)
 	_ Hook  = hook.GradsClipping(1.0)
 )
 
 type Model interface {
-	Layers() []model.Layer
 	Params() [][]matrix.Matrix
 	Grads() [][]matrix.Matrix
+	SetParams(p [][]matrix.Matrix)
 }
 
 type Hook func(params, grads [][]matrix.Matrix) [][]matrix.Matrix

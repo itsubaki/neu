@@ -82,3 +82,7 @@ func (m *MLP) Params() [][]matrix.Matrix {
 func (m *MLP) Grads() [][]matrix.Matrix {
 	return m.seq.Grads()
 }
+
+func (m *MLP) SetParams(p [][]matrix.Matrix) {
+	m.seq.SetParams(p)
+}

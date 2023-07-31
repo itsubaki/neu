@@ -7,22 +7,19 @@ import (
 )
 
 var (
-	_ Layer = (*layer.Add)(nil)
-	_ Layer = (*layer.Affine)(nil)
-	_ Layer = (*layer.BatchNorm)(nil)
-	_ Layer = (*layer.Dot)(nil)
-	_ Layer = (*layer.Dropout)(nil)
-	_ Layer = (*layer.EmbeddingDot)(nil)
-	_ Layer = (*layer.Embedding)(nil)
-	_ Layer = (*layer.Mul)(nil)
-	_ Layer = (*layer.ReLU)(nil)
-	_ Layer = (*layer.RNN)(nil)
-	_ Layer = (*layer.Sigmoid)(nil)
-	_ Layer = (*layer.SigmoidWithLoss)(nil)
-	_ Layer = (*layer.SoftmaxWithLoss)(nil)
-)
-
-var (
+	_ Layer      = (*layer.Add)(nil)
+	_ Layer      = (*layer.Affine)(nil)
+	_ Layer      = (*layer.BatchNorm)(nil)
+	_ Layer      = (*layer.Dot)(nil)
+	_ Layer      = (*layer.Dropout)(nil)
+	_ Layer      = (*layer.EmbeddingDot)(nil)
+	_ Layer      = (*layer.Embedding)(nil)
+	_ Layer      = (*layer.Mul)(nil)
+	_ Layer      = (*layer.ReLU)(nil)
+	_ Layer      = (*layer.RNN)(nil)
+	_ Layer      = (*layer.Sigmoid)(nil)
+	_ Layer      = (*layer.SigmoidWithLoss)(nil)
+	_ Layer      = (*layer.SoftmaxWithLoss)(nil)
 	_ WeightInit = weight.Std(0.01)
 	_ WeightInit = weight.He
 	_ WeightInit = weight.Xavier

@@ -22,9 +22,9 @@ type Model interface {
 	Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix
 	Forward(x, t matrix.Matrix) matrix.Matrix
 	Backward() matrix.Matrix
-	Layers() []model.Layer
 	Params() [][]matrix.Matrix
 	Grads() [][]matrix.Matrix
+	SetParams(p [][]matrix.Matrix)
 }
 
 type Optimizer interface {

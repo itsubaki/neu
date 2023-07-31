@@ -23,15 +23,20 @@ func (m *TestModel) Layers() []model.Layer                                     {
 func (m *TestModel) Params() [][]matrix.Matrix                                 { return [][]matrix.Matrix{} }
 func (m *TestModel) Grads() [][]matrix.Matrix                                  { return [][]matrix.Matrix{} }
 
-func ExampleTrainer_Fit() {
-	x := matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1})
-	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
+func (m *TestModel) SetParams(p [][]matrix.Matrix) {
+	for i, l := range m.Layers() {
+		l.SetParams(p[i]...)
+	}
+}
 
-	tr := trainer.New(&TestModel{}, &optimizer.SGD{})
+func ExampleTrainer_Fit() {
+	tr := trainer.New(&TestModel{}, &optimizer.SGD{
+		LearningRate: 0.1,
+	})
 
 	tr.Fit(&trainer.Input{
-		Train:      x,
-		TrainLabel: t,
+		Train:      matrix.New([]float64{0.5, 0.5}, []float64{1, 0}, []float64{0, 1}),
+		TrainLabel: matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1}),
 		Epochs:     3,
 		BatchSize:  1,
 		Verbose: func(epoch, j int, loss float64, m trainer.Model) {

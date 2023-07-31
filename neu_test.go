@@ -2,7 +2,6 @@ package neu_test
 
 import (
 	"fmt"
-	"math"
 	"math/rand"
 
 	"github.com/itsubaki/neu/activation"
@@ -26,10 +25,11 @@ func Example_rNNLM() {
 
 	// model
 	s := rand.NewSource(1)
-	m := model.NewTimeRNNLM(&model.TimeRNNLMConfig{
+	m := model.NewRNNLM(&model.RNNLMConfig{
 		VocabSize:   vector.Max(corpus) + 1,
 		WordVecSize: 100,
 		HiddenSize:  100,
+		WeightInit:  weight.Xavier,
 	}, s)
 
 	// print layers
@@ -39,64 +39,32 @@ func Example_rNNLM() {
 	}
 	fmt.Println()
 
-	// batch data
-	xs := corpus[:len(corpus)-1]
-	ts := corpus[1:]
-	dataSize := len(xs)
-	bachSize := 10
-	timeSize := 5
+	// training
+	tr := trainer.NewRNNLM(m, &optimizer.SGD{
+		LearningRate: 0.1,
+	})
 
-	jump := (corpusSize - 1) / bachSize
-	offsets := make([]int, bachSize)
-	for i := 0; i < bachSize; i++ {
-		offsets[i] = i * jump
-	}
-
-	// batch data
-	xbatch := matrix.Zero(timeSize, bachSize)
-	tbatch := matrix.Zero(timeSize, bachSize)
-
-	var totalLoss float64
-	var lossCount int
-	var timeIdx int
-	for t := 0; t < timeSize; t++ {
-		for i, offset := range offsets {
-			xbatch[t][i] = float64(xs[(offset+timeIdx)%dataSize])
-			tbatch[t][i] = float64(ts[(offset+timeIdx)%dataSize])
-		}
-		timeIdx++
-	}
-
-	fmt.Println(xbatch) // (5, 10)
-	fmt.Println(tbatch) // (5, 10)
-
-	// forward
-	loss := m.Forward([]matrix.Matrix{xbatch}, []matrix.Matrix{tbatch})
-	fmt.Println(loss)
-	totalLoss += loss[0][0]
-	lossCount++
-
-	// backward
-	dx := m.Backward()
-	fmt.Println(dx) // TimeEmbedding -> nil
-
-	// perplexity
-	ppl := math.Exp(totalLoss / float64(lossCount))
-	fmt.Println(ppl)
+	tr.Fit(&trainer.RNNLMInput{
+		Train:      corpus[:len(corpus)-1],
+		TrainLabel: corpus[1:],
+		Epochs:     3,
+		BatchSize:  10,
+		TimeSize:   5,
+		Verbose: func(epoch int, perplexity float64, m trainer.RNNLM) {
+			fmt.Printf("%2d: ppl=%.04f\n", epoch, perplexity)
+		},
+	})
 
 	// Output:
-	// *model.TimeRNNLM
+	// *model.RNNLM
 	//  0: *layer.TimeEmbedding: W(418, 100): 41800
 	//  1: *layer.TimeRNN: Wx(100, 100), Wh(100, 100), B(1, 100): 20100
 	//  2: *layer.TimeAffine: W(100, 418), B(1, 418): 42218
 	//  3: *layer.TimeSoftmaxWithLoss
 	//
-	// [[0 42 26 24 208 26 274 88 42 339] [1 76 26 32 209 79 275 303 35 359] [2 77 98 26 80 26 276 26 72 181] [3 64 56 175 197 80 42 304 350 328] [4 78 40 98 32 32 61 26 64 386]]
-	// [[1 76 26 32 209 79 275 303 35 359] [2 77 98 26 80 26 276 26 72 181] [3 64 56 175 197 80 42 304 350 328] [4 78 40 98 32 32 61 26 64 386] [5 79 128 61 82 241 24 32 27 387]]
-	// [[16.118095650958317]]
-	// []
-	// 9.99999999999997e+06
-
+	//  0: ppl=372.1515
+	//  1: ppl=245.6036
+	//  2: ppl=216.2521
 }
 
 func Example_cbow() {

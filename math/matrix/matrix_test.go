@@ -573,3 +573,17 @@ func ExampleReshape() {
 	// [[1 2 3 4]]
 	// [[1 2] [3 4]]
 }
+
+func ExampleHStack() {
+	a := matrix.New([]float64{1, 2, 3}, []float64{4, 5, 6})
+	b := matrix.New([]float64{7, 8, 9}, []float64{10, 11, 12})
+
+	for _, r := range matrix.HStack(a, b) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [1 2 3 7 8 9]
+	// [4 5 6 10 11 12]
+
+}
