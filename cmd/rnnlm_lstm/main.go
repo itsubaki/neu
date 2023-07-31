@@ -8,6 +8,7 @@ import (
 	"github.com/itsubaki/neu/math/vector"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
+	"github.com/itsubaki/neu/optimizer/hook"
 	"github.com/itsubaki/neu/trainer"
 	"github.com/itsubaki/neu/weight"
 )
@@ -26,7 +27,7 @@ func main() {
 	corpus := train.Corpus[:corpusSize]
 
 	// model
-	m := model.NewRNNLM(&model.RNNLMConfig{
+	m := model.NewLSTMLM(&model.RNNLMConfig{
 		VocabSize:   vector.Max(corpus) + 1,
 		WordVecSize: 100,
 		HiddenSize:  100,
@@ -42,15 +43,18 @@ func main() {
 
 	// training
 	tr := trainer.NewRNNLM(m, &optimizer.SGD{
-		LearningRate: 0.1,
+		LearningRate: 20,
+		Hooks: []optimizer.Hook{
+			hook.GradsClipping(0.25),
+		},
 	})
 
 	tr.Fit(&trainer.RNNLMInput{
 		Train:      corpus[:len(corpus)-1],
 		TrainLabel: corpus[1:],
 		Epochs:     epochs,
-		BatchSize:  10,
-		TimeSize:   5,
+		BatchSize:  20,
+		TimeSize:   35,
 		Verbose: func(epoch int, perplexity float64, m trainer.RNNLM) {
 			fmt.Printf("%2d: ppl=%.04f\n", epoch, perplexity)
 		},
