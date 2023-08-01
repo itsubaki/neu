@@ -51,25 +51,18 @@ type RNNMLGen struct {
 	model.RNNLM
 }
 
-func (g *RNNMLGen) Generate(startID int, skipIDs []int, sampleSize int) []int {
+func (g *RNNMLGen) Generate(startID int, skipIDs []int, length int) []int {
 	wordIDs := []int{startID}
 
-	x := startID
 	for {
-		if len(wordIDs) >= sampleSize {
+		if len(wordIDs) >= length {
 			break
 		}
 
 		// predict
-		xs := []matrix.Matrix{matrix.New([]float64{float64(x)})}
+		xs := []matrix.Matrix{matrix.New([]float64{float64(startID)})}
 		score := g.Predict(xs)
-
-		// softmax
-		flatten := make([]float64, 0)
-		for _, s := range score {
-			flatten = append(flatten, matrix.Flatten(s)...)
-		}
-		p := activation.Softmax(flatten)
+		p := activation.Softmax(Flatten(score))
 
 		// sample
 		sampled := Choice(p)
@@ -79,10 +72,19 @@ func (g *RNNMLGen) Generate(startID int, skipIDs []int, sampleSize int) []int {
 		wordIDs = append(wordIDs, sampled)
 
 		// next
-		x = sampled
+		startID = sampled
 	}
 
 	return wordIDs
+}
+
+func Flatten(m []matrix.Matrix) []float64 {
+	flatten := make([]float64, 0)
+	for _, s := range m {
+		flatten = append(flatten, matrix.Flatten(s)...)
+	}
+
+	return flatten
 }
 
 func Contains(v int, s []int) bool {
