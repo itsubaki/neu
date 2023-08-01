@@ -47,5 +47,9 @@ jobs:
         run: |
           make lstm10
 
+      - name: RNNLMGen
+        run: |
+          make rnnlmgen
+
       - name: Codecov
         uses: codecov/codecov-action@v3
