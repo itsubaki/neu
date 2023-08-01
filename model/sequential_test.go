@@ -20,10 +20,13 @@ func ExampleSequential_gradientCheck() {
 
 	// model
 	m := model.NewSequential(
-		&layer.Affine{W: W1, B: B1},
-		&layer.ReLU{},
-		&layer.Affine{W: W2, B: B2},
-		&layer.SoftmaxWithLoss{},
+		[]model.Layer{
+			&layer.Affine{W: W1, B: B1},
+			&layer.ReLU{},
+			&layer.Affine{W: W2, B: B2},
+			&layer.SoftmaxWithLoss{},
+		},
+		s,
 	)
 
 	// gradients

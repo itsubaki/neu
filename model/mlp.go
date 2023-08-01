@@ -55,7 +55,7 @@ func NewMLP(c *MLPConfig, s ...rand.Source) *MLP {
 
 	// new
 	return &MLP{
-		seq: NewSequential(layers...),
+		seq: NewSequential(layers, s[0]),
 	}
 }
 

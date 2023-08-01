@@ -9,7 +9,8 @@ import (
 )
 
 type LSTMLM struct {
-	Layer []TimeLayer
+	Layer  []TimeLayer
+	Source rand.Source
 }
 
 func NewLSTMLM(c *RNNLMConfig, s ...rand.Source) *LSTMLM {
@@ -21,10 +22,12 @@ func NewLSTMLM(c *RNNLMConfig, s ...rand.Source) *LSTMLM {
 	V, D, H := c.VocabSize, c.WordVecSize, c.HiddenSize
 
 	// layers
-	// TimeEmbedding -> TimeLSTM -> TimeLSTM-> TimeAffine -> TimeSoftmaxWithLoss
 	layers := []TimeLayer{
 		&layer.TimeEmbedding{
 			W: matrix.Randn(V, D, s[0]).MulC(1.0 / 100),
+		},
+		&layer.TimeDropout{
+			Ratio: c.DropoutRatio,
 		},
 		&layer.TimeLSTM{
 			Wx:       matrix.Randn(D, 4*H, s[0]).MulC(c.WeightInit(D)),
@@ -32,15 +35,28 @@ func NewLSTMLM(c *RNNLMConfig, s ...rand.Source) *LSTMLM {
 			B:        matrix.Zero(1, 4*H),
 			Stateful: true,
 		},
+		&layer.TimeDropout{
+			Ratio: c.DropoutRatio,
+		},
+		&layer.TimeLSTM{
+			Wx:       matrix.Randn(H, 4*H, s[0]).MulC(c.WeightInit(H)),
+			Wh:       matrix.Randn(H, 4*H, s[0]).MulC(c.WeightInit(H)),
+			B:        matrix.Zero(1, 4*H),
+			Stateful: true,
+		},
+		&layer.TimeDropout{
+			Ratio: c.DropoutRatio,
+		},
 		&layer.TimeAffine{
-			W: matrix.Randn(H, V, s[0]).MulC(c.WeightInit(H)),
+			W: matrix.Randn(D, V, s[0]).MulC(c.WeightInit(H)),
 			B: matrix.Zero(1, V),
 		},
 		&layer.TimeSoftmaxWithLoss{},
 	}
 
 	return &LSTMLM{
-		Layer: layers,
+		Layer:  layers,
+		Source: s[0],
 	}
 }
 
@@ -53,8 +69,9 @@ func (m *LSTMLM) Predict(xs []matrix.Matrix, opts ...layer.Opts) []matrix.Matrix
 }
 
 func (m *LSTMLM) Forward(xs, ts []matrix.Matrix) matrix.Matrix {
-	ys := m.Predict(xs, layer.Opts{Train: true})
-	return m.Layer[len(m.Layer)-1].Forward(ys, ts, layer.Opts{Train: true})[0]
+	opts := layer.Opts{Train: true, Source: m.Source}
+	ys := m.Predict(xs, opts)
+	return m.Layer[len(m.Layer)-1].Forward(ys, ts, opts)[0]
 }
 
 func (m *LSTMLM) Backward() []matrix.Matrix {

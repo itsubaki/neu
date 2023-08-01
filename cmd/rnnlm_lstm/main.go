@@ -28,10 +28,11 @@ func main() {
 
 	// model
 	m := model.NewLSTMLM(&model.RNNLMConfig{
-		VocabSize:   vector.Max(corpus) + 1,
-		WordVecSize: 100,
-		HiddenSize:  100,
-		WeightInit:  weight.Xavier,
+		VocabSize:    vector.Max(corpus) + 1,
+		WordVecSize:  100,
+		HiddenSize:   100,
+		WeightInit:   weight.Xavier,
+		DropoutRatio: 0.5,
 	})
 
 	// layers

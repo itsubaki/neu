@@ -1,17 +1,21 @@
 package model
 
 import (
+	"math/rand"
+
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
 )
 
 type Sequential struct {
-	Layer []Layer
+	Layer  []Layer
+	Source rand.Source
 }
 
-func NewSequential(layer ...Layer) *Sequential {
+func NewSequential(layer []Layer, s rand.Source) *Sequential {
 	return &Sequential{
-		Layer: layer,
+		Layer:  layer,
+		Source: s,
 	}
 }
 
@@ -24,8 +28,9 @@ func (m *Sequential) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix 
 }
 
 func (m *Sequential) Forward(x, t matrix.Matrix) matrix.Matrix {
-	y := m.Predict(x, layer.Opts{Train: true})
-	return m.Layer[len(m.Layer)-1].Forward(y, t, layer.Opts{Train: true})
+	opts := layer.Opts{Train: true, Source: m.Source}
+	y := m.Predict(x, opts)
+	return m.Layer[len(m.Layer)-1].Forward(y, t, opts)
 }
 
 func (m *Sequential) Backward() matrix.Matrix {
