@@ -8,7 +8,6 @@ test:
 	go test -cover $(shell go list ./... | grep -v /vendor/ | grep -v /build/) -v -coverprofile=coverage.txt -covermode=atomic
 	go tool cover -html=coverage.txt -o coverage.html
 
-.PHONY: mnist
 mnist:
 	go run cmd/mnist/main.go --dir ./testdata
 
@@ -41,3 +40,6 @@ ptbdl:
 	curl -s -o testdata/ptb.train.txt https://raw.githubusercontent.com/tomsercu/lstm/master/data/ptb.train.txt
 	curl -s -o testdata/ptb.test.txt  https://raw.githubusercontent.com/tomsercu/lstm/master/data/ptb.test.txt
 	curl -s -o testdata/ptb.valid.txt https://raw.githubusercontent.com/tomsercu/lstm/master/data/ptb.valid.txt
+
+additiondl:
+	curl -s -o testdata/addition.txt https://raw.githubusercontent.com/oreilly-japan/deep-learning-from-scratch-2/master/dataset/addition.txt
