@@ -35,7 +35,7 @@ func (l *TimeLSTM) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matrix 
 	hs := make([]matrix.Matrix, T)
 
 	for t := 0; t < T; t++ {
-		l.layer[t] = &LSTM{Wx: l.Wx, Wh: l.Wh, B: l.B}
+		l.layer[t] = &LSTM{Wx: l.Wx, Wh: l.Wh, B: l.B} // Wx(D, 4H), Wh(H, 4H), B(1, 4H)
 		l.h, l.c = l.layer[t].Forward(xs[t], l.h, l.c, opts...)
 		hs[t] = l.h
 	}

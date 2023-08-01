@@ -39,5 +39,13 @@ jobs:
         run: |
           make mnist1
 
+      - name: RNNLM(elman)
+        run: |
+          make rnnlm10
+
+      - name: RNNLM(LSTM)
+        run: |
+          make lstm10
+
       - name: Codecov
         uses: codecov/codecov-action@v3

@@ -8,21 +8,20 @@ import (
 )
 
 func ExampleTimeLSTM() {
+	// (D, H) = (3, 1)
 	lstm := &layer.TimeLSTM{
 		Wx: matrix.New(
-			// (D, 4H)
+			// (D, 4H) = (3, 4)
 			[]float64{0.1, 0.2, 0.3, 0.4},
 			[]float64{0.1, 0.2, 0.3, 0.4},
 			[]float64{0.1, 0.2, 0.3, 0.4},
 		),
 		Wh: matrix.New(
-			// (D, 4H)
-			[]float64{0.1, 0.2, 0.3, 0.4},
-			[]float64{0.1, 0.2, 0.3, 0.4},
+			// (H, 4H) = (1, 4)
 			[]float64{0.1, 0.2, 0.3, 0.4},
 		),
 		B: matrix.New(
-			// (4H, 1)
+			// (4H, 1) = (4, 1)
 			[]float64{0},
 			[]float64{0},
 			[]float64{0},
@@ -33,19 +32,19 @@ func ExampleTimeLSTM() {
 
 	// forward
 	xs := []matrix.Matrix{
+		// (T, N, D) = (1, 2, 3)
 		matrix.New(
-			// (N, D)
-			[]float64{0.1, 0.2},
-			[]float64{0.3, 0.4},
+			// (N, D) = (2, 3)
+			[]float64{0.1, 0.2, 0.3},
+			[]float64{0.3, 0.4, 0.5},
 		),
 	}
 
 	hs := lstm.Forward(xs, nil)
 	for i := range hs {
-		fmt.Print(hs[i].Dimension())
+		fmt.Print(hs[i].Dimension()) // (N, H) = (2, 1)
 		fmt.Println(":", hs[i])
 	}
-	fmt.Println()
 
 	// backward
 	dhs := []matrix.Matrix{
@@ -57,16 +56,14 @@ func ExampleTimeLSTM() {
 	}
 	dxs := lstm.Backward(dhs)
 	for i := range dxs {
-		fmt.Print(dxs[i].Dimension())
+		fmt.Print(dxs[i].Dimension()) // (T, N, D) = (1, 2, 3)
 		fmt.Println(":", dxs[i])
 	}
-	fmt.Println()
 
 	// Output:
-	// *layer.TimeLSTM: Wx(3, 4), Wh(3, 4), B(4, 1): 28
-	// 2 1: [[0.016588561630723222] [0.04366773042879063]]
-	//
-	// 2 3: [[0.006062040384277095 0.006062040384277095 0.006062040384277095] [0.02240814455580229 0.02240814455580229 0.02240814455580229]]
+	// *layer.TimeLSTM: Wx(3, 4), Wh(1, 4), B(4, 1): 20
+	// 2 1: [[0.03637115410746597] [0.08514639710269788]]
+	// 2 3: [[0.007122885825224865 0.007122885825224865 0.007122885825224865] [0.027245030881980627 0.027245030881980627 0.027245030881980627]]
 }
 
 func ExampleTimeLSTM_Params() {
