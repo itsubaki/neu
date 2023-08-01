@@ -12,7 +12,7 @@ import (
 func ExampleLSTMLM() {
 	// model
 	s := rand.NewSource(1)
-	m := model.NewLSTMLM(&model.RNNLMConfig{
+	m := model.NewLSTMLM(&model.LSTMLMConfig{
 		VocabSize:    3,
 		WordVecSize:  3,
 		HiddenSize:   3,
@@ -58,7 +58,7 @@ func ExampleLSTMLM() {
 
 func ExampleLSTMLM_Params() {
 	s := rand.NewSource(1)
-	m := model.NewLSTMLM(&model.RNNLMConfig{
+	m := model.NewLSTMLM(&model.LSTMLMConfig{
 		VocabSize:    3,
 		WordVecSize:  3,
 		HiddenSize:   3,
@@ -124,7 +124,7 @@ func ExampleLSTMLM_Params() {
 
 func ExampleLSTMLM_ResetState() {
 	s := rand.NewSource(1)
-	m := model.NewLSTMLM(&model.RNNLMConfig{
+	m := model.NewLSTMLM(&model.LSTMLMConfig{
 		VocabSize:    3,
 		WordVecSize:  3,
 		HiddenSize:   3,
@@ -138,7 +138,7 @@ func ExampleLSTMLM_ResetState() {
 }
 
 func ExampleLSTMLM_rand() {
-	m := model.NewLSTMLM(&model.RNNLMConfig{
+	m := model.NewLSTMLM(&model.LSTMLMConfig{
 		VocabSize:    3,
 		WordVecSize:  3,
 		HiddenSize:   3,

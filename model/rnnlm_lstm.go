@@ -8,12 +8,20 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 )
 
+type LSTMLMConfig struct {
+	VocabSize    int
+	WordVecSize  int
+	HiddenSize   int
+	WeightInit   WeightInit
+	DropoutRatio float64
+}
+
 type LSTMLM struct {
 	Layer  []TimeLayer
 	Source rand.Source
 }
 
-func NewLSTMLM(c *RNNLMConfig, s ...rand.Source) *LSTMLM {
+func NewLSTMLM(c *LSTMLMConfig, s ...rand.Source) *LSTMLM {
 	if len(s) == 0 {
 		s = append(s, rand.NewSource(time.Now().UnixNano()))
 	}

@@ -27,7 +27,7 @@ func main() {
 	corpus := train.Corpus[:corpusSize]
 
 	// model
-	m := model.NewLSTMLM(&model.RNNLMConfig{
+	m := model.NewLSTMLM(&model.LSTMLMConfig{
 		VocabSize:    vector.Max(corpus) + 1,
 		WordVecSize:  100,
 		HiddenSize:   100,

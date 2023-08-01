@@ -9,11 +9,10 @@ import (
 )
 
 type RNNLMConfig struct {
-	VocabSize    int
-	WordVecSize  int
-	HiddenSize   int
-	WeightInit   WeightInit
-	DropoutRatio float64
+	VocabSize   int
+	WordVecSize int
+	HiddenSize  int
+	WeightInit  WeightInit
 }
 
 type RNNLM struct {
