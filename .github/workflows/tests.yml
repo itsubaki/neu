@@ -39,7 +39,7 @@ jobs:
         run: |
           make mnist1
 
-      - name: RNNLM(elman)
+      - name: RNNLM(Elman)
         run: |
           make rnnlm10
 
