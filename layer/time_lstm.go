@@ -22,13 +22,13 @@ func (l *TimeLSTM) SetState(h ...matrix.Matrix)  { l.h = h[0] }
 func (l *TimeLSTM) ResetState()                  { l.h = matrix.New() }
 
 func (l *TimeLSTM) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matrix {
-	T, N, H := len(xs), len(xs[0]), len(l.Wx[0])
+	T, N, H4 := len(xs), len(xs[0]), len(l.Wx[0])
 
 	if !l.Stateful || len(l.h) == 0 {
-		l.h = matrix.Zero(N, H/4)
+		l.h = matrix.Zero(N, H4/4)
 	}
 	if !l.Stateful || len(l.c) == 0 {
-		l.c = matrix.Zero(N, H/4)
+		l.c = matrix.Zero(N, H4/4)
 	}
 
 	l.layer = make([]*LSTM, T)
@@ -50,9 +50,9 @@ func (l *TimeLSTM) Backward(dhs []matrix.Matrix) []matrix.Matrix {
 	dc := matrix.Zero(N, H)                          // dc(N, H)
 
 	grads := []matrix.Matrix{
-		matrix.Zero(1, 1), // DWx(D, H)
-		matrix.Zero(1, 1), // DWh(H, H)
-		matrix.Zero(1, 1), // DWB(1, H)
+		matrix.Zero(1, 1), // DWx(D, 4H)
+		matrix.Zero(1, 1), // DWh(H, 4H)
+		matrix.Zero(1, 1), // DWB(1, 4H)
 	}
 
 	for t := T - 1; t > -1; t-- {
