@@ -22,13 +22,13 @@ func (l *TimeLSTM) SetState(h ...matrix.Matrix)  { l.h = h[0] }
 func (l *TimeLSTM) ResetState()                  { l.h = matrix.New() }
 
 func (l *TimeLSTM) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matrix {
-	T, N, H4 := len(xs), len(xs[0]), len(l.Wx[0])
+	T, N, H := len(xs), len(xs[0]), len(l.Wh)
 
 	if !l.Stateful || len(l.h) == 0 {
-		l.h = matrix.Zero(N, H4/4)
+		l.h = matrix.Zero(N, H)
 	}
 	if !l.Stateful || len(l.c) == 0 {
-		l.c = matrix.Zero(N, H4/4)
+		l.c = matrix.Zero(N, H)
 	}
 
 	l.layer = make([]*LSTM, T)
