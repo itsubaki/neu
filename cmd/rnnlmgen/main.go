@@ -54,13 +54,14 @@ type RNNMLGen struct {
 func (g *RNNMLGen) Generate(startID int, skipIDs []int, length int) []int {
 	wordIDs := []int{startID}
 
+	x := startID
 	for {
 		if len(wordIDs) >= length {
 			break
 		}
 
 		// predict
-		xs := []matrix.Matrix{matrix.New([]float64{float64(startID)})}
+		xs := []matrix.Matrix{matrix.New([]float64{float64(x)})}
 		score := g.Predict(xs)
 		p := activation.Softmax(Flatten(score))
 
@@ -72,7 +73,7 @@ func (g *RNNMLGen) Generate(startID int, skipIDs []int, length int) []int {
 		wordIDs = append(wordIDs, sampled)
 
 		// next
-		startID = sampled
+		x = sampled
 	}
 
 	return wordIDs
