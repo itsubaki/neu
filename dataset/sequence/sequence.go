@@ -13,12 +13,12 @@ import (
 const Addition = "addition.txt"
 
 type Vocab struct {
-	WordToID map[string]int
-	IDToWord map[int]string
+	WordToID map[rune]int
+	IDToWord map[int]rune
 }
 
-func (v Vocab) ToWord(x []int) []string {
-	words := make([]string, len(x))
+func (v Vocab) ToWord(x []int) []rune {
+	words := make([]rune, len(x))
 	for i, id := range x {
 		words[i] = v.IDToWord[id]
 	}
@@ -31,7 +31,7 @@ func (v Vocab) ToID(words []string) [][]int {
 	for i, s := range words {
 		x[i] = make([]int, len(s))
 		for j, w := range s {
-			x[i][j] = v.WordToID[string(w)]
+			x[i][j] = v.WordToID[w]
 		}
 	}
 
@@ -81,13 +81,13 @@ func Load(dir, fileName string, s ...rand.Source) (*Dataset, *Dataset, *Vocab, e
 }
 
 func vocab(q, ans []string) *Vocab {
-	w2id := make(map[string]int)
-	id2w := make(map[int]string)
+	w2id := make(map[rune]int)
+	id2w := make(map[int]rune)
 
-	words := make([]string, 0)
+	words := make([]rune, 0)
 	for _, w := range append(q, ans...) {
 		for _, v := range w {
-			words = append(words, string(v))
+			words = append(words, v)
 		}
 	}
 
@@ -133,4 +133,13 @@ func Must(train, test *Dataset, vocab *Vocab, err error) (*Dataset, *Dataset, *V
 	}
 
 	return train, test, vocab
+}
+
+func String(x []rune) []string {
+	s := make([]string, len(x))
+	for i, r := range x {
+		s[i] = string(r)
+	}
+
+	return s
 }
