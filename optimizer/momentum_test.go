@@ -27,6 +27,7 @@ func ExampleMomentum() {
 	opt := optimizer.Momentum{LearningRate: 0.5, Momentum: 1.0}
 	fmt.Println(opt.Update(m)[0][0])
 	fmt.Println(opt.Update(m)[0][0])
+	fmt.Println(opt.Update(m)[0][0])
 
 	// Output:
 	// [[1 2 3] [4 5 6]]
@@ -35,5 +36,6 @@ func ExampleMomentum() {
 	//
 	// [[0 0 0] [0 0 0]]
 	// [[-1 -2 -3] [-4 -5 -6]]
+	// [[-2 -4 -6] [-8 -10 -12]]
 
 }

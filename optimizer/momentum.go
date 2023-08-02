@@ -18,13 +18,7 @@ func (o *Momentum) Update(m Model) [][]matrix.Matrix {
 	}
 
 	if len(o.v) == 0 {
-		o.v = make([][]matrix.Matrix, len(params))
-		for i := range params {
-			o.v[i] = make([]matrix.Matrix, len(params[i]))
-			for j := range params[i] {
-				o.v[i][j] = matrix.Zero(params[i][j].Dimension())
-			}
-		}
+		o.v = LikeZero(params)
 	}
 
 	updated := make([][]matrix.Matrix, len(params))

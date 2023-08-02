@@ -21,13 +21,7 @@ func (o *AdaGrad) Update(m Model) [][]matrix.Matrix {
 	}
 
 	if len(o.h) == 0 {
-		o.h = make([][]matrix.Matrix, len(params))
-		for i := range params {
-			o.h[i] = make([]matrix.Matrix, len(params[i]))
-			for j := range params[i] {
-				o.h[i][j] = matrix.Zero(params[i][j].Dimension())
-			}
-		}
+		o.h = LikeZero(params)
 	}
 
 	updated := make([][]matrix.Matrix, len(params))
