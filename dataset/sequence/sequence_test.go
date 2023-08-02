@@ -16,8 +16,8 @@ func ExampleLoad() {
 	fmt.Println(len(v.IDToWord), len(v.WordToID))
 	fmt.Println(x.Train[0])
 	fmt.Println(t.Train[0])
-	fmt.Println(v.ToWord(x.Train[0]))
-	fmt.Println(v.ToWord(t.Train[0]))
+	fmt.Println(v.ToWord(x.Train[0]), v.ToWord(t.Train[0]))
+	fmt.Println(v.ToWord(x.Train[9]), v.ToWord(t.Train[9]))
 
 	// Output:
 	// 45000 7 5000 7
@@ -25,6 +25,6 @@ func ExampleLoad() {
 	// 13 13
 	// [4 10 1 2 11 11 5]
 	// [6 1 8 12 5]
-	// [5 3 6 + 8 8  ]
-	// [_ 6 2 4  ]
+	// [5 3 6 + 8 8  ] [_ 6 2 4  ]
+	// [7 9 6 + 1 0 1] [_ 8 9 7  ]
 }
