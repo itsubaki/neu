@@ -44,15 +44,15 @@ func (o *Adam) Update(m Model) [][]matrix.Matrix {
 }
 
 func LikeZero(param [][]matrix.Matrix) [][]matrix.Matrix {
-	zero := make([][]matrix.Matrix, len(param))
+	z := make([][]matrix.Matrix, len(param))
 	for i := range param {
-		zero[i] = make([]matrix.Matrix, len(param[i]))
+		z[i] = make([]matrix.Matrix, len(param[i]))
 		for j := range param[i] {
-			zero[i][j] = matrix.Zero(param[i][j].Dimension())
+			z[i][j] = matrix.Zero(param[i][j].Dimension())
 		}
 	}
 
-	return zero
+	return z
 }
 
 func adam(learningRate float64) func(m, v float64) float64 {
