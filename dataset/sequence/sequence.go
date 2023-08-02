@@ -67,12 +67,12 @@ func Load(dir, fileName string, s ...rand.Source) (*Dataset, *Dataset, *Vocab, e
 	// preprocess
 	q, ans := make([]string, 0), make([]string, 0)
 	for _, line := range strings.Split(string(bytes), "\n") {
-		spl := strings.Split(line, "_")
-		if len(spl) != 2 {
+		idx := strings.Index(line, "_")
+		if idx == -1 {
 			continue
 		}
 
-		q, ans = append(q, spl[0]), append(ans, fmt.Sprintf("_%s", spl[1]))
+		q, ans = append(q, line[:idx]), append(ans, line[idx:])
 	}
 
 	// vocab
