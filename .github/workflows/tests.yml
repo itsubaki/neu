@@ -30,6 +30,7 @@ jobs:
         run: |
           make mnistdl
           make ptbdl
+          make additiondl
 
       - name: Tests
         run: |
