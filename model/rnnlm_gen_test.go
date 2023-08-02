@@ -37,6 +37,15 @@ func ExampleChoice() {
 	// 3332230102
 }
 
+func ExampleChoice_rand() {
+	p := []float64{0.1, 0.2, 0.3, 0.4}
+	if model.Choice(p) < 0 {
+		fmt.Println("invalid")
+	}
+
+	// Output:
+}
+
 func ExampleContains() {
 	fmt.Println(model.Contains(3, []int{1, 2, 3}))
 	fmt.Println(model.Contains(0, []int{1, 2, 3}))
