@@ -29,7 +29,7 @@ func NewLSTMLM(c *LSTMLMConfig, s ...rand.Source) *LSTMLM {
 	// size
 	V, D, H := c.VocabSize, c.WordVecSize, c.HiddenSize
 
-	// layers
+	// layer
 	layers := []TimeLayer{
 		&layer.TimeEmbedding{
 			W: matrix.Randn(V, D, s[0]).MulC(1.0 / 100),

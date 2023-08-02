@@ -28,7 +28,7 @@ func NewRNNLM(c *RNNLMConfig, s ...rand.Source) *RNNLM {
 	// size
 	V, D, H := c.VocabSize, c.WordVecSize, c.HiddenSize
 
-	// layers
+	// layer
 	// TimeEmbedding -> TimeRNN -> TimeAffine -> TimeSoftmaxWithLoss
 	layers := []TimeLayer{
 		&layer.TimeEmbedding{

@@ -29,7 +29,7 @@ func NewMLP(c *MLPConfig, s ...rand.Source) *MLP {
 	size := append([]int{c.InputSize}, c.HiddenSize...)
 	size = append(size, c.OutputSize)
 
-	// layers
+	// layer
 	// Affine -> BatchNorm -> ReLU -> ... -> Affine -> SoftmaxWithLoss
 	layers := make([]Layer, 0)
 	for i := 0; i < len(size)-2; i++ {

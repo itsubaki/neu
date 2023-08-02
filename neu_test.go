@@ -32,7 +32,7 @@ func Example_rNNLM() {
 		WeightInit:  weight.Xavier,
 	}, s)
 
-	// layers
+	// layer
 	fmt.Printf("%T\n", m)
 	for i, l := range m.Layers() {
 		fmt.Printf("%2d: %v\n", i, l)
@@ -146,7 +146,7 @@ func Example_mnist() {
 		BatchNormMomentum: 0.9,
 	}, s)
 
-	// layers
+	// layer
 	fmt.Printf("%T\n", m)
 	for i, l := range m.Layers() {
 		fmt.Printf("%2d: %v\n", i, l)
