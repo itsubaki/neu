@@ -17,15 +17,6 @@ type Vocab struct {
 	IDToWord map[int]rune
 }
 
-func (v Vocab) ToWord(x []int) []rune {
-	words := make([]rune, len(x))
-	for i, id := range x {
-		words[i] = v.IDToWord[id]
-	}
-
-	return words
-}
-
 func (v Vocab) ToID(words []string) [][]int {
 	x := make([][]int, len(words))
 	for i, s := range words {
@@ -36,6 +27,24 @@ func (v Vocab) ToID(words []string) [][]int {
 	}
 
 	return x
+}
+
+func (v Vocab) ToWord(x []int) []rune {
+	words := make([]rune, len(x))
+	for i, id := range x {
+		words[i] = v.IDToWord[id]
+	}
+
+	return words
+}
+
+func (v Vocab) ToString(x []int) []string {
+	words := make([]string, len(x))
+	for i, w := range v.ToWord(x) {
+		words[i] = string(w)
+	}
+
+	return words
 }
 
 type Dataset struct {
@@ -133,13 +142,4 @@ func Must(train, test *Dataset, vocab *Vocab, err error) (*Dataset, *Dataset, *V
 	}
 
 	return train, test, vocab
-}
-
-func String(x []rune) []string {
-	s := make([]string, len(x))
-	for i, r := range x {
-		s[i] = string(r)
-	}
-
-	return s
 }

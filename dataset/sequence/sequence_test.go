@@ -17,8 +17,8 @@ func ExampleLoad() {
 	fmt.Println(len(v.IDToWord), len(v.WordToID))
 	fmt.Println(x.Train[0])
 	fmt.Println(t.Train[0])
-	fmt.Println(sequence.String(v.ToWord(x.Train[0])), sequence.String(v.ToWord(t.Train[0])))
-	fmt.Println(sequence.String(v.ToWord(x.Train[9])), sequence.String(v.ToWord(t.Train[9])))
+	fmt.Println(v.ToString(x.Train[0]), v.ToString(t.Train[0]))
+	fmt.Println(v.ToString(x.Train[9]), v.ToString(t.Train[9]))
 
 	// Output:
 	// 45000 7 5000 7
