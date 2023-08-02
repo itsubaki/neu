@@ -12,11 +12,6 @@ import (
 
 const Addition = "addition.txt"
 
-type Dataset struct {
-	Train [][]int
-	Test  [][]int
-}
-
 type Vocab struct {
 	WordToID map[string]int
 	IDToWord map[int]string
@@ -29,6 +24,23 @@ func (v Vocab) ToWord(x []int) []string {
 	}
 
 	return words
+}
+
+func (v Vocab) ToID(words []string) [][]int {
+	x := make([][]int, len(words))
+	for i, s := range words {
+		x[i] = make([]int, len(s))
+		for j, w := range s {
+			x[i][j] = v.WordToID[string(w)]
+		}
+	}
+
+	return x
+}
+
+type Dataset struct {
+	Train [][]int
+	Test  [][]int
 }
 
 func Load(dir, fileName string, s ...rand.Source) (*Dataset, *Dataset, *Vocab, error) {
@@ -55,47 +67,28 @@ func Load(dir, fileName string, s ...rand.Source) (*Dataset, *Dataset, *Vocab, e
 	}
 
 	// vocab
-	w2id := make(map[string]int)
-	id2w := make(map[int]string)
-	for i := range q {
-		update(q[i], w2id, id2w)
-		update(ans[i], w2id, id2w)
-	}
+	v := vocab(q, ans)
 
 	// data
-	x, t := data(q, w2id), data(ans, w2id)
+	x, t := v.ToID(q), v.ToID(ans)
 	xs, ts := shuffle(x, t, s[0])
 
 	// 10% for validation set
 	idx := len(xs) - len(xs)/10
-	return &Dataset{
-			Train: xs[:idx],
-			Test:  xs[idx:],
-		}, &Dataset{
-			Train: ts[:idx],
-			Test:  ts[idx:],
-		}, &Vocab{
-			WordToID: w2id,
-			IDToWord: id2w,
-		}, nil
+	xd := &Dataset{Train: xs[:idx], Test: xs[idx:]}
+	td := &Dataset{Train: ts[:idx], Test: ts[idx:]}
+	return xd, td, v, nil
 }
 
-func data(txt []string, w2id map[string]int) [][]int {
-	x := make([][]int, len(txt))
-	for i, s := range txt {
-		x[i] = make([]int, len(s))
-		for j, w := range s {
-			x[i][j] = w2id[string(w)]
-		}
-	}
+func vocab(q, ans []string) *Vocab {
+	w2id := make(map[string]int)
+	id2w := make(map[int]string)
 
-	return x
-}
-
-func update(v string, w2id map[string]int, id2w map[int]string) {
 	words := make([]string, 0)
-	for _, w := range v {
-		words = append(words, string(w))
+	for _, w := range append(q, ans...) {
+		for _, v := range w {
+			words = append(words, string(v))
+		}
 	}
 
 	for _, w := range words {
@@ -106,6 +99,11 @@ func update(v string, w2id map[string]int, id2w map[int]string) {
 		id := len(w2id)
 		w2id[w] = id
 		id2w[id] = w
+	}
+
+	return &Vocab{
+		WordToID: w2id,
+		IDToWord: id2w,
 	}
 }
 
