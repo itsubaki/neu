@@ -24,7 +24,7 @@ func main() {
 	flag.IntVar(&batchSize, "batch-size", 100, "")
 	flag.Parse()
 
-	// load mnist dataset
+	// data
 	train, test := mnist.Must(mnist.Load(dir))
 
 	// train data
@@ -44,7 +44,7 @@ func main() {
 		BatchNormMomentum: 0.9,
 	})
 
-	// print layer
+	// layer
 	fmt.Printf("%T\n", m)
 	for i, l := range m.Layers() {
 		fmt.Printf("%2d: %v\n", i, l)

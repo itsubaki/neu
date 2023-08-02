@@ -16,7 +16,8 @@ type RNNLMConfig struct {
 }
 
 type RNNLM struct {
-	Layer []TimeLayer
+	Layer  []TimeLayer
+	Source rand.Source
 }
 
 func NewRNNLM(c *RNNLMConfig, s ...rand.Source) *RNNLM {
@@ -47,7 +48,8 @@ func NewRNNLM(c *RNNLMConfig, s ...rand.Source) *RNNLM {
 	}
 
 	return &RNNLM{
-		Layer: layers,
+		Layer:  layers,
+		Source: s[0],
 	}
 }
 
@@ -60,8 +62,9 @@ func (m *RNNLM) Predict(xs []matrix.Matrix, opts ...layer.Opts) []matrix.Matrix 
 }
 
 func (m *RNNLM) Forward(xs, ts []matrix.Matrix) matrix.Matrix {
-	ys := m.Predict(xs, layer.Opts{Train: true})
-	return m.Layer[len(m.Layer)-1].Forward(ys, ts, layer.Opts{Train: true})[0]
+	opts := layer.Opts{Train: true, Source: m.Source}
+	ys := m.Predict(xs, opts)
+	return m.Layer[len(m.Layer)-1].Forward(ys, ts, opts)[0]
 }
 
 func (m *RNNLM) Backward() []matrix.Matrix {

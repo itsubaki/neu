@@ -33,7 +33,7 @@ func main() {
 		WeightInit:  weight.Xavier,
 	})
 
-	// layers
+	// layer
 	fmt.Printf("%T\n", m)
 	for i, l := range m.Layers() {
 		fmt.Printf("%2d: %v\n", i, l)
