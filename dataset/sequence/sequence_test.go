@@ -14,7 +14,7 @@ func ExampleLoad() {
 
 	fmt.Println(len(x.Train), len(x.Train[0]), len(x.Test), len(x.Test[0]))
 	fmt.Println(len(t.Train), len(t.Train[0]), len(t.Test), len(t.Test[0]))
-	fmt.Println(len(v.IDToWord), len(v.WordToID))
+	fmt.Println(len(v.IDToRune), len(v.RuneToID))
 	fmt.Println(x.Train[0])
 	fmt.Println(t.Train[0])
 	fmt.Println(v.ToString(x.Train[0]), v.ToString(t.Train[0]))
@@ -35,7 +35,7 @@ func ExampleLoad_rand() {
 
 	fmt.Println(len(x.Train), len(x.Train[0]), len(x.Test), len(x.Test[0]))
 	fmt.Println(len(t.Train), len(t.Train[0]), len(t.Test), len(t.Test[0]))
-	fmt.Println(len(v.IDToWord), len(v.WordToID))
+	fmt.Println(len(v.IDToRune), len(v.RuneToID))
 
 	// Output:
 	// 45000 7 5000 7

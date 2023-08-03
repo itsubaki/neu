@@ -21,7 +21,7 @@ func (o *Adam) Update(m Model) [][]matrix.Matrix {
 	}
 
 	if len(o.m) == 0 {
-		o.m, o.v = LikeZero(params), LikeZero(params)
+		o.m, o.v = Zero(params), Zero(params)
 	}
 
 	o.iter++
@@ -43,7 +43,7 @@ func (o *Adam) Update(m Model) [][]matrix.Matrix {
 	return updated
 }
 
-func LikeZero(param [][]matrix.Matrix) [][]matrix.Matrix {
+func Zero(param [][]matrix.Matrix) [][]matrix.Matrix {
 	z := make([][]matrix.Matrix, len(param))
 	for i := range param {
 		z[i] = make([]matrix.Matrix, len(param[i]))

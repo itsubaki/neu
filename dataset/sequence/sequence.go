@@ -13,26 +13,26 @@ import (
 const Addition = "addition.txt"
 
 type Vocab struct {
-	WordToID map[rune]int
-	IDToWord map[int]rune
+	RuneToID map[rune]int
+	IDToRune map[int]rune
 }
 
-func (v Vocab) ToID(words []string) [][]int {
+func (v Vocab) ID(words []string) [][]int {
 	x := make([][]int, len(words))
 	for i, s := range words {
 		x[i] = make([]int, len(s))
 		for j, w := range s {
-			x[i][j] = v.WordToID[w]
+			x[i][j] = v.RuneToID[w]
 		}
 	}
 
 	return x
 }
 
-func (v Vocab) ToWord(x []int) []rune {
+func (v Vocab) Rune(x []int) []rune {
 	words := make([]rune, len(x))
 	for i, id := range x {
-		words[i] = v.IDToWord[id]
+		words[i] = v.IDToRune[id]
 	}
 
 	return words
@@ -40,7 +40,7 @@ func (v Vocab) ToWord(x []int) []rune {
 
 func (v Vocab) ToString(x []int) []string {
 	words := make([]string, len(x))
-	for i, w := range v.ToWord(x) {
+	for i, w := range v.Rune(x) {
 		words[i] = string(w)
 	}
 
@@ -79,7 +79,7 @@ func Load(dir, fileName string, s ...rand.Source) (*Dataset, *Dataset, *Vocab, e
 	v := vocab(q, ans)
 
 	// data
-	x, t := v.ToID(q), v.ToID(ans)
+	x, t := v.ID(q), v.ID(ans)
 	xs, ts := shuffle(x, t, s[0])
 
 	// 10% for validation set
@@ -90,8 +90,8 @@ func Load(dir, fileName string, s ...rand.Source) (*Dataset, *Dataset, *Vocab, e
 }
 
 func vocab(q, ans []string) *Vocab {
-	w2id := make(map[rune]int)
-	id2w := make(map[int]rune)
+	r2id := make(map[rune]int)
+	id2r := make(map[int]rune)
 
 	words := make([]rune, 0)
 	for _, w := range append(q, ans...) {
@@ -100,19 +100,19 @@ func vocab(q, ans []string) *Vocab {
 		}
 	}
 
-	for _, w := range words {
-		if _, ok := w2id[w]; ok {
+	for _, r := range words {
+		if _, ok := r2id[r]; ok {
 			continue
 		}
 
-		id := len(w2id)
-		w2id[w] = id
-		id2w[id] = w
+		id := len(r2id)
+		r2id[r] = id
+		id2r[id] = r
 	}
 
 	return &Vocab{
-		WordToID: w2id,
-		IDToWord: id2w,
+		RuneToID: r2id,
+		IDToRune: id2r,
 	}
 }
 

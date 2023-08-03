@@ -21,7 +21,7 @@ func (o *AdaGrad) Update(m Model) [][]matrix.Matrix {
 	}
 
 	if len(o.h) == 0 {
-		o.h = LikeZero(params)
+		o.h = Zero(params)
 	}
 
 	updated := make([][]matrix.Matrix, len(params))
