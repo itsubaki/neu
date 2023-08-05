@@ -52,9 +52,9 @@ func NewSeq2Seq(c *Seq2SeqConfig, s ...rand.Source) *Seq2Seq {
 }
 
 func (m *Seq2Seq) Forward(xs, ts []matrix.Matrix, opts ...layer.Opts) float64 {
-	dxs, dts := []matrix.Matrix{ts[1]}, ts[1:]     // dxs(1, 128, 1), dts(4, 128, 1)
+	dxs, dts := ts[:len(ts)-1], ts[1:]             // dxs(4, 128, 1), dts(4, 128, 1)
 	h := m.Encoder.Forward(xs, opts...)            // h(128, 128)
-	score := m.Decoder.Forward(dxs, h, opts...)    // score(1, 128, 13) NOTE: dts.T != score.T
+	score := m.Decoder.Forward(dxs, h, opts...)    // score(4, 128, 13)
 	loss := m.Softmax.Forward(score, dts, opts...) // (1, 1, 1)
 	return loss[0][0][0]
 }
