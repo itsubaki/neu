@@ -67,3 +67,20 @@ func ExampleDecoder_rand() {
 
 	// Output:
 }
+
+func ExampleDecoder_Params() {
+	decoder := model.NewDecoder(&model.DecoderConfig{
+		VocabSize:   3, // V
+		WordVecSize: 3, // D
+		HiddenSize:  3, // H
+		WeightInit:  weight.Xavier,
+	})
+	decoder.SetParams(make([]matrix.Matrix, 6)...)
+
+	fmt.Println(decoder.Params())
+	fmt.Println(decoder.Grads())
+
+	// Output:
+	// [[] [] [] [] [] []]
+	// [[] [] [] [] [] []]
+}

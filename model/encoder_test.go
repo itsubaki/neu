@@ -54,3 +54,20 @@ func ExampleEncoder_rand() {
 
 	// Output:
 }
+
+func ExampleEncoder_Params() {
+	encoder := model.NewEncoder(&model.EncoderConfig{
+		VocabSize:   3, // V
+		WordVecSize: 3, // D
+		HiddenSize:  3, // H
+		WeightInit:  weight.Xavier,
+	})
+	encoder.SetParams(make([]matrix.Matrix, 4)...)
+
+	fmt.Println(encoder.Params())
+	fmt.Println(encoder.Grads())
+
+	// Output:
+	// [[] [] [] []]
+	// [[] [] [] []]
+}

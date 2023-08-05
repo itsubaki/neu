@@ -9,7 +9,10 @@ import (
 )
 
 type Seq2SeqConfig struct {
-	RNNLMConfig
+	VocabSize   int
+	WordVecSize int
+	HiddenSize  int
+	WeightInit  WeightInit
 }
 
 type Seq2Seq struct {
@@ -49,9 +52,9 @@ func NewSeq2Seq(c *Seq2SeqConfig, s ...rand.Source) *Seq2Seq {
 }
 
 func (m *Seq2Seq) Forward(xs, ts matrix.Matrix, opts ...layer.Opts) []matrix.Matrix {
-	decoxs, decots := Split(ts)
-	h := m.Encoder.Forward([]matrix.Matrix{xs}, opts...)
-	score := m.Decoder.Forward([]matrix.Matrix{decoxs}, h, opts...)
+	decoxs, decots := Split(ts)                                     // (128, 1) (128, 4)
+	h := m.Encoder.Forward([]matrix.Matrix{xs}, opts...)            // (7, 128)
+	score := m.Decoder.Forward([]matrix.Matrix{decoxs}, h, opts...) // (1, 1, 13)
 	loss := m.Softmax.Forward(score, []matrix.Matrix{decots}, opts...)
 	return loss
 }

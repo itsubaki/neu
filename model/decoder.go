@@ -80,7 +80,7 @@ func (l *Decoder) SetParams(p ...matrix.Matrix) {
 }
 
 func (m *Decoder) Forward(xs []matrix.Matrix, h matrix.Matrix, opts ...layer.Opts) []matrix.Matrix {
-	m.TimeLSTM.SetState(h)
+	m.TimeLSTM.SetState(h) // (7, 128)
 	out := m.TimeEmbedding.Forward(xs, nil, opts...)
 	out = m.TimeLSTM.Forward(out, nil, opts...)
 	score := m.TimeAffine.Forward(out, nil, opts...)
