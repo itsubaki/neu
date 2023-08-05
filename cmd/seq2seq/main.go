@@ -62,7 +62,7 @@ func main() {
 
 		var acc int
 		xts, tts := Shuffle(x.Test, t.Test)
-		for k := 0; k < len(x.Test); k++ {
+		for k := 0; k < 128; k++ {
 			q, ans := Float64(xts)[k], tts[k]
 			guess := m.Generate(Time(matrix.New(q), true), ans[0], len(ans[1:]))
 			acc += Accuracy(ans, guess)

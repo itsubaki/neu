@@ -52,5 +52,9 @@ jobs:
         run: |
           make rnnlmgen
 
+      - name: Seq2Seq
+        run: |
+          make seq2seq3
+
       - name: Codecov
         uses: codecov/codecov-action@v3
