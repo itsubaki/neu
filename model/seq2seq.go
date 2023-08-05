@@ -51,18 +51,18 @@ func NewSeq2Seq(c *Seq2SeqConfig, s ...rand.Source) *Seq2Seq {
 	}
 }
 
-func (m *Seq2Seq) Forward(xs, ts matrix.Matrix, opts ...layer.Opts) []matrix.Matrix {
-	decoxs, decots := Split(ts)                                        // (128, 1) (128, 4)
-	h := m.Encoder.Forward([]matrix.Matrix{xs}, opts...)               // (7, 128)
-	score := m.Decoder.Forward([]matrix.Matrix{decoxs}, h, opts...)    // (1, 1, 13)
-	loss := m.Softmax.Forward(score, []matrix.Matrix{decots}, opts...) // (1, 1, 1)
+func (m *Seq2Seq) Forward(xs, ts []matrix.Matrix, opts ...layer.Opts) []matrix.Matrix {
+	dxs, dts := []matrix.Matrix{ts[1]}, ts[1:]     // (1, 128, 1) (4, 128, 1)
+	h := m.Encoder.Forward(xs, opts...)            // (1, 128)
+	score := m.Decoder.Forward(dxs, h, opts...)    // (1, 1, 13)
+	loss := m.Softmax.Forward(score, dts, opts...) // (1, 1, 1)
 	return loss
 }
 
 func (m *Seq2Seq) Backward(dout []matrix.Matrix) []matrix.Matrix {
 	dout = m.Softmax.Backward(dout) // (1, 13)
-	dh := m.Decoder.Backward(dout)
-	dout = m.Encoder.Backward(dh)
+	dh := m.Decoder.Backward(dout)  // (1, 128)
+	dout = m.Encoder.Backward(dh)   // (0, 0, 0)
 	return dout
 }
 
@@ -89,13 +89,4 @@ func (m *Seq2Seq) Grads() [][]matrix.Matrix {
 func (m *Seq2Seq) SetParams(p [][]matrix.Matrix) {
 	m.Encoder.SetParams(p[0]...)
 	m.Decoder.SetParams(p[1]...)
-}
-
-func Split(x matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	xs, ts := matrix.New(), matrix.New()
-	for _, r := range x {
-		xs, ts = append(xs, []float64{r[len(r)-1]}), append(ts, r[1:])
-	}
-
-	return xs, ts
 }

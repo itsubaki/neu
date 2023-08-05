@@ -22,7 +22,6 @@ func main() {
 	flag.Parse()
 
 	x, t, v := sequence.Must(sequence.Load(dir, sequence.Addition))
-	xt, tt := Float64(x.Train), Float64(t.Train)
 
 	m := model.NewSeq2Seq(&model.Seq2SeqConfig{
 		VocabSize:   len(v.RuneToID),
@@ -39,12 +38,13 @@ func main() {
 		},
 	}
 
+	xt, tt := Float64(x.Train), Float64(t.Train)
 	xs, ts := trainer.Shuffle(xt, tt) // (45000, 7), (45000, 5)
 
 	for j := 0; j < len(x.Train)/batchSize; j++ {
 		begin, end := trainer.Range(j, batchSize)
-		xbatch := xs[begin:end] // (128, 7)
-		tbatch := ts[begin:end] // (128, 5)
+		xbatch := Time(xs[begin:end]) // (7, 128, 1)
+		tbatch := Time(ts[begin:end]) // (5, 128, 1)
 
 		loss := m.Forward(xbatch, tbatch)
 		m.Backward([]matrix.Matrix{matrix.New([]float64{1})})
@@ -52,6 +52,21 @@ func main() {
 
 		fmt.Println(loss)
 	}
+
+}
+
+func Time(xbatch matrix.Matrix) []matrix.Matrix {
+	T := len(xbatch[0])             // 7
+	out := make([]matrix.Matrix, T) // (7, 128, 1)
+	for i := 0; i < T; i++ {
+		m := matrix.New()
+		for j := 0; j < len(xbatch); j++ {
+			m = append(m, []float64{xbatch[j][i]})
+		}
+		out[i] = m
+	}
+
+	return out
 }
 
 func Float64(x [][]int) [][]float64 {
