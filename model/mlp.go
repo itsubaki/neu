@@ -17,7 +17,7 @@ type MLPConfig struct {
 }
 
 type MLP struct {
-	seq *Sequential
+	Sequential
 }
 
 func NewMLP(c *MLPConfig, s ...rand.Source) *MLP {
@@ -53,38 +53,14 @@ func NewMLP(c *MLPConfig, s ...rand.Source) *MLP {
 		W: matrix.Randn(H, O, s[0]).MulC(c.WeightInit(H)),
 		B: matrix.Zero(1, O),
 	})
+
 	layers = append(layers, &layer.SoftmaxWithLoss{}) // loss function
 
 	// new
 	return &MLP{
-		seq: NewSequential(layers, s[0]),
+		Sequential: Sequential{
+			Layer:  layers,
+			Source: s[0],
+		},
 	}
-}
-
-func (m *MLP) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
-	return m.seq.Predict(x, opts...)
-}
-
-func (m *MLP) Forward(x, t matrix.Matrix) matrix.Matrix {
-	return m.seq.Forward(x, t)
-}
-
-func (m *MLP) Backward() matrix.Matrix {
-	return m.seq.Backward()
-}
-
-func (m *MLP) Layers() []Layer {
-	return m.seq.Layers()
-}
-
-func (m *MLP) Params() [][]matrix.Matrix {
-	return m.seq.Params()
-}
-
-func (m *MLP) Grads() [][]matrix.Matrix {
-	return m.seq.Grads()
-}
-
-func (m *MLP) SetParams(p [][]matrix.Matrix) {
-	m.seq.SetParams(p)
 }
