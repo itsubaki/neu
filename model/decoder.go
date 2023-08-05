@@ -99,11 +99,7 @@ func (m *Decoder) Generate(h matrix.Matrix, startID, length int) []int {
 
 	sampled := []int{startID}
 	x := startID
-	for {
-		if len(sampled) >= length {
-			break
-		}
-
+	for i := 0; i < length; i++ {
 		xs := []matrix.Matrix{matrix.New([]float64{float64(x)})}
 		out := m.TimeEmbedding.Forward(xs, nil)
 		out = m.TimeLSTM.Forward(out, nil)
