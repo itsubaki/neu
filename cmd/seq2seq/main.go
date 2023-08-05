@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"math/rand"
+	"time"
 
 	"github.com/itsubaki/neu/dataset/sequence"
 	"github.com/itsubaki/neu/math/matrix"
@@ -18,15 +20,14 @@ func main() {
 	var dir string
 	var epochs, batchSize int
 	flag.StringVar(&dir, "dir", "./testdata", "")
-	flag.IntVar(&epochs, "epochs", 10, "")
+	flag.IntVar(&epochs, "epochs", 30, "")
 	flag.IntVar(&batchSize, "batch-size", 128, "")
 	flag.Parse()
 
 	x, t, v := sequence.Must(sequence.Load(dir, sequence.Addition))
-	xt, tt := Float64(x.Train), Float64(t.Train)
 
 	m := model.NewSeq2Seq(&model.Seq2SeqConfig{
-		VocabSize:   len(v.RuneToID),
+		VocabSize:   len(v.RuneToID), // 13
 		WordVecSize: 16,
 		HiddenSize:  128,
 		WeightInit:  weight.Xavier,
@@ -43,7 +44,8 @@ func main() {
 	var total float64
 	var count int
 	for i := 0; i < epochs; i++ {
-		xs, ts := trainer.Shuffle(xt, tt) // (45000, 7), (45000, 5)
+		xt, tt := Shuffle(x.Train, t.Train)
+		xs, ts := Float64(xt), Float64(tt) // (45000, 7), (45000, 5)
 		for j := 0; j < len(x.Train)/batchSize; j++ {
 			begin, end := trainer.Range(j, batchSize)
 			xbatch := Time(xs[begin:end]) // (7, 128, 1)
@@ -58,13 +60,16 @@ func main() {
 		}
 
 		var acc int
-		n := 10
-		for k := 0; k < n; k++ {
-			q, ans := Float64(x.Test)[k], t.Test[k]
-			guess := m.Generate(Time(matrix.New(q)), ans[0], len(ans))
-			acc += Accuracy(ans, guess)
+		n := 5
+		{
+			xt, tt := Shuffle(x.Test, t.Test)
+			for k := 0; k < n; k++ {
+				q, ans := Float64(xt)[k], tt[k]
+				guess := m.Generate(Time(matrix.New(q)), ans[0], len(ans))
+				acc += Accuracy(ans, guess)
 
-			fmt.Printf("%v %v (%v)\n", v.ToString(x.Test[k]), v.ToString(ans), v.ToString(guess))
+				fmt.Printf("%v %v (%v)\n", v.ToString(xt[k]), v.ToString(ans), v.ToString(guess))
+			}
 		}
 
 		fmt.Printf("%2d: loss=%.4f, acc=%.4f\n", i, total/float64(count), float64(acc)/float64(n))
@@ -89,6 +94,28 @@ func Time(xbatch matrix.Matrix) []matrix.Matrix {
 	}
 
 	return out
+}
+
+func Shuffle(x, t [][]int, s ...rand.Source) ([][]int, [][]int) {
+	if len(s) == 0 {
+		s = append(s, rand.NewSource(time.Now().UnixNano()))
+	}
+	rng := rand.New(s[0])
+
+	xs, ts := make([][]int, len(x)), make([][]int, len(t))
+	for i := 0; i < len(x); i++ {
+		xs[i], ts[i] = x[i], t[i]
+	}
+
+	for i := 0; i < len(x); i++ {
+		j := rng.Intn(i + 1)
+
+		// swap
+		xs[i], xs[j] = xs[j], xs[i]
+		ts[i], ts[j] = ts[j], ts[i]
+	}
+
+	return xs, ts
 }
 
 func Float64(x [][]int) [][]float64 {
