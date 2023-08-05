@@ -76,12 +76,11 @@ func (m *Encoder) Forward(xs []matrix.Matrix, opts ...layer.Opts) matrix.Matrix 
 	return hs[len(hs)-1]                           // hs[-1, N, H]
 }
 
-func (m *Encoder) Backward(dh matrix.Matrix) []matrix.Matrix {
-	dhs := Zero(m.hs)                     // (Time, N, H)
-	dhs[len(m.hs)-1] = dh                 // dhs[-1, N, H] = dh[N, H]
-	dout := m.TimeLSTM.Backward(dhs)      //
-	dout = m.TimeEmbedding.Backward(dout) // 0
-	return dout
+func (m *Encoder) Backward(dh matrix.Matrix) {
+	dhs := Zero(m.hs)                // (Time, N, H)
+	dhs[len(m.hs)-1] = dh            // dhs[-1, N, H] = dh[N, H]
+	dout := m.TimeLSTM.Backward(dhs) //
+	m.TimeEmbedding.Backward(dout)
 }
 
 func Zero(hs []matrix.Matrix) []matrix.Matrix {

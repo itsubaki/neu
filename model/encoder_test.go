@@ -36,12 +36,10 @@ func ExampleEncoder() {
 		[]float64{0.3, 0.4, 0.5},
 	)
 
-	dout := m.Backward(dh)
-	fmt.Println(len(dout))
+	m.Backward(dh)
 
 	// Output:
 	// 3 3
-	// 0
 }
 
 func ExampleEncoder_rand() {

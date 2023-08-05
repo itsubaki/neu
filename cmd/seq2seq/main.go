@@ -57,17 +57,17 @@ func main() {
 			count++
 		}
 
-		var acc float64
-		for k := 0; k < len(x.Test); k++ {
-			q, c := Float64(x.Test)[k], t.Test[k]
-			guess := m.Generate([]matrix.Matrix{matrix.New(q)}, c[0], len(c))
-			//	fmt.Printf("%v %v (%v)\n", v.ToString(x.Test[k]), v.ToString(c), v.ToString(guess))
-			if fmt.Sprintf("%v", v.ToString(c)) == fmt.Sprintf("%v", v.ToString(guess)) {
-				acc++
-			}
+		var acc int
+		n := 10
+		for k := 0; k < n; k++ {
+			q, ans := Float64(x.Test)[k], t.Test[k]
+			guess := m.Generate(Time(matrix.New(q)), ans[0], len(ans))
+			acc += Accuracy(ans, guess)
+
+			fmt.Printf("%v %v (%v)\n", v.ToString(x.Test[k]), v.ToString(ans), v.ToString(guess))
 		}
 
-		fmt.Printf("%2d: loss=%.4v, acc=%f\n", i, total/float64(count), acc/float64(len(x.Test)))
+		fmt.Printf("%2d: loss=%.4f, acc=%.4f\n", i, total/float64(count), float64(acc)/float64(n))
 		total, count = 0.0, 0
 	}
 
@@ -101,4 +101,18 @@ func Float64(x [][]int) [][]float64 {
 	}
 
 	return out
+}
+
+func Accuracy(a, b []int) int {
+	if len(a) != len(b) {
+		return 0
+	}
+
+	for i := range a {
+		if a[i] != b[i] {
+			return 0
+		}
+	}
+
+	return 1
 }
