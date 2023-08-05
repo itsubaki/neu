@@ -51,19 +51,19 @@ func NewSeq2Seq(c *Seq2SeqConfig, s ...rand.Source) *Seq2Seq {
 	}
 }
 
-func (m *Seq2Seq) Forward(xs, ts []matrix.Matrix, opts ...layer.Opts) []matrix.Matrix {
+func (m *Seq2Seq) Forward(xs, ts []matrix.Matrix, opts ...layer.Opts) float64 {
 	dxs, dts := []matrix.Matrix{ts[1]}, ts[1:]     // (1, 128, 1) (4, 128, 1)
 	h := m.Encoder.Forward(xs, opts...)            // (1, 128)
 	score := m.Decoder.Forward(dxs, h, opts...)    // (1, 1, 13)
 	loss := m.Softmax.Forward(score, dts, opts...) // (1, 1, 1)
-	return loss
+	return loss[0][0][0]
 }
 
-func (m *Seq2Seq) Backward(dout []matrix.Matrix) []matrix.Matrix {
-	dout = m.Softmax.Backward(dout) // (1, 13)
-	dh := m.Decoder.Backward(dout)  // (1, 128)
-	dout = m.Encoder.Backward(dh)   // (0, 0, 0)
-	return dout
+func (m *Seq2Seq) Backward() {
+	dout := []matrix.Matrix{matrix.New([]float64{1})} // (1, 1, 1)
+	dout = m.Softmax.Backward(dout)                   // (1, 13)
+	dh := m.Decoder.Backward(dout)                    // (1, 128)
+	m.Encoder.Backward(dh)                            // (0, 0, 0)
 }
 
 func (m *Seq2Seq) Generate(xs []matrix.Matrix, startID, length int) []int {

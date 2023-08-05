@@ -16,12 +16,14 @@ import (
 func main() {
 	// flag
 	var dir string
-	var batchSize int
+	var epochs, batchSize int
 	flag.StringVar(&dir, "dir", "./testdata", "")
+	flag.IntVar(&epochs, "epochs", 10, "")
 	flag.IntVar(&batchSize, "batch-size", 128, "")
 	flag.Parse()
 
 	x, t, v := sequence.Must(sequence.Load(dir, sequence.Addition))
+	xt, tt := Float64(x.Train), Float64(t.Train)
 
 	m := model.NewSeq2Seq(&model.Seq2SeqConfig{
 		VocabSize:   len(v.RuneToID),
@@ -38,19 +40,35 @@ func main() {
 		},
 	}
 
-	xt, tt := Float64(x.Train), Float64(t.Train)
-	xs, ts := trainer.Shuffle(xt, tt) // (45000, 7), (45000, 5)
+	var total float64
+	var count int
+	for i := 0; i < epochs; i++ {
+		xs, ts := trainer.Shuffle(xt, tt) // (45000, 7), (45000, 5)
+		for j := 0; j < len(x.Train)/batchSize; j++ {
+			begin, end := trainer.Range(j, batchSize)
+			xbatch := Time(xs[begin:end]) // (7, 128, 1)
+			tbatch := Time(ts[begin:end]) // (5, 128, 1)
 
-	for j := 0; j < len(x.Train)/batchSize; j++ {
-		begin, end := trainer.Range(j, batchSize)
-		xbatch := Time(xs[begin:end]) // (7, 128, 1)
-		tbatch := Time(ts[begin:end]) // (5, 128, 1)
+			loss := m.Forward(xbatch, tbatch)
+			m.Backward()
+			optimizer.Update(m)
 
-		loss := m.Forward(xbatch, tbatch)
-		m.Backward([]matrix.Matrix{matrix.New([]float64{1})})
-		optimizer.Update(m)
+			total += loss
+			count++
+		}
 
-		fmt.Println(loss)
+		var acc float64
+		for k := 0; k < len(x.Test); k++ {
+			q, c := Float64(x.Test)[k], t.Test[k]
+			guess := m.Generate([]matrix.Matrix{matrix.New(q)}, c[0], len(c))
+			//	fmt.Printf("%v %v (%v)\n", v.ToString(x.Test[k]), v.ToString(c), v.ToString(guess))
+			if fmt.Sprintf("%v", v.ToString(c)) == fmt.Sprintf("%v", v.ToString(guess)) {
+				acc++
+			}
+		}
+
+		fmt.Printf("%2d: loss=%.4v, acc=%f\n", i, total/float64(count), acc/float64(len(x.Test)))
+		total, count = 0.0, 0
 	}
 
 }
@@ -64,6 +82,10 @@ func Time(xbatch matrix.Matrix) []matrix.Matrix {
 			m = append(m, []float64{xbatch[j][i]})
 		}
 		out[i] = m
+	}
+
+	for i := 0; i < T/2; i++ {
+		out[i], out[T-1-i] = out[T-1-i], out[i]
 	}
 
 	return out
