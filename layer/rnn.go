@@ -9,12 +9,12 @@ import (
 
 type RNN struct {
 	Wx, Wh, B       matrix.Matrix // params
-	DWx, DWh, DWB   matrix.Matrix // grads
+	DWx, DWh, DB    matrix.Matrix // grads
 	x, hPrev, hNext matrix.Matrix // cache
 }
 
 func (l *RNN) Params() []matrix.Matrix      { return []matrix.Matrix{l.Wx, l.Wh, l.B} }
-func (l *RNN) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DWx, l.DWh, l.DWB} }
+func (l *RNN) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DWx, l.DWh, l.DB} }
 func (l *RNN) SetParams(p ...matrix.Matrix) { l.Wx, l.Wh, l.B = p[0], p[1], p[2] }
 
 func (l *RNN) Forward(x, h matrix.Matrix, _ ...Opts) matrix.Matrix {
@@ -34,7 +34,7 @@ func (l *RNN) Backward(dhNext matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 
 	l.DWx = matrix.Dot(l.x.T(), dt)     // dot(x.T(D, N), dt(N, H)) -> (D, H)
 	l.DWh = matrix.Dot(l.hPrev.T(), dt) // dot(hPrev.T(H, N), dt(N, H)) -> (H, H)
-	l.DWB = dt.SumAxis0()               // sum(dt(N, H), axis=0) -> (1, H)
+	l.DB = dt.SumAxis0()                // sum(dt(N, H), axis=0) -> (1, H)
 	return dx, dh
 }
 
