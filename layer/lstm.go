@@ -71,9 +71,9 @@ func (l *LSTM) Backward(dhNext, dcNext matrix.Matrix) (matrix.Matrix, matrix.Mat
 	l.DB = dA.SumAxis0()
 
 	// prev
-	dx := matrix.Dot(dA, l.Wx.T())
-	dhPrev := matrix.Dot(dA, l.Wh.T())
-	dcPrev := ds.Mul(l.f)
+	dx := matrix.Dot(dA, l.Wx.T())     // (N, D)
+	dhPrev := matrix.Dot(dA, l.Wh.T()) // (N, H)
+	dcPrev := ds.Mul(l.f)              // (N, H)
 
 	return dx, dhPrev, dcPrev
 }

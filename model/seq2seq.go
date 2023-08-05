@@ -61,8 +61,8 @@ func (m *Seq2Seq) Forward(xs, ts []matrix.Matrix, opts ...layer.Opts) float64 {
 
 func (m *Seq2Seq) Backward() {
 	dout := []matrix.Matrix{matrix.New([]float64{1})} // (1, 1, 1)
-	dout = m.Softmax.Backward(dout)                   // (1, 128, 13)
-	dh := m.Decoder.Backward(dout)                    // (128, 128)
+	dscore := m.Softmax.Backward(dout)                // (1, 128, 13)
+	dh := m.Decoder.Backward(dscore)                  // (128, 128)
 	m.Encoder.Backward(dh)                            // (0, 0, 0)
 }
 

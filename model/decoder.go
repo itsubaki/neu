@@ -90,21 +90,23 @@ func (m *Decoder) Forward(xs []matrix.Matrix, h matrix.Matrix, opts ...layer.Opt
 func (m *Decoder) Backward(dscore []matrix.Matrix) matrix.Matrix {
 	dout := m.TimeAffine.Backward(dscore) // (1, 128)
 	dout = m.TimeLSTM.Backward(dout)
-	dout = m.TimeEmbedding.Backward(dout)
+	m.TimeEmbedding.Backward(dout)
 	return m.TimeLSTM.DH()
 }
 
 func (m *Decoder) Generate(h matrix.Matrix, startID, length int) []int {
-	m.TimeLSTM.SetState(h)
+	m.TimeLSTM.SetState(h) // (1, 128)
 
 	sampled := []int{startID}
-	x := startID
+	sampleID := startID
 	for i := 0; i < length; i++ {
-		xs := []matrix.Matrix{matrix.New([]float64{float64(x)})}
-		out := m.TimeEmbedding.Forward(xs, nil)
-		out = m.TimeLSTM.Forward(out, nil)
-		score := m.TimeAffine.Forward(out, nil)
-		sampled = append(sampled, Argmax(score))
+		xs := []matrix.Matrix{matrix.New([]float64{float64(sampleID)})}
+		out := m.TimeEmbedding.Forward(xs, nil) // (1, 1, 16)
+		out = m.TimeLSTM.Forward(out, nil)      // (1, 1, 128)
+		score := m.TimeAffine.Forward(out, nil) // (1, 1, 13)
+		sampleID = Argmax(score)
+
+		sampled = append(sampled, sampleID)
 	}
 
 	return sampled

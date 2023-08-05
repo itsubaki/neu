@@ -49,42 +49,37 @@ func main() {
 
 		for j := 0; j < len(x.Train)/batchSize; j++ {
 			begin, end := trainer.Range(j, batchSize)
-			xbatch := Time(xs[begin:end], true) // (7, 128, 1)
-			tbatch := Time(ts[begin:end], true) // (5, 128, 1)
+			xbatch := Time(xs[begin:end]) // (7, 128, 1)
+			tbatch := Time(ts[begin:end]) // (5, 128, 1)
 
 			loss := m.Forward(xbatch, tbatch)
 			m.Backward()
 			optimizer.Update(m)
 
+			for k := 0; k < 10; k++ {
+				q, ans := Float64(xt)[k], tt[k]
+				guess := m.Generate(Time(matrix.New(q)), ans[0], len(ans[1:]))
+				fmt.Printf("%v %v (%v)\n", v.ToString(xt[k]), v.ToString(ans), v.ToString(guess))
+			}
+
 			total += loss
 			count++
 		}
 
-		var acc int
-		xts, tts := Shuffle(x.Test, t.Test)
-		for k := 0; k < 128; k++ {
-			q, ans := Float64(xts)[k], tts[k]
-			guess := m.Generate(Time(matrix.New(q), true), ans[0], len(ans[1:]))
-			acc += Accuracy(ans, guess)
-
-			fmt.Printf("%v %v (%v)\n", v.ToString(xt[k]), v.ToString(ans), v.ToString(guess))
-		}
-
-		fmt.Printf("%2d: loss=%.4f, acc=%.4f\n", i, total/float64(count), float64(acc))
+		fmt.Printf("%2d: loss=%.4f\n", i, total/float64(count))
 		total, count = 0.0, 0
 	}
 
 }
 
-func Time(xbatch matrix.Matrix, reverse ...bool) []matrix.Matrix {
-	T := len(xbatch[0])             // 7
+func Time(xs matrix.Matrix, reverse ...bool) []matrix.Matrix {
+	T := len(xs[0])                 // (128, 7)
 	out := make([]matrix.Matrix, T) // (7, 128, 1)
 	for i := 0; i < T; i++ {
-		m := matrix.New()
-		for j := 0; j < len(xbatch); j++ {
-			m = append(m, []float64{xbatch[j][i]})
+		out[i] = matrix.New()
+		for j := 0; j < len(xs); j++ {
+			out[i] = append(out[i], []float64{xs[j][i]})
 		}
-		out[i] = m
 	}
 
 	if len(reverse) > 0 && reverse[0] {
