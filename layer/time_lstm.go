@@ -75,3 +75,7 @@ func (l *TimeLSTM) String() string {
 	e, f := l.B.Dimension()
 	return fmt.Sprintf("%T: Wx(%v, %v), Wh(%v, %v), B(%v, %v): %v", l, a, b, c, d, e, f, a*b+c*d+e*f)
 }
+
+func (l *TimeLSTM) DH() matrix.Matrix {
+	return l.dh
+}

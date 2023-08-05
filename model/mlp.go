@@ -33,23 +33,25 @@ func NewMLP(c *MLPConfig, s ...rand.Source) *MLP {
 	// Affine -> BatchNorm -> ReLU -> ... -> Affine -> SoftmaxWithLoss
 	layers := make([]Layer, 0)
 	for i := 0; i < len(size)-2; i++ {
+		N, H := size[i], size[i+1]
 		layers = append(layers, &layer.Affine{
-			W: matrix.Randn(size[i], size[i+1], s[0]).MulC(c.WeightInit(size[i])),
-			B: matrix.Zero(1, size[i+1]),
+			W: matrix.Randn(N, H, s[0]).MulC(c.WeightInit(N)),
+			B: matrix.Zero(1, H),
 		})
 
 		layers = append(layers, &layer.BatchNorm{
-			Gamma:    matrix.One(1, size[i+1]),
-			Beta:     matrix.Zero(1, size[i+1]),
+			Gamma:    matrix.One(1, H),
+			Beta:     matrix.Zero(1, H),
 			Momentum: c.BatchNormMomentum,
 		})
 
 		layers = append(layers, &layer.ReLU{})
 	}
 
+	H, O := size[len(size)-2], size[len(size)-1]
 	layers = append(layers, &layer.Affine{
-		W: matrix.Randn(size[len(size)-2], size[len(size)-1], s[0]).MulC(c.WeightInit(size[len(size)-2])),
-		B: matrix.Zero(1, size[len(size)-1]),
+		W: matrix.Randn(H, O, s[0]).MulC(c.WeightInit(H)),
+		B: matrix.Zero(1, O),
 	})
 	layers = append(layers, &layer.SoftmaxWithLoss{}) // loss function
 

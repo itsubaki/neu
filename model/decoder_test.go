@@ -9,9 +9,9 @@ import (
 	"github.com/itsubaki/neu/weight"
 )
 
-func ExampleEncoder() {
+func ExampleDecoder() {
 	s := rand.NewSource(1)
-	m := model.NewEncoder(&model.EncoderConfig{
+	m := model.NewDecoder(&model.DecoderConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
 		HiddenSize:  3, // H
@@ -25,12 +25,7 @@ func ExampleEncoder() {
 		matrix.New([]float64{0.1, 0.2, 0.3}), // (1, N) = (1, 3)
 	}
 
-	hs := m.Forward(xs)
-	fmt.Println(len(hs))           // 1
-	fmt.Println(hs[0].Dimension()) // (N, H) = (3, 3)
-
-	// backward
-	dh := []matrix.Matrix{
+	h := []matrix.Matrix{
 		// (T, N, H) = (1, 3, 3)
 		matrix.New(
 			[]float64{0.1, 0.2, 0.3},
@@ -39,17 +34,35 @@ func ExampleEncoder() {
 		),
 	}
 
-	dout := m.Backward(dh)
-	fmt.Println(len(dout))
+	score := m.Forward(xs, h)
+	fmt.Println(len(score))
+	fmt.Println(score[0].Dimension())
+	fmt.Println(score[1].Dimension())
+
+	// backward
+	dout := []matrix.Matrix{
+		matrix.New([]float64{0.1}, []float64{0.1}, []float64{0.1}),
+		matrix.New([]float64{0.1}, []float64{0.1}, []float64{0.1}),
+	}
+	dh := m.Backward(dout)
+	fmt.Println(len(dh))
+	fmt.Println(dh[0].Dimension())
+
+	sampeld := m.Generate(h[0], 1, 10)
+	fmt.Println(sampeld)
 
 	// Output:
+	// 2
+	// 3 3
+	// 3 3
 	// 1
 	// 3 3
-	// 0
+	// [1 2 2 2 0 1 1 1 1 1]
+
 }
 
-func ExampleEncoder_rand() {
-	model.NewEncoder(&model.EncoderConfig{
+func ExampleDecoder_rand() {
+	model.NewDecoder(&model.DecoderConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
 		HiddenSize:  3, // H

@@ -16,8 +16,8 @@ type EncoderConfig struct {
 }
 
 type Encoder struct {
-	TimeEmbedding TimeLayer
-	TimeLSTM      TimeLayer
+	TimeEmbedding *layer.TimeEmbedding
+	TimeLSTM      *layer.TimeLSTM
 	Source        rand.Source
 	hs            []matrix.Matrix
 }
@@ -52,11 +52,11 @@ func (m *Encoder) Forward(xs []matrix.Matrix, opts ...layer.Opts) []matrix.Matri
 	return []matrix.Matrix{hs[len(hs)-1]}          // hs[-1, N, H]
 }
 
-func (m *Encoder) Backward(dh []matrix.Matrix, opts ...layer.Opts) []matrix.Matrix {
-	dhs := Zero(m.hs)
-	dhs[len(m.hs)-1] = dh[0]
-	dout := m.TimeLSTM.Backward(dhs)
-	dout = m.TimeEmbedding.Backward(dout)
+func (m *Encoder) Backward(dh []matrix.Matrix) []matrix.Matrix {
+	dhs := Zero(m.hs)                     // (Time, N, H)
+	dhs[len(m.hs)-1] = dh[0]              // dhs[-1, N, H] = dh[0, N, H]
+	dout := m.TimeLSTM.Backward(dhs)      //
+	dout = m.TimeEmbedding.Backward(dout) // 0
 	return dout
 }
 

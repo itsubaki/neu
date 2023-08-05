@@ -211,7 +211,7 @@ func (m Matrix) Avg() float64 {
 func (m Matrix) Argmax() []int {
 	out := make([]int, len(m))
 	for i := range m {
-		max := -math.MaxFloat64
+		max := math.SmallestNonzeroFloat64
 		for j := range m[i] {
 			if m[i][j] > max {
 				max = m[i][j]
