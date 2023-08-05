@@ -33,14 +33,17 @@ rnnlm10:
 lstm10:
 	go run cmd/rnnlm_lstm/main.go --dir ./testdata --epochs 10
 
-rnnlmgen:
-	go run cmd/rnnlm_gen/main.go --dir ./testdata
+rnnlmgen0:
+	go run cmd/rnnlm_gen/main.go --dir ./testdata --epochs 0
+
+rnnlmgen1:
+	go run cmd/rnnlm_gen/main.go --dir ./testdata --epochs 1
 
 seq2seq:
 	go run cmd/seq2seq/main.go --dir ./testdata
 
-seq2seq3:
-	go run cmd/seq2seq/main.go --dir ./testdata --epochs 3
+seq2seq1:
+	go run cmd/seq2seq/main.go --dir ./testdata --epochs 1
 
 ptbdl:
 	curl -s -o testdata/ptb.train.txt https://raw.githubusercontent.com/tomsercu/lstm/master/data/ptb.train.txt

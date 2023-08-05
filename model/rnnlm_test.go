@@ -46,7 +46,7 @@ func ExampleRNNLM() {
 	//  2: *layer.TimeAffine: W(3, 3), B(1, 3): 12
 	//  3: *layer.TimeSoftmaxWithLoss
 	//
-	// [[1.0884]]
+	// [[1.0893]]
 	// []
 
 }

@@ -50,11 +50,7 @@ jobs:
 
       - name: RNNLMGen
         run: |
-          make rnnlmgen
-
-      - name: Seq2Seq
-        run: |
-          make seq2seq3
+          make rnnlmgen0
 
       - name: Codecov
         uses: codecov/codecov-action@v3

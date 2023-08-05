@@ -19,7 +19,7 @@ func (l *TimeEmbedding) SetState(_ ...matrix.Matrix)  {}
 func (l *TimeEmbedding) ResetState()                  {}
 
 func (l *TimeEmbedding) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matrix {
-	T := len(xs) // xs(Time, 1, N)
+	T := len(xs) // xs(Time, N, 1)
 	out := make([]matrix.Matrix, T)
 	l.layer = make([]*Embedding, T)
 

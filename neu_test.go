@@ -63,8 +63,8 @@ func Example_rNNLM() {
 	//  3: *layer.TimeSoftmaxWithLoss
 	//
 	//  0: ppl=372.1515
-	//  1: ppl=245.6036
-	//  2: ppl=216.2521
+	//  1: ppl=245.5703
+	//  2: ppl=216.1065
 }
 
 func Example_cbow() {

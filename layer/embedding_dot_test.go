@@ -32,7 +32,9 @@ func ExampleEmbeddingDot() {
 	)
 
 	idx := matrix.New(
-		[]float64{0, 3, 1},
+		[]float64{0},
+		[]float64{3},
+		[]float64{1},
 	)
 
 	out := l.Forward(h, idx)

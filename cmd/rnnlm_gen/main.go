@@ -8,14 +8,18 @@ import (
 	"github.com/itsubaki/neu/dataset/ptb"
 	"github.com/itsubaki/neu/math/vector"
 	"github.com/itsubaki/neu/model"
+	"github.com/itsubaki/neu/optimizer"
+	"github.com/itsubaki/neu/optimizer/hook"
+	"github.com/itsubaki/neu/trainer"
 	"github.com/itsubaki/neu/weight"
 )
 
 func main() {
 	// flag
 	var dir, start string
-	var length int
+	var epochs, length int
 	flag.StringVar(&dir, "dir", "./testdata", "")
+	flag.IntVar(&epochs, "epochs", 10, "")
 	flag.StringVar(&start, "start", "you", "")
 	flag.IntVar(&length, "length", 100, "")
 	flag.Parse()
@@ -29,6 +33,25 @@ func main() {
 		WordVecSize: 100,
 		HiddenSize:  100,
 		WeightInit:  weight.Xavier,
+	})
+
+	// train
+	tr := trainer.NewRNNLM(m, &optimizer.SGD{
+		LearningRate: 20,
+		Hooks: []optimizer.Hook{
+			hook.GradsClipping(0.25),
+		},
+	})
+
+	tr.Fit(&trainer.RNNLMInput{
+		Train:      train.Corpus[:len(train.Corpus)-1],
+		TrainLabel: train.Corpus[1:],
+		Epochs:     epochs,
+		BatchSize:  20,
+		TimeSize:   35,
+		Verbose: func(epoch int, perplexity float64, m trainer.RNNLM) {
+			fmt.Printf("%2d: ppl=%.04f\n", epoch, perplexity)
+		},
 	})
 
 	// generate

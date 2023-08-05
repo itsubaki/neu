@@ -22,7 +22,14 @@ func ExampleTimeEmbedding() {
 	fmt.Println()
 
 	// forward
-	xs := []matrix.Matrix{matrix.New([]float64{0, 2, 0, 4})}
+	xs := []matrix.Matrix{
+		matrix.New(
+			[]float64{0},
+			[]float64{2},
+			[]float64{0},
+			[]float64{4},
+		),
+	}
 	fmt.Println(embed.Forward(xs, nil))
 
 	// backward

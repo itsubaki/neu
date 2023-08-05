@@ -21,7 +21,13 @@ func ExampleEmbedding() {
 	fmt.Println(embed.DW)
 
 	// forward
-	x := matrix.New([]float64{0, 2, 0, 4}) // p138
+	// p138
+	x := matrix.New(
+		[]float64{0},
+		[]float64{2},
+		[]float64{0},
+		[]float64{4},
+	)
 	fmt.Println(embed.Forward(x, nil))
 	fmt.Println()
 
