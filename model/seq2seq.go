@@ -52,23 +52,23 @@ func NewSeq2Seq(c *Seq2SeqConfig, s ...rand.Source) *Seq2Seq {
 }
 
 func (m *Seq2Seq) Forward(xs, ts []matrix.Matrix, opts ...layer.Opts) float64 {
-	dxs, dts := []matrix.Matrix{ts[1]}, ts[1:]     // (1, 128, 1) (4, 128, 1)
-	h := m.Encoder.Forward(xs, opts...)            // (1, 128)
-	score := m.Decoder.Forward(dxs, h, opts...)    // (1, 1, 13)
+	dxs, dts := []matrix.Matrix{ts[1]}, ts[1:]     // dxs(1, 128, 1), dts(4, 128, 1)
+	h := m.Encoder.Forward(xs, opts...)            // h(128, 128)
+	score := m.Decoder.Forward(dxs, h, opts...)    // score(1, 128, 13) NOTE: dts.T != score.T
 	loss := m.Softmax.Forward(score, dts, opts...) // (1, 1, 1)
 	return loss[0][0][0]
 }
 
 func (m *Seq2Seq) Backward() {
 	dout := []matrix.Matrix{matrix.New([]float64{1})} // (1, 1, 1)
-	dout = m.Softmax.Backward(dout)                   // (1, 13)
-	dh := m.Decoder.Backward(dout)                    // (1, 128)
+	dout = m.Softmax.Backward(dout)                   // (1, 128, 13)
+	dh := m.Decoder.Backward(dout)                    // (128, 128)
 	m.Encoder.Backward(dh)                            // (0, 0, 0)
 }
 
 func (m *Seq2Seq) Generate(xs []matrix.Matrix, startID, length int) []int {
-	h := m.Encoder.Forward(xs)
-	sampeld := m.Decoder.Generate(h, startID, length)
+	h := m.Encoder.Forward(xs)                        // xs(7, 1, 1), h(1, 128)
+	sampeld := m.Decoder.Generate(h, startID, length) //
 	return sampeld
 }
 
