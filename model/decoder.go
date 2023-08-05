@@ -49,19 +49,49 @@ func NewDecoder(c *DecoderConfig, s ...rand.Source) *Decoder {
 	}
 }
 
-func (m *Decoder) Forward(xs, h []matrix.Matrix, opts ...layer.Opts) []matrix.Matrix {
-	m.TimeLSTM.SetState(h...)
+func (l *Decoder) Params() []matrix.Matrix {
+	return []matrix.Matrix{
+		l.TimeEmbedding.W,
+		l.TimeLSTM.Wx,
+		l.TimeLSTM.Wh,
+		l.TimeLSTM.B,
+		l.TimeAffine.W,
+		l.TimeAffine.B,
+	}
+}
+func (l *Decoder) Grads() []matrix.Matrix {
+	return []matrix.Matrix{
+		l.TimeEmbedding.DW,
+		l.TimeLSTM.DWx,
+		l.TimeLSTM.DWh,
+		l.TimeLSTM.DB,
+		l.TimeAffine.DW,
+		l.TimeAffine.DB,
+	}
+}
+
+func (l *Decoder) SetParams(p ...matrix.Matrix) {
+	l.TimeEmbedding.W = p[0]
+	l.TimeLSTM.Wx = p[1]
+	l.TimeLSTM.Wh = p[2]
+	l.TimeLSTM.B = p[3]
+	l.TimeAffine.W = p[4]
+	l.TimeAffine.B = p[5]
+}
+
+func (m *Decoder) Forward(xs []matrix.Matrix, h matrix.Matrix, opts ...layer.Opts) []matrix.Matrix {
+	m.TimeLSTM.SetState(h)
 	out := m.TimeEmbedding.Forward(xs, nil, opts...)
 	out = m.TimeLSTM.Forward(out, nil, opts...)
 	score := m.TimeAffine.Forward(out, nil, opts...)
 	return score
 }
 
-func (m *Decoder) Backward(dscore []matrix.Matrix) []matrix.Matrix {
+func (m *Decoder) Backward(dscore []matrix.Matrix) matrix.Matrix {
 	dout := m.TimeAffine.Backward(dscore)
 	dout = m.TimeLSTM.Backward(dout)
 	dout = m.TimeEmbedding.Backward(dout)
-	return []matrix.Matrix{m.TimeLSTM.DH()}
+	return m.TimeLSTM.DH()
 }
 
 func (m *Decoder) Generate(h matrix.Matrix, startID, length int) []int {

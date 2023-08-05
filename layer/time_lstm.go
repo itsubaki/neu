@@ -7,16 +7,16 @@ import (
 )
 
 type TimeLSTM struct {
-	Wx, Wh, B     matrix.Matrix // params
-	DWx, DWh, DWB matrix.Matrix // grads
-	h, dh         matrix.Matrix // hidden state
-	c             matrix.Matrix // cell state
-	layer         []*LSTM
-	Stateful      bool
+	Wx, Wh, B    matrix.Matrix // params
+	DWx, DWh, DB matrix.Matrix // grads
+	h, dh        matrix.Matrix // hidden state
+	c            matrix.Matrix // cell state
+	layer        []*LSTM
+	Stateful     bool
 }
 
 func (l *TimeLSTM) Params() []matrix.Matrix      { return []matrix.Matrix{l.Wx, l.Wh, l.B} }
-func (l *TimeLSTM) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DWx, l.DWh, l.DWB} }
+func (l *TimeLSTM) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DWx, l.DWh, l.DB} }
 func (l *TimeLSTM) SetParams(p ...matrix.Matrix) { l.Wx, l.Wh, l.B = p[0], p[1], p[2] }
 func (l *TimeLSTM) SetState(h ...matrix.Matrix)  { l.h = h[0] }
 func (l *TimeLSTM) ResetState()                  { l.h = matrix.New() }
@@ -64,7 +64,7 @@ func (l *TimeLSTM) Backward(dhs []matrix.Matrix) []matrix.Matrix {
 		}
 	}
 
-	l.DWx, l.DWh, l.DWB = grads[0], grads[1], grads[2]
+	l.DWx, l.DWh, l.DB = grads[0], grads[1], grads[2]
 	l.dh = dh
 	return dxs
 }

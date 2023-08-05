@@ -25,14 +25,12 @@ func ExampleDecoder() {
 		matrix.New([]float64{0.1, 0.2, 0.3}), // (1, N) = (1, 3)
 	}
 
-	h := []matrix.Matrix{
-		// (T, N, H) = (1, 3, 3)
-		matrix.New(
-			[]float64{0.1, 0.2, 0.3},
-			[]float64{0.3, 0.4, 0.5},
-			[]float64{0.3, 0.4, 0.5},
-		),
-	}
+	// (N, H) = (3, 3)
+	h := matrix.New(
+		[]float64{0.1, 0.2, 0.3},
+		[]float64{0.3, 0.4, 0.5},
+		[]float64{0.3, 0.4, 0.5},
+	)
 
 	score := m.Forward(xs, h)
 	fmt.Println(len(score))
@@ -45,17 +43,15 @@ func ExampleDecoder() {
 		matrix.New([]float64{0.1}, []float64{0.1}, []float64{0.1}),
 	}
 	dh := m.Backward(dout)
-	fmt.Println(len(dh))
-	fmt.Println(dh[0].Dimension())
+	fmt.Println(dh.Dimension())
 
-	sampeld := m.Generate(h[0], 1, 10)
+	sampeld := m.Generate(h, 1, 10)
 	fmt.Println(sampeld)
 
 	// Output:
 	// 2
 	// 3 3
 	// 3 3
-	// 1
 	// 3 3
 	// [1 2 2 2 0 1 1 1 1 1]
 

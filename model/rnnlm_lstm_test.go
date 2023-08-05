@@ -13,10 +13,12 @@ func ExampleLSTMLM() {
 	// model
 	s := rand.NewSource(1)
 	m := model.NewLSTMLM(&model.LSTMLMConfig{
-		VocabSize:    3,
-		WordVecSize:  3,
-		HiddenSize:   3,
-		WeightInit:   weight.Xavier,
+		RNNLMConfig: model.RNNLMConfig{
+			VocabSize:   3,
+			WordVecSize: 3,
+			HiddenSize:  3,
+			WeightInit:  weight.Xavier,
+		},
 		DropoutRatio: 0.5,
 	}, s)
 
@@ -59,10 +61,12 @@ func ExampleLSTMLM() {
 func ExampleLSTMLM_Params() {
 	s := rand.NewSource(1)
 	m := model.NewLSTMLM(&model.LSTMLMConfig{
-		VocabSize:    3,
-		WordVecSize:  3,
-		HiddenSize:   3,
-		WeightInit:   weight.Xavier,
+		RNNLMConfig: model.RNNLMConfig{
+			VocabSize:   3,
+			WordVecSize: 3,
+			HiddenSize:  3,
+			WeightInit:  weight.Xavier,
+		},
 		DropoutRatio: 0.5,
 	}, s)
 
@@ -125,10 +129,12 @@ func ExampleLSTMLM_Params() {
 func ExampleLSTMLM_ResetState() {
 	s := rand.NewSource(1)
 	m := model.NewLSTMLM(&model.LSTMLMConfig{
-		VocabSize:    3,
-		WordVecSize:  3,
-		HiddenSize:   3,
-		WeightInit:   weight.Xavier,
+		RNNLMConfig: model.RNNLMConfig{
+			VocabSize:   3,
+			WordVecSize: 3,
+			HiddenSize:  3,
+			WeightInit:  weight.Xavier,
+		},
 		DropoutRatio: 0.5,
 	}, s)
 
@@ -139,10 +145,12 @@ func ExampleLSTMLM_ResetState() {
 
 func ExampleLSTMLM_rand() {
 	m := model.NewLSTMLM(&model.LSTMLMConfig{
-		VocabSize:    3,
-		WordVecSize:  3,
-		HiddenSize:   3,
-		WeightInit:   weight.Xavier,
+		RNNLMConfig: model.RNNLMConfig{
+			VocabSize:   3,
+			WordVecSize: 3,
+			HiddenSize:  3,
+			WeightInit:  weight.Xavier,
+		},
 		DropoutRatio: 0.5,
 	})
 

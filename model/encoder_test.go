@@ -26,24 +26,20 @@ func ExampleEncoder() {
 	}
 
 	hs := m.Forward(xs)
-	fmt.Println(len(hs))           // 1
-	fmt.Println(hs[0].Dimension()) // (N, H) = (3, 3)
+	fmt.Println(hs.Dimension()) // (N, H) = (3, 3)
 
 	// backward
-	dh := []matrix.Matrix{
-		// (T, N, H) = (1, 3, 3)
-		matrix.New(
-			[]float64{0.1, 0.2, 0.3},
-			[]float64{0.3, 0.4, 0.5},
-			[]float64{0.3, 0.4, 0.5},
-		),
-	}
+	// (N, H) = (3, 3)
+	dh := matrix.New(
+		[]float64{0.1, 0.2, 0.3},
+		[]float64{0.3, 0.4, 0.5},
+		[]float64{0.3, 0.4, 0.5},
+	)
 
 	dout := m.Backward(dh)
 	fmt.Println(len(dout))
 
 	// Output:
-	// 1
 	// 3 3
 	// 0
 }

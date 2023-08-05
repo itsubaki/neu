@@ -9,16 +9,12 @@ import (
 )
 
 type LSTMLMConfig struct {
-	VocabSize    int
-	WordVecSize  int
-	HiddenSize   int
-	WeightInit   WeightInit
+	RNNLMConfig
 	DropoutRatio float64
 }
 
 type LSTMLM struct {
-	Layer  []TimeLayer
-	Source rand.Source
+	RNNLM
 }
 
 func NewLSTMLM(c *LSTMLMConfig, s ...rand.Source) *LSTMLM {
@@ -63,64 +59,9 @@ func NewLSTMLM(c *LSTMLMConfig, s ...rand.Source) *LSTMLM {
 	}
 
 	return &LSTMLM{
-		Layer:  layers,
-		Source: s[0],
-	}
-}
-
-func (m *LSTMLM) Predict(xs []matrix.Matrix, opts ...layer.Opts) []matrix.Matrix {
-	for _, l := range m.Layer[:len(m.Layer)-1] {
-		xs = l.Forward(xs, nil, opts...)
-	}
-
-	return xs
-}
-
-func (m *LSTMLM) Forward(xs, ts []matrix.Matrix) matrix.Matrix {
-	opts := layer.Opts{Train: true, Source: m.Source}
-	ys := m.Predict(xs, opts)
-	return m.Layer[len(m.Layer)-1].Forward(ys, ts, opts)[0]
-}
-
-func (m *LSTMLM) Backward() []matrix.Matrix {
-	dout := []matrix.Matrix{matrix.New([]float64{1})}
-	for i := len(m.Layer) - 1; i > -1; i-- {
-		dout = m.Layer[i].Backward(dout)
-	}
-
-	return dout
-}
-
-func (m *LSTMLM) Layers() []TimeLayer {
-	return m.Layer
-}
-
-func (m *LSTMLM) Params() [][]matrix.Matrix {
-	params := make([][]matrix.Matrix, 0)
-	for _, l := range m.Layer {
-		params = append(params, l.Params())
-	}
-
-	return params
-}
-
-func (m *LSTMLM) Grads() [][]matrix.Matrix {
-	grads := make([][]matrix.Matrix, 0)
-	for _, l := range m.Layer {
-		grads = append(grads, l.Grads())
-	}
-
-	return grads
-}
-
-func (m *LSTMLM) SetParams(p [][]matrix.Matrix) {
-	for i, l := range m.Layers() {
-		l.SetParams(p[i]...)
-	}
-}
-
-func (m *LSTMLM) ResetState() {
-	for _, l := range m.Layer {
-		l.ResetState()
+		RNNLM{
+			Layer:  layers,
+			Source: s[0],
+		},
 	}
 }

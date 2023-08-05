@@ -45,16 +45,40 @@ func NewEncoder(c *EncoderConfig, s ...rand.Source) *Encoder {
 	}
 }
 
-func (m *Encoder) Forward(xs []matrix.Matrix, opts ...layer.Opts) []matrix.Matrix {
+func (l *Encoder) Params() []matrix.Matrix {
+	return []matrix.Matrix{
+		l.TimeEmbedding.W,
+		l.TimeLSTM.Wx,
+		l.TimeLSTM.Wh,
+		l.TimeLSTM.B,
+	}
+}
+func (l *Encoder) Grads() []matrix.Matrix {
+	return []matrix.Matrix{
+		l.TimeEmbedding.DW,
+		l.TimeLSTM.DWx,
+		l.TimeLSTM.DWh,
+		l.TimeLSTM.DB,
+	}
+}
+
+func (l *Encoder) SetParams(p ...matrix.Matrix) {
+	l.TimeEmbedding.W = p[0]
+	l.TimeLSTM.Wx = p[1]
+	l.TimeLSTM.Wh = p[2]
+	l.TimeLSTM.B = p[3]
+}
+
+func (m *Encoder) Forward(xs []matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
 	xs = m.TimeEmbedding.Forward(xs, nil, opts...) // (Time, N, D)
 	hs := m.TimeLSTM.Forward(xs, nil, opts...)     // (Time, N, H)
 	m.hs = hs                                      // (Time, N, H)
-	return []matrix.Matrix{hs[len(hs)-1]}          // hs[-1, N, H]
+	return hs[len(hs)-1]                           // hs[-1, N, H]
 }
 
-func (m *Encoder) Backward(dh []matrix.Matrix) []matrix.Matrix {
+func (m *Encoder) Backward(dh matrix.Matrix) []matrix.Matrix {
 	dhs := Zero(m.hs)                     // (Time, N, H)
-	dhs[len(m.hs)-1] = dh[0]              // dhs[-1, N, H] = dh[0, N, H]
+	dhs[len(m.hs)-1] = dh                 // dhs[-1, N, H] = dh[N, H]
 	dout := m.TimeLSTM.Backward(dhs)      //
 	dout = m.TimeEmbedding.Backward(dout) // 0
 	return dout

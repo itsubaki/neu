@@ -34,6 +34,7 @@ func NewMLP(c *MLPConfig, s ...rand.Source) *MLP {
 	layers := make([]Layer, 0)
 	for i := 0; i < len(size)-2; i++ {
 		N, H := size[i], size[i+1]
+
 		layers = append(layers, &layer.Affine{
 			W: matrix.Randn(N, H, s[0]).MulC(c.WeightInit(N)),
 			B: matrix.Zero(1, H),
@@ -49,6 +50,7 @@ func NewMLP(c *MLPConfig, s ...rand.Source) *MLP {
 	}
 
 	H, O := size[len(size)-2], size[len(size)-1]
+
 	layers = append(layers, &layer.Affine{
 		W: matrix.Randn(H, O, s[0]).MulC(c.WeightInit(H)),
 		B: matrix.Zero(1, O),
@@ -58,7 +60,7 @@ func NewMLP(c *MLPConfig, s ...rand.Source) *MLP {
 
 	// new
 	return &MLP{
-		Sequential: Sequential{
+		Sequential{
 			Layer:  layers,
 			Source: s[0],
 		},
