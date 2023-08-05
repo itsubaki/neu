@@ -88,7 +88,7 @@ func (m *Decoder) Forward(xs []matrix.Matrix, h matrix.Matrix, opts ...layer.Opt
 }
 
 func (m *Decoder) Backward(dscore []matrix.Matrix) matrix.Matrix {
-	dout := m.TimeAffine.Backward(dscore)
+	dout := m.TimeAffine.Backward(dscore) // (1, 128)
 	dout = m.TimeLSTM.Backward(dout)
 	dout = m.TimeEmbedding.Backward(dout)
 	return m.TimeLSTM.DH()

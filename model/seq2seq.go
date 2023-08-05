@@ -52,15 +52,15 @@ func NewSeq2Seq(c *Seq2SeqConfig, s ...rand.Source) *Seq2Seq {
 }
 
 func (m *Seq2Seq) Forward(xs, ts matrix.Matrix, opts ...layer.Opts) []matrix.Matrix {
-	decoxs, decots := Split(ts)                                     // (128, 1) (128, 4)
-	h := m.Encoder.Forward([]matrix.Matrix{xs}, opts...)            // (7, 128)
-	score := m.Decoder.Forward([]matrix.Matrix{decoxs}, h, opts...) // (1, 1, 13)
-	loss := m.Softmax.Forward(score, []matrix.Matrix{decots}, opts...)
+	decoxs, decots := Split(ts)                                        // (128, 1) (128, 4)
+	h := m.Encoder.Forward([]matrix.Matrix{xs}, opts...)               // (7, 128)
+	score := m.Decoder.Forward([]matrix.Matrix{decoxs}, h, opts...)    // (1, 1, 13)
+	loss := m.Softmax.Forward(score, []matrix.Matrix{decots}, opts...) // (1, 1, 1)
 	return loss
 }
 
 func (m *Seq2Seq) Backward(dout []matrix.Matrix) []matrix.Matrix {
-	dout = m.Softmax.Backward(dout)
+	dout = m.Softmax.Backward(dout) // (1, 13)
 	dh := m.Decoder.Backward(dout)
 	dout = m.Encoder.Backward(dh)
 	return dout
