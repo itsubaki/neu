@@ -45,8 +45,8 @@ rnnlmgen1:
 seq2seq:
 	go run cmd/seq2seq/main.go --dir ./testdata
 
-seq2seq1:
-	go run cmd/seq2seq/main.go --dir ./testdata --epochs 1
+seq2seq0:
+	go run cmd/seq2seq/main.go --dir ./testdata --epochs 0
 
 ptbdl:
 	curl -s -o testdata/ptb.train.txt https://raw.githubusercontent.com/tomsercu/lstm/master/data/ptb.train.txt

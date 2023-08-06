@@ -63,3 +63,39 @@ func ExampleTimeSoftmaxWithLoss_state() {
 
 	// Output:
 }
+
+func ExampleOneHot() {
+	ts := []matrix.Matrix{
+		matrix.New(
+			[]float64{0, 1, 2},
+			[]float64{3, 4, 5},
+		),
+		matrix.New(
+			[]float64{0, 1, 2},
+			[]float64{3, 4, 5},
+		),
+	}
+
+	onehot := layer.OneHot(ts, 6)
+	for _, m := range onehot {
+		for _, r := range m {
+			fmt.Println(r)
+		}
+		fmt.Println()
+	}
+
+	// Output:
+	// [1 0 0 0 0 0]
+	// [0 1 0 0 0 0]
+	// [0 0 1 0 0 0]
+	// [0 0 0 1 0 0]
+	// [0 0 0 0 1 0]
+	// [0 0 0 0 0 1]
+	//
+	// [1 0 0 0 0 0]
+	// [0 1 0 0 0 0]
+	// [0 0 1 0 0 0]
+	// [0 0 0 1 0 0]
+	// [0 0 0 0 1 0]
+	// [0 0 0 0 0 1]
+}

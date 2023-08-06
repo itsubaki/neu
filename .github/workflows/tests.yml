@@ -52,9 +52,13 @@ jobs:
         run: |
           make lstm10
 
-      - name: RNNLMGen
+      - name: RNNLMGen(Elman)
         run: |
           make rnnlmgen0
+
+      - name: Seq2Seq(WIP)
+        run: |
+          make seq2seq0
 
       - name: Codecov
         uses: codecov/codecov-action@v3

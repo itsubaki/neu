@@ -19,7 +19,7 @@ func (l *TimeSoftmaxWithLoss) ResetState()                  {}
 
 func (l *TimeSoftmaxWithLoss) Forward(xs, ts []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 	T, V := len(xs), len(xs[0][0])
-	ots := oneHot(ts, V)
+	ots := OneHot(ts, V)
 	l.layer = make([]*SoftmaxWithLoss, T)
 	l.xs = xs
 
@@ -49,7 +49,7 @@ func (l *TimeSoftmaxWithLoss) String() string {
 	return fmt.Sprintf("%T", l)
 }
 
-func oneHot(ts []matrix.Matrix, size int) []matrix.Matrix {
+func OneHot(ts []matrix.Matrix, size int) []matrix.Matrix {
 	out := make([]matrix.Matrix, 0)
 	for _, t := range ts {
 		m := make(matrix.Matrix, 0)

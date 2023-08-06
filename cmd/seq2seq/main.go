@@ -56,21 +56,15 @@ func main() {
 		Epochs:     epochs,
 		BatchSize:  batchSize,
 		Verbose: func(epoch, j int, loss float64, m *model.Seq2Seq) {
-			if j%(len(x.Train)/batchSize/10) != 0 {
-				return
-			}
-
-			var acc int
-			for k := 0; k < len(x.Test)/100; k++ {
-				q, ans := trainer.Float64(x.Test)[k], t.Test[k] // (1, 7), (5)
-				tq := trainer.Time(matrix.New(q))               // (7, 1, 1)
-				guess := m.Generate(tq, ans[0], len(ans[1:]))
-
-				acc += trainer.SeqAccuracy(ans, guess)
-				fmt.Printf("%v %v, %v(%v)\n", v.ToString(x.Test[k]), v.ToString(ans), v.ToString(guess), guess)
-			}
-
-			fmt.Printf("%2d, %2d: loss=%.04f, acc=%.04f\n", epoch, j, loss, float64(acc)/10.0)
+			fmt.Printf("%2d, %2d: loss=%.04f\n", epoch, j, loss)
 		},
 	})
+
+	for k := 0; k < len(x.Test)/100; k++ {
+		q, ans := trainer.Float64(x.Test)[k], t.Test[k] // (1, 7), (5)
+		tq := trainer.Time(matrix.New(q))               // (7, 1, 1)
+		guess := m.Generate(tq, ans[0], len(ans[1:]))
+
+		fmt.Printf("%v %v, %v(%v)\n", v.ToString(x.Test[k]), v.ToString(ans), v.ToString(guess), guess)
+	}
 }

@@ -40,12 +40,10 @@ func ExampleSeq2Seq_Params() {
 		HiddenSize:  3, // H
 		WeightInit:  weight.Xavier,
 	})
-	m.SetParams(m.Grads())
 
+	m.SetParams(m.Grads())
 	fmt.Println(m.Params())
-	fmt.Println(m.Grads())
 
 	// Output:
-	// [[[] [] [] []] [[] [] [] [] [] []]]
 	// [[[] [] [] []] [[] [] [] [] [] []]]
 }
