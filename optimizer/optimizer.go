@@ -9,6 +9,7 @@ import (
 var (
 	_ Model = (*model.Sequential)(nil)
 	_ Model = (*model.MLP)(nil)
+	_ Model = (*model.CBOW)(nil)
 	_ Model = (*model.RNNLM)(nil)
 	_ Model = (*model.LSTMLM)(nil)
 	_ Model = (*model.RNNMLGen)(nil)

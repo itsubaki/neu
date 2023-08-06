@@ -27,7 +27,7 @@ func Load(dir, fileName string) (*Dataset, error) {
 		return nil, fmt.Errorf("open file=%v: %v", path, err)
 	}
 
-	corpus, w2id, id2w := preprocess(string(bytes))
+	corpus, w2id, id2w := PreProcess(string(bytes))
 	return &Dataset{
 		WordToID: w2id,
 		IDToWord: id2w,
@@ -35,7 +35,7 @@ func Load(dir, fileName string) (*Dataset, error) {
 	}, nil
 }
 
-func preprocess(text string) ([]int, map[string]int, map[int]string) {
+func PreProcess(text string) ([]int, map[string]int, map[int]string) {
 	rep := strings.TrimSpace(strings.ReplaceAll(text, "\n", "<eos>"))
 	words := strings.Split(rep, " ")
 
