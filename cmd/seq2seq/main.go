@@ -60,11 +60,15 @@ func main() {
 		},
 	})
 
-	for k := 0; k < len(x.Test)/100; k++ {
-		q, ans := trainer.Float64(x.Test)[k], t.Test[k] // (1, 7), (5)
-		tq := trainer.Time(matrix.New(q))               // (7, 1, 1)
+	eval(x.Test, t.Test, m, v, 100)
+}
+
+func eval(xs, ts [][]int, m *model.Seq2Seq, v *sequence.Vocab, top int) {
+	for k := 0; k < top; k++ {
+		q, ans := trainer.Float64(xs)[k], ts[k] // (1, 7), (5)
+		tq := trainer.Time(matrix.New(q))       // (7, 1, 1)
 		guess := m.Generate(tq, ans[0], len(ans[1:]))
 
-		fmt.Printf("%v %v, %v(%v)\n", v.ToString(x.Test[k]), v.ToString(ans), v.ToString(guess), guess)
+		fmt.Printf("%v %v, %v (%v)\n", v.ToString(xs[k]), v.ToString(ans), v.ToString(guess), guess)
 	}
 }
