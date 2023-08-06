@@ -55,7 +55,7 @@ func Flatten(m []matrix.Matrix) []float64 {
 	return flatten
 }
 
-func Contains(v int, s []int) bool {
+func Contains[T comparable](v T, s []T) bool {
 	for _, ss := range s {
 		if v == ss {
 			return true

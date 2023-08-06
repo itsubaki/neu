@@ -8,7 +8,11 @@ import (
 	"github.com/itsubaki/neu/model"
 )
 
-var _ RNNLM = (*model.RNNLM)(nil)
+var (
+	_ RNNLM = (*model.RNNLM)(nil)
+	_ RNNLM = (*model.LSTMLM)(nil)
+	_ RNNLM = (*model.RNNMLGen)(nil)
+)
 
 type RNNLM interface {
 	Predict(xs []matrix.Matrix, opts ...layer.Opts) []matrix.Matrix

@@ -81,6 +81,14 @@ func (m *Decoder) Generate(h matrix.Matrix, startID, length int) []int {
 	return sampled
 }
 
+func (m *Decoder) Layers() []TimeLayer {
+	return []TimeLayer{
+		m.TimeEmbedding,
+		m.TimeLSTM,
+		m.TimeAffine,
+	}
+}
+
 func (l *Decoder) Params() []matrix.Matrix {
 	return []matrix.Matrix{
 		l.TimeEmbedding.W,

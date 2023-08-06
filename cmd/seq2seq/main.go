@@ -33,6 +33,13 @@ func main() {
 		WeightInit:  weight.Xavier,
 	})
 
+	// layer
+	fmt.Printf("%T\n", m)
+	for i, l := range m.Layers() {
+		fmt.Printf("%2d: %v\n", i, l)
+	}
+	fmt.Println()
+
 	// training
 	tr := trainer.NewSeq2Seq(m, &optimizer.Adam{
 		LearningRate: 0.001,
@@ -54,7 +61,7 @@ func main() {
 			}
 
 			var acc int
-			for k := 0; k < len(x.Test); k++ {
+			for k := 0; k < len(x.Test)/100; k++ {
 				q, ans := trainer.Float64(x.Test)[k], t.Test[k] // (1, 7), (5)
 				tq := trainer.Time(matrix.New(q))               // (7, 1, 1)
 				guess := m.Generate(tq, ans[0], len(ans[1:]))
@@ -63,7 +70,7 @@ func main() {
 				fmt.Printf("%v %v, %v(%v)\n", v.ToString(x.Test[k]), v.ToString(ans), v.ToString(guess), guess)
 			}
 
-			fmt.Printf("%2d, %2d: loss=%.4f, acc=%.4f\n", epoch, j, loss, float64(acc)/10.0)
+			fmt.Printf("%2d, %2d: loss=%.04f, acc=%.04f\n", epoch, j, loss, float64(acc)/10.0)
 		},
 	})
 }

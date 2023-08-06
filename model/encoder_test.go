@@ -18,6 +18,12 @@ func ExampleEncoder() {
 		WeightInit:  weight.Xavier,
 	}, s)
 
+	fmt.Printf("%T\n", m)
+	for i, l := range m.Layers() {
+		fmt.Printf("%2d: %v\n", i, l)
+	}
+	fmt.Println()
+
 	// forward
 	xs := []matrix.Matrix{
 		// (T, N, 1) = (2, 3, 1)
@@ -39,6 +45,10 @@ func ExampleEncoder() {
 	m.Backward(dh)
 
 	// Output:
+	// *model.Encoder
+	//  0: *layer.TimeEmbedding: W(3, 3): 9
+	//  1: *layer.TimeLSTM: Wx(3, 12), Wh(3, 12), B(1, 12): 84
+	//
 	// 3 3
 }
 
@@ -54,16 +64,16 @@ func ExampleEncoder_rand() {
 }
 
 func ExampleEncoder_Params() {
-	encoder := model.NewEncoder(&model.EncoderConfig{
+	m := model.NewEncoder(&model.EncoderConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
 		HiddenSize:  3, // H
 		WeightInit:  weight.Xavier,
 	})
-	encoder.SetParams(make([]matrix.Matrix, 4)...)
+	m.SetParams(make([]matrix.Matrix, 4)...)
 
-	fmt.Println(encoder.Params())
-	fmt.Println(encoder.Grads())
+	fmt.Println(m.Params())
+	fmt.Println(m.Grads())
 
 	// Output:
 	// [[] [] [] []]

@@ -59,6 +59,13 @@ func (m *Encoder) Backward(dh matrix.Matrix) {
 	m.TimeEmbedding.Backward(dout)
 }
 
+func (m *Encoder) Layers() []TimeLayer {
+	return []TimeLayer{
+		m.TimeEmbedding,
+		m.TimeLSTM,
+	}
+}
+
 func (l *Encoder) Params() []matrix.Matrix {
 	return []matrix.Matrix{
 		l.TimeEmbedding.W,

@@ -18,6 +18,12 @@ func ExampleDecoder() {
 		WeightInit:  weight.Xavier,
 	}, s)
 
+	fmt.Printf("%T\n", m)
+	for i, l := range m.Layers() {
+		fmt.Printf("%2d: %v\n", i, l)
+	}
+	fmt.Println()
+
 	// forward
 	xs := []matrix.Matrix{
 		// (T, N, 1) = (2, 3, 1)
@@ -49,6 +55,11 @@ func ExampleDecoder() {
 	fmt.Println(sampeld)
 
 	// Output:
+	// *model.Decoder
+	//  0: *layer.TimeEmbedding: W(3, 3): 9
+	//  1: *layer.TimeLSTM: Wx(3, 12), Wh(3, 12), B(1, 12): 84
+	//  2: *layer.TimeAffine: W(3, 3), B(1, 3): 12
+	//
 	// 2
 	// 3 3
 	// 3 3
@@ -69,16 +80,16 @@ func ExampleDecoder_rand() {
 }
 
 func ExampleDecoder_Params() {
-	decoder := model.NewDecoder(&model.DecoderConfig{
+	m := model.NewDecoder(&model.DecoderConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
 		HiddenSize:  3, // H
 		WeightInit:  weight.Xavier,
 	})
-	decoder.SetParams(make([]matrix.Matrix, 6)...)
+	m.SetParams(make([]matrix.Matrix, 6)...)
 
-	fmt.Println(decoder.Params())
-	fmt.Println(decoder.Grads())
+	fmt.Println(m.Params())
+	fmt.Println(m.Grads())
 
 	// Output:
 	// [[] [] [] [] [] []]

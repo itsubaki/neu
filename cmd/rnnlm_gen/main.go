@@ -35,6 +35,13 @@ func main() {
 		WeightInit:  weight.Xavier,
 	})
 
+	// layer
+	fmt.Printf("%T\n", m)
+	for i, l := range m.Layers() {
+		fmt.Printf("%2d: %v\n", i, l)
+	}
+	fmt.Println()
+
 	// train
 	tr := trainer.NewRNNLM(m, &optimizer.SGD{
 		LearningRate: 20,

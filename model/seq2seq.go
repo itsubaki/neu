@@ -74,6 +74,14 @@ func (m *Seq2Seq) Generate(xs []matrix.Matrix, startID, length int) []int {
 	return sampeld
 }
 
+func (m *Seq2Seq) Layers() []TimeLayer {
+	layers := make([]TimeLayer, 0)
+	layers = append(layers, m.Encoder.Layers()...)
+	layers = append(layers, m.Decoder.Layers()...)
+	layers = append(layers, m.Softmax)
+	return layers
+}
+
 func (m *Seq2Seq) Params() [][]matrix.Matrix {
 	return [][]matrix.Matrix{
 		m.Encoder.Params(),

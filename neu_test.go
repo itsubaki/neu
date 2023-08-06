@@ -50,8 +50,12 @@ func Example_rNNLM() {
 		Epochs:     3,
 		BatchSize:  10,
 		TimeSize:   5,
-		Verbose: func(epoch int, perplexity float64, m trainer.RNNLM) {
-			fmt.Printf("%2d: ppl=%.04f\n", epoch, perplexity)
+		Verbose: func(epoch, j int, perplexity float64, m trainer.RNNLM) {
+			if j != 18 {
+				return
+			}
+
+			fmt.Printf("%2d, %2d: ppl=%.04f\n", epoch, j, perplexity)
 		},
 	})
 
@@ -62,9 +66,9 @@ func Example_rNNLM() {
 	//  2: *layer.TimeAffine: W(100, 418), B(1, 418): 42218
 	//  3: *layer.TimeSoftmaxWithLoss
 	//
-	//  0: ppl=372.1515
-	//  1: ppl=245.5703
-	//  2: ppl=216.1065
+	//  0, 18: ppl=372.1515
+	//  1, 18: ppl=245.5703
+	//  2, 18: ppl=216.1065
 }
 
 func Example_cbow() {
