@@ -1,6 +1,9 @@
 package trainer
 
 import (
+	"math/rand"
+	"time"
+
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/math/vector"
 	"github.com/itsubaki/neu/model"
@@ -26,12 +29,16 @@ func NewSeq2Seq(m *model.Seq2Seq, o Optimizer) *Seq2SeqTrainer {
 	}
 }
 
-func (t *Seq2SeqTrainer) Fit(in *Seq2SeqInput) {
+func (t *Seq2SeqTrainer) Fit(in *Seq2SeqInput, s ...rand.Source) {
+	if len(s) == 0 {
+		s = append(s, rand.NewSource(time.Now().UnixNano()))
+	}
+
 	var total float64
 	var count int
 	for i := 0; i < in.Epochs; i++ {
-		xt, tt := vector.Shuffle(in.Train, in.TrainLabel) // (45000, 7), (45000, 5)
-		xs, ts := Float64(xt), Float64(tt)                // (45000, 7), (45000, 5)
+		xt, tt := vector.Shuffle(in.Train, in.TrainLabel, s[0]) // (45000, 7), (45000, 5)
+		xs, ts := Float64(xt), Float64(tt)                      // (45000, 7), (45000, 5)
 
 		for j := 0; j < len(in.Train)/in.BatchSize; j++ {
 			// batch
