@@ -52,7 +52,7 @@ func (l *TimeLSTM) Backward(dhs []matrix.Matrix) []matrix.Matrix {
 	grads := []matrix.Matrix{
 		matrix.Zero(1, 1), // DWx(D, 4H)
 		matrix.Zero(1, 1), // DWh(H, 4H)
-		matrix.Zero(1, 1), // DWB(1, 4H)
+		matrix.Zero(1, 1), // DB(1, 4H)
 	}
 
 	for t := T - 1; t > -1; t-- {

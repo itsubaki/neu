@@ -7,15 +7,15 @@ import (
 )
 
 type TimeRNN struct {
-	Wx, Wh, B     matrix.Matrix // params
-	DWx, DWh, DWB matrix.Matrix // grads
-	h, dh         matrix.Matrix // hidden state
-	layer         []*RNN
-	Stateful      bool
+	Wx, Wh, B    matrix.Matrix // params
+	DWx, DWh, DB matrix.Matrix // grads
+	h, dh        matrix.Matrix // hidden state
+	layer        []*RNN
+	Stateful     bool
 }
 
 func (l *TimeRNN) Params() []matrix.Matrix      { return []matrix.Matrix{l.Wx, l.Wh, l.B} }
-func (l *TimeRNN) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DWx, l.DWh, l.DWB} }
+func (l *TimeRNN) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DWx, l.DWh, l.DB} }
 func (l *TimeRNN) SetParams(p ...matrix.Matrix) { l.Wx, l.Wh, l.B = p[0], p[1], p[2] }
 func (l *TimeRNN) SetState(h ...matrix.Matrix)  { l.h = h[0] }
 func (l *TimeRNN) ResetState()                  { l.h = matrix.New() }
@@ -47,7 +47,7 @@ func (l *TimeRNN) Backward(dhs []matrix.Matrix) []matrix.Matrix {
 	grads := []matrix.Matrix{
 		matrix.Zero(1, 1), // DWx(D, H)
 		matrix.Zero(1, 1), // DWh(H, H)
-		matrix.Zero(1, 1), // DWB(1, H)
+		matrix.Zero(1, 1), // DB(1, H)
 	}
 
 	for t := T - 1; t > -1; t-- {
@@ -59,7 +59,7 @@ func (l *TimeRNN) Backward(dhs []matrix.Matrix) []matrix.Matrix {
 		}
 	}
 
-	l.DWx, l.DWh, l.DWB = grads[0], grads[1], grads[2]
+	l.DWx, l.DWh, l.DB = grads[0], grads[1], grads[2]
 	l.dh = dh
 	return dxs
 }
