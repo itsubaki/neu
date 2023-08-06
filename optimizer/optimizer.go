@@ -10,6 +10,8 @@ var (
 	_ Model = (*model.Sequential)(nil)
 	_ Model = (*model.MLP)(nil)
 	_ Model = (*model.RNNLM)(nil)
+	_ Model = (*model.LSTMLM)(nil)
+	_ Model = (*model.RNNMLGen)(nil)
 	_ Model = (*model.Seq2Seq)(nil)
 	_ Hook  = hook.WeightDecay(0.1)
 	_ Hook  = hook.GradsClipping(1.0)
