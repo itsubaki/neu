@@ -40,6 +40,10 @@ jobs:
         run: |
           make mnist1
 
+      - name: CBOW
+        run: |
+          make cbow
+
       - name: RNNLM(Elman)
         run: |
           make rnnlm10

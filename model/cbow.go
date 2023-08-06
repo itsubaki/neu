@@ -66,6 +66,15 @@ func (m *CBOW) Backward() []matrix.Matrix {
 	return nil
 }
 
+func (m *CBOW) Layers() []Layer {
+	return []Layer{
+		m.Win0,
+		m.Win1,
+		m.Wout,
+		m.Loss,
+	}
+}
+
 func (m *CBOW) Params() [][]matrix.Matrix {
 	return [][]matrix.Matrix{
 		m.Win0.Params(),

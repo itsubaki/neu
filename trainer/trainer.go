@@ -15,6 +15,7 @@ var (
 	_ Model     = (*model.Sequential)(nil)
 	_ Model     = (*model.MLP)(nil)
 	_ Optimizer = (*optimizer.AdaGrad)(nil)
+	_ Optimizer = (*optimizer.Adam)(nil)
 	_ Optimizer = (*optimizer.Momentum)(nil)
 	_ Optimizer = (*optimizer.SGD)(nil)
 )

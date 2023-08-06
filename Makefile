@@ -27,6 +27,9 @@ fashiondl:
 	curl -s -o testdata/t10k-images-idx3-ubyte.gz  http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/t10k-images-idx3-ubyte.gz
 	curl -s -o testdata/t10k-labels-idx1-ubyte.gz  http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/t10k-labels-idx1-ubyte.gz
 
+cbow:
+	go run cmd/cbow/main.go
+
 rnnlm10:
 	go run cmd/rnnlm/main.go --dir ./testdata --epochs 10
 
