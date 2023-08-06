@@ -54,6 +54,9 @@ func NewSeq2Seq(c *Seq2SeqConfig, s ...rand.Source) *Seq2Seq {
 }
 
 func (m *Seq2Seq) Forward(xs, ts []matrix.Matrix, opts ...layer.Opts) float64 {
+	// xs:  ['5', '7', '+', '5', ' ', ' ', ' ']
+	// dxs: ['_', '6', '2', ' ']
+	// dts: ['6', '2', ' ', ' ']
 	dxs, dts := ts[:len(ts)-1], ts[1:]             // dxs(4, 128, 1), dts(4, 128, 1)
 	h := m.Encoder.Forward(xs, opts...)            // h(128, 128)
 	score := m.Decoder.Forward(dxs, h, opts...)    // score(4, 128, 13)
