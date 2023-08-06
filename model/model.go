@@ -1,6 +1,10 @@
 package model
 
 import (
+	"encoding/gob"
+	"fmt"
+	"os"
+
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/weight"
@@ -37,3 +41,34 @@ type Layer interface {
 
 // WeightInit is an interface that represents a weight initializer.
 type WeightInit func(prevNodeNum int) float64
+
+// Save saves the params to a file.
+func Save(params [][]matrix.Matrix, filename string) error {
+	f, err := os.Create(filename)
+	if err != nil {
+		return fmt.Errorf("failed to create file: %v", err)
+	}
+	defer f.Close()
+
+	if err := gob.NewEncoder(f).Encode(params); err != nil {
+		return fmt.Errorf("failed to encode: %v", err)
+	}
+
+	return nil
+}
+
+// Load loads the params from a file.
+func Load(filename string) ([][]matrix.Matrix, error) {
+	f, err := os.Open(filename)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open file: %v", err)
+	}
+	defer f.Close()
+
+	var params [][]matrix.Matrix
+	if err := gob.NewDecoder(f).Decode(&params); err != nil {
+		return nil, fmt.Errorf("failed to decode: %v", err)
+	}
+
+	return params, nil
+}

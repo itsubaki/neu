@@ -21,3 +21,4 @@ oryxBuildBinary
 # testdata
 testdata/*.txt
 testdata/*.gz
+testdata/*.gob
