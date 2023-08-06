@@ -62,3 +62,13 @@ func ExampleSave() {
 	// [[-0.99850615185362 -0.8735745490443111 -0.35893473513830193] [-0.856741326139307 -0.7936222313917066 -0.8551184242008208] [-1.3523004659817737 0.010824866871354984 0.06396365739557436]]
 	// [[0 0 0]]
 }
+
+func ExampleLoad_notfound() {
+	if _, err := model.Load("invalid_dir"); err != nil {
+		fmt.Println("failed to save params:", err)
+		return
+	}
+
+	// Output:
+	// failed to save params: failed to open file: open invalid_dir: no such file or directory
+}
