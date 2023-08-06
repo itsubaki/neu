@@ -49,6 +49,38 @@ func NewDecoder(c *DecoderConfig, s ...rand.Source) *Decoder {
 	}
 }
 
+func (m *Decoder) Forward(xs []matrix.Matrix, h matrix.Matrix, opts ...layer.Opts) []matrix.Matrix {
+	m.TimeLSTM.SetState(h)                           // h(128, 128)
+	out := m.TimeEmbedding.Forward(xs, nil, opts...) // xs(1, 128, 1), out(1, 128, 16)
+	out = m.TimeLSTM.Forward(out, nil, opts...)      // out(1, 128, 128)
+	score := m.TimeAffine.Forward(out, nil, opts...) // score(1, 128, 13)
+	return score
+}
+
+func (m *Decoder) Backward(dscore []matrix.Matrix) matrix.Matrix {
+	dout := m.TimeAffine.Backward(dscore) // (4, 128, 128)
+	dout = m.TimeLSTM.Backward(dout)      // (4, 128, 16)
+	m.TimeEmbedding.Backward(dout)        //
+	return m.TimeLSTM.DH()                // (128, 128)
+}
+
+func (m *Decoder) Generate(h matrix.Matrix, startID, length int) []int {
+	m.TimeLSTM.SetState(h) // (1, 128)
+
+	sampled := []int{startID}
+	sampleID := startID
+	for i := 0; i < length; i++ {
+		xs := []matrix.Matrix{matrix.New([]float64{float64(sampleID)})}
+		out := m.TimeEmbedding.Forward(xs, nil) // (1, 1, 16)
+		out = m.TimeLSTM.Forward(out, nil)      // (1, 1, 128)
+		score := m.TimeAffine.Forward(out, nil) // (1, 1, 13)
+		sampleID = Argmax(score)                // 0~12
+		sampled = append(sampled, sampleID)
+	}
+
+	return sampled
+}
+
 func (l *Decoder) Params() []matrix.Matrix {
 	return []matrix.Matrix{
 		l.TimeEmbedding.W,
@@ -77,39 +109,6 @@ func (l *Decoder) SetParams(p ...matrix.Matrix) {
 	l.TimeLSTM.B = p[3]
 	l.TimeAffine.W = p[4]
 	l.TimeAffine.B = p[5]
-}
-
-func (m *Decoder) Forward(xs []matrix.Matrix, h matrix.Matrix, opts ...layer.Opts) []matrix.Matrix {
-	m.TimeLSTM.SetState(h)                           // h(128, 128)
-	out := m.TimeEmbedding.Forward(xs, nil, opts...) // xs(1, 128, 1), out(1, 128, 16)
-	out = m.TimeLSTM.Forward(out, nil, opts...)      // out(1, 128, 128)
-	score := m.TimeAffine.Forward(out, nil, opts...) // score(1, 128, 13)
-	return score
-}
-
-func (m *Decoder) Backward(dscore []matrix.Matrix) matrix.Matrix {
-	dout := m.TimeAffine.Backward(dscore) // (1, 128)
-	dout = m.TimeLSTM.Backward(dout)
-	m.TimeEmbedding.Backward(dout)
-	return m.TimeLSTM.DH()
-}
-
-func (m *Decoder) Generate(h matrix.Matrix, startID, length int) []int {
-	m.TimeLSTM.SetState(h) // (1, 128)
-
-	sampled := []int{startID}
-	sampleID := startID
-	for i := 0; i < length; i++ {
-		xs := []matrix.Matrix{matrix.New([]float64{float64(sampleID)})}
-		out := m.TimeEmbedding.Forward(xs, nil) // (1, 1, 16)
-		out = m.TimeLSTM.Forward(out, nil)      // (1, 1, 128)
-		score := m.TimeAffine.Forward(out, nil) // (1, 1, 13)
-		sampleID = Argmax(score)
-
-		sampled = append(sampled, sampleID)
-	}
-
-	return sampled
 }
 
 func Argmax(score []matrix.Matrix) int {

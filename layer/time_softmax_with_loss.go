@@ -18,9 +18,9 @@ func (l *TimeSoftmaxWithLoss) SetState(h ...matrix.Matrix)  {}
 func (l *TimeSoftmaxWithLoss) ResetState()                  {}
 
 func (l *TimeSoftmaxWithLoss) Forward(xs, ts []matrix.Matrix, _ ...Opts) []matrix.Matrix {
-	T, V := len(xs), len(xs[0][0])
-	l.ys = make([]matrix.Matrix, T)
-	l.ts = oneHot(ts, V)
+	T, V := len(xs), len(xs[0][0])  // xs(4, 128, 13)
+	l.ys = make([]matrix.Matrix, T) // ys(4, 128, 13)
+	l.ts = oneHot(ts, V)            // ts(4, 128, 1) -> (4, 128, 13)
 
 	// naive
 	var loss float64

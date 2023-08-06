@@ -61,7 +61,7 @@ func (m *Seq2Seq) Forward(xs, ts []matrix.Matrix, opts ...layer.Opts) float64 {
 
 func (m *Seq2Seq) Backward() {
 	dout := []matrix.Matrix{matrix.New([]float64{1})} // (1, 1, 1)
-	dscore := m.Softmax.Backward(dout)                // (1, 128, 13)
+	dscore := m.Softmax.Backward(dout)                // (4, 128, 13)
 	dh := m.Decoder.Backward(dscore)                  // (128, 128)
 	m.Encoder.Backward(dh)                            // (0, 0, 0)
 }
@@ -73,17 +73,17 @@ func (m *Seq2Seq) Generate(xs []matrix.Matrix, startID, length int) []int {
 }
 
 func (m *Seq2Seq) Params() [][]matrix.Matrix {
-	params := make([][]matrix.Matrix, 2)
-	params[0] = m.Encoder.Params()
-	params[1] = m.Decoder.Params()
-	return params
+	return [][]matrix.Matrix{
+		m.Encoder.Params(),
+		m.Decoder.Params(),
+	}
 }
 
 func (m *Seq2Seq) Grads() [][]matrix.Matrix {
-	grads := make([][]matrix.Matrix, 2)
-	grads[0] = m.Encoder.Grads()
-	grads[1] = m.Decoder.Grads()
-	return grads
+	return [][]matrix.Matrix{
+		m.Encoder.Grads(),
+		m.Decoder.Grads(),
+	}
 }
 
 func (m *Seq2Seq) SetParams(p [][]matrix.Matrix) {

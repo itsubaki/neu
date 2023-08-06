@@ -32,10 +32,9 @@ func (l *Embedding) Forward(idx, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 }
 
 func (l *Embedding) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	l.DW = matrix.Zero(len(l.W), len(l.W[0]))
-
-	for i, v := range l.idx {
-		l.DW[v] = vector.Add(l.DW[v], dout[i])
+	l.DW = matrix.Zero(len(l.W), len(l.W[0])) // DW(V, D) (13, 16)
+	for i, v := range l.idx {                 // idx(N, 1) (128, 1)
+		l.DW[v] = vector.Add(l.DW[v], dout[i]) // dout(N, D) (128, 16)
 	}
 
 	return nil, nil
