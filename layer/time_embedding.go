@@ -35,7 +35,7 @@ func (l *TimeEmbedding) Backward(dout []matrix.Matrix) []matrix.Matrix {
 	T := len(dout) // dhs(Time, N, H)
 
 	grad := matrix.Zero(1, 1)
-	for t := T - 1; t > -1; t-- {
+	for t := 0; t < T; t++ {
 		l.layer[t].Backward(dout[t])
 		grad = l.layer[t].DW.Add(grad) // Broadcast
 	}

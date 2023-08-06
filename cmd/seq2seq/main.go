@@ -49,8 +49,8 @@ func main() {
 
 		for j := 0; j < len(x.Train)/batchSize; j++ {
 			begin, end := trainer.Range(j, batchSize)
-			xbatch := Time(xs[begin:end]) // (7, 128, 1)
-			tbatch := Time(ts[begin:end]) // (5, 128, 1)
+			xbatch := Time(xs[begin:end]) // (128, 7) -> (7, 128, 1)
+			tbatch := Time(ts[begin:end]) // (128, 5) -> (5, 128, 1)
 
 			loss := m.Forward(xbatch, tbatch)
 			m.Backward()
@@ -59,7 +59,7 @@ func main() {
 			for k := 0; k < 10; k++ {
 				q, ans := Float64(xt)[k], tt[k]
 				guess := m.Generate(Time(matrix.New(q)), ans[0], len(ans[1:]))
-				fmt.Printf("%v %v (%v)\n", v.ToString(xt[k]), v.ToString(ans), v.ToString(guess))
+				fmt.Printf("%v %v, %v(%v)\n", v.ToString(xt[k]), v.ToString(ans), v.ToString(guess), guess)
 			}
 
 			total += loss

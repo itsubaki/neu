@@ -7,8 +7,8 @@ import (
 )
 
 type TimeSoftmaxWithLoss struct {
-	ts []matrix.Matrix
-	ys []matrix.Matrix
+	layer []*SoftmaxWithLoss
+	xs    []matrix.Matrix
 }
 
 func (l *TimeSoftmaxWithLoss) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
@@ -18,29 +18,28 @@ func (l *TimeSoftmaxWithLoss) SetState(h ...matrix.Matrix)  {}
 func (l *TimeSoftmaxWithLoss) ResetState()                  {}
 
 func (l *TimeSoftmaxWithLoss) Forward(xs, ts []matrix.Matrix, _ ...Opts) []matrix.Matrix {
-	T, V := len(xs), len(xs[0][0])  // xs(4, 128, 13)
-	l.ys = make([]matrix.Matrix, T) // ys(4, 128, 13)
-	l.ts = oneHot(ts, V)            // ts(4, 128, 1) -> (4, 128, 13)
+	T, V := len(xs), len(xs[0][0])
+	ots := oneHot(ts, V)
+	l.layer = make([]*SoftmaxWithLoss, T)
+	l.xs = xs
 
-	// naive
 	var loss float64
 	for t := 0; t < T; t++ {
-		l.ys[t] = Softmax(xs[t])
-		loss += Loss(l.ys[t], l.ts[t])
+		l.layer[t] = &SoftmaxWithLoss{}
+		loss += l.layer[t].Forward(xs[t], ots[t])[0][0]
 	}
 
-	return []matrix.Matrix{{{loss / float64(T)}}}
+	return []matrix.Matrix{matrix.New([]float64{loss / float64(T)})}
 }
 
 func (l *TimeSoftmaxWithLoss) Backward(dout []matrix.Matrix) []matrix.Matrix {
-	T := len(l.ys)
+	T := len(l.xs)
 	dx := make([]matrix.Matrix, T)
 	do := dout[0].MulC(1.0 / float64(T))
 
 	// naive
-	for t := T - 1; t > -1; t-- {
-		size, _ := l.ts[t].Dimension()
-		dx[t] = l.ys[t].Sub(l.ts[t]).Mul(do).MulC(1.0 / float64(size)) // (y - t) * dout / size
+	for t := 0; t < T; t++ {
+		dx[t], _ = l.layer[t].Backward(do)
 	}
 
 	return dx

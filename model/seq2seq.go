@@ -19,6 +19,7 @@ type Seq2Seq struct {
 	Encoder *Encoder
 	Decoder *Decoder
 	Softmax *layer.TimeSoftmaxWithLoss
+	Source  rand.Source
 }
 
 func NewSeq2Seq(c *Seq2SeqConfig, s ...rand.Source) *Seq2Seq {
@@ -35,19 +36,20 @@ func NewSeq2Seq(c *Seq2SeqConfig, s ...rand.Source) *Seq2Seq {
 		WordVecSize: D,
 		HiddenSize:  H,
 		WeightInit:  c.WeightInit,
-	})
+	}, s[0])
 
 	decoder := NewDecoder(&DecoderConfig{
 		VocabSize:   V,
 		WordVecSize: D,
 		HiddenSize:  H,
 		WeightInit:  c.WeightInit,
-	})
+	}, s[0])
 
 	return &Seq2Seq{
 		Encoder: encoder,
 		Decoder: decoder,
 		Softmax: &layer.TimeSoftmaxWithLoss{},
+		Source:  s[0],
 	}
 }
 
