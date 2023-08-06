@@ -25,7 +25,7 @@ type RNNLMInput struct {
 	Epochs     int
 	BatchSize  int
 	TimeSize   int
-	Verbose    func(epoch int, perplexity float64, m RNNLM)
+	Verbose    func(epoch, j int, perplexity float64, m RNNLM)
 }
 
 type RNNLMTrainer struct {
@@ -51,11 +51,11 @@ func (t *RNNLMTrainer) Fit(in *RNNLMInput) {
 	}
 
 	maxIter := dataSize / (in.BatchSize * in.TimeSize)
-	var timeIdx, lossCount int
 	var totalLoss float64
+	var timeIdx, lossCount int
 
 	for epoch := 0; epoch < in.Epochs; epoch++ {
-		for iter := 0; iter < maxIter; iter++ {
+		for j := 0; j < maxIter; j++ {
 			// (Time, N, 1)
 			xbatch, tbatch := make([]matrix.Matrix, in.TimeSize), make([]matrix.Matrix, in.TimeSize)
 			for t := 0; t < in.TimeSize; t++ {
@@ -69,18 +69,20 @@ func (t *RNNLMTrainer) Fit(in *RNNLMInput) {
 				timeIdx++
 			}
 
+			// update
 			loss := t.Model.Forward(xbatch, tbatch)
 			t.Model.Backward()
 			t.Optimizer.Update(t.Model)
 
 			totalLoss += loss[0][0]
 			lossCount++
+
+			// verbose
+			ppl := Perplexity(totalLoss, lossCount)
+			in.Verbose(epoch, j, ppl, t.Model)
 		}
 
-		ppl := Perplexity(totalLoss, lossCount)
 		totalLoss, lossCount = 0, 0
-
-		in.Verbose(epoch, ppl, t.Model)
 	}
 }
 

@@ -44,15 +44,21 @@ func ExampleRNNLMTrainer() {
 		Epochs:     3,
 		BatchSize:  1,
 		TimeSize:   2,
-		Verbose: func(epoch int, perplexity float64, m trainer.RNNLM) {
-			fmt.Printf("%d: %T\n", epoch, m)
+		Verbose: func(epoch, j int, perplexity float64, m trainer.RNNLM) {
+			fmt.Printf("%d, %d: %T\n", epoch, j, m)
 		},
 	})
 
 	// Output:
-	// 0: *trainer_test.TestRNNLM
-	// 1: *trainer_test.TestRNNLM
-	// 2: *trainer_test.TestRNNLM
+	// 0, 0: *trainer_test.TestRNNLM
+	// 0, 1: *trainer_test.TestRNNLM
+	// 0, 2: *trainer_test.TestRNNLM
+	// 1, 0: *trainer_test.TestRNNLM
+	// 1, 1: *trainer_test.TestRNNLM
+	// 1, 2: *trainer_test.TestRNNLM
+	// 2, 0: *trainer_test.TestRNNLM
+	// 2, 1: *trainer_test.TestRNNLM
+	// 2, 2: *trainer_test.TestRNNLM
 
 }
 

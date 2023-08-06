@@ -34,10 +34,12 @@ func (t *Seq2SeqTrainer) Fit(in *Seq2SeqInput) {
 		xs, ts := Float64(xt), Float64(tt)                // (45000, 7), (45000, 5)
 
 		for j := 0; j < len(in.Train)/in.BatchSize; j++ {
+			// batch
 			begin, end := Range(j, in.BatchSize)
 			xbatch := Time(xs[begin:end]) // (128, 7) -> (7, 128, 1)
 			tbatch := Time(ts[begin:end]) // (128, 5) -> (5, 128, 1)
 
+			// update
 			loss := t.Model.Forward(xbatch, tbatch)
 			t.Model.Backward()
 			t.Optimizer.Update(t.Model)
@@ -45,6 +47,7 @@ func (t *Seq2SeqTrainer) Fit(in *Seq2SeqInput) {
 			total += loss
 			count++
 
+			// verbose
 			in.Verbose(i, j, total/float64(count), t.Model)
 		}
 
