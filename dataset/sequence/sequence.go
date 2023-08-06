@@ -8,6 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/itsubaki/neu/math/vector"
 )
 
 const Addition = "addition.txt"
@@ -80,7 +82,7 @@ func Load(dir, fileName string, s ...rand.Source) (*Dataset, *Dataset, *Vocab, e
 
 	// data
 	x, t := v.ID(q), v.ID(ans)
-	xs, ts := shuffle(x, t, s[0])
+	xs, ts := vector.Shuffle(x, t, s[0])
 
 	// 10% for validation set
 	idx := len(xs) - len(xs)/10
@@ -114,26 +116,6 @@ func vocab(q, ans []string) *Vocab {
 		RuneToID: r2id,
 		IDToRune: id2r,
 	}
-}
-
-func shuffle(x, t [][]int, s ...rand.Source) ([][]int, [][]int) {
-	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
-	}
-	rng := rand.New(s[0])
-
-	xs, ts := make([][]int, len(x)), make([][]int, len(x))
-	for i := range x {
-		xs[i], ts[i] = x[i], t[i]
-	}
-
-	for i := 0; i < len(x); i++ {
-		j := rng.Intn(i + 1)
-		xs[i], xs[j] = xs[j], xs[i]
-		ts[i], ts[j] = ts[j], ts[i]
-	}
-
-	return xs, ts
 }
 
 func Must(train, test *Dataset, vocab *Vocab, err error) (*Dataset, *Dataset, *Vocab) {

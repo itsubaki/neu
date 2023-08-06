@@ -6,6 +6,7 @@ import (
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/vector"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
 )
@@ -59,7 +60,7 @@ func (t *Trainer) Fit(in *Input, s ...rand.Source) {
 
 	for i := 0; i < in.Epochs; i++ {
 		// shuffle dataset
-		xs, ts := Shuffle(in.Train, in.TrainLabel, s[0])
+		xs, ts := vector.Shuffle(in.Train, in.TrainLabel, s[0])
 		for j := 0; j < len(in.Train)/in.BatchSize; j++ {
 			// batch
 			begin, end := Range(j, in.BatchSize)
@@ -81,29 +82,6 @@ func Range(i, batchSize int) (int, int) {
 	begin := i * batchSize
 	end := begin + batchSize
 	return begin, end
-}
-
-// Shuffle shuffles the dataset.
-func Shuffle(x, t matrix.Matrix, s ...rand.Source) (matrix.Matrix, matrix.Matrix) {
-	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
-	}
-	rng := rand.New(s[0])
-
-	xs, ts := make(matrix.Matrix, len(x)), make(matrix.Matrix, len(t))
-	for i := 0; i < len(x); i++ {
-		xs[i], ts[i] = x[i], t[i]
-	}
-
-	for i := 0; i < len(x); i++ {
-		j := rng.Intn(i + 1)
-
-		// swap
-		xs[i], xs[j] = xs[j], xs[i]
-		ts[i], ts[j] = ts[j], ts[i]
-	}
-
-	return xs, ts
 }
 
 // Random returns random index.

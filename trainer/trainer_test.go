@@ -105,24 +105,3 @@ func ExampleRandom() {
 	// [0 1 2 3]
 	// [0]
 }
-
-func ExampleShuffle() {
-	x := matrix.New([]float64{0, 1}, []float64{0, 2}, []float64{0, 3}, []float64{0, 4})
-	t := matrix.New([]float64{1, 0}, []float64{2, 0}, []float64{3, 0}, []float64{4, 0})
-
-	s := rand.NewSource(1234)
-	fmt.Println(trainer.Shuffle(x, t, s))
-	fmt.Println(trainer.Shuffle(x, t, s))
-	fmt.Println(trainer.Shuffle(x, t, s))
-	fmt.Println(x, t)
-
-	fmt.Println(trainer.Shuffle(matrix.New([]float64{0}), matrix.New([]float64{1})))
-
-	// Output:
-	// [[0 4] [0 2] [0 3] [0 1]] [[4 0] [2 0] [3 0] [1 0]]
-	// [[0 2] [0 3] [0 1] [0 4]] [[2 0] [3 0] [1 0] [4 0]]
-	// [[0 2] [0 4] [0 3] [0 1]] [[2 0] [4 0] [3 0] [1 0]]
-	// [[0 1] [0 2] [0 3] [0 4]] [[1 0] [2 0] [3 0] [4 0]]
-	// [[0]] [[1]]
-
-}

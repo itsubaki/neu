@@ -1,6 +1,10 @@
 package vector
 
-import "math"
+import (
+	"math"
+	"math/rand"
+	"time"
+)
 
 func Add(v, w []float64) []float64 {
 	out := make([]float64, len(v))
@@ -29,4 +33,27 @@ func Max(v []int) int {
 	}
 
 	return max
+}
+
+// Shuffle shuffles the dataset.
+func Shuffle[T any](x, t []T, s ...rand.Source) ([]T, []T) {
+	if len(s) == 0 {
+		s = append(s, rand.NewSource(time.Now().UnixNano()))
+	}
+	rng := rand.New(s[0])
+
+	xs, ts := make([]T, len(x)), make([]T, len(t))
+	for i := 0; i < len(x); i++ {
+		xs[i], ts[i] = x[i], t[i]
+	}
+
+	for i := 0; i < len(x); i++ {
+		j := rng.Intn(i + 1)
+
+		// swap
+		xs[i], xs[j] = xs[j], xs[i]
+		ts[i], ts[j] = ts[j], ts[i]
+	}
+
+	return xs, ts
 }

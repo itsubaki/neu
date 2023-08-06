@@ -51,16 +51,6 @@ func ExampleLoad_notfound() {
 	// open file=invalid_dir/invlid_file: open invalid_dir/invlid_file: no such file or directory
 }
 
-func ExampleShuffle() {
-	xs, ts := sequence.Shuffle([][]int{{1, 2, 3}, {4, 5, 6}}, [][]int{{7, 8, 9}, {10, 11, 12}})
-	fmt.Println(len(xs), len(xs[0]))
-	fmt.Println(len(ts), len(ts[0]))
-
-	// Output:
-	// 2 3
-	// 2 3
-}
-
 func TestMust(t *testing.T) {
 	defer func() {
 		if rec := recover(); rec != nil {
