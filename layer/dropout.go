@@ -30,7 +30,7 @@ func (l *Dropout) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
 
 func (l *Dropout) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	dx := dout.Mul(l.mask)
-	return dx, matrix.New()
+	return dx, nil
 }
 
 func (l *Dropout) String() string {

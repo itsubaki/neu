@@ -14,9 +14,9 @@ type TestModel struct {
 	grads  [][]matrix.Matrix
 }
 
-func (m *TestModel) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix { return matrix.New() }
-func (m *TestModel) Forward(x, t matrix.Matrix) matrix.Matrix                  { return matrix.New() }
-func (m *TestModel) Backward(x, t matrix.Matrix) matrix.Matrix                 { return matrix.New() }
+func (m *TestModel) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix { return nil }
+func (m *TestModel) Forward(x, t matrix.Matrix) matrix.Matrix                  { return nil }
+func (m *TestModel) Backward(x, t matrix.Matrix) matrix.Matrix                 { return nil }
 func (m *TestModel) Layers() []model.Layer                                     { return []model.Layer{&layer.ReLU{}} }
 func (m *TestModel) Params() [][]matrix.Matrix                                 { return m.params }
 func (m *TestModel) Grads() [][]matrix.Matrix                                  { return m.grads }

@@ -26,7 +26,7 @@ func (l *Affine) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	dx := matrix.Dot(dout, l.W.T())
 	l.DW = matrix.Dot(l.x.T(), dout)
 	l.DB = dout.SumAxis0()
-	return dx, matrix.New()
+	return dx, nil
 }
 
 func (l *Affine) String() string {

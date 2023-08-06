@@ -30,7 +30,7 @@ func (l *SigmoidWithLoss) Forward(x, t matrix.Matrix, _ ...Opts) matrix.Matrix {
 func (l *SigmoidWithLoss) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	size, _ := l.t.Dimension()
 	dx := l.y.Sub(l.t).Mul(dout).MulC(1.0 / float64(size)) // (y - t) * dout / size
-	return dx, matrix.New()
+	return dx, nil
 }
 
 func (l *SigmoidWithLoss) String() string {

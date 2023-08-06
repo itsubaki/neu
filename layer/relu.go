@@ -22,7 +22,7 @@ func (l *ReLU) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 
 func (l *ReLU) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	dx := dout.Mul(l.mask)
-	return dx, matrix.New()
+	return dx, nil
 }
 
 func (l *ReLU) String() string {

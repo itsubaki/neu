@@ -72,7 +72,7 @@ func (l *BatchNorm) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) 
 
 	// dx
 	dx := dxc.Sub(dmu.MulC(1.0 / float64(l.batchSize))) // dxc - dmu / batchSize
-	return dx, matrix.New()
+	return dx, nil
 }
 
 func (l *BatchNorm) String() string {

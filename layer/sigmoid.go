@@ -23,7 +23,7 @@ func (l *Sigmoid) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 
 func (l *Sigmoid) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	dx := dout.Mul(matrix.Func(l.out, dsigmoid))
-	return dx, matrix.New()
+	return dx, nil
 }
 
 func (l *Sigmoid) String() string {

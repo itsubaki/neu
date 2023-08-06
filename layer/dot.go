@@ -26,7 +26,7 @@ func (l *Dot) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	dx := matrix.Dot(dout, l.W.T())
 	dW := matrix.Dot(l.x.T(), dout)
 	l.DW = dW
-	return dx, matrix.New()
+	return dx, nil
 }
 
 func (l *Dot) String() string {

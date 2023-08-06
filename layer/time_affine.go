@@ -9,7 +9,7 @@ import (
 type TimeAffine struct {
 	W, B   matrix.Matrix // params
 	DW, DB matrix.Matrix // grads
-	xs     []matrix.Matrix
+	layer  []*Affine
 }
 
 func (l *TimeAffine) Params() []matrix.Matrix      { return []matrix.Matrix{l.W, l.B} }
@@ -19,13 +19,13 @@ func (l *TimeAffine) SetState(_ ...matrix.Matrix)  {}
 func (l *TimeAffine) ResetState()                  {}
 
 func (l *TimeAffine) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
-	// naive
 	T := len(xs)
+	l.layer = make([]*Affine, T)
 	out := make([]matrix.Matrix, T)
-	l.xs = xs
 
 	for t := 0; t < T; t++ {
-		out[t] = matrix.Dot(xs[t], l.W).Add(l.B) // x.W + B
+		l.layer[t] = &Affine{W: l.W, B: l.B}
+		out[t] = l.layer[t].Forward(xs[t], nil)
 	}
 
 	return out
@@ -34,17 +34,17 @@ func (l *TimeAffine) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 func (l *TimeAffine) Backward(dout []matrix.Matrix) []matrix.Matrix {
 	// naive
 	T := len(dout)
-	dx := make([]matrix.Matrix, T)
+	dxs := make([]matrix.Matrix, T)
 	l.DW = matrix.Zero(1, 1)
 	l.DB = matrix.Zero(1, 1)
 
 	for t := 0; t < T; t++ {
-		dx[t] = matrix.Dot(dout[t], l.W.T())
-		l.DW = matrix.Dot(l.xs[t].T(), dout[t]).Add(l.DW) // Broadcast
-		l.DB = dout[t].SumAxis0().Add(l.DB)               // Broadcast
+		dxs[t], _ = l.layer[t].Backward(dout[t])
+		l.DW = l.layer[t].DW.Add(l.DW) // Broadcast
+		l.DB = l.layer[t].DB.Add(l.DB) // Broadcast
 	}
 
-	return dx
+	return dxs
 }
 
 func (l *TimeAffine) String() string {
