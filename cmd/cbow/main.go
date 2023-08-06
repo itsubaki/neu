@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 
+	"github.com/itsubaki/neu/activation"
 	"github.com/itsubaki/neu/dataset/ptb"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/model"
@@ -83,8 +84,21 @@ func main() {
 			fmt.Printf("loss=%.4f\n", loss)
 		}
 	}
+	fmt.Println()
 
 	for id, word := range id2w {
 		fmt.Printf("%v: %v\n", word, m.Win0.Params()[0][id])
 	}
+	fmt.Println()
+
+	score := m.Predict([]matrix.Matrix{
+		matrix.New(
+			// 0, 2
+			[]float64{1, 0, 0, 0, 0, 0, 0}, // you
+			[]float64{0, 0, 1, 0, 0, 0, 0}, // goodbye
+		),
+	})
+
+	fmt.Println(activation.Softmax(score[0][0]))
+	fmt.Println(model.Argmax(score)) // say
 }
