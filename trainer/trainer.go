@@ -12,8 +12,11 @@ import (
 )
 
 var (
-	_ Model     = (*model.Sequential)(nil)
-	_ Model     = (*model.MLP)(nil)
+	_ Model = (*model.Sequential)(nil)
+	_ Model = (*model.MLP)(nil)
+)
+
+var (
 	_ Optimizer = (*optimizer.AdaGrad)(nil)
 	_ Optimizer = (*optimizer.Adam)(nil)
 	_ Optimizer = (*optimizer.Momentum)(nil)

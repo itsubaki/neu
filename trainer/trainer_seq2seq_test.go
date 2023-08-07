@@ -29,7 +29,7 @@ func ExampleSeq2SeqTrainer() {
 		TrainLabel: [][]int{{1, 2, 3, 4, 5, 6}},
 		Epochs:     3,
 		BatchSize:  1,
-		Verbose: func(epoch, j int, loss float64, m *model.Seq2Seq) {
+		Verbose: func(epoch, j int, loss float64, m trainer.Seq2Seq) {
 			fmt.Printf("%d: %T\n", epoch, m)
 		},
 	})
@@ -59,7 +59,7 @@ func ExampleSeq2SeqTrainer_rand() {
 		TrainLabel: [][]int{{1, 2, 3, 4, 5, 6}},
 		Epochs:     3,
 		BatchSize:  1,
-		Verbose: func(epoch, j int, loss float64, m *model.Seq2Seq) {
+		Verbose: func(epoch, j int, loss float64, m trainer.Seq2Seq) {
 			fmt.Printf("%d: %T\n", epoch, m)
 		},
 	}, s)

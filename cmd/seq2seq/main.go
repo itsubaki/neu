@@ -55,7 +55,7 @@ func main() {
 		TrainLabel: t.Train,
 		Epochs:     epochs,
 		BatchSize:  batchSize,
-		Verbose: func(epoch, j int, loss float64, m *model.Seq2Seq) {
+		Verbose: func(epoch, j int, loss float64, m trainer.Seq2Seq) {
 			fmt.Printf("%2d, %2d: loss=%.04f\n", epoch, j, loss)
 		},
 	})

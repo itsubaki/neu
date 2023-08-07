@@ -49,11 +49,11 @@ func NewDecoder(c *DecoderConfig, s ...rand.Source) *Decoder {
 	}
 }
 
-func (m *Decoder) Forward(xs []matrix.Matrix, h matrix.Matrix, opts ...layer.Opts) []matrix.Matrix {
-	m.TimeLSTM.SetState(h)                           // h(128, 128)
-	out := m.TimeEmbedding.Forward(xs, nil, opts...) // out(4, 128, 16)  xs(4, 128, 1)
-	out = m.TimeLSTM.Forward(out, nil, opts...)      // out(4, 128, 128) out(4, 128, 16)
-	score := m.TimeAffine.Forward(out, nil, opts...) // score(4, 128, 13)
+func (m *Decoder) Forward(xs []matrix.Matrix, h matrix.Matrix) []matrix.Matrix {
+	m.TimeLSTM.SetState(h)                  // h(128, 128)
+	out := m.TimeEmbedding.Forward(xs, nil) // out(4, 128, 16)  xs(4, 128, 1)
+	out = m.TimeLSTM.Forward(out, nil)      // out(4, 128, 128) out(4, 128, 16)
+	score := m.TimeAffine.Forward(out, nil) // score(4, 128, 13)
 	return score
 }
 

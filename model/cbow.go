@@ -43,10 +43,10 @@ func (m *CBOW) Predict(xs []matrix.Matrix, opts ...layer.Opts) []matrix.Matrix {
 		c0, c1 = append(c0, c[0]), append(c1, c[1])
 	}
 
-	h0 := m.Win0.Forward(c0, nil)
-	h1 := m.Win1.Forward(c1, nil)
+	h0 := m.Win0.Forward(c0, nil, opts...)
+	h1 := m.Win1.Forward(c1, nil, opts...)
 	h := h0.Add(h1).MulC(0.5)
-	score := m.Wout.Forward(h, nil)
+	score := m.Wout.Forward(h, nil, opts...)
 
 	return []matrix.Matrix{score}
 }

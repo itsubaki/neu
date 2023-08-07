@@ -45,11 +45,11 @@ func NewEncoder(c *EncoderConfig, s ...rand.Source) *Encoder {
 	}
 }
 
-func (m *Encoder) Forward(xs []matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
-	xs = m.TimeEmbedding.Forward(xs, nil, opts...) // (Time, N, D) (7, 128, 16)
-	hs := m.TimeLSTM.Forward(xs, nil, opts...)     // (Time, N, H) (7, 128, 128)
-	m.hs = hs                                      // (Time, N, H)
-	return hs[len(hs)-1]                           // hs[-1, N, H]
+func (m *Encoder) Forward(xs []matrix.Matrix) matrix.Matrix {
+	xs = m.TimeEmbedding.Forward(xs, nil) // (Time, N, D) (7, 128, 16)
+	hs := m.TimeLSTM.Forward(xs, nil)     // (Time, N, H) (7, 128, 128)
+	m.hs = hs                             // (Time, N, H)
+	return hs[len(hs)-1]                  // hs[-1, N, H]
 }
 
 func (m *Encoder) Backward(dh matrix.Matrix) {

@@ -9,20 +9,32 @@ import (
 	"github.com/itsubaki/neu/model"
 )
 
+var (
+	_ Seq2Seq = (*model.Seq2Seq)(nil)
+)
+
+type Seq2Seq interface {
+	Forward(xs, ts []matrix.Matrix) float64
+	Backward()
+	Params() [][]matrix.Matrix
+	Grads() [][]matrix.Matrix
+	SetParams(p [][]matrix.Matrix)
+}
+
 type Seq2SeqInput struct {
 	Train      [][]int
 	TrainLabel [][]int
 	Epochs     int
 	BatchSize  int
-	Verbose    func(epoch, j int, loss float64, m *model.Seq2Seq)
+	Verbose    func(epoch, j int, loss float64, m Seq2Seq)
 }
 
 type Seq2SeqTrainer struct {
-	Model     *model.Seq2Seq
+	Model     Seq2Seq
 	Optimizer Optimizer
 }
 
-func NewSeq2Seq(m *model.Seq2Seq, o Optimizer) *Seq2SeqTrainer {
+func NewSeq2Seq(m Seq2Seq, o Optimizer) *Seq2SeqTrainer {
 	return &Seq2SeqTrainer{
 		Model:     m,
 		Optimizer: o,
