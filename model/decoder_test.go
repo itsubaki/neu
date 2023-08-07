@@ -40,8 +40,9 @@ func ExampleDecoder() {
 
 	score := m.Forward(xs, h)
 	fmt.Println(len(score))
-	fmt.Println(score[0].Dimension())
-	fmt.Println(score[1].Dimension())
+	for _, s := range score {
+		fmt.Println(s.Dimension())
+	}
 
 	// backward
 	dout := []matrix.Matrix{
@@ -51,6 +52,7 @@ func ExampleDecoder() {
 	dh := m.Backward(dout)
 	fmt.Println(dh.Dimension())
 
+	// generate
 	sampeld := m.Generate(h, 1, 10)
 	fmt.Println(sampeld)
 

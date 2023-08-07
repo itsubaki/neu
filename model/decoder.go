@@ -70,11 +70,13 @@ func (m *Decoder) Generate(h matrix.Matrix, startID, length int) []int {
 	sampled := []int{startID}
 	sampleID := startID
 	for i := 0; i < length; i++ {
-		xs := []matrix.Matrix{matrix.New([]float64{float64(sampleID)})}
+		xs := []matrix.Matrix{{{float64(sampleID)}}}
+
 		out := m.TimeEmbedding.Forward(xs, nil) // (1, 1, 16)
 		out = m.TimeLSTM.Forward(out, nil)      // (1, 1, 128)
 		score := m.TimeAffine.Forward(out, nil) // (1, 1, 13)
-		sampleID = Argmax(score)                // 0~12
+
+		sampleID = Argmax(score) // 0~12
 		sampled = append(sampled, sampleID)
 	}
 
