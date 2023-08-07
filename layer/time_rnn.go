@@ -21,15 +21,14 @@ func (l *TimeRNN) SetState(h ...matrix.Matrix)  { l.h = h[0] }
 func (l *TimeRNN) ResetState()                  { l.h = matrix.New() }
 
 func (l *TimeRNN) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matrix {
-	// xs(Time, N, D), Wx(D, H)
-	T, N, H := len(xs), len(xs[0]), len(l.Wx[0])
+	T, N, H := len(xs), len(xs[0]), len(l.Wx[0]) // xs(Time, N, D), Wx(D, H)
+	hs := make([]matrix.Matrix, T)
+	l.layer = make([]*RNN, T)
 
 	if !l.Stateful || len(l.h) == 0 {
 		l.h = matrix.Zero(N, H)
 	}
 
-	l.layer = make([]*RNN, T)
-	hs := make([]matrix.Matrix, T)
 	for t := 0; t < T; t++ {
 		l.layer[t] = &RNN{Wx: l.Wx, Wh: l.Wh, B: l.B}
 		l.h = l.layer[t].Forward(xs[t], l.h, opts...)

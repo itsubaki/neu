@@ -12,17 +12,20 @@ import (
 func ExampleRNNMLGen() {
 	// model
 	s := rand.NewSource(1)
-	m := model.NewRNNLMGen(&model.RNNLMConfig{
-		VocabSize:   100,
-		WordVecSize: 100,
-		HiddenSize:  100,
-		WeightInit:  weight.Xavier,
+	m := model.NewRNNLMGen(&model.LSTMLMConfig{
+		RNNLMConfig: model.RNNLMConfig{
+			VocabSize:   100,
+			WordVecSize: 100,
+			HiddenSize:  100,
+			WeightInit:  weight.Xavier,
+		},
+		DropoutRatio: 0.5,
 	}, s)
 
 	fmt.Println(m.Generate(0, []int{4, 25, 80}, 10))
 
 	// Output:
-	// [0 54 90 70 89 34 12 20 45 92]
+	// [0 86 28 37 30 29 45 20 58 3]
 }
 
 func ExampleChoice() {

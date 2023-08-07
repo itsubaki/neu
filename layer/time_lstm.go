@@ -22,21 +22,20 @@ func (l *TimeLSTM) SetState(h ...matrix.Matrix)  { l.h = h[0] }
 func (l *TimeLSTM) ResetState()                  { l.h = matrix.New() }
 
 func (l *TimeLSTM) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matrix {
-	T, N, H := len(xs), len(xs[0]), len(l.Wh)
+	T, N, H := len(xs), len(xs[0]), len(l.Wh) // 7, 128, 128
+	hs := make([]matrix.Matrix, T)            // (7, 128, 128)
+	l.layer = make([]*LSTM, T)
 
 	if !l.Stateful || len(l.h) == 0 {
-		l.h = matrix.Zero(N, H)
+		l.h = matrix.Zero(N, H) // (128, 128)
 	}
 	if !l.Stateful || len(l.c) == 0 {
-		l.c = matrix.Zero(N, H)
+		l.c = matrix.Zero(N, H) // (128, 128)
 	}
 
-	l.layer = make([]*LSTM, T)
-	hs := make([]matrix.Matrix, T)
-
 	for t := 0; t < T; t++ {
-		l.layer[t] = &LSTM{Wx: l.Wx, Wh: l.Wh, B: l.B} // Wx(D, 4H), Wh(H, 4H), B(1, 4H)
-		l.h, l.c = l.layer[t].Forward(xs[t], l.h, l.c, opts...)
+		l.layer[t] = &LSTM{Wx: l.Wx, Wh: l.Wh, B: l.B}          // Wx(D, 4H), Wh(H, 4H), B(1, 4H)
+		l.h, l.c = l.layer[t].Forward(xs[t], l.h, l.c, opts...) // h(128, 128), c(128, 128)
 		hs[t] = l.h
 	}
 

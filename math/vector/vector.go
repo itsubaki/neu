@@ -35,6 +35,15 @@ func Max(v []int) int {
 	return max
 }
 
+func Abs(v []float64) []float64 {
+	out := make([]float64, len(v))
+	for i, e := range v {
+		out[i] = math.Abs(e)
+	}
+
+	return out
+}
+
 // Shuffle shuffles the dataset.
 func Shuffle[T any](x, t []T, s ...rand.Source) ([]T, []T) {
 	if len(s) == 0 {

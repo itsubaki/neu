@@ -19,8 +19,8 @@ func (l *TimeEmbedding) SetState(_ ...matrix.Matrix)  {}
 func (l *TimeEmbedding) ResetState()                  {}
 
 func (l *TimeEmbedding) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matrix {
-	T := len(xs) // xs(Time, N, 1)
-	out := make([]matrix.Matrix, T)
+	T := len(xs)                    // (7, 128, 1)
+	out := make([]matrix.Matrix, T) // (7, 128, 16)
 	l.layer = make([]*Embedding, T)
 
 	for t := 0; t < T; t++ {
@@ -32,7 +32,7 @@ func (l *TimeEmbedding) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Ma
 }
 
 func (l *TimeEmbedding) Backward(dout []matrix.Matrix) []matrix.Matrix {
-	T := len(dout) // dhs(Time, N, H)
+	T := len(dout) // (Time, N, H)
 
 	grad := matrix.Zero(1, 1)
 	for t := 0; t < T; t++ {

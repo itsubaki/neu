@@ -58,7 +58,6 @@ func (t *RNNLMTrainer) Fit(in *RNNLMInput) {
 	maxIter := dataSize / (in.BatchSize * in.TimeSize)
 	var totalLoss float64
 	var timeIdx, lossCount int
-
 	for epoch := 0; epoch < in.Epochs; epoch++ {
 		for j := 0; j < maxIter; j++ {
 			// (Time, N, 1)

@@ -18,17 +18,17 @@ func (l *Embedding) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DW}
 func (l *Embedding) SetParams(p ...matrix.Matrix) { l.W = p[0] }
 
 func (l *Embedding) Forward(idx, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
-	l.idx = make([]int, len(idx)) // idx(N, 1), NOT-OneHot
+	l.idx = make([]int, len(idx)) // idx(N, 1)
 	for i := range idx {
 		l.idx[i] = int(idx[i][0])
 	}
 
 	out := matrix.New()
 	for _, i := range l.idx {
-		out = append(out, l.W[i])
+		out = append(out, l.W[i]) // W(13, 16)
 	}
 
-	return out
+	return out // (128, 16)
 }
 
 func (l *Embedding) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {

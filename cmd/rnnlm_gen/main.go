@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"math"
 	"strings"
 
 	"github.com/itsubaki/neu/dataset/ptb"
@@ -17,23 +18,37 @@ import (
 func main() {
 	// flag
 	var dir, start string
-	var epochs, length int
+	var length int
+	var epochs, wordvecSize, hiddenSize, batchSize, timeSize int
 	flag.StringVar(&dir, "dir", "./testdata", "")
-	flag.IntVar(&epochs, "epochs", 10, "")
 	flag.StringVar(&start, "start", "you", "")
 	flag.IntVar(&length, "length", 100, "")
+	flag.IntVar(&epochs, "epochs", 10, "")
+	flag.IntVar(&wordvecSize, "wordvec-size", 650, "")
+	flag.IntVar(&hiddenSize, "hidden-size", 650, "")
+	flag.IntVar(&batchSize, "batch-size", 20, "")
+	flag.IntVar(&timeSize, "time-size", 35, "")
 	flag.Parse()
 
 	// data
 	train := ptb.Must(ptb.Load(dir, ptb.TrainTxt))
 
 	// model
-	m := model.NewRNNLMGen(&model.RNNLMConfig{
-		VocabSize:   vector.Max(train.Corpus) + 1,
-		WordVecSize: 100,
-		HiddenSize:  100,
-		WeightInit:  weight.Xavier,
+	m := model.NewRNNLMGen(&model.LSTMLMConfig{
+		RNNLMConfig: model.RNNLMConfig{
+			VocabSize:   vector.Max(train.Corpus) + 1,
+			WordVecSize: wordvecSize,
+			HiddenSize:  hiddenSize,
+			WeightInit:  weight.Xavier,
+		},
+		DropoutRatio: 0.5,
 	})
+
+	// params
+	filename := fmt.Sprintf("%s/rnnlm_gen.gob", dir)
+	if params, ok := model.Load(filename); ok {
+		m.SetParams(params)
+	}
 
 	// layer
 	fmt.Printf("%T\n", m)
@@ -50,14 +65,23 @@ func main() {
 		},
 	})
 
+	min := math.MaxFloat64
 	tr.Fit(&trainer.RNNLMInput{
 		Train:      train.Corpus[:len(train.Corpus)-1],
 		TrainLabel: train.Corpus[1:],
 		Epochs:     epochs,
-		BatchSize:  20,
-		TimeSize:   35,
+		BatchSize:  batchSize,
+		TimeSize:   timeSize,
 		Verbose: func(epoch, j int, perplexity float64, m trainer.RNNLM) {
 			fmt.Printf("%2d, %2d: ppl=%.04f\n", epoch, j, perplexity)
+			if min < perplexity {
+				return
+			}
+
+			min = perplexity
+			if err := model.Save(m.Params(), filename); err != nil {
+				fmt.Println(err)
+			}
 		},
 	})
 
@@ -71,6 +95,6 @@ func main() {
 		words[i] = train.IDToWord[id]
 	}
 
-	txt := strings.ReplaceAll(strings.Join(words, " "), "<eos>", "\n")
+	txt := strings.ReplaceAll(strings.Join(words, " "), "\n", "")
 	fmt.Println(txt)
 }

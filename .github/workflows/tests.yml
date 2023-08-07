@@ -52,11 +52,11 @@ jobs:
         run: |
           make lstm10
 
-      - name: RNNLMGen(Elman)
+      - name: RNNLMGen(LSTM)
         run: |
           make rnnlmgen0
 
-      - name: Seq2Seq(WIP)
+      - name: Seq2Seq
         run: |
           make seq2seq0
 

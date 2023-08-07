@@ -20,8 +20,8 @@ func (l *TimeAffine) ResetState()                  {}
 
 func (l *TimeAffine) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 	T := len(xs)
-	l.layer = make([]*Affine, T)
 	out := make([]matrix.Matrix, T)
+	l.layer = make([]*Affine, T)
 
 	for t := 0; t < T; t++ {
 		l.layer[t] = &Affine{W: l.W, B: l.B}
@@ -32,7 +32,6 @@ func (l *TimeAffine) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 }
 
 func (l *TimeAffine) Backward(dout []matrix.Matrix) []matrix.Matrix {
-	// naive
 	T := len(dout)
 	dxs := make([]matrix.Matrix, T)
 	l.DW = matrix.Zero(1, 1)

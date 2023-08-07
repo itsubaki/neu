@@ -22,9 +22,9 @@ func ExampleSave() {
 		return
 	}
 
-	params, err := model.Load("../testdata/seq2seq.gob")
-	if err != nil {
-		fmt.Println("failed to load params:", err)
+	params, ok := model.Load("../testdata/seq2seq.gob")
+	if !ok {
+		fmt.Println("failed to load params")
 		return
 	}
 
@@ -64,11 +64,11 @@ func ExampleSave() {
 }
 
 func ExampleLoad_notfound() {
-	if _, err := model.Load("invalid_dir"); err != nil {
-		fmt.Println("failed to save params:", err)
+	if _, ok := model.Load("invalid_dir"); !ok {
+		fmt.Println("failed to save params")
 		return
 	}
 
 	// Output:
-	// failed to save params: failed to open file: open invalid_dir: no such file or directory
+	// failed to save params
 }

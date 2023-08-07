@@ -46,8 +46,8 @@ func NewEncoder(c *EncoderConfig, s ...rand.Source) *Encoder {
 }
 
 func (m *Encoder) Forward(xs []matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
-	xs = m.TimeEmbedding.Forward(xs, nil, opts...) // (Time, N, D) (7, 128, 16)  gen(7, 1, 16)
-	hs := m.TimeLSTM.Forward(xs, nil, opts...)     // (Time, N, H) (7, 128, 128) gen(7, 1, 128)
+	xs = m.TimeEmbedding.Forward(xs, nil, opts...) // (Time, N, D) (7, 128, 16)
+	hs := m.TimeLSTM.Forward(xs, nil, opts...)     // (Time, N, H) (7, 128, 128)
 	m.hs = hs                                      // (Time, N, H)
 	return hs[len(hs)-1]                           // hs[-1, N, H]
 }

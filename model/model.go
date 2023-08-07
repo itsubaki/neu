@@ -58,17 +58,17 @@ func Save(params [][]matrix.Matrix, filename string) error {
 }
 
 // Load loads the params from a file.
-func Load(filename string) ([][]matrix.Matrix, error) {
+func Load(filename string) ([][]matrix.Matrix, bool) {
 	f, err := os.Open(filename)
 	if err != nil {
-		return nil, fmt.Errorf("failed to open file: %v", err)
+		return nil, false
 	}
 	defer f.Close()
 
 	var params [][]matrix.Matrix
 	if err := gob.NewDecoder(f).Decode(&params); err != nil {
-		return nil, fmt.Errorf("failed to decode: %v", err)
+		return nil, false
 	}
 
-	return params, nil
+	return params, true
 }

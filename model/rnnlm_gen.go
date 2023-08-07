@@ -9,12 +9,12 @@ import (
 )
 
 type RNNMLGen struct {
-	RNNLM
+	LSTMLM
 }
 
-func NewRNNLMGen(c *RNNLMConfig, s ...rand.Source) *RNNMLGen {
+func NewRNNLMGen(c *LSTMLMConfig, s ...rand.Source) *RNNMLGen {
 	return &RNNMLGen{
-		RNNLM: *NewRNNLM(c, s...),
+		LSTMLM: *NewLSTMLM(c, s...),
 	}
 }
 

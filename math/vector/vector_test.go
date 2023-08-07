@@ -33,6 +33,14 @@ func ExampleMax() {
 	// 3
 }
 
+func ExampleAbs() {
+	v := []float64{1, -2, -3}
+	fmt.Println(vector.Abs(v))
+
+	// Output:
+	// [1 2 3]
+}
+
 func ExampleShuffle() {
 	x := [][]float64{{0, 1}, {0, 2}, {0, 3}, {0, 4}}
 	t := [][]float64{{1, 0}, {2, 0}, {3, 0}, {4, 0}}

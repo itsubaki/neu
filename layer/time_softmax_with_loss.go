@@ -37,7 +37,6 @@ func (l *TimeSoftmaxWithLoss) Backward(dout []matrix.Matrix) []matrix.Matrix {
 	dx := make([]matrix.Matrix, T)
 	do := dout[0].MulC(1.0 / float64(T))
 
-	// naive
 	for t := 0; t < T; t++ {
 		dx[t], _ = l.layer[t].Backward(do)
 	}
@@ -56,7 +55,7 @@ func OneHot(ts []matrix.Matrix, size int) []matrix.Matrix {
 		for _, r := range t {
 			for _, v := range r {
 				onehot := make([]float64, size)
-				onehot[int(v)] = 1.0
+				onehot[int(v)] = 1
 				m = append(m, onehot)
 			}
 		}
