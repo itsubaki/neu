@@ -11,24 +11,39 @@ import (
 )
 
 var (
-	_ Layer      = (*layer.Add)(nil)
-	_ Layer      = (*layer.Affine)(nil)
-	_ Layer      = (*layer.BatchNorm)(nil)
-	_ Layer      = (*layer.Dot)(nil)
-	_ Layer      = (*layer.Dropout)(nil)
-	_ Layer      = (*layer.EmbeddingDot)(nil)
-	_ Layer      = (*layer.Embedding)(nil)
-	_ Layer      = (*layer.Mul)(nil)
-	_ Layer      = (*layer.ReLU)(nil)
-	_ Layer      = (*layer.RNN)(nil)
-	_ Layer      = (*layer.Sigmoid)(nil)
-	_ Layer      = (*layer.SigmoidWithLoss)(nil)
-	_ Layer      = (*layer.SoftmaxWithLoss)(nil)
+	_ Layer = (*layer.Add)(nil)
+	_ Layer = (*layer.Affine)(nil)
+	_ Layer = (*layer.BatchNorm)(nil)
+	_ Layer = (*layer.Dot)(nil)
+	_ Layer = (*layer.Dropout)(nil)
+	_ Layer = (*layer.EmbeddingDot)(nil)
+	_ Layer = (*layer.Embedding)(nil)
+	_ Layer = (*layer.Mul)(nil)
+	_ Layer = (*layer.ReLU)(nil)
+	_ Layer = (*layer.RNN)(nil)
+	_ Layer = (*layer.Sigmoid)(nil)
+	_ Layer = (*layer.SigmoidWithLoss)(nil)
+	_ Layer = (*layer.SoftmaxWithLoss)(nil)
+)
+
+var (
+	_ TimeLayer = (*layer.TimeAffine)(nil)
+	_ TimeLayer = (*layer.TimeDropout)(nil)
+	_ TimeLayer = (*layer.TimeEmbedding)(nil)
+	_ TimeLayer = (*layer.TimeLSTM)(nil)
+	_ TimeLayer = (*layer.TimeRNN)(nil)
+	_ TimeLayer = (*layer.TimeSoftmaxWithLoss)(nil)
+)
+
+var (
 	_ WeightInit = weight.Std(0.01)
 	_ WeightInit = weight.He
 	_ WeightInit = weight.Xavier
 	_ WeightInit = weight.Glorot
 )
+
+// WeightInit is an interface that represents a weight initializer.
+type WeightInit func(prevNodeNum int) float64
 
 // Layer is an interface that represents a layer.
 type Layer interface {
@@ -39,8 +54,16 @@ type Layer interface {
 	Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix)
 }
 
-// WeightInit is an interface that represents a weight initializer.
-type WeightInit func(prevNodeNum int) float64
+// TimeLayer is an interface that represents a time layer.
+type TimeLayer interface {
+	Params() []matrix.Matrix
+	Grads() []matrix.Matrix
+	SetParams(p ...matrix.Matrix)
+	SetState(h ...matrix.Matrix)
+	ResetState()
+	Forward(xs, ys []matrix.Matrix, opts ...layer.Opts) []matrix.Matrix
+	Backward(dout []matrix.Matrix) []matrix.Matrix
+}
 
 // Save saves the params to a file.
 func Save(params [][]matrix.Matrix, filename string) error {
