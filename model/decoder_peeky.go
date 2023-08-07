@@ -117,9 +117,19 @@ func Split(dout []matrix.Matrix, H int) ([]matrix.Matrix, []matrix.Matrix) {
 }
 
 func SumAxis1(dhs []matrix.Matrix) matrix.Matrix {
-	out := make(matrix.Matrix, len(dhs))
-	for t := range dhs {
-		out[t] = dhs[t].SumAxis0()[0]
+	T, N, H := len(dhs), len(dhs[0]), len(dhs[0][0])
+	out := make(matrix.Matrix, N)
+
+	for i := 0; i < N; i++ {
+		out[i] = make([]float64, H)
+		for j := 0; j < H; j++ {
+			var sum float64
+			for t := 0; t < T; t++ {
+				sum = sum + dhs[t][i][j]
+			}
+
+			out[i][j] = sum
+		}
 	}
 
 	return out

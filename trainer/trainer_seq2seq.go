@@ -14,6 +14,7 @@ var (
 )
 
 type Seq2Seq interface {
+	Generate(xs []matrix.Matrix, startID, length int) []int
 	Forward(xs, ts []matrix.Matrix) float64
 	Backward()
 	Params() [][]matrix.Matrix
