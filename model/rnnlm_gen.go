@@ -8,17 +8,17 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 )
 
-type RNNMLGen struct {
+type RNNLMGen struct {
 	LSTMLM
 }
 
-func NewRNNLMGen(c *LSTMLMConfig, s ...rand.Source) *RNNMLGen {
-	return &RNNMLGen{
+func NewRNNLMGen(c *LSTMLMConfig, s ...rand.Source) *RNNLMGen {
+	return &RNNLMGen{
 		LSTMLM: *NewLSTMLM(c, s...),
 	}
 }
 
-func (g *RNNMLGen) Generate(startID int, skipIDs []int, length int) []int {
+func (g *RNNLMGen) Generate(startID int, skipIDs []int, length int) []int {
 	wordIDs := []int{startID}
 
 	x := startID

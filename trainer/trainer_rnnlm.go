@@ -12,7 +12,7 @@ var (
 	_ RNNLM = (*model.CBOW)(nil)
 	_ RNNLM = (*model.RNNLM)(nil)
 	_ RNNLM = (*model.LSTMLM)(nil)
-	_ RNNLM = (*model.RNNMLGen)(nil)
+	_ RNNLM = (*model.RNNLMGen)(nil)
 )
 
 type RNNLM interface {

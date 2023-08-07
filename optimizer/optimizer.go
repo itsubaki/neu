@@ -12,10 +12,13 @@ var (
 	_ Model = (*model.CBOW)(nil)
 	_ Model = (*model.RNNLM)(nil)
 	_ Model = (*model.LSTMLM)(nil)
-	_ Model = (*model.RNNMLGen)(nil)
+	_ Model = (*model.RNNLMGen)(nil)
 	_ Model = (*model.Seq2Seq)(nil)
-	_ Hook  = hook.WeightDecay(0.1)
-	_ Hook  = hook.GradsClipping(1.0)
+)
+
+var (
+	_ Hook = hook.WeightDecay(0.1)
+	_ Hook = hook.GradsClipping(1.0)
 )
 
 type Model interface {

@@ -9,7 +9,7 @@ import (
 	"github.com/itsubaki/neu/weight"
 )
 
-func ExampleRNNMLGen() {
+func ExampleRNNLMGen() {
 	// model
 	s := rand.NewSource(1)
 	m := model.NewRNNLMGen(&model.LSTMLMConfig{

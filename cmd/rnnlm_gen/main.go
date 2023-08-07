@@ -44,18 +44,18 @@ func main() {
 		DropoutRatio: 0.5,
 	})
 
-	// params
-	filename := fmt.Sprintf("%s/rnnlm_gen.gob", dir)
-	if params, ok := model.Load(filename); ok {
-		m.SetParams(params)
-	}
-
 	// layer
 	fmt.Printf("%T\n", m)
 	for i, l := range m.Layers() {
 		fmt.Printf("%2d: %v\n", i, l)
 	}
 	fmt.Println()
+
+	// params
+	filename := fmt.Sprintf("%s/rnnlm_gen.gob", dir)
+	if params, ok := model.Load(filename); ok {
+		m.SetParams(params)
+	}
 
 	// train
 	tr := trainer.NewRNNLM(m, &optimizer.SGD{
@@ -73,15 +73,14 @@ func main() {
 		BatchSize:  batchSize,
 		TimeSize:   timeSize,
 		Verbose: func(epoch, j int, perplexity float64, m trainer.RNNLM) {
-			fmt.Printf("%2d, %2d: ppl=%.04f\n", epoch, j, perplexity)
-			if min < perplexity {
-				return
+			if perplexity < min {
+				min = perplexity
+				if err := model.Save(m.Params(), filename); err != nil {
+					fmt.Println(err)
+				}
 			}
 
-			min = perplexity
-			if err := model.Save(m.Params(), filename); err != nil {
-				fmt.Println(err)
-			}
+			fmt.Printf("%2d, %2d: ppl=%.04f\n", epoch, j, perplexity)
 		},
 	})
 

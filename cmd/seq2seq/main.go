@@ -60,10 +60,10 @@ func main() {
 		},
 	})
 
-	eval(x.Test, t.Test, m, v, 100)
+	generate(x.Test, t.Test, m, v, 100)
 }
 
-func eval(xs, ts [][]int, m *model.Seq2Seq, v *sequence.Vocab, top int) {
+func generate(xs, ts [][]int, m *model.Seq2Seq, v *sequence.Vocab, top int) {
 	for k := 0; k < top; k++ {
 		q, ans := trainer.Float64(xs)[k], ts[k] // (1, 7), (5)
 		tq := trainer.Time(matrix.New(q))       // (7, 1, 1)
