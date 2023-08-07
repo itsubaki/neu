@@ -68,7 +68,7 @@ func (m *RNNLM) Forward(xs, ts []matrix.Matrix) matrix.Matrix {
 }
 
 func (m *RNNLM) Backward() []matrix.Matrix {
-	dout := []matrix.Matrix{matrix.New([]float64{1})}
+	dout := []matrix.Matrix{{{1}}}
 	for i := len(m.Layer) - 1; i > -1; i-- {
 		dout = m.Layer[i].Backward(dout)
 	}

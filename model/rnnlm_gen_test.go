@@ -22,10 +22,10 @@ func ExampleRNNLMGen() {
 		DropoutRatio: 0.5,
 	}, s)
 
-	fmt.Println(m.Generate(0, []int{4, 25, 80}, 10))
+	fmt.Println(m.Generate(0, []int{86, 28, 37}, 10))
 
 	// Output:
-	// [0 86 28 37 30 29 45 20 58 3]
+	// [0 30 29 45 20 58 3 68 43 31]
 }
 
 func ExampleChoice() {
@@ -60,14 +60,14 @@ func ExampleContains() {
 
 func ExampleFlatten() {
 	xs := []matrix.Matrix{
-		matrix.New(
-			[]float64{0, 1, 2},
-			[]float64{0, 1, 2},
-		),
-		matrix.New(
-			[]float64{3, 4, 5},
-			[]float64{3, 4, 5},
-		),
+		{
+			{0, 1, 2},
+			{0, 1, 2},
+		},
+		{
+			{3, 4, 5},
+			{3, 4, 5},
+		},
 	}
 
 	fmt.Println(model.Flatten(xs))

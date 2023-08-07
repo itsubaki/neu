@@ -17,10 +17,10 @@ func ExampleTimeRNN() {
 
 	// forward
 	xs := []matrix.Matrix{
-		matrix.New(
-			[]float64{0.1, 0.2, 0.3},
-			[]float64{0.3, 0.4, 0.5},
-		),
+		{
+			{0.1, 0.2, 0.3},
+			{0.3, 0.4, 0.5},
+		},
 	}
 
 	hs := rnn.Forward(xs, nil)
@@ -31,10 +31,10 @@ func ExampleTimeRNN() {
 
 	// backward
 	dhs := []matrix.Matrix{
-		matrix.New(
-			[]float64{0.1, 0.2, 0.3},
-			[]float64{0.3, 0.4, 0.5},
-		),
+		{
+			{0.1, 0.2, 0.3},
+			{0.3, 0.4, 0.5},
+		},
 	}
 
 	dxs := rnn.Backward(dhs)
@@ -70,14 +70,14 @@ func ExampleTimeRNN_time2() {
 
 	// forward
 	xs := []matrix.Matrix{
-		matrix.New(
-			[]float64{0.1, 0.2, 0.3},
-			[]float64{0.3, 0.4, 0.5},
-		),
-		matrix.New(
-			[]float64{0.1, 0.2, 0.3},
-			[]float64{0.3, 0.4, 0.5},
-		),
+		{
+			{0.1, 0.2, 0.3},
+			{0.3, 0.4, 0.5},
+		},
+		{
+			{0.1, 0.2, 0.3},
+			{0.3, 0.4, 0.5},
+		},
 	}
 
 	hs := rnn.Forward(xs, nil)
@@ -89,14 +89,14 @@ func ExampleTimeRNN_time2() {
 
 	// backward
 	dhs := []matrix.Matrix{
-		matrix.New(
-			[]float64{0.1, 0.2, 0.3},
-			[]float64{0.3, 0.4, 0.5},
-		),
-		matrix.New(
-			[]float64{0.1, 0.2, 0.3},
-			[]float64{0.3, 0.4, 0.5},
-		),
+		{
+			{0.1, 0.2, 0.3},
+			{0.3, 0.4, 0.5},
+		},
+		{
+			{0.1, 0.2, 0.3},
+			{0.3, 0.4, 0.5},
+		},
 	}
 
 	dxs := rnn.Backward(dhs)

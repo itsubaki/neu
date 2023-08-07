@@ -26,12 +26,8 @@ func ExampleRNNLM() {
 	fmt.Println()
 
 	// data
-	xs := []matrix.Matrix{
-		matrix.New([]float64{0, 1, 2}),
-	}
-	ts := []matrix.Matrix{
-		matrix.New([]float64{0, 1, 2}),
-	}
+	xs := []matrix.Matrix{{{0, 1, 2}}}
+	ts := []matrix.Matrix{{{0, 1, 2}}}
 
 	loss := m.Forward(xs, ts)
 	dout := m.Backward()

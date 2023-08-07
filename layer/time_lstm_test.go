@@ -33,11 +33,11 @@ func ExampleTimeLSTM() {
 	// forward
 	xs := []matrix.Matrix{
 		// (T, N, D) = (1, 2, 3)
-		matrix.New(
+		{
 			// (N, D) = (2, 3)
-			[]float64{0.1, 0.2, 0.3},
-			[]float64{0.3, 0.4, 0.5},
-		),
+			{0.1, 0.2, 0.3},
+			{0.3, 0.4, 0.5},
+		},
 	}
 
 	hs := lstm.Forward(xs, nil)
@@ -48,11 +48,11 @@ func ExampleTimeLSTM() {
 
 	// backward
 	dhs := []matrix.Matrix{
-		matrix.New(
+		{
 			// (N, H)
-			[]float64{0.1},
-			[]float64{0.3},
-		),
+			{0.1},
+			{0.3},
+		},
 	}
 	dxs := lstm.Backward(dhs)
 	for i := range dxs {

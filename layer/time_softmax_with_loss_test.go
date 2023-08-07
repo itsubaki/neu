@@ -13,22 +13,22 @@ func ExampleTimeSoftmaxWithLoss() {
 
 	// forward
 	xs := []matrix.Matrix{
-		matrix.New(
-			[]float64{0.1, 0.05, 0.6, 0.0, 0.05, 0.1, 0.0, 0.1, 0.0, 0.0},
-			[]float64{0.1, 0.05, 0.1, 0.0, 0.05, 0.1, 0.0, 0.6, 0.0, 0.0},
-		),
+		{
+			{0.1, 0.05, 0.6, 0.0, 0.05, 0.1, 0.0, 0.1, 0.0, 0.0},
+			{0.1, 0.05, 0.1, 0.0, 0.05, 0.1, 0.0, 0.6, 0.0, 0.0},
+		},
 	}
 	ts := []matrix.Matrix{
-		matrix.New(
-			[]float64{2},
-			[]float64{2},
-		),
+		{
+			{2},
+			{2},
+		},
 	}
 	loss := l.Forward(xs, ts)
 	fmt.Println(loss)
 
 	// backward
-	dout := []matrix.Matrix{matrix.New([]float64{1})}
+	dout := []matrix.Matrix{{{1}}}
 	dx := l.Backward(dout)
 	for _, m := range dx {
 		for _, r := range m {
@@ -66,14 +66,14 @@ func ExampleTimeSoftmaxWithLoss_state() {
 
 func ExampleOneHot() {
 	ts := []matrix.Matrix{
-		matrix.New(
-			[]float64{0, 1, 2},
-			[]float64{3, 4, 5},
-		),
-		matrix.New(
-			[]float64{0, 1, 2},
-			[]float64{3, 4, 5},
-		),
+		{
+			{0, 1, 2},
+			{3, 4, 5},
+		},
+		{
+			{0, 1, 2},
+			{3, 4, 5},
+		},
 	}
 
 	onehot := layer.OneHot(ts, 6)

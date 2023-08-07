@@ -447,3 +447,12 @@ func HStack(x ...Matrix) Matrix {
 
 	return out
 }
+
+func Repeat(h Matrix, T int) []Matrix {
+	out := make([]Matrix, T)
+	for i := 0; i < T; i++ {
+		out[i] = h
+	}
+
+	return out
+}

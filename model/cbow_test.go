@@ -13,15 +13,15 @@ func ExampleCBOW() {
 
 	// context data
 	c := []matrix.Matrix{
-		matrix.New(
-			[]float64{1, 0, 0, 0, 0, 0, 0}, // you
-			[]float64{0, 0, 1, 0, 0, 0, 0}, // goodbye
-		),
+		{
+			{1, 0, 0, 0, 0, 0, 0}, // you
+			{0, 0, 1, 0, 0, 0, 0}, // goodbye
+		},
 	}
 	t := []matrix.Matrix{
-		matrix.New(
-			[]float64{0, 1, 0, 0, 0, 0, 0}, // say
-		),
+		{
+			{0, 1, 0, 0, 0, 0, 0}, // say
+		},
 	}
 
 	// model
@@ -45,10 +45,10 @@ func ExampleCBOW() {
 	fmt.Println(dout)
 
 	score := m.Predict([]matrix.Matrix{
-		matrix.New(
-			[]float64{1, 0, 0, 0, 0, 0, 0}, // you
-			[]float64{0, 0, 1, 0, 0, 0, 0}, // goodbye
-		),
+		{
+			{1, 0, 0, 0, 0, 0, 0}, // you
+			{0, 0, 1, 0, 0, 0, 0}, // goodbye
+		},
 	})
 	fmt.Println(score)
 

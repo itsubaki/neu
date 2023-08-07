@@ -23,23 +23,25 @@ func ExampleTimeEmbedding() {
 
 	// forward
 	xs := []matrix.Matrix{
-		matrix.New(
-			[]float64{0},
-			[]float64{2},
-			[]float64{0},
-			[]float64{4},
-		),
+		{
+			{0},
+			{2},
+			{0},
+			{4},
+		},
 	}
 	fmt.Println(embed.Forward(xs, nil))
 
 	// backward
 	// p138
-	dh := []matrix.Matrix{matrix.New(
-		[]float64{9.0, 9.1, 9.2},
-		[]float64{9.1, 9.2, 9.3},
-		[]float64{9.2, 9.3, 9.4},
-		[]float64{9.3, 9.4, 9.5},
-	)}
+	dh := []matrix.Matrix{
+		{
+			{9.0, 9.1, 9.2},
+			{9.1, 9.2, 9.3},
+			{9.2, 9.3, 9.4},
+			{9.3, 9.4, 9.5},
+		},
+	}
 
 	embed.Backward(dh)
 	fmt.Println(embed.DW)

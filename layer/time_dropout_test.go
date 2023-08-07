@@ -10,7 +10,7 @@ import (
 
 func ExampleTimeDropout() {
 	xs := []matrix.Matrix{
-		matrix.New([]float64{1.0, -0.5}, []float64{-2.0, 3.0}),
+		{{1.0, -0.5}, {-2.0, 3.0}},
 	}
 
 	s := rand.NewSource(1)

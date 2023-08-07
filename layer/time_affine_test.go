@@ -15,7 +15,7 @@ func ExampleTimeAffine() {
 	fmt.Println(affine)
 
 	// forward
-	xs := []matrix.Matrix{matrix.New([]float64{1.0, 0.5})}
+	xs := []matrix.Matrix{{{1.0, 0.5}}}
 	fmt.Println(affine.Forward(xs, nil))
 
 	// backward
@@ -42,7 +42,10 @@ func ExampleTimeAffine_time2() {
 	fmt.Println(affine)
 
 	// forward
-	xs := []matrix.Matrix{matrix.New([]float64{1.0, 0.5}), matrix.New([]float64{1.0, 0.5})}
+	xs := []matrix.Matrix{
+		{{1.0, 0.5}},
+		{{1.0, 0.5}},
+	}
 	fmt.Println(affine.Forward(xs, nil))
 
 	// backward

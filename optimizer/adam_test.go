@@ -10,12 +10,8 @@ import (
 
 func ExampleAdam() {
 	m := &TestModel{
-		params: append(make([][]matrix.Matrix, 0), []matrix.Matrix{
-			matrix.New([]float64{1, 2, 3}, []float64{4, 5, 6}),
-		}),
-		grads: append(make([][]matrix.Matrix, 0), []matrix.Matrix{
-			matrix.New([]float64{2, 4, 6}, []float64{8, 10, 12}),
-		}),
+		params: append(make([][]matrix.Matrix, 0), []matrix.Matrix{{{1, 2, 3}, {4, 5, 6}}}),
+		grads:  append(make([][]matrix.Matrix, 0), []matrix.Matrix{{{2, 4, 6}, {8, 10, 12}}}),
 	}
 
 	for _, lr := range []float64{0.0, 0.5, 1.0} {

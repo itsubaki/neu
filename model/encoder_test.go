@@ -27,8 +27,8 @@ func ExampleEncoder() {
 	// forward
 	xs := []matrix.Matrix{
 		// (T, N, 1) = (2, 3, 1)
-		matrix.New([]float64{0.1}, []float64{0.2}, []float64{0.3}), // (N, 1) = (3, 1)
-		matrix.New([]float64{0.1}, []float64{0.2}, []float64{0.3}), // (N, 1) = (3, 1)
+		{{0.1}, {0.2}, {0.3}}, // (N, 1) = (3, 1)
+		{{0.1}, {0.2}, {0.3}}, // (N, 1) = (3, 1)
 	}
 
 	hs := m.Forward(xs)
