@@ -101,6 +101,7 @@ func (l *Decoder) Params() []matrix.Matrix {
 		l.TimeAffine.B,
 	}
 }
+
 func (l *Decoder) Grads() []matrix.Matrix {
 	return []matrix.Matrix{
 		l.TimeEmbedding.DW,
