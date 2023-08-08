@@ -24,7 +24,7 @@ func main() {
 	flag.Parse()
 
 	// data
-	x, t, v := sequence.Must(sequence.Load(dir, sequence.Addition))
+	x, t, v := sequence.Must(sequence.Load(dir, sequence.AdditionTxt))
 
 	// model
 	m := model.NewPeekySeq2Seq(&model.Seq2SeqConfig{
