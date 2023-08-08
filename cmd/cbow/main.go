@@ -13,9 +13,8 @@ import (
 
 func main() {
 	// flags
-	var epochs, batchSize int
+	var epochs int
 	flag.IntVar(&epochs, "epochs", 1000, "")
-	flag.IntVar(&batchSize, "batch-size", 3, "")
 
 	text := "You say goodbye and I say hello ."
 	corpus, w2id, id2w := ptb.PreProcess(text)
