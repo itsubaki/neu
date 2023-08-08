@@ -12,7 +12,7 @@ import (
 	"github.com/itsubaki/neu/math/vector"
 )
 
-const Addition = "addition.txt"
+const AdditionTxt = "addition.txt"
 
 type Vocab struct {
 	RuneToID map[rune]int

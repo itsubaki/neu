@@ -10,7 +10,7 @@ import (
 
 func ExampleLoad() {
 	s := rand.NewSource(1)
-	x, t, v := sequence.Must(sequence.Load("../../testdata", sequence.Addition, s))
+	x, t, v := sequence.Must(sequence.Load("../../testdata", sequence.AdditionTxt, s))
 
 	fmt.Println(len(x.Train), len(x.Train[0]), len(x.Test), len(x.Test[0]))
 	fmt.Println(len(t.Train), len(t.Train[0]), len(t.Test), len(t.Test[0]))
@@ -31,7 +31,7 @@ func ExampleLoad() {
 }
 
 func ExampleLoad_rand() {
-	x, t, v := sequence.Must(sequence.Load("../../testdata", sequence.Addition))
+	x, t, v := sequence.Must(sequence.Load("../../testdata", sequence.AdditionTxt))
 
 	fmt.Println(len(x.Train), len(x.Train[0]), len(x.Test), len(x.Test[0]))
 	fmt.Println(len(t.Train), len(t.Train[0]), len(t.Test), len(t.Test[0]))
