@@ -92,20 +92,10 @@ func ExampleTime() {
 	}
 	fmt.Println()
 
-	rxs := trainer.Time(xs, true)
-	for _, tx := range rxs {
-		fmt.Println(tx)
-	}
-
 	// Output:
 	// [[1] [4]]
 	// [[2] [5]]
 	// [[3] [6]]
-	//
-	// [[3] [6]]
-	// [[2] [5]]
-	// [[1] [4]]
-
 }
 
 func ExampleSeqAccuracy() {

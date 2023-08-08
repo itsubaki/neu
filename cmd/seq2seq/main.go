@@ -6,6 +6,7 @@ import (
 
 	"github.com/itsubaki/neu/dataset/sequence"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/vector"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/optimizer/hook"
@@ -72,8 +73,8 @@ func main() {
 func generate(xs, ts [][]int, m trainer.Seq2Seq, v *sequence.Vocab) float64 {
 	var acc int
 	for k := 0; k < 10; k++ {
-		q, correct := trainer.Float64(xs)[k], ts[k] // (1, 7), (5)
-		tq := trainer.Time(matrix.New(q))           // (7, 1, 1)
+		q, correct := trainer.Float64(xs)[k], ts[k]       // (1, 7), (5)
+		tq := vector.Reverse(trainer.Time(matrix.New(q))) // (7, 1, 1)
 		guess := m.Generate(tq, correct[0], len(correct[1:]))
 
 		acc += trainer.SeqAccuracy(correct[1:], guess)

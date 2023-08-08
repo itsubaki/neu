@@ -66,3 +66,12 @@ func Shuffle[T any](x, t []T, s ...rand.Source) ([]T, []T) {
 
 	return xs, ts
 }
+
+// Reverse reverses the slice.
+func Reverse[T any](xs []T) []T {
+	for i := 0; i < len(xs)/2; i++ {
+		xs[i], xs[len(xs)-1-i] = xs[len(xs)-1-i], xs[i]
+	}
+
+	return xs
+}

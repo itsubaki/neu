@@ -11,6 +11,7 @@ import (
 
 var (
 	_ Seq2Seq = (*model.Seq2Seq)(nil)
+	_ Seq2Seq = (*model.PeekySeq2Seq)(nil)
 )
 
 type Seq2Seq interface {
@@ -56,8 +57,8 @@ func (t *Seq2SeqTrainer) Fit(in *Seq2SeqInput, s ...rand.Source) {
 		for j := 0; j < len(in.Train)/in.BatchSize; j++ {
 			// batch
 			begin, end := Range(j, in.BatchSize)
-			xbatch := Time(xs[begin:end]) // (128, 7) -> (7, 128, 1)
-			tbatch := Time(ts[begin:end]) // (128, 5) -> (5, 128, 1)
+			xbatch := vector.Reverse(Time(xs[begin:end])) // (128, 7) -> (7, 128, 1)
+			tbatch := Time(ts[begin:end])                 // (128, 5) -> (5, 128, 1)
 
 			// update
 			loss := t.Model.Forward(xbatch, tbatch)
@@ -75,19 +76,13 @@ func (t *Seq2SeqTrainer) Fit(in *Seq2SeqInput, s ...rand.Source) {
 	}
 }
 
-func Time(xs matrix.Matrix, reverse ...bool) []matrix.Matrix {
+func Time(xs matrix.Matrix) []matrix.Matrix {
 	T := len(xs[0])                 // (128, 7)
 	out := make([]matrix.Matrix, T) // (7, 128, 1)
 	for i := 0; i < T; i++ {
 		out[i] = matrix.New()
 		for j := 0; j < len(xs); j++ {
 			out[i] = append(out[i], []float64{xs[j][i]})
-		}
-	}
-
-	if len(reverse) > 0 && reverse[0] {
-		for i := 0; i < T/2; i++ {
-			out[i], out[T-1-i] = out[T-1-i], out[i]
 		}
 	}
 
