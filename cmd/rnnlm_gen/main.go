@@ -99,5 +99,5 @@ func main() {
 	}
 
 	txt := strings.ReplaceAll(strings.Join(words, " "), "\n", "")
-	fmt.Println(txt)
+	fmt.Println(start, txt)
 }
