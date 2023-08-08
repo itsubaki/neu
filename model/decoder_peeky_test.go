@@ -66,7 +66,7 @@ func ExamplePeekyDecoder() {
 	// 3 3
 	// 3 3
 	// 3 3
-	// [1 0 0 0 0 0 0 0 0 0 0]
+	// [0 0 0 0 0 0 0 0 0 0]
 }
 
 func ExampleConcat() {
