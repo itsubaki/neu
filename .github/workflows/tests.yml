@@ -58,7 +58,7 @@ jobs:
 
       - name: Seq2Seq
         run: |
-          make seq2seq0
+          make seq2seq
 
       - name: Codecov
         uses: codecov/codecov-action@v3
