@@ -7,21 +7,6 @@
 
 Deep Learning framework for Go from scratch
 
-```shell
-go run cmd/rnnlm_gen/main.go --dir ./testdata
-*model.RNNLMGen
- 0: *layer.TimeEmbedding: W(10000, 650): 6500000
- 1: *layer.TimeDropout: Ratio(0.5)
- 2: *layer.TimeLSTM: Wx(650, 2600), Wh(650, 2600), B(1, 2600): 3382600
- 3: *layer.TimeDropout: Ratio(0.5)
- 4: *layer.TimeLSTM: Wx(650, 2600), Wh(650, 2600), B(1, 2600): 3382600
- 5: *layer.TimeDropout: Ratio(0.5)
- 6: *layer.TimeAffine: W(650, 10000), B(1, 10000): 6510000
- 7: *layer.TimeSoftmaxWithLoss
-
-the meaning of life is evolution yourself
-```
-
 ## MNIST
 
 ```shell
