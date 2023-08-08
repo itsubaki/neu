@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/itsubaki/neu/dataset/ptb"
+	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/math/vector"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
@@ -85,11 +86,16 @@ func main() {
 	})
 
 	// generate
-	startID := train.WordToID[start]
+	query := []string{"the", "meaning", "of", "life", "is"}
+	startID := train.WordToID[query[len(query)-1]]
 	skipIDs := []int{
 		train.WordToID["N"],
 		train.WordToID["<unk>"],
 		train.WordToID["$"],
+	}
+
+	for _, q := range query[:len(query)-1] {
+		m.Predict([]matrix.Matrix{{{float64(train.WordToID[q])}}})
 	}
 
 	wordIDs := m.Generate(startID, skipIDs, length)
@@ -99,5 +105,5 @@ func main() {
 	}
 
 	txt := strings.ReplaceAll(strings.Join(words, " "), "\n", "")
-	fmt.Println(start, txt)
+	fmt.Println(strings.Join(query, " "), txt)
 }
