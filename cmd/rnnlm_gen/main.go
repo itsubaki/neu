@@ -18,7 +18,7 @@ import (
 
 func main() {
 	// flag
-	var dir, start string
+	var dir string
 	var length int
 	var epochs, wordvecSize, hiddenSize, batchSize, timeSize int
 	flag.StringVar(&dir, "dir", "./testdata", "")
@@ -28,7 +28,6 @@ func main() {
 	flag.IntVar(&hiddenSize, "hidden-size", 650, "")
 	flag.IntVar(&batchSize, "batch-size", 20, "")
 	flag.IntVar(&timeSize, "time-size", 35, "")
-	flag.StringVar(&start, "start", "you", "")
 	flag.Parse()
 
 	// data
