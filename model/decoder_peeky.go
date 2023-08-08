@@ -67,10 +67,10 @@ func (m *PeekyDecoder) Backward(dscore []matrix.Matrix) matrix.Matrix {
 
 func (m *PeekyDecoder) Generate(h matrix.Matrix, startID, length int) []int {
 	H := len(h[0])
+	sampled := make([]int, 0)
 	peekyH := []matrix.Matrix{matrix.Reshape(h, 1, H)}
 	m.TimeLSTM.SetState(h)
 
-	sampled := []int{startID}
 	sampleID := startID
 	for i := 0; i < length; i++ {
 		xs := []matrix.Matrix{{{float64(sampleID)}}}

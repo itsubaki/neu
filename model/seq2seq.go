@@ -17,7 +17,7 @@ type Seq2SeqConfig struct {
 
 type Seq2Seq struct {
 	Encoder *Encoder
-	Decoder *Decoder
+	Decoder *PeekyDecoder
 	Softmax *layer.TimeSoftmaxWithLoss
 	Source  rand.Source
 }
@@ -38,7 +38,7 @@ func NewSeq2Seq(c *Seq2SeqConfig, s ...rand.Source) *Seq2Seq {
 		WeightInit:  c.WeightInit,
 	}, s[0])
 
-	decoder := NewDecoder(&DecoderConfig{
+	decoder := NewPeekyDecoder(&DecoderConfig{
 		VocabSize:   V,
 		WordVecSize: D,
 		HiddenSize:  H,
