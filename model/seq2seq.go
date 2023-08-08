@@ -8,6 +8,21 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 )
 
+var (
+	_ Decode = (*Decoder)(nil)
+	_ Decode = (*PeekyDecoder)(nil)
+)
+
+type Decode interface {
+	Forward(xs []matrix.Matrix, h matrix.Matrix) []matrix.Matrix
+	Backward(dscore []matrix.Matrix) matrix.Matrix
+	Generate(h matrix.Matrix, startID, length int) []int
+	Layers() []TimeLayer
+	Params() []matrix.Matrix
+	Grads() []matrix.Matrix
+	SetParams(p ...matrix.Matrix)
+}
+
 type Seq2SeqConfig struct {
 	VocabSize   int
 	WordVecSize int
@@ -17,7 +32,7 @@ type Seq2SeqConfig struct {
 
 type Seq2Seq struct {
 	Encoder *Encoder
-	Decoder *Decoder
+	Decoder Decode
 	Softmax *layer.TimeSoftmaxWithLoss
 	Source  rand.Source
 }

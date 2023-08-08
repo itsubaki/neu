@@ -27,7 +27,7 @@ func main() {
 	x, t, v := sequence.Must(sequence.Load(dir, sequence.Addition))
 
 	// model
-	m := model.NewSeq2Seq(&model.Seq2SeqConfig{
+	m := model.NewPeekySeq2Seq(&model.Seq2SeqConfig{
 		VocabSize:   len(v.RuneToID), // 13
 		WordVecSize: 64,
 		HiddenSize:  128,
