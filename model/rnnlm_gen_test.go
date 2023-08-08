@@ -25,7 +25,7 @@ func ExampleRNNLMGen() {
 	fmt.Println(m.Generate(0, []int{86, 28, 37}, 10))
 
 	// Output:
-	// [0 30 29 45 20 58 3 68 43 31]
+	// [30 29 45 20 58 3 68 43 31 72]
 }
 
 func ExampleChoice() {

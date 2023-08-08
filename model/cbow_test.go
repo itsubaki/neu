@@ -39,10 +39,9 @@ func ExampleCBOW() {
 	fmt.Println()
 
 	loss := m.Forward(c, t)
-	dout := m.Backward()
+	m.Backward()
 
 	fmt.Println(loss)
-	fmt.Println(dout)
 
 	score := m.Predict([]matrix.Matrix{
 		{
@@ -59,8 +58,7 @@ func ExampleCBOW() {
 	//  2: *layer.Dot: W(5, 7): 35
 	//  3: *layer.SoftmaxWithLoss
 	//
-	// [[1.9461398376656527]]
-	// []
+	// 1.9461398376656527
 	// [[[0.00012703871969382832 -1.2392940985965779e-05 6.8815266046905e-05 0.00022359874505051858 0.00012362319821868092 0.0006585876988009539 0.0003365497538731326]]]
 
 }

@@ -21,13 +21,13 @@ func main() {
 	var length int
 	var epochs, wordvecSize, hiddenSize, batchSize, timeSize int
 	flag.StringVar(&dir, "dir", "./testdata", "")
-	flag.StringVar(&start, "start", "you", "")
 	flag.IntVar(&length, "length", 100, "")
 	flag.IntVar(&epochs, "epochs", 10, "")
 	flag.IntVar(&wordvecSize, "wordvec-size", 650, "")
 	flag.IntVar(&hiddenSize, "hidden-size", 650, "")
 	flag.IntVar(&batchSize, "batch-size", 20, "")
 	flag.IntVar(&timeSize, "time-size", 35, "")
+	flag.StringVar(&start, "start", "you", "")
 	flag.Parse()
 
 	// data
@@ -86,7 +86,11 @@ func main() {
 
 	// generate
 	startID := train.WordToID[start]
-	skipIDs := []int{train.WordToID["N"], train.WordToID["<unk>"], train.WordToID["$"]}
+	skipIDs := []int{
+		train.WordToID["N"],
+		train.WordToID["<unk>"],
+		train.WordToID["$"],
+	}
 
 	wordIDs := m.Generate(startID, skipIDs, length)
 	words := make([]string, length)

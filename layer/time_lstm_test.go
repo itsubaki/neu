@@ -84,6 +84,7 @@ func ExampleTimeLSTM_Params() {
 func ExampleTimeLSTM_state() {
 	lstm := &layer.TimeLSTM{}
 	lstm.SetState(matrix.New())
+	lstm.SetState(matrix.New(), matrix.New())
 	lstm.ResetState()
 
 	// Output:

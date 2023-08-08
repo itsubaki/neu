@@ -66,18 +66,18 @@ func (m *Decoder) Backward(dscore []matrix.Matrix) matrix.Matrix {
 
 func (m *Decoder) Generate(h matrix.Matrix, startID, length int) []int {
 	m.TimeLSTM.SetState(h) // (1, 128)
+	sampled := make([]int, 0)
 
-	sampled := []int{startID}
-	sampleID := startID
+	x := startID
 	for i := 0; i < length; i++ {
-		xs := []matrix.Matrix{{{float64(sampleID)}}}
+		xs := []matrix.Matrix{{{float64(x)}}}
 
 		out := m.TimeEmbedding.Forward(xs, nil) // (1, 1, 16)
 		out = m.TimeLSTM.Forward(out, nil)      // (1, 1, 128)
 		score := m.TimeAffine.Forward(out, nil) // (1, 1, 13)
 
-		sampleID = Argmax(score) // 0~12
-		sampled = append(sampled, sampleID)
+		x = Argmax(score) // 0~12
+		sampled = append(sampled, x)
 	}
 
 	return sampled

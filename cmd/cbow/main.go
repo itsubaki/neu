@@ -76,14 +76,14 @@ func main() {
 		m.Backward()
 		o.Update(m)
 
-		if i%100 == 0 {
+		if i%1000 == 0 {
 			fmt.Printf("loss=%.4f\n", loss)
 		}
 	}
 	fmt.Println()
 
 	for id, word := range id2w {
-		fmt.Printf("%v: %v\n", word, m.Win0.Params()[0][id])
+		fmt.Printf("%v: %.4f\n", word, m.Win0.Params()[0][id])
 	}
 	fmt.Println()
 
@@ -94,5 +94,5 @@ func main() {
 		},
 	})
 
-	fmt.Println(activation.Softmax(score[0][0]))
+	fmt.Printf("%.4f\n", activation.Softmax(score[0][0]))
 }

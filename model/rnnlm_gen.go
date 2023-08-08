@@ -19,7 +19,7 @@ func NewRNNLMGen(c *LSTMLMConfig, s ...rand.Source) *RNNLMGen {
 }
 
 func (g *RNNLMGen) Generate(startID int, skipIDs []int, length int) []int {
-	wordIDs := []int{startID}
+	wordIDs := make([]int, 0)
 
 	x := startID
 	for {
