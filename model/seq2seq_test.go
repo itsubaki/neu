@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 
+	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/weight"
 )
@@ -23,6 +24,16 @@ func ExampleSeq2Seq() {
 	}
 	fmt.Println()
 
+	// data
+	xs := []matrix.Matrix{{{0, 1, 2}}, {{0, 1, 2}}, {{0, 1, 2}}}
+	ts := []matrix.Matrix{{{0, 1, 2}}, {{0, 1, 2}}, {{0, 1, 2}}}
+
+	loss := m.Forward(xs, ts)
+	m.Backward()
+	fmt.Printf("%.4f\n", loss)
+
+	fmt.Println(m.Generate(xs, 1, 10))
+
 	// Output:
 	// *model.Seq2Seq
 	//  0: *layer.TimeEmbedding: W(3, 3): 9
@@ -31,6 +42,9 @@ func ExampleSeq2Seq() {
 	//  3: *layer.TimeLSTM: Wx(3, 12), Wh(3, 12), B(1, 12): 84
 	//  4: *layer.TimeAffine: W(3, 3), B(1, 3): 12
 	//  5: *layer.TimeSoftmaxWithLoss
+	//
+	// 1.1011
+	// [2 0 0 2 0 2 2 2 2 2]
 }
 
 func ExampleSeq2Seq_Params() {

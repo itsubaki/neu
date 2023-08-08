@@ -69,6 +69,17 @@ func ExamplePeekyDecoder() {
 	// [0 0 0 0 0 0 0 0 0 0]
 }
 
+func ExamplePeekyDecoder_rand() {
+	model.NewPeekyDecoder(&model.DecoderConfig{
+		VocabSize:   3, // V
+		WordVecSize: 3, // D
+		HiddenSize:  3, // H
+		WeightInit:  weight.Xavier,
+	})
+
+	// Output:
+}
+
 func ExampleConcat() {
 	hs := []matrix.Matrix{
 		{
