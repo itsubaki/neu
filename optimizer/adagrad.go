@@ -21,15 +21,15 @@ func (o *AdaGrad) Update(m Model) [][]matrix.Matrix {
 	}
 
 	if len(o.h) == 0 {
-		o.h = Zero(params)
+		o.h = ZeroLike(params)
 	}
 
 	updated := make([][]matrix.Matrix, len(params))
 	for i := range params {
 		updated[i] = make([]matrix.Matrix, len(params[i]))
 		for j := range params[i] {
-			o.h[i][j] = o.h[i][j].Add(grads[i][j].Mul(grads[i][j]))                                            // h[k] = h[k] + grads[k] * grads[k]
-			updated[i][j] = params[i][j].Sub(matrix.FuncWith(grads[i][j], o.h[i][j], adagrad(o.LearningRate))) // params[k] = params[k] - o.LearningRate * grads[k]/sqrt(h[k])
+			o.h[i][j] = o.h[i][j].Add(grads[i][j].Mul(grads[i][j]))                                      // h[k] = h[k] + grads[k] * grads[k]
+			updated[i][j] = params[i][j].Sub(matrix.F2(grads[i][j], o.h[i][j], adagrad(o.LearningRate))) // params[k] = params[k] - o.LearningRate * grads[k]/sqrt(h[k])
 		}
 	}
 

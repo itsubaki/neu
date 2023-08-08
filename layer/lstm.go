@@ -11,7 +11,7 @@ type LSTM struct {
 	Wx, Wh, B    matrix.Matrix // params
 	DWx, DWh, DB matrix.Matrix // grads
 	x, h, c      matrix.Matrix // cache
-	i, f, g, o   matrix.Matrix // cache
+	f, g, i, o   matrix.Matrix // cache
 	cNext        matrix.Matrix // cache
 }
 
@@ -31,37 +31,37 @@ func (l *LSTM) Forward(x, h, c matrix.Matrix, _ ...Opts) (matrix.Matrix, matrix.
 		o = append(o, r[3*H:])
 	}
 
-	f = matrix.Func(f, activation.Sigmoid) // (N, H)
-	g = matrix.Func(g, activation.Tanh)    // (N, H)
-	i = matrix.Func(i, activation.Sigmoid) // (N, H)
-	o = matrix.Func(o, activation.Sigmoid) // (N, H)
+	f = matrix.F(f, activation.Sigmoid) // (N, H)
+	g = matrix.F(g, activation.Tanh)    // (N, H)
+	i = matrix.F(i, activation.Sigmoid) // (N, H)
+	o = matrix.F(o, activation.Sigmoid) // (N, H)
 
 	// next
-	cNext := f.Mul(c).Add(g.Mul(i))                     // f * cPrev + g * i
-	hNext := o.Mul(matrix.Func(cNext, activation.Tanh)) // o * tanh(cNext)
+	cNext := f.Mul(c).Add(g.Mul(i))                  // f * cPrev + g * i
+	hNext := o.Mul(matrix.F(cNext, activation.Tanh)) // o * tanh(cNext)
 
 	// cache
 	l.x, l.h, l.c = x, h, c
-	l.i, l.f, l.g, l.o = i, f, g, o
+	l.f, l.g, l.i, l.o = f, g, i, o
 	l.cNext = cNext
 
 	return hNext, cNext
 }
 
 func (l *LSTM) Backward(dhNext, dcNext matrix.Matrix) (matrix.Matrix, matrix.Matrix, matrix.Matrix) {
-	tanhcNext := matrix.Func(l.cNext, activation.Tanh) // tanh(cNext)
-	dt := matrix.Func(tanhcNext, dtanh)                // 1 - tanh(cNext)**2
-	ds := dcNext.Add(dhNext.Mul(l.o).Mul(dt))          // dhNext + (dhNext * o) * (1 - tanh(cNext)**2)
+	tanhcNext := matrix.F(l.cNext, activation.Tanh) // tanh(cNext)
+	dt := matrix.F(tanhcNext, dtanh)                // 1 - tanh(cNext)**2
+	ds := dcNext.Add(dhNext.Mul(l.o).Mul(dt))       // dhNext + (dhNext * o) * (1 - tanh(cNext)**2)
 
 	df := ds.Mul(l.c)           // ds * cPrev
 	dg := ds.Mul(l.i)           // ds * i
 	di := ds.Mul(l.g)           // ds * g
 	do := dhNext.Mul(tanhcNext) // dhNext * tanh(cNext)
 
-	df = df.Mul(matrix.Func(l.f, dsigmoid)) // df = df * f * (1 - f)
-	dg = dg.Mul(matrix.Func(l.g, dtanh))    // dg = dg * (1 - g**2)
-	di = di.Mul(matrix.Func(l.i, dsigmoid)) // di = di * i * (1 - i)
-	do = do.Mul(matrix.Func(l.o, dsigmoid)) // do = do * o * (1 - o)
+	df = df.Mul(matrix.F(l.f, dsigmoid)) // df = df * f * (1 - f)
+	dg = dg.Mul(matrix.F(l.g, dtanh))    // dg = dg * (1 - g**2)
+	di = di.Mul(matrix.F(l.i, dsigmoid)) // di = di * i * (1 - i)
+	do = do.Mul(matrix.F(l.o, dsigmoid)) // do = do * o * (1 - o)
 
 	dA := matrix.HStack(df, dg, di, do) // (N, 4H)
 

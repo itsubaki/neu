@@ -18,15 +18,15 @@ func (o *Momentum) Update(m Model) [][]matrix.Matrix {
 	}
 
 	if len(o.v) == 0 {
-		o.v = Zero(params)
+		o.v = ZeroLike(params)
 	}
 
 	updated := make([][]matrix.Matrix, len(params))
 	for i := range params {
 		updated[i] = make([]matrix.Matrix, len(params[i]))
 		for j := range params[i] {
-			o.v[i][j] = matrix.FuncWith(o.v[i][j], grads[i][j], momentum(o.Momentum, o.LearningRate)) // v[k] = momentum * v[k] - learningRate * grads[k]
-			updated[i][j] = params[i][j].Add(o.v[i][j])                                               // params[k] = params[k] + v[k]
+			o.v[i][j] = matrix.F2(o.v[i][j], grads[i][j], momentum(o.Momentum, o.LearningRate)) // v[k] = momentum * v[k] - learningRate * grads[k]
+			updated[i][j] = params[i][j].Add(o.v[i][j])                                         // params[k] = params[k] + v[k]
 		}
 	}
 

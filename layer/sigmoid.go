@@ -17,12 +17,12 @@ func (l *Sigmoid) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0
 func (l *Sigmoid) SetParams(p ...matrix.Matrix) {}
 
 func (l *Sigmoid) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
-	l.out = x.Func(activation.Sigmoid)
+	l.out = x.F(activation.Sigmoid)
 	return l.out
 }
 
 func (l *Sigmoid) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	dx := dout.Mul(matrix.Func(l.out, dsigmoid))
+	dx := dout.Mul(matrix.F(l.out, dsigmoid))
 	return dx, nil
 }
 

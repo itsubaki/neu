@@ -133,39 +133,39 @@ func (m Matrix) Dot(n Matrix) Matrix {
 }
 
 func (m Matrix) Add(n Matrix) Matrix {
-	return m.FuncWith(n.Broadcast(m.Dimension()), func(a, b float64) float64 { return a + b })
+	return m.F2(n.Broadcast(m.Dimension()), func(a, b float64) float64 { return a + b })
 }
 
 func (m Matrix) Sub(n Matrix) Matrix {
-	return m.FuncWith(n.Broadcast(m.Dimension()), func(a, b float64) float64 { return a - b })
+	return m.F2(n.Broadcast(m.Dimension()), func(a, b float64) float64 { return a - b })
 }
 
 func (m Matrix) Mul(n Matrix) Matrix {
-	return m.FuncWith(n.Broadcast(m.Dimension()), func(a, b float64) float64 { return a * b })
+	return m.F2(n.Broadcast(m.Dimension()), func(a, b float64) float64 { return a * b })
 }
 
 func (m Matrix) Div(n Matrix) Matrix {
-	return m.FuncWith(n.Broadcast(m.Dimension()), func(a, b float64) float64 { return a / b })
+	return m.F2(n.Broadcast(m.Dimension()), func(a, b float64) float64 { return a / b })
 }
 
 func (m Matrix) AddC(c float64) Matrix {
-	return m.Func(func(v float64) float64 { return c + v })
+	return m.F(func(v float64) float64 { return c + v })
 }
 
 func (m Matrix) MulC(c float64) Matrix {
-	return m.Func(func(v float64) float64 { return c * v })
+	return m.F(func(v float64) float64 { return c * v })
 }
 
 func (m Matrix) Pow2() Matrix {
-	return m.Func(func(v float64) float64 { return v * v })
+	return m.F(func(v float64) float64 { return v * v })
 }
 
 func (m Matrix) Sqrt(eps float64) Matrix {
-	return m.Func(func(v float64) float64 { return math.Sqrt(v + eps) })
+	return m.F(func(v float64) float64 { return math.Sqrt(v + eps) })
 }
 
 func (m Matrix) Abs() Matrix {
-	return m.Func(func(v float64) float64 { return math.Abs(v) })
+	return m.F(func(v float64) float64 { return math.Abs(v) })
 }
 
 func (m Matrix) Transpose() Matrix {
@@ -277,8 +277,8 @@ func (m Matrix) MaxAxis1() []float64 {
 	return out
 }
 
-// Func applies a function to each element of the matrix.
-func (m Matrix) Func(f func(v float64) float64) Matrix {
+// F applies a function to each element of the matrix.
+func (m Matrix) F(f func(v float64) float64) Matrix {
 	p, q := m.Dimension()
 
 	out := make(Matrix, 0, p)
@@ -295,7 +295,7 @@ func (m Matrix) Func(f func(v float64) float64) Matrix {
 	return out
 }
 
-func (m Matrix) FuncWith(n Matrix, f func(a, b float64) float64) Matrix {
+func (m Matrix) F2(n Matrix, f func(a, b float64) float64) Matrix {
 	p, q := m.Dimension()
 
 	out := make(Matrix, 0, p)
@@ -358,13 +358,13 @@ func Dot(m, n Matrix) Matrix {
 	return m.Dot(n)
 }
 
-// Func applies a function to each element of the matrix.
-func Func(m Matrix, f func(a float64) float64) Matrix {
-	return m.Func(f)
+// F applies a function to each element of the matrix.
+func F(m Matrix, f func(a float64) float64) Matrix {
+	return m.F(f)
 }
 
-func FuncWith(m, n Matrix, f func(a, b float64) float64) Matrix {
-	return m.FuncWith(n, f)
+func F2(m, n Matrix, f func(a, b float64) float64) Matrix {
+	return m.F2(n, f)
 }
 
 // Padding returns the padded matrix.

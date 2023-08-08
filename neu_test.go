@@ -207,11 +207,11 @@ func Example_neuralNet() {
 
 	// forward
 	A1 := matrix.Dot(x, W1).Add(B1)
-	Z1 := matrix.Func(A1, activation.Sigmoid)
+	Z1 := matrix.F(A1, activation.Sigmoid)
 	A2 := matrix.Dot(Z1, W2).Add(B2)
-	Z2 := matrix.Func(A2, activation.Sigmoid)
+	Z2 := matrix.F(A2, activation.Sigmoid)
 	A3 := matrix.Dot(Z2, W3).Add(B3)
-	y := matrix.Func(A3, activation.Identity)
+	y := matrix.F(A3, activation.Identity)
 
 	// print
 	fmt.Println(A1)

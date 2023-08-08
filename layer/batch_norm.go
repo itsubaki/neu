@@ -40,8 +40,8 @@ func (l *BatchNorm) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
 		l.xc = xc
 		l.xn = xn
 		l.std = std
-		l.mu = matrix.FuncWith(l.mu, mu, func(a, b float64) float64 { return l.Momentum*a + (1-l.Momentum)*b }) // l.mu = momentum * l.mu + (1 - momentum) * mu
-		l.va = matrix.FuncWith(l.va, va, func(a, b float64) float64 { return l.Momentum*a + (1-l.Momentum)*b }) // l.va = momentum * l.va + (1 - momentum) * va
+		l.mu = matrix.F2(l.mu, mu, func(a, b float64) float64 { return l.Momentum*a + (1-l.Momentum)*b }) // l.mu = momentum * l.mu + (1 - momentum) * mu
+		l.va = matrix.F2(l.va, va, func(a, b float64) float64 { return l.Momentum*a + (1-l.Momentum)*b }) // l.va = momentum * l.va + (1 - momentum) * va
 	} else {
 		xc := x.Sub(l.mu)      // x - mu
 		std := l.va.Sqrt(1e-7) // sqrt(var + 1e-7)

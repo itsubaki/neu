@@ -21,16 +21,16 @@ func (l *RNN) Forward(x, h matrix.Matrix, _ ...Opts) matrix.Matrix {
 	// h(N, H).Wh(H, H) -> (N, H)
 	// x(N, D).Wx(D, H) -> (N, H)
 	t := matrix.Dot(h, l.Wh).Add(matrix.Dot(x, l.Wx)).Add(l.B)
-	hNext := matrix.Func(t, activation.Tanh)
+	hNext := matrix.F(t, activation.Tanh)
 
 	l.x, l.hPrev, l.hNext = x, h, hNext // cache
 	return l.hNext
 }
 
 func (l *RNN) Backward(dhNext matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	dt := dhNext.Mul(matrix.Func(l.hNext, dtanh)) // dt = dhNext * (1 - hNext**2)
-	dx := matrix.Dot(dt, l.Wx.T())                // dot(dt(N, H), Wx.T(H, D)) -> dx(N, D)
-	dh := matrix.Dot(dt, l.Wh.T())                // dot(dt(N, H), Wh.T(H, H)) -> dh(N, H)
+	dt := dhNext.Mul(matrix.F(l.hNext, dtanh)) // dt = dhNext * (1 - hNext**2)
+	dx := matrix.Dot(dt, l.Wx.T())             // dot(dt(N, H), Wx.T(H, D)) -> dx(N, D)
+	dh := matrix.Dot(dt, l.Wh.T())             // dot(dt(N, H), Wh.T(H, H)) -> dh(N, H)
 
 	l.DWx = matrix.Dot(l.x.T(), dt)     // dot(x.T(D, N), dt(N, H)) -> (D, H)
 	l.DWh = matrix.Dot(l.hPrev.T(), dt) // dot(hPrev.T(H, N), dt(N, H)) -> (H, H)

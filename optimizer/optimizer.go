@@ -28,3 +28,15 @@ type Model interface {
 }
 
 type Hook func(params, grads [][]matrix.Matrix) [][]matrix.Matrix
+
+func ZeroLike(param [][]matrix.Matrix) [][]matrix.Matrix {
+	z := make([][]matrix.Matrix, len(param))
+	for i := range param {
+		z[i] = make([]matrix.Matrix, len(param[i]))
+		for j := range param[i] {
+			z[i][j] = matrix.Zero(param[i][j].Dimension())
+		}
+	}
+
+	return z
+}

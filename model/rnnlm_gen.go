@@ -55,16 +55,6 @@ func Flatten(m []matrix.Matrix) []float64 {
 	return flatten
 }
 
-func Contains[T comparable](v T, s []T) bool {
-	for _, ss := range s {
-		if v == ss {
-			return true
-		}
-	}
-
-	return false
-}
-
 func Choice(p []float64, s ...rand.Source) int {
 	if len(s) == 0 {
 		s = append(s, rand.NewSource(time.Now().UnixNano()))
@@ -85,4 +75,14 @@ func Choice(p []float64, s ...rand.Source) int {
 	}
 
 	return -1
+}
+
+func Contains[T comparable](v T, s []T) bool {
+	for _, ss := range s {
+		if v == ss {
+			return true
+		}
+	}
+
+	return false
 }

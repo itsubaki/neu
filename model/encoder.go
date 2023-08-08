@@ -53,7 +53,7 @@ func (m *Encoder) Forward(xs []matrix.Matrix) matrix.Matrix {
 }
 
 func (m *Encoder) Backward(dh matrix.Matrix) {
-	dhs := Zero(m.hs)                // (Time, N, H)
+	dhs := ZeroLike(m.hs)            // (Time, N, H)
 	dhs[len(m.hs)-1] = dh            // dhs[-1, N, H] = dh[N, H]
 	dout := m.TimeLSTM.Backward(dhs) //
 	m.TimeEmbedding.Backward(dout)
@@ -90,7 +90,7 @@ func (l *Encoder) SetParams(p ...matrix.Matrix) {
 	l.TimeLSTM.B = p[3]
 }
 
-func Zero(hs []matrix.Matrix) []matrix.Matrix {
+func ZeroLike(hs []matrix.Matrix) []matrix.Matrix {
 	out := make([]matrix.Matrix, len(hs))
 	for i := 0; i < len(hs); i++ {
 		out[i] = matrix.Zero(hs[i].Dimension())

@@ -374,13 +374,13 @@ func ExampleMatrix_T() {
 	// [3 6]
 }
 
-func ExampleMatrix_Func() {
+func ExampleMatrix_F() {
 	A := matrix.New(
 		[]float64{1, 2},
 		[]float64{3, 4},
 	)
 
-	for _, r := range A.Func(func(v float64) float64 { return v * 3.0 }) {
+	for _, r := range A.F(func(v float64) float64 { return v * 3.0 }) {
 		fmt.Println(r)
 	}
 
@@ -474,13 +474,13 @@ func ExampleMatrix_Broadcast_noEffect() {
 	// [3 4]
 }
 
-func ExampleFunc() {
+func ExampleF() {
 	A := matrix.New(
 		[]float64{1, 2},
 		[]float64{3, 4},
 	)
 
-	for _, r := range matrix.Func(A, func(v float64) float64 { return v * 2 }) {
+	for _, r := range matrix.F(A, func(v float64) float64 { return v * 2 }) {
 		fmt.Println(r)
 	}
 
@@ -490,7 +490,7 @@ func ExampleFunc() {
 
 }
 
-func ExampleFuncWith() {
+func ExampleF2() {
 	A := matrix.New(
 		[]float64{1, 2},
 		[]float64{3, 4},
@@ -501,7 +501,7 @@ func ExampleFuncWith() {
 		[]float64{7, 8},
 	)
 
-	for _, r := range matrix.FuncWith(A, B, func(a, b float64) float64 { return a * b }) {
+	for _, r := range matrix.F2(A, B, func(a, b float64) float64 { return a * b }) {
 		fmt.Println(r)
 	}
 

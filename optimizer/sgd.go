@@ -19,7 +19,7 @@ func (o *SGD) Update(m Model) [][]matrix.Matrix {
 	for i := range params {
 		updated[i] = make([]matrix.Matrix, len(params[i]))
 		for j := range params[i] {
-			updated[i][j] = matrix.FuncWith(params[i][j], grads[i][j], sgd(o.LearningRate)) // params[k] = params[k] - o.LearningRate * grads[k]
+			updated[i][j] = matrix.F2(params[i][j], grads[i][j], sgd(o.LearningRate)) // params[k] = params[k] - o.LearningRate * grads[k]
 		}
 	}
 
