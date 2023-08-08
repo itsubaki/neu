@@ -64,6 +64,7 @@ func main() {
 
 			acc := generate(xt, tt, m, v)
 			fmt.Printf("%2d, %2d: loss=%.04f, train_acc=%.4f\n", epoch, j, loss, acc)
+			fmt.Println()
 		},
 	})
 }

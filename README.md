@@ -51,7 +51,40 @@ label  : [4 1 2 6 7 1 8 7 5 5 7 6 7 5 8 4 7 4 3 2]
 ...
 ```
 
+## Seq2Seq
+
+```shell
+make additiondl
+go run cmd/seq2seq/main.go --dir ./testdata
+```
+
+```shell
+*model.PeekySeq2Seq
+ 0: *layer.TimeEmbedding: W(13, 64): 832
+ 1: *layer.TimeLSTM: Wx(64, 512), Wh(128, 512), B(1, 512): 98816
+ 2: *layer.TimeEmbedding: W(13, 64): 832
+ 3: *layer.TimeLSTM: Wx(192, 512), Wh(128, 512), B(1, 512): 164352
+ 4: *layer.TimeAffine: W(256, 13), B(1, 13): 3341
+ 5: *layer.TimeSoftmaxWithLoss
+
+...
+[9 0 + 4 0 8  ] [_ 4 9 8  ]; [2 9 8  ] ([6 9 10 5])
+[6 5 5 + 9    ] [_ 6 6 4  ]; [4 6 6  ] ([11 1 1 5])
+[9 3 + 4 0 3  ] [_ 4 9 6  ]; [4 9 6  ] ([11 9 1 5])
+[5 8 + 8 5    ] [_ 1 4 3  ]; [4 4 1  ] ([11 11 0 5])
+[2 0 + 7 4 5  ] [_ 7 6 5  ]; [4 9 8  ] ([11 9 10 5])
+60,  0: loss=0.6508, train_acc=0.2000
+
+[9 0 + 4 0 8  ] [_ 4 9 8  ]; [4 9 8  ] ([11 9 10 5])
+[6 5 5 + 9    ] [_ 6 6 4  ]; [6 6 4  ] ([1 1 11 5])
+[9 3 + 4 0 3  ] [_ 4 9 6  ]; [4 9 6  ] ([11 9 1 5])
+[5 8 + 8 5    ] [_ 1 4 3  ]; [1 4 3  ] ([0 11 8 5])
+[2 0 + 7 4 5  ] [_ 7 6 5  ]; [7 6 5  ] ([3 1 4 5])
+80,  0: loss=0.1715, train_acc=1.0000
+...
+```
+
 # References
 
- 1. [oreilly-japan/deep-learning-from-scratch](https://github.com/oreilly-japan/deep-learning-from-scratch)
- 2. [oreilly-japan/deep-learning-from-scratch-2](https://github.com/oreilly-japan/deep-learning-from-scratch-2)
+1.  [oreilly-japan/deep-learning-from-scratch](https://github.com/oreilly-japan/deep-learning-from-scratch)
+2.  [oreilly-japan/deep-learning-from-scratch-2](https://github.com/oreilly-japan/deep-learning-from-scratch-2)
