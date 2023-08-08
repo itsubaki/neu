@@ -16,10 +16,11 @@ import (
 func main() {
 	// flag
 	var dir string
-	var epochs, batchSize int
+	var epochs, dataSize, batchSize int
 	flag.StringVar(&dir, "dir", "./testdata", "")
-	flag.IntVar(&epochs, "epochs", 30, "")
-	flag.IntVar(&batchSize, "batch-size", 128, "")
+	flag.IntVar(&epochs, "epochs", 200, "")
+	flag.IntVar(&dataSize, "data-size", 10, "")
+	flag.IntVar(&batchSize, "batch-size", 5, "")
 	flag.Parse()
 
 	// data
@@ -28,7 +29,7 @@ func main() {
 	// model
 	m := model.NewSeq2Seq(&model.Seq2SeqConfig{
 		VocabSize:   len(v.RuneToID), // 13
-		WordVecSize: 16,
+		WordVecSize: 64,
 		HiddenSize:  128,
 		WeightInit:  weight.Xavier,
 	})
@@ -50,26 +51,33 @@ func main() {
 		},
 	})
 
+	xt, tt := x.Train[:dataSize], t.Train[:dataSize]
 	tr.Fit(&trainer.Seq2SeqInput{
-		Train:      x.Train,
-		TrainLabel: t.Train,
+		Train:      xt,
+		TrainLabel: tt,
 		Epochs:     epochs,
 		BatchSize:  batchSize,
 		Verbose: func(epoch, j int, loss float64, m trainer.Seq2Seq) {
-			fmt.Printf("%2d, %2d: loss=%.04f\n", epoch, j, loss)
-			generate(x.Test, t.Test, m, v, 10)
+			if epoch%20 != 0 || j != 0 {
+				return
+			}
+
+			acc := generate(xt, tt, m, v)
+			fmt.Printf("%2d, %2d: loss=%.04f, train_acc=%.4f\n", epoch, j, loss, acc)
 		},
 	})
-
-	generate(x.Test, t.Test, m, v, 100)
 }
 
-func generate(xs, ts [][]int, m trainer.Seq2Seq, v *sequence.Vocab, top int) {
-	for k := 0; k < top; k++ {
+func generate(xs, ts [][]int, m trainer.Seq2Seq, v *sequence.Vocab) float64 {
+	var acc int
+	for k := 0; k < 10; k++ {
 		q, ans := trainer.Float64(xs)[k], ts[k] // (1, 7), (5)
 		tq := trainer.Time(matrix.New(q))       // (7, 1, 1)
 		guess := m.Generate(tq, ans[0], len(ans[1:]))
 
-		fmt.Printf("%v %v, %v (%v)\n", v.ToString(xs[k]), v.ToString(ans), v.ToString(guess), guess)
+		acc += trainer.SeqAccuracy(ans[1:], guess)
+		fmt.Printf("%v %v; %v (%v)\n", v.ToString(xs[k]), v.ToString(ans), v.ToString(guess), guess)
 	}
+
+	return float64(acc) / 10.0
 }

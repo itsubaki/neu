@@ -76,8 +76,8 @@ func main() {
 		m.Backward()
 		o.Update(m)
 
-		if i%1000 == 0 {
-			fmt.Printf("loss=%.4f\n", loss)
+		if (i+1)%200 == 0 {
+			fmt.Printf("%4v: loss=%.4f\n", i+1, loss)
 		}
 	}
 	fmt.Println()
