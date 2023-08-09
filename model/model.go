@@ -18,6 +18,7 @@ var (
 	_ Layer = (*layer.Dropout)(nil)
 	_ Layer = (*layer.EmbeddingDot)(nil)
 	_ Layer = (*layer.Embedding)(nil)
+ _ Layer = (*layer.LSTM)(nil)
 	_ Layer = (*layer.Mul)(nil)
 	_ Layer = (*layer.ReLU)(nil)
 	_ Layer = (*layer.RNN)(nil)
