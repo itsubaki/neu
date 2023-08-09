@@ -32,6 +32,9 @@ rnnlmgen1:
 seq2seq:
 	go run cmd/seq2seq/main.go --dir ./testdata
 
+seq2seq_attn:
+	go run cmd/seq2seq_attn/main.go --dir ./testdata
+
 mnistdl:
 	curl -s -o testdata/train-images-idx3-ubyte.gz http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz
 	curl -s -o testdata/train-labels-idx1-ubyte.gz http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz
@@ -54,4 +57,4 @@ additiondl:
 	curl -s -o testdata/addition.txt https://raw.githubusercontent.com/oreilly-japan/deep-learning-from-scratch-2/master/dataset/addition.txt
 
 datedl:
-	curl -s -o testdata/datedl.txt https://raw.githubusercontent.com/oreilly-japan/deep-learning-from-scratch-2/master/dataset/date.txt
+	curl -s -o testdata/date.txt https://raw.githubusercontent.com/oreilly-japan/deep-learning-from-scratch-2/master/dataset/date.txt
