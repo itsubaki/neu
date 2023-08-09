@@ -56,4 +56,4 @@ additiondl:
 	curl -s -o testdata/addition.txt https://raw.githubusercontent.com/oreilly-japan/deep-learning-from-scratch-2/master/dataset/addition.txt
 
 datedl:
-	curl -s -o testdata/addition.txt https://raw.githubusercontent.com/oreilly-japan/deep-learning-from-scratch-2/master/dataset/date.txt
+	curl -s -o testdata/datedl.txt https://raw.githubusercontent.com/oreilly-japan/deep-learning-from-scratch-2/master/dataset/date.txt
