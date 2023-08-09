@@ -47,22 +47,22 @@ type WeightInit func(prevNodeNum int) float64
 
 // Layer is an interface that represents a layer.
 type Layer interface {
+	Forward(x, y matrix.Matrix, opts ...layer.Opts) matrix.Matrix
+	Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix)
 	Params() []matrix.Matrix
 	Grads() []matrix.Matrix
 	SetParams(p ...matrix.Matrix)
-	Forward(x, y matrix.Matrix, opts ...layer.Opts) matrix.Matrix
-	Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix)
 }
 
 // TimeLayer is an interface that represents a time layer.
 type TimeLayer interface {
+	Forward(xs, ys []matrix.Matrix, opts ...layer.Opts) []matrix.Matrix
+	Backward(dout []matrix.Matrix) []matrix.Matrix
 	Params() []matrix.Matrix
 	Grads() []matrix.Matrix
 	SetParams(p ...matrix.Matrix)
 	SetState(h ...matrix.Matrix)
 	ResetState()
-	Forward(xs, ys []matrix.Matrix, opts ...layer.Opts) []matrix.Matrix
-	Backward(dout []matrix.Matrix) []matrix.Matrix
 }
 
 // Save saves the params to a file.
