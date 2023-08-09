@@ -13,7 +13,7 @@ type PeekyDecoder struct {
 	cacheH int
 }
 
-func NewPeekyDecoder(c *DecoderConfig, s ...rand.Source) *PeekyDecoder {
+func NewPeekyDecoder(c *RNNLMConfig, s ...rand.Source) *PeekyDecoder {
 	if len(s) == 0 {
 		s = append(s, rand.NewSource(time.Now().UnixNano()))
 	}

@@ -23,13 +23,6 @@ type Decode interface {
 	SetParams(p ...matrix.Matrix)
 }
 
-type Seq2SeqConfig struct {
-	VocabSize   int
-	WordVecSize int
-	HiddenSize  int
-	WeightInit  WeightInit
-}
-
 type Seq2Seq struct {
 	Encoder *Encoder
 	Decoder Decode
@@ -37,32 +30,14 @@ type Seq2Seq struct {
 	Source  rand.Source
 }
 
-func NewSeq2Seq(c *Seq2SeqConfig, s ...rand.Source) *Seq2Seq {
+func NewSeq2Seq(c *RNNLMConfig, s ...rand.Source) *Seq2Seq {
 	if len(s) == 0 {
 		s = append(s, rand.NewSource(time.Now().UnixNano()))
 	}
 
-	// size
-	V, D, H := c.VocabSize, c.WordVecSize, c.HiddenSize
-
-	// layer
-	encoder := NewEncoder(&EncoderConfig{
-		VocabSize:   V,
-		WordVecSize: D,
-		HiddenSize:  H,
-		WeightInit:  c.WeightInit,
-	}, s[0])
-
-	decoder := NewDecoder(&DecoderConfig{
-		VocabSize:   V,
-		WordVecSize: D,
-		HiddenSize:  H,
-		WeightInit:  c.WeightInit,
-	}, s[0])
-
 	return &Seq2Seq{
-		Encoder: encoder,
-		Decoder: decoder,
+		Encoder: NewEncoder(c, s[0]),
+		Decoder: NewDecoder(c, s[0]),
 		Softmax: &layer.TimeSoftmaxWithLoss{},
 		Source:  s[0],
 	}

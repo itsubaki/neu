@@ -10,7 +10,7 @@ import (
 
 func ExampleSave() {
 	s := rand.NewSource(1)
-	m := model.NewSeq2Seq(&model.Seq2SeqConfig{
+	m := model.NewSeq2Seq(&model.RNNLMConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
 		HiddenSize:  3, // H

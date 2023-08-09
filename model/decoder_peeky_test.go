@@ -11,7 +11,7 @@ import (
 
 func ExamplePeekyDecoder() {
 	s := rand.NewSource(1)
-	m := model.NewPeekyDecoder(&model.DecoderConfig{
+	m := model.NewPeekyDecoder(&model.RNNLMConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
 		HiddenSize:  3, // H
@@ -70,7 +70,7 @@ func ExamplePeekyDecoder() {
 }
 
 func ExamplePeekyDecoder_rand() {
-	model.NewPeekyDecoder(&model.DecoderConfig{
+	model.NewPeekyDecoder(&model.RNNLMConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
 		HiddenSize:  3, // H

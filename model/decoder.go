@@ -9,13 +9,6 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 )
 
-type DecoderConfig struct {
-	VocabSize   int
-	WordVecSize int
-	HiddenSize  int
-	WeightInit  WeightInit
-}
-
 type Decoder struct {
 	TimeEmbedding *layer.TimeEmbedding
 	TimeLSTM      *layer.TimeLSTM
@@ -23,7 +16,7 @@ type Decoder struct {
 	Source        rand.Source
 }
 
-func NewDecoder(c *DecoderConfig, s ...rand.Source) *Decoder {
+func NewDecoder(c *RNNLMConfig, s ...rand.Source) *Decoder {
 	if len(s) == 0 {
 		s = append(s, rand.NewSource(time.Now().UnixNano()))
 	}

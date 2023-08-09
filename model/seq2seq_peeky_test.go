@@ -10,7 +10,7 @@ import (
 
 func ExamplePeekySeq2Seq() {
 	s := rand.NewSource(1)
-	m := model.NewPeekySeq2Seq(&model.Seq2SeqConfig{
+	m := model.NewPeekySeq2Seq(&model.RNNLMConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
 		HiddenSize:  3, // H
@@ -34,7 +34,7 @@ func ExamplePeekySeq2Seq() {
 }
 
 func ExamplePeekySeq2Seq_rand() {
-	m := model.NewPeekySeq2Seq(&model.Seq2SeqConfig{
+	m := model.NewPeekySeq2Seq(&model.RNNLMConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
 		HiddenSize:  3, // H

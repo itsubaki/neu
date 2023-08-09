@@ -28,9 +28,7 @@ jobs:
 
       - name: Download testdata
         run: |
-          make mnistdl
-          make ptbdl
-          make additiondl
+          make testdatadl
 
       - name: Tests
         run: |

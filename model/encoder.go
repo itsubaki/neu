@@ -8,13 +8,6 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 )
 
-type EncoderConfig struct {
-	VocabSize   int
-	WordVecSize int
-	HiddenSize  int
-	WeightInit  WeightInit
-}
-
 type Encoder struct {
 	TimeEmbedding *layer.TimeEmbedding
 	TimeLSTM      *layer.TimeLSTM
@@ -22,7 +15,7 @@ type Encoder struct {
 	hs            []matrix.Matrix
 }
 
-func NewEncoder(c *EncoderConfig, s ...rand.Source) *Encoder {
+func NewEncoder(c *RNNLMConfig, s ...rand.Source) *Encoder {
 	if len(s) == 0 {
 		s = append(s, rand.NewSource(time.Now().UnixNano()))
 	}

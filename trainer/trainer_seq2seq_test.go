@@ -13,7 +13,7 @@ import (
 
 func ExampleSeq2SeqTrainer() {
 	tr := trainer.NewSeq2Seq(
-		model.NewSeq2Seq(&model.Seq2SeqConfig{
+		model.NewSeq2Seq(&model.RNNLMConfig{
 			VocabSize:   13,
 			WordVecSize: 16,
 			HiddenSize:  128,
@@ -42,7 +42,7 @@ func ExampleSeq2SeqTrainer() {
 
 func ExampleSeq2SeqTrainer_rand() {
 	tr := trainer.NewSeq2Seq(
-		model.NewSeq2Seq(&model.Seq2SeqConfig{
+		model.NewSeq2Seq(&model.RNNLMConfig{
 			VocabSize:   13,
 			WordVecSize: 16,
 			HiddenSize:  128,

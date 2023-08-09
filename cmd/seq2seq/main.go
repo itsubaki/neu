@@ -28,7 +28,7 @@ func main() {
 	x, t, v := sequence.Must(sequence.Load(dir, sequence.AdditionTxt))
 
 	// model
-	m := model.NewPeekySeq2Seq(&model.Seq2SeqConfig{
+	m := model.NewPeekySeq2Seq(&model.RNNLMConfig{
 		VocabSize:   len(v.RuneToID), // 13
 		WordVecSize: 64,
 		HiddenSize:  128,
@@ -63,23 +63,23 @@ func main() {
 				return
 			}
 
-			acc := generate(xt, tt, m, v)
+			acc := generate(xt, tt, m, v, 10)
 			fmt.Printf("%2d, %2d: loss=%.04f, train_acc=%.4f\n", epoch, j, loss, acc)
 			fmt.Println()
 		},
 	})
 }
 
-func generate(xs, ts [][]int, m trainer.Seq2Seq, v *sequence.Vocab) float64 {
+func generate(xs, ts [][]int, m trainer.Seq2Seq, v *sequence.Vocab, top int) float64 {
 	var acc int
-	for k := 0; k < 10; k++ {
-		q, correct := trainer.Float64(xs)[k], ts[k]       // (1, 7), (5)
-		tq := vector.Reverse(trainer.Time(matrix.New(q))) // (7, 1, 1)
-		guess := m.Generate(tq, correct[0], len(correct[1:]))
+	for k := 0; k < top; k++ {
+		q, correct := trainer.Float64(xs)[k], ts[k]           // (1, 7), (5)
+		tq := vector.Reverse(trainer.Time(matrix.New(q)))     // (7, 1, 1)
+		guess := m.Generate(tq, correct[0], len(correct[1:])) //
 
 		acc += trainer.SeqAccuracy(correct[1:], guess)
 		fmt.Printf("%v %v; %v (%v)\n", v.ToString(xs[k]), v.ToString(correct), v.ToString(guess), guess)
 	}
 
-	return float64(acc) / 10.0
+	return float64(acc) / float64(top)
 }

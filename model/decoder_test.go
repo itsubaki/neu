@@ -11,7 +11,7 @@ import (
 
 func ExampleDecoder() {
 	s := rand.NewSource(1)
-	m := model.NewDecoder(&model.DecoderConfig{
+	m := model.NewDecoder(&model.RNNLMConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
 		HiddenSize:  3, // H
@@ -71,7 +71,7 @@ func ExampleDecoder() {
 }
 
 func ExampleDecoder_rand() {
-	model.NewDecoder(&model.DecoderConfig{
+	model.NewDecoder(&model.RNNLMConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
 		HiddenSize:  3, // H
@@ -82,7 +82,7 @@ func ExampleDecoder_rand() {
 }
 
 func ExampleDecoder_Params() {
-	m := model.NewDecoder(&model.DecoderConfig{
+	m := model.NewDecoder(&model.RNNLMConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
 		HiddenSize:  3, // H

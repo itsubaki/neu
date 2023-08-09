@@ -11,7 +11,7 @@ import (
 
 func ExampleEncoder() {
 	s := rand.NewSource(1)
-	m := model.NewEncoder(&model.EncoderConfig{
+	m := model.NewEncoder(&model.RNNLMConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
 		HiddenSize:  3, // H
@@ -53,7 +53,7 @@ func ExampleEncoder() {
 }
 
 func ExampleEncoder_rand() {
-	model.NewEncoder(&model.EncoderConfig{
+	model.NewEncoder(&model.RNNLMConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
 		HiddenSize:  3, // H
@@ -64,7 +64,7 @@ func ExampleEncoder_rand() {
 }
 
 func ExampleEncoder_Params() {
-	m := model.NewEncoder(&model.EncoderConfig{
+	m := model.NewEncoder(&model.RNNLMConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
 		HiddenSize:  3, // H
