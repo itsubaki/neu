@@ -132,6 +132,27 @@ func (m Matrix) Dot(n Matrix) Matrix {
 	return n.Apply(m)
 }
 
+func (m Matrix) Transpose() Matrix {
+	p, q := m.Dimension()
+
+	out := make(Matrix, q)
+	for i := range out {
+		out[i] = make([]float64, p)
+	}
+
+	for i := 0; i < q; i++ {
+		for j := 0; j < p; j++ {
+			out[i][j] = m[j][i]
+		}
+	}
+
+	return out
+}
+
+func (m Matrix) T() Matrix {
+	return m.Transpose()
+}
+
 func (m Matrix) Add(n Matrix) Matrix {
 	return m.F2(n.Broadcast(m.Dimension()), func(a, b float64) float64 { return a + b })
 }
@@ -166,27 +187,6 @@ func (m Matrix) Sqrt(eps float64) Matrix {
 
 func (m Matrix) Abs() Matrix {
 	return m.F(func(v float64) float64 { return math.Abs(v) })
-}
-
-func (m Matrix) Transpose() Matrix {
-	p, q := m.Dimension()
-
-	out := make(Matrix, q)
-	for i := range out {
-		out[i] = make([]float64, p)
-	}
-
-	for i := 0; i < q; i++ {
-		for j := 0; j < p; j++ {
-			out[i][j] = m[j][i]
-		}
-	}
-
-	return out
-}
-
-func (m Matrix) T() Matrix {
-	return m.Transpose()
 }
 
 // Sum returns the sum of all elements.

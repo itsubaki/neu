@@ -44,6 +44,19 @@ func Abs(v []float64) []float64 {
 	return out
 }
 
+func Transpose[T any](v []T) [][]T {
+	out := make([][]T, len(v))
+	for i := range v {
+		out[i] = []T{v[i]}
+	}
+
+	return out
+}
+
+func T[T any](v []T) [][]T {
+	return Transpose(v)
+}
+
 // Shuffle shuffles the dataset.
 func Shuffle[T any](x, t []T, s ...rand.Source) ([]T, []T) {
 	if len(s) == 0 {

@@ -37,6 +37,11 @@ var (
 )
 
 var (
+	_ AttentionLayer = (*layer.AttentionWeight)(nil)
+	_ AttentionLayer = (*layer.WeightSum)(nil)
+)
+
+var (
 	_ WeightInit = weight.Std(0.01)
 	_ WeightInit = weight.He
 	_ WeightInit = weight.Xavier
@@ -64,6 +69,15 @@ type TimeLayer interface {
 	SetParams(p ...matrix.Matrix)
 	SetState(h ...matrix.Matrix)
 	ResetState()
+}
+
+// AttentionLayer is an interface that represents an attention layer.
+type AttentionLayer interface {
+	Forward(hs []matrix.Matrix, a matrix.Matrix) matrix.Matrix
+	Backward(da matrix.Matrix) ([]matrix.Matrix, matrix.Matrix)
+	Params() []matrix.Matrix
+	Grads() []matrix.Matrix
+	SetParams(p ...matrix.Matrix)
 }
 
 // Save saves the params to a file.
