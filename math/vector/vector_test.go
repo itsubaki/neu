@@ -41,6 +41,15 @@ func ExampleAbs() {
 	// [1 2 3]
 }
 
+func ExampleTranspose() {
+	fmt.Println(vector.Transpose([]int{1, 2, 3}))
+	fmt.Println(vector.T([]int{1, 2, 3}))
+
+	// Output:
+	// [[1] [2] [3]]
+	// [[1] [2] [3]]
+}
+
 func ExampleShuffle() {
 	x := [][]float64{{0, 1}, {0, 2}, {0, 3}, {0, 4}}
 	t := [][]float64{{1, 0}, {2, 0}, {3, 0}, {4, 0}}
