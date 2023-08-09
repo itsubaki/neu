@@ -17,7 +17,7 @@ func (l *AttentionWeight) SetParams(p ...matrix.Matrix) {}
 
 func (l *AttentionWeight) Forward(hs []matrix.Matrix, h matrix.Matrix) matrix.Matrix {
 	T := len(hs)                         // (T, N, H)
-	l.hs, l.hr = hs, matrix.Repeat(h, T) // (T, N, H)
+	l.hs, l.hr = hs, matrix.Repeat(h, T) // (N, H) -> (T, N, H)
 	t := TimeMul(hs, l.hr)               // (T, N, H)
 
 	c := make(matrix.Matrix, T) // (T, N)
@@ -36,12 +36,12 @@ func (l *AttentionWeight) Backward(da matrix.Matrix) ([]matrix.Matrix, []matrix.
 	dhs := TimeMul(dt, l.hr)
 	dhr := TimeMul(dt, l.hs)
 
-	dh := make([]matrix.Matrix, N) // (N, H)
+	dh := make([]matrix.Matrix, T)
 	for i := 0; i < T; i++ {
-		dh[i] = dhr[i].SumAxis0()
+		dh[i] = dhr[i].SumAxis0() // (1, H)
 	}
 
-	return dhs, dh
+	return dhs, dh // (T, N, H), (T, H)
 }
 
 func (l *AttentionWeight) String() string {
