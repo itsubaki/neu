@@ -18,6 +18,12 @@ type LSTM struct {
 func (l *LSTM) Params() []matrix.Matrix      { return []matrix.Matrix{l.Wx, l.Wh, l.B} }
 func (l *LSTM) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DWx, l.DWh, l.DB} }
 func (l *LSTM) SetParams(p ...matrix.Matrix) { l.Wx, l.Wh, l.B = p[0], p[1], p[2] }
+func (l *LSTM) String() string {
+	a, b := l.Wx.Dimension()
+	c, d := l.Wh.Dimension()
+	e, f := l.B.Dimension()
+	return fmt.Sprintf("%T: Wx(%v, %v), Wh(%v, %v), B(%v, %v): %v", l, a, b, c, d, e, f, a*b+c*d+e*f)
+}
 
 func (l *LSTM) Forward(x, h, c matrix.Matrix, _ ...Opts) (matrix.Matrix, matrix.Matrix) {
 	A := matrix.Dot(x, l.Wx).Add(matrix.Dot(h, l.Wh)).Add(l.B) // A(N, 4H) = x(N, D).Wx(D, 4H) + h(N, H).Wh(H, 4H) + b(4*H, 1)
@@ -76,11 +82,4 @@ func (l *LSTM) Backward(dhNext, dcNext matrix.Matrix) (matrix.Matrix, matrix.Mat
 	dcPrev := ds.Mul(l.f)              // (N, H)
 
 	return dx, dhPrev, dcPrev
-}
-
-func (l *LSTM) String() string {
-	a, b := l.Wx.Dimension()
-	c, d := l.Wh.Dimension()
-	e, f := l.B.Dimension()
-	return fmt.Sprintf("%T: Wx(%v, %v), Wh(%v, %v), B(%v, %v): %v", l, a, b, c, d, e, f, a*b+c*d+e*f)
 }

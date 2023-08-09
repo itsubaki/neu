@@ -15,6 +15,7 @@ type Dropout struct {
 func (l *Dropout) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
 func (l *Dropout) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
 func (l *Dropout) SetParams(p ...matrix.Matrix) {}
+func (l *Dropout) String() string               { return fmt.Sprintf("%T: Ratio(%v)", l, l.Ratio) }
 
 func (l *Dropout) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
 	if len(opts) > 0 && opts[0].Train {
@@ -31,8 +32,4 @@ func (l *Dropout) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
 func (l *Dropout) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	dx := dout.Mul(l.mask)
 	return dx, nil
-}
-
-func (l *Dropout) String() string {
-	return fmt.Sprintf("%T: Ratio(%v)", l, l.Ratio)
 }

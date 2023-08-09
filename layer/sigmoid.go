@@ -15,6 +15,7 @@ type Sigmoid struct {
 func (l *Sigmoid) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
 func (l *Sigmoid) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
 func (l *Sigmoid) SetParams(p ...matrix.Matrix) {}
+func (l *Sigmoid) String() string               { return fmt.Sprintf("%T", l) }
 
 func (l *Sigmoid) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.out = x.F(activation.Sigmoid)
@@ -24,10 +25,6 @@ func (l *Sigmoid) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 func (l *Sigmoid) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	dx := dout.Mul(matrix.F(l.out, dsigmoid))
 	return dx, nil
-}
-
-func (l *Sigmoid) String() string {
-	return fmt.Sprintf("%T", l)
 }
 
 func dsigmoid(a float64) float64 { return a * (1.0 - a) } // out * (1.0 - out)

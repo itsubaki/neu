@@ -18,6 +18,11 @@ type BatchNorm struct {
 func (l *BatchNorm) Params() []matrix.Matrix      { return []matrix.Matrix{l.Gamma, l.Beta} }
 func (l *BatchNorm) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DGamma, l.DBeta} }
 func (l *BatchNorm) SetParams(p ...matrix.Matrix) { l.Gamma, l.Beta = p[0], p[1] }
+func (l *BatchNorm) String() string {
+	a, b := l.Gamma.Dimension()
+	c, d := l.Beta.Dimension()
+	return fmt.Sprintf("%T: G(%v, %v), B(%v, %v): %v", l, a, b, c, d, a*b+c*d)
+}
 
 func (l *BatchNorm) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
 	if l.mu == nil {
@@ -73,10 +78,4 @@ func (l *BatchNorm) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) 
 	// dx
 	dx := dxc.Sub(dmu.MulC(1.0 / float64(l.batchSize))) // dxc - dmu / batchSize
 	return dx, nil
-}
-
-func (l *BatchNorm) String() string {
-	a, b := l.Gamma.Dimension()
-	c, d := l.Beta.Dimension()
-	return fmt.Sprintf("%T: G(%v, %v), B(%v, %v): %v", l, a, b, c, d, a*b+c*d)
 }

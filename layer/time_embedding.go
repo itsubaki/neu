@@ -17,6 +17,10 @@ func (l *TimeEmbedding) Grads() []matrix.Matrix       { return []matrix.Matrix{l
 func (l *TimeEmbedding) SetParams(p ...matrix.Matrix) { l.W = p[0] }
 func (l *TimeEmbedding) SetState(_ ...matrix.Matrix)  {}
 func (l *TimeEmbedding) ResetState()                  {}
+func (l *TimeEmbedding) String() string {
+	a, b := l.W.Dimension()
+	return fmt.Sprintf("%T: W(%v, %v): %v", l, a, b, a*b)
+}
 
 func (l *TimeEmbedding) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matrix {
 	T := len(xs)                    // (7, 128, 1)
@@ -42,9 +46,4 @@ func (l *TimeEmbedding) Backward(dout []matrix.Matrix) []matrix.Matrix {
 
 	l.DW = grad
 	return nil
-}
-
-func (l *TimeEmbedding) String() string {
-	a, b := l.W.Dimension()
-	return fmt.Sprintf("%T: W(%v, %v): %v", l, a, b, a*b)
 }

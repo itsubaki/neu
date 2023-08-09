@@ -17,6 +17,11 @@ func (l *TimeAffine) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DW
 func (l *TimeAffine) SetParams(p ...matrix.Matrix) { l.W, l.B = p[0], p[1] }
 func (l *TimeAffine) SetState(_ ...matrix.Matrix)  {}
 func (l *TimeAffine) ResetState()                  {}
+func (l *TimeAffine) String() string {
+	a, b := l.W.Dimension()
+	c, d := l.B.Dimension()
+	return fmt.Sprintf("%T: W(%v, %v), B(%v, %v): %v", l, a, b, c, d, a*b+c*d)
+}
 
 func (l *TimeAffine) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 	T := len(xs)
@@ -44,10 +49,4 @@ func (l *TimeAffine) Backward(dout []matrix.Matrix) []matrix.Matrix {
 	}
 
 	return dxs
-}
-
-func (l *TimeAffine) String() string {
-	a, b := l.W.Dimension()
-	c, d := l.B.Dimension()
-	return fmt.Sprintf("%T: W(%v, %v), B(%v, %v): %v", l, a, b, c, d, a*b+c*d)
 }

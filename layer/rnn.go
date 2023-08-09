@@ -16,6 +16,12 @@ type RNN struct {
 func (l *RNN) Params() []matrix.Matrix      { return []matrix.Matrix{l.Wx, l.Wh, l.B} }
 func (l *RNN) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DWx, l.DWh, l.DB} }
 func (l *RNN) SetParams(p ...matrix.Matrix) { l.Wx, l.Wh, l.B = p[0], p[1], p[2] }
+func (l *RNN) String() string {
+	a, b := l.Wx.Dimension()
+	c, d := l.Wh.Dimension()
+	e, f := l.B.Dimension()
+	return fmt.Sprintf("%T: Wx(%v, %v), Wh(%v, %v), B(%v, %v): %v", l, a, b, c, d, e, f, a*b+c*d+e*f)
+}
 
 func (l *RNN) Forward(x, h matrix.Matrix, _ ...Opts) matrix.Matrix {
 	// h(N, H).Wh(H, H) -> (N, H)
@@ -36,13 +42,6 @@ func (l *RNN) Backward(dhNext matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	l.DWh = matrix.Dot(l.hPrev.T(), dt) // dot(hPrev.T(H, N), dt(N, H)) -> (H, H)
 	l.DB = dt.SumAxis0()                // sum(dt(N, H), axis=0) -> (1, H)
 	return dx, dh
-}
-
-func (l *RNN) String() string {
-	a, b := l.Wx.Dimension()
-	c, d := l.Wh.Dimension()
-	e, f := l.B.Dimension()
-	return fmt.Sprintf("%T: Wx(%v, %v), Wh(%v, %v), B(%v, %v): %v", l, a, b, c, d, e, f, a*b+c*d+e*f)
 }
 
 func dtanh(a float64) float64 { return 1 - a*a } // a * (1/a - a)

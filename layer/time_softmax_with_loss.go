@@ -16,6 +16,7 @@ func (l *TimeSoftmaxWithLoss) Grads() []matrix.Matrix       { return make([]matr
 func (l *TimeSoftmaxWithLoss) SetParams(p ...matrix.Matrix) {}
 func (l *TimeSoftmaxWithLoss) SetState(h ...matrix.Matrix)  {}
 func (l *TimeSoftmaxWithLoss) ResetState()                  {}
+func (l *TimeSoftmaxWithLoss) String() string               { return fmt.Sprintf("%T", l) }
 
 func (l *TimeSoftmaxWithLoss) Forward(xs, ts []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 	T, V := len(xs), len(xs[0][0])
@@ -42,10 +43,6 @@ func (l *TimeSoftmaxWithLoss) Backward(dout []matrix.Matrix) []matrix.Matrix {
 	}
 
 	return dx
-}
-
-func (l *TimeSoftmaxWithLoss) String() string {
-	return fmt.Sprintf("%T", l)
 }
 
 func OneHot(ts []matrix.Matrix, size int) []matrix.Matrix {

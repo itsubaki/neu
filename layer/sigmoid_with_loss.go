@@ -16,6 +16,7 @@ type SigmoidWithLoss struct {
 func (l *SigmoidWithLoss) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
 func (l *SigmoidWithLoss) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
 func (l *SigmoidWithLoss) SetParams(p ...matrix.Matrix) {}
+func (l *SigmoidWithLoss) String() string               { return fmt.Sprintf("%T", l) }
 
 func (l *SigmoidWithLoss) Forward(x, t matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.t = t
@@ -31,8 +32,4 @@ func (l *SigmoidWithLoss) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Ma
 	size, _ := l.t.Dimension()
 	dx := l.y.Sub(l.t).Mul(dout).MulC(1.0 / float64(size)) // (y - t) * dout / size
 	return dx, nil
-}
-
-func (l *SigmoidWithLoss) String() string {
-	return fmt.Sprintf("%T", l)
 }

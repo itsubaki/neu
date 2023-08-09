@@ -16,6 +16,7 @@ func (l *TimeDropout) Grads() []matrix.Matrix       { return make([]matrix.Matri
 func (l *TimeDropout) SetParams(p ...matrix.Matrix) {}
 func (l *TimeDropout) SetState(_ ...matrix.Matrix)  {}
 func (l *TimeDropout) ResetState()                  {}
+func (l *TimeDropout) String() string               { return fmt.Sprintf("%T: Ratio(%v)", l, l.Ratio) }
 
 func (l *TimeDropout) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matrix {
 	if len(opts) > 0 && opts[0].Train {
@@ -44,8 +45,4 @@ func (l *TimeDropout) Backward(dout []matrix.Matrix) []matrix.Matrix {
 	}
 
 	return dx
-}
-
-func (l *TimeDropout) String() string {
-	return fmt.Sprintf("%T: Ratio(%v)", l, l.Ratio)
 }

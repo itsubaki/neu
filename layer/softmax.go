@@ -15,6 +15,7 @@ type Softmax struct {
 func (l *Softmax) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
 func (l *Softmax) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
 func (l *Softmax) SetParams(p ...matrix.Matrix) {}
+func (l *Softmax) String() string               { return fmt.Sprintf("%T", l) }
 
 func (l *Softmax) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.out = softmax(x)
@@ -26,10 +27,6 @@ func (l *Softmax) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	sum := dx.SumAxis1().T()
 	dx = dx.Sub(l.out.Mul(sum))
 	return dx, nil
-}
-
-func (l *Softmax) String() string {
-	return fmt.Sprintf("%T", l)
 }
 
 func softmax(x matrix.Matrix) matrix.Matrix {

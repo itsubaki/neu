@@ -19,6 +19,12 @@ func (l *TimeRNN) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DWx, 
 func (l *TimeRNN) SetParams(p ...matrix.Matrix) { l.Wx, l.Wh, l.B = p[0], p[1], p[2] }
 func (l *TimeRNN) SetState(h ...matrix.Matrix)  { l.h = h[0] }
 func (l *TimeRNN) ResetState()                  { l.h = matrix.New() }
+func (l *TimeRNN) String() string {
+	a, b := l.Wx.Dimension()
+	c, d := l.Wh.Dimension()
+	e, f := l.B.Dimension()
+	return fmt.Sprintf("%T: Wx(%v, %v), Wh(%v, %v), B(%v, %v): %v", l, a, b, c, d, e, f, a*b+c*d+e*f)
+}
 
 func (l *TimeRNN) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matrix {
 	T, N, H := len(xs), len(xs[0]), len(l.Wx[0]) // xs(Time, N, D), Wx(D, H)
@@ -61,11 +67,4 @@ func (l *TimeRNN) Backward(dhs []matrix.Matrix) []matrix.Matrix {
 	l.DWx, l.DWh, l.DB = grads[0], grads[1], grads[2]
 	l.dh = dh
 	return dxs
-}
-
-func (l *TimeRNN) String() string {
-	a, b := l.Wx.Dimension()
-	c, d := l.Wh.Dimension()
-	e, f := l.B.Dimension()
-	return fmt.Sprintf("%T: Wx(%v, %v), Wh(%v, %v), B(%v, %v): %v", l, a, b, c, d, e, f, a*b+c*d+e*f)
 }

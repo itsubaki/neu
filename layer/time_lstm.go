@@ -15,6 +15,7 @@ type TimeLSTM struct {
 	Stateful     bool
 }
 
+func (l *TimeLSTM) DH() matrix.Matrix            { return l.dh }
 func (l *TimeLSTM) Params() []matrix.Matrix      { return []matrix.Matrix{l.Wx, l.Wh, l.B} }
 func (l *TimeLSTM) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DWx, l.DWh, l.DB} }
 func (l *TimeLSTM) SetParams(p ...matrix.Matrix) { l.Wx, l.Wh, l.B = p[0], p[1], p[2] }
@@ -25,6 +26,12 @@ func (l *TimeLSTM) SetState(h ...matrix.Matrix) {
 	}
 }
 func (l *TimeLSTM) ResetState() { l.h, l.c = matrix.New(), matrix.New() }
+func (l *TimeLSTM) String() string {
+	a, b := l.Wx.Dimension()
+	c, d := l.Wh.Dimension()
+	e, f := l.B.Dimension()
+	return fmt.Sprintf("%T: Wx(%v, %v), Wh(%v, %v), B(%v, %v): %v", l, a, b, c, d, e, f, a*b+c*d+e*f)
+}
 
 func (l *TimeLSTM) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matrix {
 	T, N, H := len(xs), len(xs[0]), len(l.Wh) // 7, 128, 128
@@ -71,15 +78,4 @@ func (l *TimeLSTM) Backward(dhs []matrix.Matrix) []matrix.Matrix {
 	l.DWx, l.DWh, l.DB = grads[0], grads[1], grads[2]
 	l.dh = dh
 	return dxs
-}
-
-func (l *TimeLSTM) String() string {
-	a, b := l.Wx.Dimension()
-	c, d := l.Wh.Dimension()
-	e, f := l.B.Dimension()
-	return fmt.Sprintf("%T: Wx(%v, %v), Wh(%v, %v), B(%v, %v): %v", l, a, b, c, d, e, f, a*b+c*d+e*f)
-}
-
-func (l *TimeLSTM) DH() matrix.Matrix {
-	return l.dh
 }

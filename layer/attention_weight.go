@@ -15,6 +15,7 @@ type AttentionWeight struct {
 func (l *AttentionWeight) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
 func (l *AttentionWeight) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
 func (l *AttentionWeight) SetParams(p ...matrix.Matrix) {}
+func (l *AttentionWeight) String() string               { return fmt.Sprintf("%T", l) }
 
 func (l *AttentionWeight) Forward(hs []matrix.Matrix, h matrix.Matrix) matrix.Matrix {
 	T := len(hs)                         // (T, N, H)
@@ -39,10 +40,6 @@ func (l *AttentionWeight) Backward(da matrix.Matrix) ([]matrix.Matrix, matrix.Ma
 	dh := TimeSum(dhr)              // (N, H)
 
 	return dhs, dh // (T, N, H), (N, H)
-}
-
-func (l *AttentionWeight) String() string {
-	return fmt.Sprintf("%T", l)
 }
 
 func Expand(ds matrix.Matrix, T, N, H int) []matrix.Matrix {

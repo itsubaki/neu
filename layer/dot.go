@@ -16,6 +16,10 @@ type Dot struct {
 func (l *Dot) Params() []matrix.Matrix      { return []matrix.Matrix{l.W} }
 func (l *Dot) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DW} }
 func (l *Dot) SetParams(p ...matrix.Matrix) { l.W = p[0] }
+func (l *Dot) String() string {
+	a, b := l.W.Dimension()
+	return fmt.Sprintf("%T: W(%v, %v): %v", l, a, b, a*b)
+}
 
 func (l *Dot) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.x = x
@@ -27,9 +31,4 @@ func (l *Dot) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	dW := matrix.Dot(l.x.T(), dout)
 	l.DW = dW
 	return dx, nil
-}
-
-func (l *Dot) String() string {
-	a, b := l.W.Dimension()
-	return fmt.Sprintf("%T: W(%v, %v): %v", l, a, b, a*b)
 }

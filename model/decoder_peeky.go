@@ -10,7 +10,7 @@ import (
 
 type PeekyDecoder struct {
 	Decoder
-	cacheH int
+	H int
 }
 
 func NewPeekyDecoder(c *RNNLMConfig, s ...rand.Source) *PeekyDecoder {
@@ -45,7 +45,7 @@ func (m *PeekyDecoder) Forward(xs []matrix.Matrix, h matrix.Matrix) []matrix.Mat
 	T, H := len(xs), len(h[0])
 	hs := matrix.Repeat(h, T)
 	m.TimeLSTM.SetState(h)
-	m.cacheH = H
+	m.H = H
 
 	out := m.TimeEmbedding.Forward(xs, nil)
 	out = m.TimeLSTM.Forward(Concat(hs, out), nil)
@@ -55,9 +55,9 @@ func (m *PeekyDecoder) Forward(xs []matrix.Matrix, h matrix.Matrix) []matrix.Mat
 
 func (m *PeekyDecoder) Backward(dscore []matrix.Matrix) matrix.Matrix {
 	dout := m.TimeAffine.Backward(dscore)
-	dout, dhs0 := Split(dout, m.cacheH)
+	dout, dhs0 := Split(dout, m.H)
 	dout = m.TimeLSTM.Backward(dout)
-	dout, dhs1 := Split(dout, m.cacheH)
+	dout, dhs1 := Split(dout, m.H)
 	m.TimeEmbedding.Backward(dout)
 
 	dhs := append(dhs0, dhs1...)

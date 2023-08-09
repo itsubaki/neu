@@ -28,7 +28,7 @@ func (o *AdaGrad) Update(m Model) [][]matrix.Matrix {
 	for i := range params {
 		updated[i] = make([]matrix.Matrix, len(params[i]))
 		for j := range params[i] {
-			o.h[i][j] = o.h[i][j].Add(grads[i][j].Mul(grads[i][j]))                                      // h[k] = h[k] + grads[k] * grads[k]
+			o.h[i][j] = o.h[i][j].Add(grads[i][j].Pow2())                                                // h[k] = h[k] + grads[k] * grads[k]
 			updated[i][j] = params[i][j].Sub(matrix.F2(grads[i][j], o.h[i][j], adagrad(o.LearningRate))) // params[k] = params[k] - o.LearningRate * grads[k]/sqrt(h[k])
 		}
 	}

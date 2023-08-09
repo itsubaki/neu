@@ -16,6 +16,11 @@ type Affine struct {
 func (l *Affine) Params() []matrix.Matrix      { return []matrix.Matrix{l.W, l.B} }
 func (l *Affine) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DW, l.DB} }
 func (l *Affine) SetParams(p ...matrix.Matrix) { l.W, l.B = p[0], p[1] }
+func (l *Affine) String() string {
+	a, b := l.W.Dimension()
+	c, d := l.B.Dimension()
+	return fmt.Sprintf("%T: W(%v, %v), B(%v, %v): %v", l, a, b, c, d, a*b+c*d)
+}
 
 func (l *Affine) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.x = x
@@ -27,10 +32,4 @@ func (l *Affine) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	l.DW = matrix.Dot(l.x.T(), dout)
 	l.DB = dout.SumAxis0()
 	return dx, nil
-}
-
-func (l *Affine) String() string {
-	a, b := l.W.Dimension()
-	c, d := l.B.Dimension()
-	return fmt.Sprintf("%T: W(%v, %v), B(%v, %v): %v", l, a, b, c, d, a*b+c*d)
 }
