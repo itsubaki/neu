@@ -3,7 +3,6 @@ package layer
 import (
 	"fmt"
 
-	"github.com/itsubaki/neu/activation"
 	"github.com/itsubaki/neu/loss"
 	"github.com/itsubaki/neu/math/matrix"
 )
@@ -20,7 +19,7 @@ func (l *SoftmaxWithLoss) SetParams(p ...matrix.Matrix) {}
 
 func (l *SoftmaxWithLoss) Forward(x, t matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.t = t
-	l.y = Softmax(x)
+	l.y = softmax(x)
 	loss := Loss(l.y, l.t)
 	return matrix.New([]float64{loss})
 }
@@ -47,13 +46,4 @@ func Loss(y, t matrix.Matrix) float64 {
 	}
 
 	return sum / float64(len(y))
-}
-
-func Softmax(x matrix.Matrix) matrix.Matrix {
-	out := make(matrix.Matrix, len(x))
-	for i, r := range x {
-		out[i] = activation.Softmax(r)
-	}
-
-	return out
 }

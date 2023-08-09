@@ -23,6 +23,7 @@ var (
 	_ Layer = (*layer.RNN)(nil)
 	_ Layer = (*layer.Sigmoid)(nil)
 	_ Layer = (*layer.SigmoidWithLoss)(nil)
+	_ Layer = (*layer.Softmax)(nil)
 	_ Layer = (*layer.SoftmaxWithLoss)(nil)
 )
 
