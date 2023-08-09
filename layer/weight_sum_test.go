@@ -9,17 +9,24 @@ import (
 
 func ExampleWeightSum() {
 	ws := &layer.WeightSum{}
+	fmt.Println(ws)
 
 	// forward
 	hs := []matrix.Matrix{
-		// (T, N, H)
+		// (T, N, H) (2, 2, 3)
+		{
+			{1, 2, 3},
+			{4, 5, 6},
+		},
 		{
 			{1, 2, 3},
 			{4, 5, 6},
 		},
 	}
 	a := []matrix.Matrix{
-		{{2, 4}}, // (T, 1, N)
+		// (T, 1, N) (2, 1, 2)
+		{{2, 4}},
+		{{2, 4}},
 	}
 	fmt.Println(ws.Forward(hs, a))
 
@@ -33,9 +40,10 @@ func ExampleWeightSum() {
 	fmt.Println(da)
 
 	// Output:
-	// [[18 24 30]]
-	// [[[2 4 6] [16 20 24]]]
-	// [[14 77]]
+	// *layer.WeightSum
+	// [[[18 24 30]] [[18 24 30]]]
+	// [[[2 4 6] [16 20 24]] [[2 4 6] [16 20 24]]]
+	// [[[14 77]] [[14 77]]]
 }
 
 func ExampleWeightSum_Params() {
