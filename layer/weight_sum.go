@@ -28,7 +28,7 @@ func (l *WeightSum) Forward(hs, a []matrix.Matrix) []matrix.Matrix {
 		c[i] = t.SumAxis0()   // (1, H)
 	}
 
-	return c // (T, N)
+	return c // (T, 1, H)
 }
 
 func (l *WeightSum) Backward(dc matrix.Matrix) ([]matrix.Matrix, []matrix.Matrix) {
@@ -42,7 +42,7 @@ func (l *WeightSum) Backward(dc matrix.Matrix) ([]matrix.Matrix, []matrix.Matrix
 		da[i] = dar[i].SumAxis1() // (1, N)
 	}
 
-	return dhs, da // (T, N, H), (T, N)
+	return dhs, da // (T, N, H), (T, 1, N)
 }
 
 func (l *WeightSum) String() string {
