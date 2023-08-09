@@ -57,11 +57,3 @@ func ExampleWeightSum_Params() {
 	// []
 	// []
 }
-
-func ExampleWeightSum_state() {
-	ws := &layer.WeightSum{}
-	ws.SetState(matrix.New())
-	ws.ResetState()
-
-	// Output:
-}

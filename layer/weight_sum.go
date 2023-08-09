@@ -13,8 +13,6 @@ type WeightSum struct {
 func (l *WeightSum) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
 func (l *WeightSum) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
 func (l *WeightSum) SetParams(p ...matrix.Matrix) {}
-func (l *WeightSum) SetState(_ ...matrix.Matrix)  {}
-func (l *WeightSum) ResetState()                  {}
 
 func (l *WeightSum) Forward(hs, a []matrix.Matrix) []matrix.Matrix {
 	T, N, H := len(hs), len(hs[0]), len(hs[0][0])
