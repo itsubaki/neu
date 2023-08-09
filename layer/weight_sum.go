@@ -18,31 +18,31 @@ func (l *WeightSum) Forward(hs, a []matrix.Matrix) []matrix.Matrix {
 	T, N, H := len(hs), len(hs[0]), len(hs[0][0])
 	ar := make([]matrix.Matrix, T)
 	for i := 0; i < T; i++ {
-		ar[i] = a[i].T().Broadcast(N, H) // (T, 1, N) -> (T, N, 1) -> (T, N, H)
+		ar[i] = a[i].T().Broadcast(N, H) // (1, N) -> (N, 1) -> (N, H)
 	}
 	l.hs, l.ar = hs, ar // (T, N, H) (T, N, H)
 
 	c := make([]matrix.Matrix, T)
 	for i := 0; i < T; i++ {
-		t := hs[i].Mul(ar[i]) // (T, N, H)
-		c[i] = t.SumAxis0()   // (N, H)
+		t := hs[i].Mul(ar[i]) // (N, H)
+		c[i] = t.SumAxis0()   // (1, H)
 	}
 
-	return c
+	return c // (T, N)
 }
 
 func (l *WeightSum) Backward(dc matrix.Matrix) ([]matrix.Matrix, []matrix.Matrix) {
 	T := len(l.hs)
-	dt := matrix.Repeat(dc, T) // (T, N, H)
+	dt := matrix.Repeat(dc, T) // (N, H) -> (T, N, H)
 	dar := TimeMul(dt, l.hs)   // (T, N, H)
 	dhs := TimeMul(dt, l.ar)   // (T, N, H)
 
 	da := make([]matrix.Matrix, T)
 	for i := 0; i < T; i++ {
-		da[i] = dar[i].SumAxis1()
+		da[i] = dar[i].SumAxis1() // (1, N)
 	}
 
-	return dhs, da
+	return dhs, da // (T, N, H), (T, N)
 }
 
 func (l *WeightSum) String() string {
