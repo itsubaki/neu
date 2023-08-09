@@ -32,8 +32,6 @@ rnnlmgen1:
 seq2seq:
 	go run cmd/seq2seq/main.go --dir ./testdata
 
-testdatadl: mnistdl fashiondl ptbdl additiondl datedl
-
 mnistdl:
 	curl -s -o testdata/train-images-idx3-ubyte.gz http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz
 	curl -s -o testdata/train-labels-idx1-ubyte.gz http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz
