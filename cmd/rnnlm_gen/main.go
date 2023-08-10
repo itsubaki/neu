@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"strings"
+	"time"
 
 	"github.com/itsubaki/neu/dataset/ptb"
 	"github.com/itsubaki/neu/math/matrix"
@@ -65,6 +66,7 @@ func main() {
 		},
 	})
 
+	now := time.Now()
 	min := math.MaxFloat64
 	tr.Fit(&trainer.RNNLMInput{
 		Train:      train.Corpus[:len(train.Corpus)-1],
@@ -83,6 +85,8 @@ func main() {
 			fmt.Printf("%2d, %2d: ppl=%.04f\n", epoch, j, perplexity)
 		},
 	})
+
+	fmt.Printf("elapsed=%v\n", time.Since(now))
 
 	// generate
 	query := []string{"the", "meaning", "of", "life", "is"}

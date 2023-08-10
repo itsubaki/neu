@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"time"
 
 	"github.com/itsubaki/neu/dataset/ptb"
 	"github.com/itsubaki/neu/math/vector"
@@ -52,6 +53,7 @@ func main() {
 		},
 	})
 
+	now := time.Now()
 	tr.Fit(&trainer.RNNLMInput{
 		Train:      corpus[:len(corpus)-1],
 		TrainLabel: corpus[1:],
@@ -62,4 +64,6 @@ func main() {
 			fmt.Printf("%2d, %2d: ppl=%.04f\n", epoch, j, perplexity)
 		},
 	})
+
+	fmt.Printf("elapsed=%v\n", time.Since(now))
 }

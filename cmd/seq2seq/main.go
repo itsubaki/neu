@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"time"
 
 	"github.com/itsubaki/neu/dataset/sequence"
 	"github.com/itsubaki/neu/math/matrix"
@@ -21,7 +22,7 @@ func main() {
 	flag.StringVar(&dir, "dir", "./testdata", "")
 	flag.IntVar(&epochs, "epochs", 100, "")
 	flag.IntVar(&dataSize, "data-size", 10, "")
-	flag.IntVar(&batchSize, "batch-size", 5, "")
+	flag.IntVar(&batchSize, "batch-size", 2, "")
 	flag.Parse()
 
 	// data
@@ -52,6 +53,7 @@ func main() {
 		},
 	})
 
+	now := time.Now()
 	xt, tt := x.Train[:dataSize], t.Train[:dataSize]
 	tr.Fit(&trainer.Seq2SeqInput{
 		Train:      xt,
@@ -68,6 +70,8 @@ func main() {
 			fmt.Println()
 		},
 	})
+
+	fmt.Printf("elapsed=%v\n", time.Since(now))
 }
 
 func generate(xs, ts [][]int, m trainer.Seq2Seq, v *sequence.Vocab, top int) float64 {

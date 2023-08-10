@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"time"
 
 	"github.com/itsubaki/neu/dataset/sequence"
 	"github.com/itsubaki/neu/math/matrix"
@@ -19,9 +20,9 @@ func main() {
 	var dir string
 	var epochs, dataSize, batchSize int
 	flag.StringVar(&dir, "dir", "./testdata", "")
-	flag.IntVar(&epochs, "epochs", 100, "")
+	flag.IntVar(&epochs, "epochs", 1000, "")
 	flag.IntVar(&dataSize, "data-size", 10, "")
-	flag.IntVar(&batchSize, "batch-size", 5, "")
+	flag.IntVar(&batchSize, "batch-size", 2, "")
 	flag.Parse()
 
 	// data
@@ -52,6 +53,7 @@ func main() {
 		},
 	})
 
+	now := time.Now()
 	xt, tt := x.Train[:dataSize], t.Train[:dataSize]
 	tr.Fit(&trainer.Seq2SeqInput{
 		Train:      xt,
@@ -59,15 +61,13 @@ func main() {
 		Epochs:     epochs,
 		BatchSize:  batchSize,
 		Verbose: func(epoch, j int, loss float64, m trainer.Seq2Seq) {
-			if epoch%20 != 0 || j != 0 {
-				return
-			}
-
 			acc := generate(xt, tt, m, v, 10)
 			fmt.Printf("%2d, %2d: loss=%.04f, train_acc=%.4f\n", epoch, j, loss, acc)
 			fmt.Println()
 		},
 	})
+
+	fmt.Printf("elapsed=%v\n", time.Since(now))
 }
 
 func generate(xs, ts [][]int, m trainer.Seq2Seq, v *sequence.Vocab, top int) float64 {
