@@ -73,12 +73,12 @@ func main() {
 func generate(xs, ts [][]int, m trainer.Seq2Seq, v *sequence.Vocab, top int) float64 {
 	var acc int
 	for k := 0; k < top; k++ {
-		q, correct := trainer.Float64(xs)[k], ts[k]           // (1, 7), (5)
-		tq := vector.Reverse(trainer.Time(matrix.New(q)))     // (7, 1, 1)
-		guess := m.Generate(tq, correct[0], len(correct[1:])) //
+		q, correct := trainer.Float64(xs)[k], ts[k]
+		tq := vector.Reverse(trainer.Time(matrix.New(q)))
+		guess := m.Generate(tq, correct[0], len(correct[1:]))
 
 		acc += trainer.SeqAccuracy(correct[1:], guess)
-		fmt.Printf("%v %v; %v (%v)\n", v.ToString(xs[k]), v.ToString(correct), v.ToString(guess), guess)
+		fmt.Printf("%v %v; %v\n", v.ToString(xs[k]), v.ToString(correct), v.ToString(guess))
 	}
 
 	return float64(acc) / float64(top)

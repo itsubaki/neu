@@ -37,6 +37,7 @@ var (
 )
 
 var (
+	_ AttentionLayer = (*layer.Attention)(nil)
 	_ AttentionLayer = (*layer.AttentionWeight)(nil)
 	_ AttentionLayer = (*layer.WeightSum)(nil)
 )
