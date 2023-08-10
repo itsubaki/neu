@@ -7,6 +7,14 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 )
 
+func ExampleTimeAttention() {
+	at := &layer.TimeAttention{}
+	fmt.Println(at)
+
+	// Output:
+	// *layer.TimeAttention
+}
+
 func ExampleTimeAttention_Params() {
 	at := &layer.TimeAttention{}
 	at.SetParams(matrix.New())
