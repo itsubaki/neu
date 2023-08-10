@@ -57,7 +57,7 @@ func New(m Model, o Optimizer) *Trainer {
 }
 
 // Fit trains the model using the provided optimizer.
-func (t *Trainer) Fit(in *Input, s ...rand.Source) {
+func (tr *Trainer) Fit(in *Input, s ...rand.Source) {
 	if len(s) == 0 {
 		s = append(s, rand.NewSource(time.Now().UnixNano()))
 	}
@@ -71,12 +71,12 @@ func (t *Trainer) Fit(in *Input, s ...rand.Source) {
 			xbatch, tbatch := xs[begin:end], ts[begin:end]
 
 			// update
-			loss := t.Model.Forward(xbatch, tbatch)
-			t.Model.Backward()
-			t.Optimizer.Update(t.Model)
+			loss := tr.Model.Forward(xbatch, tbatch)
+			tr.Model.Backward()
+			tr.Optimizer.Update(tr.Model)
 
 			// verbose
-			in.Verbose(i, j, loss[0][0], t.Model)
+			in.Verbose(i, j, loss[0][0], tr.Model)
 		}
 	}
 }

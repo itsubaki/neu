@@ -35,6 +35,7 @@ type RNNLMInput struct {
 type RNNLMTrainer struct {
 	Model     RNNLM
 	Optimizer Optimizer
+	timeIdx   int
 }
 
 func NewRNNLM(m RNNLM, o Optimizer) *RNNLMTrainer {
@@ -44,7 +45,7 @@ func NewRNNLM(m RNNLM, o Optimizer) *RNNLMTrainer {
 	}
 }
 
-func (t *RNNLMTrainer) Fit(in *RNNLMInput) {
+func (tr *RNNLMTrainer) Fit(in *RNNLMInput) {
 	xs, ts := in.Train, in.TrainLabel
 	dataSize := len(xs)
 
@@ -56,37 +57,43 @@ func (t *RNNLMTrainer) Fit(in *RNNLMInput) {
 
 	maxIter := dataSize / (in.BatchSize * in.TimeSize)
 	var totalLoss float64
-	var timeIdx, lossCount int
+	var lossCount int
 	for epoch := 0; epoch < in.Epochs; epoch++ {
 		for j := 0; j < maxIter; j++ {
 			// (Time, N, 1)
-			xbatch, tbatch := make([]matrix.Matrix, in.TimeSize), make([]matrix.Matrix, in.TimeSize)
-			for t := 0; t < in.TimeSize; t++ {
-				xv, tv := make(matrix.Matrix, in.BatchSize), make(matrix.Matrix, in.BatchSize)
-				for i, offset := range offsets {
-					xv[i] = []float64{float64(xs[(offset+timeIdx)%dataSize])}
-					tv[i] = []float64{float64(ts[(offset+timeIdx)%dataSize])}
-				}
-
-				xbatch[t], tbatch[t] = xv, tv
-				timeIdx++
-			}
+			xbatch, tbatch := tr.Batch(xs, ts, offsets, in.TimeSize, in.BatchSize)
 
 			// update
-			loss := t.Model.Forward(xbatch, tbatch)
-			t.Model.Backward()
-			t.Optimizer.Update(t.Model)
+			loss := tr.Model.Forward(xbatch, tbatch)
+			tr.Model.Backward()
+			tr.Optimizer.Update(tr.Model)
 
 			totalLoss += loss[0][0]
 			lossCount++
 
 			// verbose
 			ppl := Perplexity(totalLoss, lossCount)
-			in.Verbose(epoch, j, ppl, t.Model)
+			in.Verbose(epoch, j, ppl, tr.Model)
 		}
 
 		totalLoss, lossCount = 0, 0
 	}
+}
+
+func (tr *RNNLMTrainer) Batch(xs, ts, offsets []int, T, N int) ([]matrix.Matrix, []matrix.Matrix) {
+	xbatch, tbatch := make([]matrix.Matrix, T), make([]matrix.Matrix, T)
+	for t := 0; t < T; t++ {
+		xv, tv := make(matrix.Matrix, N), make(matrix.Matrix, N)
+		for i, offset := range offsets {
+			xv[i] = []float64{float64(xs[(offset+tr.timeIdx)%len(xs)])}
+			tv[i] = []float64{float64(ts[(offset+tr.timeIdx)%len(xs)])}
+		}
+
+		xbatch[t], tbatch[t] = xv, tv
+		tr.timeIdx++
+	}
+
+	return xbatch, tbatch
 }
 
 func Perplexity(loss float64, count int) float64 {

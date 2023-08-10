@@ -43,7 +43,7 @@ func NewSeq2Seq(m Seq2Seq, o Optimizer) *Seq2SeqTrainer {
 	}
 }
 
-func (t *Seq2SeqTrainer) Fit(in *Seq2SeqInput, s ...rand.Source) {
+func (tr *Seq2SeqTrainer) Fit(in *Seq2SeqInput, s ...rand.Source) {
 	if len(s) == 0 {
 		s = append(s, rand.NewSource(time.Now().UnixNano()))
 	}
@@ -61,15 +61,15 @@ func (t *Seq2SeqTrainer) Fit(in *Seq2SeqInput, s ...rand.Source) {
 			tbatch := Time(ts[begin:end])                 // (128, 5) -> (5, 128, 1)
 
 			// update
-			loss := t.Model.Forward(xbatch, tbatch)
-			t.Model.Backward()
-			t.Optimizer.Update(t.Model)
+			loss := tr.Model.Forward(xbatch, tbatch)
+			tr.Model.Backward()
+			tr.Optimizer.Update(tr.Model)
 
 			total += loss
 			count++
 
 			// verbose
-			in.Verbose(i, j, total/float64(count), t.Model)
+			in.Verbose(i, j, total/float64(count), tr.Model)
 		}
 
 		total, count = 0.0, 0
