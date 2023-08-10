@@ -18,6 +18,9 @@ func (l *AttentionWeight) SetParams(p ...matrix.Matrix) {}
 func (l *AttentionWeight) String() string               { return fmt.Sprintf("%T", l) }
 
 func (l *AttentionWeight) Forward(hs []matrix.Matrix, h matrix.Matrix) matrix.Matrix {
+	l.hs = hs
+	l.hr = matrix.Repeat(h, len(hs))
+
 	T := len(hs)                         // (T, N, H)
 	l.hs, l.hr = hs, matrix.Repeat(h, T) // (N, H) -> (T, N, H)
 	t := TimeMul(hs, l.hr)               // (T, N, H)
