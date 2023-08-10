@@ -5,6 +5,13 @@ import (
 	"fmt"
 
 	"github.com/itsubaki/neu/dataset/sequence"
+	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/vector"
+	"github.com/itsubaki/neu/model"
+	"github.com/itsubaki/neu/optimizer"
+	"github.com/itsubaki/neu/optimizer/hook"
+	"github.com/itsubaki/neu/trainer"
+	"github.com/itsubaki/neu/weight"
 )
 
 func main() {
@@ -20,10 +27,59 @@ func main() {
 	// data
 	x, t, v := sequence.Must(sequence.Load(dir, sequence.DateTxt))
 
-	fmt.Println(len(x.Train), len(x.Train[0]), len(x.Test), len(x.Test[0]))
-	fmt.Println(len(t.Train), len(t.Train[0]), len(t.Test), len(t.Test[0]))
-	fmt.Println(len(v.IDToRune), len(v.RuneToID))
-	fmt.Println(x.Train[0], t.Train[0])
-	fmt.Println(v.ToString(x.Train[0]), v.ToString(t.Train[0]))
+	// model
+	m := model.NewAttentionSeq2Seq(&model.RNNLMConfig{
+		VocabSize:   len(v.RuneToID),
+		WordVecSize: 16,
+		HiddenSize:  256,
+		WeightInit:  weight.Xavier,
+	})
 
+	// layer
+	fmt.Printf("%T\n", m)
+	for i, l := range m.Layers() {
+		fmt.Printf("%2d: %v\n", i, l)
+	}
+	fmt.Println()
+
+	// training
+	tr := trainer.NewSeq2Seq(m, &optimizer.Adam{
+		LearningRate: 0.001,
+		Beta1:        0.9,
+		Beta2:        0.999,
+		Hooks: []optimizer.Hook{
+			hook.GradsClipping(5.0),
+		},
+	})
+
+	xt, tt := x.Train[:dataSize], t.Train[:dataSize]
+	tr.Fit(&trainer.Seq2SeqInput{
+		Train:      xt,
+		TrainLabel: tt,
+		Epochs:     epochs,
+		BatchSize:  batchSize,
+		Verbose: func(epoch, j int, loss float64, m trainer.Seq2Seq) {
+			if epoch%20 != 0 || j != 0 {
+				return
+			}
+
+			acc := generate(xt, tt, m, v, 10)
+			fmt.Printf("%2d, %2d: loss=%.04f, train_acc=%.4f\n", epoch, j, loss, acc)
+			fmt.Println()
+		},
+	})
+}
+
+func generate(xs, ts [][]int, m trainer.Seq2Seq, v *sequence.Vocab, top int) float64 {
+	var acc int
+	for k := 0; k < top; k++ {
+		q, correct := trainer.Float64(xs)[k], ts[k]           // (1, 7), (5)
+		tq := vector.Reverse(trainer.Time(matrix.New(q)))     // (7, 1, 1)
+		guess := m.Generate(tq, correct[0], len(correct[1:])) //
+
+		acc += trainer.SeqAccuracy(correct[1:], guess)
+		fmt.Printf("%v %v; %v (%v)\n", v.ToString(xs[k]), v.ToString(correct), v.ToString(guess), guess)
+	}
+
+	return float64(acc) / float64(top)
 }
