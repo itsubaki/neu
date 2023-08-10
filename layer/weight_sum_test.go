@@ -58,29 +58,6 @@ func ExampleWeightSum_Params() {
 	// []
 }
 
-func ExampleTimeSum() {
-	hs := []matrix.Matrix{
-		// (T, N, H) (2, 2, 3)
-		{
-			{1, 2, 3},
-			{4, 5, 6},
-		},
-		{
-			{1, 2, 3},
-			{4, 5, 6},
-		},
-	}
-
-	sum := layer.TimeSum(hs)
-	for _, r := range sum {
-		fmt.Println(r)
-	}
-
-	// Output:
-	// [2 4 6]
-	// [8 10 12]
-}
-
 func Example_transpose_broadcast() {
 	a := matrix.New([]float64{1, 2, 3}) // (1 ,N)
 	ar := a.T().Broadcast(3, 4)         // (1, N) -> (N, 1) -> (N, H)

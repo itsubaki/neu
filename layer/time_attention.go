@@ -49,12 +49,3 @@ func (l *TimeAttention) Backward(dout []matrix.Matrix) ([]matrix.Matrix, []matri
 
 	return dhsenc, dhsdec
 }
-
-func ZeroLike(hs []matrix.Matrix) []matrix.Matrix {
-	out := make([]matrix.Matrix, len(hs))
-	for i := 0; i < len(hs); i++ {
-		out[i] = matrix.Zero(hs[i].Dimension())
-	}
-
-	return out
-}

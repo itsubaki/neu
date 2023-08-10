@@ -28,12 +28,3 @@ func (l *Attention) Backward(dout matrix.Matrix) ([]matrix.Matrix, matrix.Matrix
 	dhs := TimeAdd(dhs0, dhs1)
 	return dhs, dh
 }
-
-func TimeAdd(x, y []matrix.Matrix) []matrix.Matrix {
-	out := make([]matrix.Matrix, len(x))
-	for i := 0; i < len(x); i++ {
-		out[i] = x[i].Add(y[i])
-	}
-
-	return out
-}
