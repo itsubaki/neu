@@ -1,7 +1,6 @@
 package model
 
 import (
-	"math"
 	"math/rand"
 	"time"
 
@@ -113,17 +112,4 @@ func (l *Decoder) SetParams(p ...matrix.Matrix) {
 	l.TimeLSTM.B = p[3]
 	l.TimeAffine.W = p[4]
 	l.TimeAffine.B = p[5]
-}
-
-func Argmax(score []matrix.Matrix) int {
-	arg := 0
-	max := math.SmallestNonzeroFloat64
-	for i, v := range Flatten(score) {
-		if v > max {
-			max = v
-			arg = i
-		}
-	}
-
-	return arg
 }

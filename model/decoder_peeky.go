@@ -61,7 +61,7 @@ func (m *PeekyDecoder) Backward(dscore []matrix.Matrix) matrix.Matrix {
 	m.TimeEmbedding.Backward(dout)
 
 	dhs := append(dhs0, dhs1...)
-	dh := m.TimeLSTM.DH().Add(SumAxis1(dhs))
+	dh := m.TimeLSTM.DH().Add(layer.TimeSum(dhs))
 	return dh
 }
 
@@ -84,53 +84,4 @@ func (m *PeekyDecoder) Generate(h matrix.Matrix, startID, length int) []int {
 	}
 
 	return sampled
-}
-
-func Concat(a, b []matrix.Matrix) []matrix.Matrix {
-	out := make([]matrix.Matrix, len(a))
-	for t := 0; t < len(a); t++ {
-		out[t] = make(matrix.Matrix, len(a[t]))
-
-		for i := 0; i < len(a[t]); i++ {
-			out[t][i] = append(out[t][i], a[t][i]...)
-		}
-
-		for i := 0; i < len(b[t]); i++ {
-			out[t][i] = append(out[t][i], b[t][i]...)
-		}
-	}
-
-	return out
-}
-
-func Split(dout []matrix.Matrix, H int) ([]matrix.Matrix, []matrix.Matrix) {
-	a, b := make([]matrix.Matrix, len(dout)), make([]matrix.Matrix, len(dout))
-	for t := range dout {
-		a[t], b[t] = matrix.New(), matrix.New()
-		for _, r := range dout[t] {
-			a[t] = append(a[t], r[H:])
-			b[t] = append(b[t], r[:H])
-		}
-	}
-
-	return a, b
-}
-
-func SumAxis1(dhs []matrix.Matrix) matrix.Matrix {
-	T, N, H := len(dhs), len(dhs[0]), len(dhs[0][0])
-	out := make(matrix.Matrix, N)
-
-	for i := 0; i < N; i++ {
-		out[i] = make([]float64, H)
-		for j := 0; j < H; j++ {
-			var sum float64
-			for t := 0; t < T; t++ {
-				sum = sum + dhs[t][i][j]
-			}
-
-			out[i][j] = sum
-		}
-	}
-
-	return out
 }

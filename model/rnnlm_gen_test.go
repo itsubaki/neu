@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math/rand"
 
-	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/weight"
 )
@@ -28,18 +27,6 @@ func ExampleRNNLMGen() {
 	// [30 29 45 20 58 3 68 43 31 72]
 }
 
-func ExampleChoice() {
-	s := rand.NewSource(1)
-	p := []float64{0.1, 0.2, 0.3, 0.4}
-
-	for i := 0; i < 10; i++ {
-		fmt.Print(model.Choice(p, s))
-	}
-
-	// Output:
-	// 3332230102
-}
-
 func ExampleChoice_rand() {
 	p := []float64{0.1, 0.2, 0.3, 0.4}
 	if model.Choice(p) < 0 {
@@ -47,31 +34,4 @@ func ExampleChoice_rand() {
 	}
 
 	// Output:
-}
-
-func ExampleContains() {
-	fmt.Println(model.Contains(3, []int{1, 2, 3}))
-	fmt.Println(model.Contains(0, []int{1, 2, 3}))
-
-	// Output:
-	// true
-	// false
-}
-
-func ExampleFlatten() {
-	xs := []matrix.Matrix{
-		{
-			{0, 1, 2},
-			{0, 1, 2},
-		},
-		{
-			{3, 4, 5},
-			{3, 4, 5},
-		},
-	}
-
-	fmt.Println(model.Flatten(xs))
-
-	// Output:
-	// [0 1 2 0 1 2 3 4 5 3 4 5]
 }
