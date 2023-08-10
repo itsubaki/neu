@@ -320,7 +320,7 @@ func ExampleMatrix_SumAxis0() {
 	fmt.Println(x.SumAxis0())
 
 	// Output:
-	// [[5 7 9]]
+	// [5 7 9]
 }
 
 func ExampleMatrix_SumAxis1() {
@@ -332,7 +332,7 @@ func ExampleMatrix_SumAxis1() {
 	fmt.Println(x.SumAxis1())
 
 	// Output:
-	// [[5 122 86]]
+	// [5 122 86]
 }
 
 func ExampleMatrix_MeanAxis0() {
@@ -344,7 +344,7 @@ func ExampleMatrix_MeanAxis0() {
 	fmt.Println(x.MeanAxis0())
 
 	// Output:
-	// [[2.5 3.5 4.5]]
+	// [2.5 3.5 4.5]
 }
 
 func ExampleMatrix_MaxAxis1() {

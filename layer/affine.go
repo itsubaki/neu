@@ -30,6 +30,6 @@ func (l *Affine) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 func (l *Affine) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	dx := matrix.Dot(dout, l.W.T())
 	l.DW = matrix.Dot(l.x.T(), dout)
-	l.DB = dout.SumAxis0()
+	l.DB = matrix.New(dout.SumAxis0()) // Adjusting the shape
 	return dx, nil
 }

@@ -23,9 +23,9 @@ func (l *Softmax) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 }
 
 func (l *Softmax) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	dx := l.out.Mul(dout)
-	sum := dx.SumAxis1().T()
-	dx = dx.Sub(l.out.Mul(sum))
+	dx := l.out.Mul(dout)                // (N, H)
+	sum := matrix.New(dx.SumAxis1()).T() // (N, H) -> (1, N) -> (N, 1)
+	dx = dx.Sub(l.out.Mul(sum))          // (N, H)
 	return dx, nil
 }
 

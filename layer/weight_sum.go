@@ -35,7 +35,7 @@ func (l *WeightSum) Backward(dc matrix.Matrix) ([]matrix.Matrix, matrix.Matrix) 
 
 	da := make(matrix.Matrix, T)
 	for i := 0; i < T; i++ {
-		da[i] = dar[i].SumAxis1()[0] // (N, H) -> (1, N)
+		da[i] = dar[i].SumAxis1() // (N, H) -> (1, N)
 	}
 
 	return dhs, da // (T, N, H), (T, N)

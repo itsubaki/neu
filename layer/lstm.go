@@ -74,7 +74,7 @@ func (l *LSTM) Backward(dhNext, dcNext matrix.Matrix) (matrix.Matrix, matrix.Mat
 	// grads
 	l.DWx = matrix.Dot(l.x.T(), dA)
 	l.DWh = matrix.Dot(l.h.T(), dA)
-	l.DB = dA.SumAxis0()
+	l.DB = matrix.New(dA.SumAxis0())
 
 	// prev
 	dx := matrix.Dot(dA, l.Wx.T())     // (N, D)

@@ -24,7 +24,7 @@ func (l *AttentionWeight) Forward(hs []matrix.Matrix, h matrix.Matrix) matrix.Ma
 
 	c := make(matrix.Matrix, T) // (T, N)
 	for i := 0; i < T; i++ {
-		c[i] = t[i].SumAxis1()[0] // (N, H) -> (1, N)
+		c[i] = t[i].SumAxis1() // (N, H) -> (1, N)
 	}
 
 	return l.Softmax.Forward(c, nil) // (T, N)

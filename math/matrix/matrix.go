@@ -224,7 +224,7 @@ func (m Matrix) Argmax() []int {
 }
 
 // SumAxis0 returns the sum of each column.
-func (m Matrix) SumAxis0() Matrix {
+func (m Matrix) SumAxis0() []float64 {
 	p, q := m.Dimension()
 
 	v := make([]float64, 0, q)
@@ -237,11 +237,11 @@ func (m Matrix) SumAxis0() Matrix {
 		v = append(v, sum)
 	}
 
-	return New(v)
+	return v
 }
 
 // SumAxis1 returns the sum of each row.
-func (m Matrix) SumAxis1() Matrix {
+func (m Matrix) SumAxis1() []float64 {
 	p, q := m.Dimension()
 
 	v := make([]float64, 0, p)
@@ -254,12 +254,17 @@ func (m Matrix) SumAxis1() Matrix {
 		v = append(v, sum)
 	}
 
-	return New(v)
+	return v
 }
 
 // MeanAxis0 returns the mean of each column.
-func (m Matrix) MeanAxis0() Matrix {
-	return m.SumAxis0().MulC(1.0 / float64(len(m)))
+func (m Matrix) MeanAxis0() []float64 {
+	out := make([]float64, 0)
+	for _, v := range m.SumAxis0() {
+		out = append(out, v/float64(len(m)))
+	}
+
+	return out
 }
 
 // MaxAxis1 returns the maximum value of each row.

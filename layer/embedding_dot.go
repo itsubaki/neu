@@ -8,8 +8,8 @@ import (
 
 type EmbeddingDot struct {
 	Embedding Embedding
-	cacheH    matrix.Matrix
-	cacheW    matrix.Matrix
+	H         matrix.Matrix
+	W         matrix.Matrix
 }
 
 func (l *EmbeddingDot) Params() []matrix.Matrix      { return []matrix.Matrix{l.Embedding.W} }
@@ -24,12 +24,12 @@ func (l *EmbeddingDot) Forward(h, idx matrix.Matrix, _ ...Opts) matrix.Matrix {
 	targetW := l.Embedding.Forward(idx, nil)
 	out := targetW.Mul(h).SumAxis1()
 
-	l.cacheH, l.cacheW = h, targetW
-	return out
+	l.H, l.W = h, targetW
+	return matrix.New(out)
 }
 
 func (l *EmbeddingDot) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	h, targetW := l.cacheH, l.cacheW
+	h, targetW := l.H, l.W
 	dout = matrix.Reshape(dout, len(dout), 1)
 
 	dtargetW := h.Mul(dout)        // Broadcast

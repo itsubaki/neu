@@ -40,7 +40,7 @@ func (l *RNN) Backward(dhNext matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 
 	l.DWx = matrix.Dot(l.x.T(), dt)     // dot(x.T(D, N), dt(N, H)) -> (D, H)
 	l.DWh = matrix.Dot(l.hPrev.T(), dt) // dot(hPrev.T(H, N), dt(N, H)) -> (H, H)
-	l.DB = dt.SumAxis0()                // sum(dt(N, H), axis=0) -> (1, H)
+	l.DB = matrix.New(dt.SumAxis0())    // sum(dt(N, H), axis=0) -> (1, H)
 	return dx, dh
 }
 

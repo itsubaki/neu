@@ -34,11 +34,11 @@ func (l *BatchNorm) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
 	var xn matrix.Matrix
 	if len(opts) > 0 && opts[0].Train {
 		// var, std, norm
-		mu := x.MeanAxis0()         // mean(x, axis=0)
-		xc := x.Sub(mu)             // x - mu
-		va := xc.Pow2().MeanAxis0() // mean(xc**2, axis=0)
-		std := va.Sqrt(1e-7)        // sqrt(var + 1e-7)
-		xn = xc.Div(std)            // (x - mu) / sqrt(var + eps)
+		mu := matrix.New(x.MeanAxis0())         // mean(x, axis=0)
+		xc := x.Sub(mu)                         // x - mu
+		va := matrix.New(xc.Pow2().MeanAxis0()) // mean(xc**2, axis=0)
+		std := va.Sqrt(1e-7)                    // sqrt(var + 1e-7)
+		xn = xc.Div(std)                        // (x - mu) / sqrt(var + eps)
 
 		// for backword
 		l.batchSize = len(x)
@@ -58,22 +58,22 @@ func (l *BatchNorm) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
 
 func (l *BatchNorm) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	// DBeta, DGamma
-	l.DGamma = l.xn.Mul(dout).SumAxis0() // sum(xn * dout)
-	l.DBeta = dout.SumAxis0()            // sum(dout)
+	l.DGamma = matrix.New(l.xn.Mul(dout).SumAxis0()) // sum(xn * dout)
+	l.DBeta = matrix.New(dout.SumAxis0())            // sum(dout)
 
 	// dxn, dxc
 	dxn := dout.Mul(l.Gamma) // dout * gamma
 	dxc := dxn.Div(l.std)    // dxn / std
 
 	// dstd, dvar
-	dxnc := dxn.Mul(l.xc).Div(l.std.Mul(l.std)) // (dxn * xc) / (std * std)
-	dstd := dxnc.SumAxis0().MulC(-1.0)          // -1.0 * Sum((dxn * xc) / (std * std))
-	dvar := dstd.Div(l.std).MulC(0.5)           // 0.5 * (dstd / std)
+	dxnc := dxn.Mul(l.xc).Div(l.std.Mul(l.std))    // (dxn * xc) / (std * std)
+	dstd := matrix.New(dxnc.SumAxis0()).MulC(-1.0) // -1.0 * Sum((dxn * xc) / (std * std))
+	dvar := dstd.Div(l.std).MulC(0.5)              // 0.5 * (dstd / std)
 
 	// dxc, dmu
 	xcdv := l.xc.Mul(dvar).MulC(2.0 / float64(l.batchSize)) // 2.0/batchSize * xc * dvar
 	dxc = dxc.Add(xcdv)                                     // dxc = dxc + 2.0/batchSize * xc * dvar
-	dmu := dxc.SumAxis0()                                   // dmu = sum(dxc)
+	dmu := matrix.New(dxc.SumAxis0())                       // dmu = sum(dxc)
 
 	// dx
 	dx := dxc.Sub(dmu.MulC(1.0 / float64(l.batchSize))) // dxc - dmu / batchSize
