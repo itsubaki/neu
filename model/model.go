@@ -166,14 +166,16 @@ func Choice(p []float64, s ...rand.Source) int {
 		cumsum[i] = sum
 	}
 
+	var ret int
 	r := rand.New(s[0]).Float64()
 	for i, prop := range cumsum {
 		if r <= prop {
-			return i
+			ret = i
+			break
 		}
 	}
 
-	return -1
+	return ret
 }
 
 func Contains[T comparable](v T, s []T) bool {
