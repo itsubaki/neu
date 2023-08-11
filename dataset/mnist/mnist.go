@@ -60,7 +60,7 @@ func image(fileName string) ([]Image, error) {
 	}
 
 	if h.Magic != 0x00000803 || h.Width != Width || h.Height != Height {
-		return nil, fmt.Errorf("invalid header=%v: %v", h, err)
+		return nil, fmt.Errorf("invalid header=%v", h)
 	}
 
 	images := make([]Image, h.N)
@@ -96,7 +96,7 @@ func label(fileName string) ([]Label, error) {
 	}
 
 	if h.Magic != 0x00000801 {
-		return nil, fmt.Errorf("invalid header=%v: %v", h, err)
+		return nil, fmt.Errorf("invalid header=%v", h)
 	}
 
 	labels := make([]Label, h.N)

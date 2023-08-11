@@ -34,6 +34,45 @@ func ExampleLoad_notfound() {
 	// load training data: load=invalid_dir/train-images-idx3-ubyte.gz: open file=invalid_dir/train-images-idx3-ubyte.gz: open invalid_dir/train-images-idx3-ubyte.gz: no such file or directory
 }
 
+func ExampleLoadFile_invalidSize() {
+	image := fmt.Sprintf("../../testdata/%s", mnist.TrainImageGZ)
+	label := fmt.Sprintf("../../testdata/%s", mnist.TestLabelGZ)
+	_, err := mnist.LoadFile(image, label)
+	fmt.Println(err)
+
+	// Output:
+	// invalid size. image=60000, labels=10000
+}
+
+func ExampleLoadFile_invalidImageHeader() {
+	image := fmt.Sprintf("../../testdata/%s", mnist.TrainLabelGZ)
+	label := fmt.Sprintf("../../testdata/%s", mnist.TrainLabelGZ)
+	_, err := mnist.LoadFile(image, label)
+	fmt.Println(err)
+
+	// Output:
+	// load=../../testdata/train-labels-idx1-ubyte.gz: invalid header={2049 60000 83887105 151126275}
+}
+
+func ExampleLoadFile_invalidLabelHeader() {
+	image := fmt.Sprintf("../../testdata/%s", mnist.TrainImageGZ)
+	label := fmt.Sprintf("../../testdata/%s", mnist.TrainImageGZ)
+	_, err := mnist.LoadFile(image, label)
+	fmt.Println(err)
+
+	// Output:
+	// load=../../testdata/train-images-idx3-ubyte.gz: invalid header={2051 60000}
+}
+
+func ExampleLoadFile() {
+	image := fmt.Sprintf("../../testdata/%s", mnist.TrainImageGZ)
+	_, err := mnist.LoadFile(image, "invalid_file")
+	fmt.Println(err)
+
+	// Output:
+	// load=invalid_file: open file=invalid_file: open invalid_file: no such file or directory
+}
+
 func ExampleNormalize() {
 	img := []mnist.Image{{byte(0)}, {byte(10)}, {byte(20)}, {byte(255)}}
 	for _, r := range mnist.Normalize(img) {
