@@ -61,14 +61,12 @@ func ExampleEmbeddingDot() {
 
 func ExampleEmbeddingDot_Params() {
 	l := &layer.EmbeddingDot{}
-	l.SetParams(make([]matrix.Matrix, 2)...)
 
-	fmt.Println(l)
+	l.SetParams(make([]matrix.Matrix, 2)...)
 	fmt.Println(l.Params())
 	fmt.Println(l.Grads())
 
 	// Output:
-	// *layer.EmbeddingDot: W(0, 0): 0
 	// [[]]
 	// [[]]
 }

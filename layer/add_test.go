@@ -18,6 +18,7 @@ func ExampleAdd() {
 	orangeLayer := &layer.Mul{}
 	addLayer := &layer.Add{}
 	taxLayer := &layer.Mul{}
+	fmt.Println(addLayer)
 
 	applePrice := appleLayer.Forward(apple, appleNum)
 	orangePrice := orangeLayer.Forward(orange, orangeNum)
@@ -37,6 +38,7 @@ func ExampleAdd() {
 	fmt.Println(dTax)
 
 	// Output:
+	// *layer.Add
 	// [[715.0000000000001]]
 	// [[2.2]] [[110.00000000000001]]
 	// [[3.3000000000000003]] [[165]]
@@ -46,14 +48,12 @@ func ExampleAdd() {
 
 func ExampleAdd_Params() {
 	add := &layer.Add{}
-	add.SetParams(make([]matrix.Matrix, 0)...)
 
-	fmt.Println(add)
+	add.SetParams(make([]matrix.Matrix, 0)...)
 	fmt.Println(add.Params())
 	fmt.Println(add.Grads())
 
 	// Output:
-	// *layer.Add
 	// []
 	// []
 }

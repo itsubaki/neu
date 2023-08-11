@@ -9,6 +9,7 @@ import (
 
 func ExampleSigmoidWithLoss() {
 	l := &layer.SigmoidWithLoss{}
+	fmt.Println(l)
 
 	// forward
 	x := matrix.New(
@@ -27,20 +28,19 @@ func ExampleSigmoidWithLoss() {
 	fmt.Println(dx)
 
 	// Output:
+	// *layer.SigmoidWithLoss
 	// [[7.130183898637823]]
 	// [[0.26248959373947 0.25624869824210517 -0.1771718468871023 0.25 0.25624869824210517 0.26248959373947 0.25 0.26248959373947 0.25 0.25] [0.26248959373947 0.25624869824210517 -0.23751040626053 0.25 0.25624869824210517 0.26248959373947 0.25 0.3228281531128977 0.25 0.25]]
 }
 
 func ExampleSigmoidWithLoss_Params() {
 	l := &layer.SigmoidWithLoss{}
-	l.SetParams(make([]matrix.Matrix, 0)...)
 
-	fmt.Println(l)
+	l.SetParams(make([]matrix.Matrix, 0)...)
 	fmt.Println(l.Params())
 	fmt.Println(l.Grads())
 
 	// Output:
-	// *layer.SigmoidWithLoss
 	// []
 	// []
 }

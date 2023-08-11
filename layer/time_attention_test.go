@@ -62,14 +62,12 @@ func ExampleTimeAttention() {
 
 func ExampleTimeAttention_Params() {
 	at := &layer.TimeAttention{}
-	at.SetParams(matrix.New())
 
-	fmt.Println(at)
+	at.SetParams(matrix.New())
 	fmt.Println(at.Params())
 	fmt.Println(at.Grads())
 
 	// Output:
-	// *layer.TimeAttention
 	// []
 	// []
 }

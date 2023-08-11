@@ -57,8 +57,8 @@ func ExampleTimeEmbedding() {
 
 func ExampleTimeEmbedding_Params() {
 	embed := &layer.TimeEmbedding{}
-	embed.SetParams(make([]matrix.Matrix, 1)...)
 
+	embed.SetParams(make([]matrix.Matrix, 1)...)
 	fmt.Println(embed.Params())
 	fmt.Println(embed.Grads())
 

@@ -54,8 +54,8 @@ func ExampleAttention() {
 
 func ExampleAttention_Params() {
 	at := &layer.Attention{}
-	at.SetParams(matrix.New())
 
+	at.SetParams(matrix.New())
 	fmt.Println(at.Params())
 	fmt.Println(at.Grads())
 

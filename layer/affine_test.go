@@ -36,8 +36,8 @@ func ExampleAffine() {
 
 func ExampleAffine_Params() {
 	affine := &layer.Affine{}
-	affine.SetParams(make([]matrix.Matrix, 2)...)
 
+	affine.SetParams(make([]matrix.Matrix, 2)...)
 	fmt.Println(affine.Params())
 	fmt.Println(affine.Grads())
 

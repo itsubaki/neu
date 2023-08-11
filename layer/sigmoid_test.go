@@ -26,14 +26,12 @@ func ExampleSigmoid() {
 
 func ExampleSigmoid_Params() {
 	sigmoid := &layer.Sigmoid{}
-	sigmoid.SetParams(make([]matrix.Matrix, 0)...)
 
-	fmt.Println(sigmoid)
+	sigmoid.SetParams(make([]matrix.Matrix, 0)...)
 	fmt.Println(sigmoid.Params())
 	fmt.Println(sigmoid.Grads())
 
 	// Output:
-	// *layer.Sigmoid
 	// []
 	// []
 }

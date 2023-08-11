@@ -34,14 +34,12 @@ func ExampleSoftmax() {
 
 func ExampleSoftmax_Params() {
 	softmax := &layer.Softmax{}
-	softmax.SetParams(make([]matrix.Matrix, 0)...)
 
-	fmt.Println(softmax)
+	softmax.SetParams(make([]matrix.Matrix, 0)...)
 	fmt.Println(softmax.Params())
 	fmt.Println(softmax.Grads())
 
 	// Output:
-	// *layer.Softmax
 	// []
 	// []
 }

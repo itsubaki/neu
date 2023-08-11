@@ -48,8 +48,8 @@ func ExampleWeightSum() {
 
 func ExampleWeightSum_Params() {
 	ws := &layer.WeightSum{}
-	ws.SetParams()
 
+	ws.SetParams()
 	fmt.Println(ws.Params())
 	fmt.Println(ws.Grads())
 

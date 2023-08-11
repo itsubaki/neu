@@ -60,8 +60,8 @@ func ExampleRNN() {
 
 func ExampleRNN_Params() {
 	rnn := &layer.RNN{}
-	rnn.SetParams(make([]matrix.Matrix, 3)...)
 
+	rnn.SetParams(make([]matrix.Matrix, 3)...)
 	fmt.Println(rnn.Params())
 	fmt.Println(rnn.Grads())
 

@@ -16,6 +16,7 @@ func ExampleBatchNorm() {
 		Momentum: 0.9,
 	}
 
+	fmt.Println(n)
 	fmt.Println(n.Forward(x, nil, layer.Opts{Train: true}))
 	fmt.Println(n.Forward(x, nil, layer.Opts{Train: false}))
 	fmt.Println(n.Backward(x))
@@ -23,6 +24,7 @@ func ExampleBatchNorm() {
 	fmt.Println(n.DBeta)
 
 	// Output:
+	// *layer.BatchNorm: G(1, 2), B(1, 2): 4
 	// [[-0.9999998000000601 -0.9999998000000601] [0.9999998000000601 0.9999998000000601]]
 	// [[5.3758612705744575 5.3758612705744575] [11.700403941838523 11.700403941838523]]
 	// [[-3.9999975998128434e-07 -3.9999975998128434e-07] [3.9999975953719513e-07 3.9999975953719513e-07]] []
@@ -32,14 +34,12 @@ func ExampleBatchNorm() {
 
 func ExampleBatchNorm_Params() {
 	n := &layer.BatchNorm{}
-	n.SetParams(make([]matrix.Matrix, 2)...)
 
-	fmt.Println(n)
+	n.SetParams(make([]matrix.Matrix, 2)...)
 	fmt.Println(n.Params())
 	fmt.Println(n.Grads())
 
 	// Output:
-	// *layer.BatchNorm: G(0, 0), B(0, 0): 0
 	// [[] []]
 	// [[] []]
 }

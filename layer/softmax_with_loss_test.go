@@ -36,7 +36,6 @@ func ExampleSoftmaxWithLoss() {
 	// [[2.0694934853340516]]
 	// [0.04916164744936827 0.04676400561076958 -0.41894614614756587 0.044483298144480495 0.04676400561076958 0.04916164744936827 0.044483298144480495 0.04916164744936827 0.044483298144480495 0.044483298144480495]
 	// [0.04916164744936827 0.04676400561076958 -0.45083835255063176 0.044483298144480495 0.04676400561076958 0.04916164744936827 0.044483298144480495 0.08105385385243416 0.044483298144480495 0.044483298144480495]
-
 }
 
 func ExampleLoss() {
@@ -55,7 +54,6 @@ func ExampleLoss() {
 
 	// Output:
 	// 1.406704775046942
-
 }
 
 func Example_lossLabel() {
@@ -83,14 +81,12 @@ func Example_lossLabel() {
 
 func ExampleSoftmaxWithLoss_Params() {
 	l := &layer.SoftmaxWithLoss{}
-	l.SetParams(make([]matrix.Matrix, 0)...)
 
-	fmt.Println(l)
+	l.SetParams(make([]matrix.Matrix, 0)...)
 	fmt.Println(l.Params())
 	fmt.Println(l.Grads())
 
 	// Output:
-	// *layer.SoftmaxWithLoss
 	// []
 	// []
 }

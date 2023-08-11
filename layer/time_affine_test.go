@@ -66,8 +66,8 @@ func ExampleTimeAffine_time2() {
 
 func ExampleTimeAffine_Params() {
 	affine := &layer.TimeAffine{}
-	affine.SetParams(make([]matrix.Matrix, 2)...)
 
+	affine.SetParams(make([]matrix.Matrix, 2)...)
 	fmt.Println(affine.Params())
 	fmt.Println(affine.Grads())
 

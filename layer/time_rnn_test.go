@@ -118,8 +118,8 @@ func ExampleTimeRNN_time2() {
 
 func ExampleTimeRNN_Params() {
 	rnn := &layer.TimeRNN{}
-	rnn.SetParams(make([]matrix.Matrix, 3)...)
 
+	rnn.SetParams(make([]matrix.Matrix, 3)...)
 	fmt.Println(rnn.Params())
 	fmt.Println(rnn.Grads())
 

@@ -50,8 +50,8 @@ func ExampleAttentionWeight() {
 
 func ExampleAttentionWeight_Params() {
 	at := &layer.AttentionWeight{}
-	at.SetParams(matrix.New())
 
+	at.SetParams(matrix.New())
 	fmt.Println(at.Params())
 	fmt.Println(at.Grads())
 

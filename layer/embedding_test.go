@@ -47,14 +47,12 @@ func ExampleEmbedding() {
 
 func ExampleEmbedding_Params() {
 	l := &layer.Embedding{}
-	l.SetParams(make([]matrix.Matrix, 2)...)
 
-	fmt.Println(l)
+	l.SetParams(make([]matrix.Matrix, 2)...)
 	fmt.Println(l.Params())
 	fmt.Println(l.Grads())
 
 	// Output:
-	// *layer.Embedding: W(0, 0): 0
 	// [[]]
 	// [[]]
 }

@@ -71,8 +71,8 @@ func ExampleTimeLSTM() {
 
 func ExampleTimeLSTM_Params() {
 	lstm := &layer.TimeLSTM{}
-	lstm.SetParams(make([]matrix.Matrix, 3)...)
 
+	lstm.SetParams(make([]matrix.Matrix, 3)...)
 	fmt.Println(lstm.Params())
 	fmt.Println(lstm.Grads())
 

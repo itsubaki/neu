@@ -46,8 +46,8 @@ func ExampleTimeSoftmaxWithLoss() {
 
 func ExampleTimeSoftmaxWithLoss_Params() {
 	l := &layer.TimeSoftmaxWithLoss{}
-	l.SetParams(make([]matrix.Matrix, 0)...)
 
+	l.SetParams(make([]matrix.Matrix, 0)...)
 	fmt.Println(l.Params())
 	fmt.Println(l.Grads())
 
