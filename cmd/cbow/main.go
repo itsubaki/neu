@@ -86,12 +86,13 @@ func main() {
 	}
 	fmt.Println()
 
-	score := m.Predict([]matrix.Matrix{
-		{
-			{1, 0, 0, 0, 0, 0, 0}, // you
-			{0, 0, 1, 0, 0, 0, 0}, // goodbye
-		},
-	})
+	you := []float64{1, 0, 0, 0, 0, 0, 0}               // you
+	goodbye := []float64{0, 0, 1, 0, 0, 0, 0}           // goodbye
+	target := []float64{0, 1, 0, 0, 0, 0, 0}            // say
+	score := m.Predict([]matrix.Matrix{{you, goodbye}}) //
 
-	fmt.Printf("%.4f\n", activation.Softmax(score[0][0]))
+	fmt.Printf("you:     %.4f\n", you)
+	fmt.Printf("goodbye: %.4f\n", goodbye)
+	fmt.Printf("target:  %.4f\n", target)
+	fmt.Printf("predict: %.4f\n", activation.Softmax(score[0][0]))
 }
