@@ -137,8 +137,8 @@ func Split(dout []matrix.Matrix, H int) ([]matrix.Matrix, []matrix.Matrix) {
 	for t := range dout {
 		a[t], b[t] = matrix.New(), matrix.New()
 		for _, r := range dout[t] {
-			a[t] = append(a[t], r[H:])
-			b[t] = append(b[t], r[:H])
+			a[t] = append(a[t], r[:H])
+			b[t] = append(b[t], r[H:])
 		}
 	}
 
@@ -178,7 +178,7 @@ func Choice(p []float64, s ...rand.Source) int {
 	return ret
 }
 
-func Contains[T comparable](v T, s []T) bool {
+func Contains(v int, s []int) bool {
 	for _, ss := range s {
 		if v == ss {
 			return true

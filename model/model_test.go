@@ -142,21 +142,21 @@ func ExampleSplit() {
 		},
 	}
 
-	dout, dhs := model.Split(dout, 2)
-	for _, r := range dout {
+	dhs, dout := model.Split(dout, 2)
+	for _, r := range dhs {
 		fmt.Println(r)
 	}
-	for _, r := range dhs {
+	for _, r := range dout {
 		fmt.Println(r)
 	}
 
 	// Output:
-	// [[3 4] [7 8]]
-	// [[11 12] [15 16]]
-	// [[19 20] [23 24]]
 	// [[1 2] [5 6]]
 	// [[9 10] [13 14]]
 	// [[17 18] [21 22]]
+	// [[3 4] [7 8]]
+	// [[11 12] [15 16]]
+	// [[19 20] [23 24]]
 
 }
 

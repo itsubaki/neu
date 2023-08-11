@@ -55,9 +55,9 @@ func (m *PeekyDecoder) Forward(xs []matrix.Matrix, h matrix.Matrix) []matrix.Mat
 
 func (m *PeekyDecoder) Backward(dscore []matrix.Matrix) matrix.Matrix {
 	dout := m.TimeAffine.Backward(dscore)
-	dout, dhs0 := Split(dout, m.H)
+	dhs0, dout := Split(dout, m.H)
 	dout = m.TimeLSTM.Backward(dout)
-	dout, dhs1 := Split(dout, m.H)
+	dhs1, dout := Split(dout, m.H)
 	m.TimeEmbedding.Backward(dout)
 
 	dhs := append(dhs0, dhs1...)

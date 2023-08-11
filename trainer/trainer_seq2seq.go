@@ -101,7 +101,7 @@ func Float64(x [][]int) [][]float64 {
 	return out
 }
 
-func SeqAccuracy[T comparable](a, b []T) int {
+func SeqAccuracy(a, b []int) int {
 	if len(a) != len(b) {
 		return 0
 	}

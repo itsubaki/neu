@@ -58,7 +58,7 @@ func (m *AttentionDecoder) Backward(dscore []matrix.Matrix) []matrix.Matrix {
 	dout := m.TimeAffine.Backward(dscore)
 	H := len(dout[0][0]) / 2
 
-	ddechs0, dc := Split(dout, H)
+	dc, ddechs0 := Split(dout, H)
 	denchs, ddechs1 := m.TimeAttention.Backward(dc)
 	ddechs := layer.TimeAdd(ddechs0, ddechs1)
 	ldout := m.TimeLSTM.Backward(ddechs)
