@@ -68,14 +68,6 @@ func ExampleLSTMLM_Params() {
 
 	// params
 	for _, p := range m.Params() {
-		// TimeEmbedding
-		// TimeDropout
-		// TimeLSTM
-		// TimeDropout
-		// TimeLSTM
-		// TimeDropout
-		// TimeAffine
-		// TimeSoftmaxWithLoss
 		fmt.Println(p)
 	}
 	fmt.Println()

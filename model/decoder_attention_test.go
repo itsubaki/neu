@@ -47,8 +47,8 @@ func ExampleAttentionDecoder_Params() {
 		HiddenSize:  3, // H
 		WeightInit:  weight.Xavier,
 	})
-	m.SetParams(make([]matrix.Matrix, 6)...)
 
+	m.SetParams(make([]matrix.Matrix, 6)...)
 	fmt.Println(m.Params())
 	fmt.Println(m.Grads())
 

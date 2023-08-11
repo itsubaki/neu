@@ -57,7 +57,9 @@ func ExampleSeq2Seq_Params() {
 
 	m.SetParams(m.Grads())
 	fmt.Println(m.Params())
+	fmt.Println(m.Grads())
 
 	// Output:
+	// [[[] [] [] []] [[] [] [] [] [] []]]
 	// [[[] [] [] []] [[] [] [] [] [] []]]
 }

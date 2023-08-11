@@ -110,11 +110,6 @@ func ExampleMLP_Params() {
 
 	// params
 	for _, p := range m.Params() {
-		// Affine: W1, B1
-		// BatchNrom: Gamma, Beta
-		// ReLU: empty
-		// Affine: W2, B2
-		// SoftmaxWithLoss: empty
 		fmt.Println(p)
 	}
 	fmt.Println()

@@ -58,10 +58,6 @@ func ExampleRNNLM_Params() {
 
 	// params
 	for _, p := range m.Params() {
-		// TimeEmbedding: W
-		// TimeRNN: Wx, Wh, B
-		// TimeAffine: W, B
-		// TimeSoftmaxWithLoss: empty
 		fmt.Println(p)
 	}
 	fmt.Println()
