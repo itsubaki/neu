@@ -6,6 +6,7 @@ import (
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/tensor"
 )
 
 type PeekyDecoder struct {
@@ -48,20 +49,20 @@ func (m *PeekyDecoder) Forward(xs []matrix.Matrix, h matrix.Matrix) []matrix.Mat
 	m.H = H
 
 	out := m.TimeEmbedding.Forward(xs, nil)
-	out = m.TimeLSTM.Forward(Concat(hs, out), nil)
-	score := m.TimeAffine.Forward(Concat(hs, out), nil)
+	out = m.TimeLSTM.Forward(tensor.Concat(hs, out), nil)
+	score := m.TimeAffine.Forward(tensor.Concat(hs, out), nil)
 	return score
 }
 
 func (m *PeekyDecoder) Backward(dscore []matrix.Matrix) matrix.Matrix {
 	dout := m.TimeAffine.Backward(dscore)
-	dhs0, dout := Split(dout, m.H)
+	dhs0, dout := tensor.Split(dout, m.H)
 	dout = m.TimeLSTM.Backward(dout)
-	dhs1, dout := Split(dout, m.H)
+	dhs1, dout := tensor.Split(dout, m.H)
 	m.TimeEmbedding.Backward(dout)
 
 	dhs := append(dhs0, dhs1...)
-	dh := m.TimeLSTM.DH().Add(layer.TimeSum(dhs))
+	dh := m.TimeLSTM.DH().Add(tensor.Sum(dhs))
 	return dh
 }
 
@@ -76,10 +77,10 @@ func (m *PeekyDecoder) Generate(h matrix.Matrix, startID, length int) []int {
 		xs := []matrix.Matrix{{{float64(sampleID)}}}
 
 		out := m.TimeEmbedding.Forward(xs, nil)
-		out = m.TimeLSTM.Forward(Concat(peekyH, out), nil)
-		score := m.TimeAffine.Forward(Concat(peekyH, out), nil)
+		out = m.TimeLSTM.Forward(tensor.Concat(peekyH, out), nil)
+		score := m.TimeAffine.Forward(tensor.Concat(peekyH, out), nil)
 
-		sampleID = Argmax(score)
+		sampleID = tensor.Argmax(score)
 		sampled = append(sampled, sampleID)
 	}
 

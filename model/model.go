@@ -3,10 +3,7 @@ package model
 import (
 	"encoding/gob"
 	"fmt"
-	"math"
-	"math/rand"
 	"os"
-	"time"
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
@@ -113,90 +110,4 @@ func Load(filename string) ([][]matrix.Matrix, bool) {
 	}
 
 	return params, true
-}
-
-func Concat(a, b []matrix.Matrix) []matrix.Matrix {
-	out := make([]matrix.Matrix, len(a))
-	for t := 0; t < len(a); t++ {
-		out[t] = make(matrix.Matrix, len(a[t]))
-
-		for i := 0; i < len(a[t]); i++ {
-			out[t][i] = append(out[t][i], a[t][i]...)
-		}
-
-		for i := 0; i < len(b[t]); i++ {
-			out[t][i] = append(out[t][i], b[t][i]...)
-		}
-	}
-
-	return out
-}
-
-func Split(dout []matrix.Matrix, H int) ([]matrix.Matrix, []matrix.Matrix) {
-	a, b := make([]matrix.Matrix, len(dout)), make([]matrix.Matrix, len(dout))
-	for t := range dout {
-		a[t], b[t] = matrix.New(), matrix.New()
-		for _, r := range dout[t] {
-			a[t] = append(a[t], r[:H])
-			b[t] = append(b[t], r[H:])
-		}
-	}
-
-	return a, b
-}
-
-func Flatten(m []matrix.Matrix) []float64 {
-	flatten := make([]float64, 0)
-	for _, s := range m {
-		flatten = append(flatten, matrix.Flatten(s)...)
-	}
-
-	return flatten
-}
-
-func Choice(p []float64, s ...rand.Source) int {
-	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
-	}
-
-	cumsum := make([]float64, len(p))
-	var sum float64
-	for i, prob := range p {
-		sum += prob
-		cumsum[i] = sum
-	}
-
-	var ret int
-	r := rand.New(s[0]).Float64()
-	for i, prop := range cumsum {
-		if r <= prop {
-			ret = i
-			break
-		}
-	}
-
-	return ret
-}
-
-func Contains(v int, s []int) bool {
-	for _, ss := range s {
-		if v == ss {
-			return true
-		}
-	}
-
-	return false
-}
-
-func Argmax(score []matrix.Matrix) int {
-	var arg int
-	max := math.SmallestNonzeroFloat64
-	for i, v := range Flatten(score) {
-		if v > max {
-			max = v
-			arg = i
-		}
-	}
-
-	return arg
 }

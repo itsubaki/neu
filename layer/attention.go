@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/tensor"
 )
 
 type Attention struct {
@@ -25,6 +26,6 @@ func (l *Attention) Forward(hs []matrix.Matrix, h matrix.Matrix) matrix.Matrix {
 func (l *Attention) Backward(dout matrix.Matrix) ([]matrix.Matrix, matrix.Matrix) {
 	dhs0, da := l.WeightSum.Backward(dout)
 	dhs1, dh := l.AttentionWeight.Backward(da)
-	dhs := TimeAdd(dhs0, dhs1)
+	dhs := tensor.Add(dhs0, dhs1)
 	return dhs, dh
 }

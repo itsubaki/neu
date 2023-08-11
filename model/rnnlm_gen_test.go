@@ -26,12 +26,3 @@ func ExampleRNNLMGen() {
 	// Output:
 	// [30 29 45 20 58 3 68 43 31 72]
 }
-
-func ExampleChoice_rand() {
-	p := []float64{0.1, 0.2, 0.3, 0.4}
-	if model.Choice(p) < 0 {
-		fmt.Println("invalid")
-	}
-
-	// Output:
-}

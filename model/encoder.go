@@ -6,6 +6,7 @@ import (
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/tensor"
 )
 
 type Encoder struct {
@@ -46,7 +47,7 @@ func (m *Encoder) Forward(xs []matrix.Matrix) matrix.Matrix {
 }
 
 func (m *Encoder) Backward(dh matrix.Matrix) {
-	dhs := layer.ZeroLike(m.hs)      // (Time, N, H)
+	dhs := tensor.ZeroLike(m.hs)     // (Time, N, H)
 	dhs[len(m.hs)-1] = dh            // dhs[-1, N, H] = dh[N, H]
 	dout := m.TimeLSTM.Backward(dhs) //
 	m.TimeEmbedding.Backward(dout)

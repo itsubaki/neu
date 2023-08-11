@@ -44,6 +44,16 @@ func Abs(v []float64) []float64 {
 	return out
 }
 
+func Contains(v int, s []int) bool {
+	for _, ss := range s {
+		if v == ss {
+			return true
+		}
+	}
+
+	return false
+}
+
 func Transpose[T any](v []T) [][]T {
 	out := make([][]T, len(v))
 	for i := range v {
@@ -55,6 +65,30 @@ func Transpose[T any](v []T) [][]T {
 
 func T[T any](v []T) [][]T {
 	return Transpose(v)
+}
+
+func Choice(p []float64, s ...rand.Source) int {
+	if len(s) == 0 {
+		s = append(s, rand.NewSource(time.Now().UnixNano()))
+	}
+
+	cumsum := make([]float64, len(p))
+	var sum float64
+	for i, prob := range p {
+		sum += prob
+		cumsum[i] = sum
+	}
+
+	var ret int
+	r := rand.New(s[0]).Float64()
+	for i, prop := range cumsum {
+		if r <= prop {
+			ret = i
+			break
+		}
+	}
+
+	return ret
 }
 
 // Shuffle shuffles the dataset.

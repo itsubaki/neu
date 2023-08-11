@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math/rand"
 
-	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/weight"
 )
@@ -92,109 +91,4 @@ func ExampleLoad_invalidfile() {
 
 	// Output:
 	// failed to save params
-}
-
-func ExampleConcat() {
-	hs := []matrix.Matrix{
-		{
-			{1, 2},
-			{3, 4},
-		},
-		{
-			{5, 6},
-			{7, 8},
-		},
-	}
-
-	out := []matrix.Matrix{
-		{
-			{10, 20},
-			{30, 40},
-		},
-		{
-			{50, 60},
-			{70, 80},
-		},
-	}
-
-	for _, t := range model.Concat(hs, out) {
-		fmt.Println(t)
-	}
-
-	// Output:
-	// [[1 2 10 20] [3 4 30 40]]
-	// [[5 6 50 60] [7 8 70 80]]
-}
-
-func ExampleSplit() {
-	dout := []matrix.Matrix{
-		{
-			{1, 2, 3, 4},
-			{5, 6, 7, 8},
-		},
-		{
-			{9, 10, 11, 12},
-			{13, 14, 15, 16},
-		},
-		{
-			{17, 18, 19, 20},
-			{21, 22, 23, 24},
-		},
-	}
-
-	dhs, dout := model.Split(dout, 2)
-	for _, r := range dhs {
-		fmt.Println(r)
-	}
-	for _, r := range dout {
-		fmt.Println(r)
-	}
-
-	// Output:
-	// [[1 2] [5 6]]
-	// [[9 10] [13 14]]
-	// [[17 18] [21 22]]
-	// [[3 4] [7 8]]
-	// [[11 12] [15 16]]
-	// [[19 20] [23 24]]
-
-}
-
-func ExampleChoice() {
-	s := rand.NewSource(1)
-	p := []float64{0.1, 0.2, 0.3, 0.4}
-
-	for i := 0; i < 10; i++ {
-		fmt.Print(model.Choice(p, s))
-	}
-
-	// Output:
-	// 3332230102
-}
-
-func ExampleContains() {
-	fmt.Println(model.Contains(3, []int{1, 2, 3}))
-	fmt.Println(model.Contains(0, []int{1, 2, 3}))
-
-	// Output:
-	// true
-	// false
-}
-
-func ExampleFlatten() {
-	xs := []matrix.Matrix{
-		{
-			{0, 1, 2},
-			{0, 1, 2},
-		},
-		{
-			{3, 4, 5},
-			{3, 4, 5},
-		},
-	}
-
-	fmt.Println(model.Flatten(xs))
-
-	// Output:
-	// [0 1 2 0 1 2 3 4 5 3 4 5]
 }

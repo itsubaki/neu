@@ -19,15 +19,14 @@ func (l *SoftmaxWithLoss) SetParams(p ...matrix.Matrix) {}
 func (l *SoftmaxWithLoss) String() string               { return fmt.Sprintf("%T", l) }
 
 func (l *SoftmaxWithLoss) Forward(x, t matrix.Matrix, _ ...Opts) matrix.Matrix {
-	l.t = t
-	l.y = softmax(x)
+	l.y, l.t = softmax(x), t
 	loss := Loss(l.y, l.t)
 	return matrix.New([]float64{loss})
 }
 
 func (l *SoftmaxWithLoss) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	size, _ := l.t.Dimension()
-	dx := l.y.Sub(l.t).Mul(dout).MulC(1.0 / float64(size)) // (y - t) * dout / size
+	s := float64(len(l.t))
+	dx := l.y.Sub(l.t).Mul(dout).MulC(1.0 / s) // (y - t) * dout / size
 	return dx, nil
 }
 

@@ -6,6 +6,7 @@ import (
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/tensor"
 )
 
 type AttentionDecoder struct {
@@ -49,7 +50,7 @@ func (m *AttentionDecoder) Forward(xs, enchs []matrix.Matrix) []matrix.Matrix {
 	out := m.TimeEmbedding.Forward(xs, nil)
 	dechs := m.TimeLSTM.Forward(out, nil)
 	c := m.TimeAttention.Forward(enchs, dechs)
-	concat := Concat(c, dechs)
+	concat := tensor.Concat(c, dechs)
 	score := m.TimeAffine.Forward(concat, nil)
 	return score
 }
@@ -58,9 +59,9 @@ func (m *AttentionDecoder) Backward(dscore []matrix.Matrix) []matrix.Matrix {
 	dout := m.TimeAffine.Backward(dscore)
 	H := len(dout[0][0]) / 2
 
-	dc, ddechs0 := Split(dout, H)
+	dc, ddechs0 := tensor.Split(dout, H)
 	denchs, ddechs1 := m.TimeAttention.Backward(dc)
-	ddechs := layer.TimeAdd(ddechs0, ddechs1)
+	ddechs := tensor.Add(ddechs0, ddechs1)
 	ldout := m.TimeLSTM.Backward(ddechs)
 	m.TimeEmbedding.Backward(ldout)
 
@@ -79,10 +80,10 @@ func (m *AttentionDecoder) Generate(enchs []matrix.Matrix, startID, length int) 
 		out := m.TimeEmbedding.Forward(xs, nil)
 		dechs := m.TimeLSTM.Forward(out, nil)
 		c := m.TimeAttention.Forward(enchs, dechs)
-		concat := Concat(c, dechs)
+		concat := tensor.Concat(c, dechs)
 		score := m.TimeAffine.Forward(concat, nil)
 
-		x = Argmax(score)
+		x = tensor.Argmax(score)
 		sampled = append(sampled, x)
 	}
 

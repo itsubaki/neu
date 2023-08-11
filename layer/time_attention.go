@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/tensor"
 )
 
 type TimeAttention struct {
@@ -38,12 +39,12 @@ func (l *TimeAttention) Forward(hsenc, hsdec []matrix.Matrix) []matrix.Matrix {
 
 func (l *TimeAttention) Backward(dout []matrix.Matrix) ([]matrix.Matrix, []matrix.Matrix) {
 	T := len(dout)
-	dhsenc := ZeroLike(dout)
+	dhsenc := tensor.ZeroLike(dout)
 	dhsdec := make([]matrix.Matrix, T)
 
 	for t := 0; t < T; t++ {
 		dhs, dh := l.layer[t].Backward(dout[t])
-		dhsenc = TimeAdd(dhsenc, dhs)
+		dhsenc = tensor.Add(dhsenc, dhs)
 		dhsdec[t] = dh
 	}
 

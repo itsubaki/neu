@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/tensor"
 	"github.com/itsubaki/neu/math/vector"
 )
 
@@ -23,7 +24,7 @@ func (l *AttentionWeight) Forward(hs []matrix.Matrix, h matrix.Matrix) matrix.Ma
 
 	T := len(hs)                         // (T, N, H)
 	l.hs, l.hr = hs, matrix.Repeat(h, T) // (N, H) -> (T, N, H)
-	t := TimeMul(hs, l.hr)               // (T, N, H)
+	t := tensor.Mul(hs, l.hr)            // (T, N, H)
 
 	c := make(matrix.Matrix, T) // (T, N)
 	for i := 0; i < T; i++ {
@@ -38,9 +39,9 @@ func (l *AttentionWeight) Backward(da matrix.Matrix) ([]matrix.Matrix, matrix.Ma
 
 	ds, _ := l.Softmax.Backward(da) // (T, N)
 	dt := Expand(ds, T, N, H)       // (T, N, H)
-	dhs := TimeMul(dt, l.hr)        // (T, N, H)
-	dhr := TimeMul(dt, l.hs)        // (T, N, H)
-	dh := TimeSum(dhr)              // (N, H)
+	dhs := tensor.Mul(dt, l.hr)     // (T, N, H)
+	dhr := tensor.Mul(dt, l.hs)     // (T, N, H)
+	dh := tensor.Sum(dhr)           // (N, H)
 
 	return dhs, dh // (T, N, H), (N, H)
 }

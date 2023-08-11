@@ -6,6 +6,7 @@ import (
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/tensor"
 )
 
 type Decoder struct {
@@ -68,7 +69,7 @@ func (m *Decoder) Generate(h matrix.Matrix, startID, length int) []int {
 		out = m.TimeLSTM.Forward(out, nil)      // (1, 1, 128)
 		score := m.TimeAffine.Forward(out, nil) // (1, 1, 13)
 
-		x = Argmax(score) // 0~12
+		x = tensor.Argmax(score) // 0~12
 		sampled = append(sampled, x)
 	}
 

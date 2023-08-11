@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/tensor"
 )
 
 type TimeSoftmaxWithLoss struct {
@@ -20,7 +21,7 @@ func (l *TimeSoftmaxWithLoss) String() string               { return fmt.Sprintf
 
 func (l *TimeSoftmaxWithLoss) Forward(xs, ts []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 	T, V := len(xs), len(xs[0][0])
-	ots := OneHot(ts, V)
+	ots := tensor.OneHot(ts, V)
 	l.layer = make([]*SoftmaxWithLoss, T)
 	l.xs = xs
 
@@ -43,22 +44,4 @@ func (l *TimeSoftmaxWithLoss) Backward(dout []matrix.Matrix) []matrix.Matrix {
 	}
 
 	return dx
-}
-
-func OneHot(ts []matrix.Matrix, size int) []matrix.Matrix {
-	out := make([]matrix.Matrix, 0)
-	for _, t := range ts {
-		m := make(matrix.Matrix, 0)
-		for _, r := range t {
-			for _, v := range r {
-				onehot := make([]float64, size)
-				onehot[int(v)] = 1
-				m = append(m, onehot)
-			}
-		}
-
-		out = append(out, m)
-	}
-
-	return out
 }

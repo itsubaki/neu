@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/tensor"
 	"github.com/itsubaki/neu/math/vector"
 )
 
@@ -24,14 +25,14 @@ func (l *WeightSum) Forward(hs []matrix.Matrix, a matrix.Matrix) matrix.Matrix {
 	}
 	l.hs, l.ar = hs, ar // (T, N, H) (T, N, H)
 
-	return TimeSum(TimeMul(hs, ar)) // (T, N, H) -> (N, H)
+	return tensor.Sum(tensor.Mul(hs, ar)) // (T, N, H) -> (N, H)
 }
 
 func (l *WeightSum) Backward(dc matrix.Matrix) ([]matrix.Matrix, matrix.Matrix) {
 	T := len(l.hs)
-	dt := matrix.Repeat(dc, T) // (N, H) -> (T, N, H)
-	dar := TimeMul(dt, l.hs)   // (T, N, H)
-	dhs := TimeMul(dt, l.ar)   // (T, N, H)
+	dt := matrix.Repeat(dc, T)  // (N, H) -> (T, N, H)
+	dar := tensor.Mul(dt, l.hs) // (T, N, H)
+	dhs := tensor.Mul(dt, l.ar) // (T, N, H)
 
 	da := make(matrix.Matrix, T)
 	for i := 0; i < T; i++ {

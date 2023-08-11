@@ -41,6 +41,15 @@ func ExampleAbs() {
 	// [1 2 3]
 }
 
+func ExampleContains() {
+	fmt.Println(vector.Contains(3, []int{1, 2, 3}))
+	fmt.Println(vector.Contains(0, []int{1, 2, 3}))
+
+	// Output:
+	// true
+	// false
+}
+
 func ExampleTranspose() {
 	fmt.Println(vector.Transpose([]int{1, 2, 3}))
 	fmt.Println(vector.T([]int{1, 2, 3}))
@@ -48,6 +57,27 @@ func ExampleTranspose() {
 	// Output:
 	// [[1] [2] [3]]
 	// [[1] [2] [3]]
+}
+
+func ExampleChoice() {
+	s := rand.NewSource(1)
+	p := []float64{0.1, 0.2, 0.3, 0.4}
+
+	for i := 0; i < 10; i++ {
+		fmt.Print(vector.Choice(p, s))
+	}
+
+	// Output:
+	// 3332230102
+}
+
+func ExampleChoice_rand() {
+	p := []float64{0.1, 0.2, 0.3, 0.4}
+	if vector.Choice(p) < 0 {
+		fmt.Println("invalid")
+	}
+
+	// Output:
 }
 
 func ExampleShuffle() {

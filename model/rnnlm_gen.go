@@ -5,6 +5,8 @@ import (
 
 	"github.com/itsubaki/neu/activation"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/tensor"
+	"github.com/itsubaki/neu/math/vector"
 )
 
 type RNNLMGen struct {
@@ -28,12 +30,12 @@ func (g *RNNLMGen) Generate(startID int, skipIDs []int, length int) []int {
 
 		// predict
 		xs := []matrix.Matrix{matrix.New([]float64{float64(x)})}
-		score := Flatten(g.Predict(xs))
+		score := tensor.Flatten(g.Predict(xs))
 		p := activation.Softmax(score)
 
 		// sample
-		sampled := Choice(p, g.Source)
-		if Contains(sampled, skipIDs) {
+		sampled := vector.Choice(p, g.Source)
+		if vector.Contains(sampled, skipIDs) {
 			continue
 		}
 		wordIDs = append(wordIDs, sampled)
