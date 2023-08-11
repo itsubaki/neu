@@ -19,13 +19,12 @@ func ExampleAdam() {
 			LearningRate: lr,
 			Beta1:        0.9,
 			Beta2:        0.999,
-			Hooks:        []optimizer.Hook{hook.WeightDecay(0.0)},
 		}
 		fmt.Println(opt.Update(m)[0][0])
 	}
 	fmt.Println()
 
-	opt := optimizer.Adam{LearningRate: 0.5, Beta1: 0.9, Beta2: 0.999}
+	opt := optimizer.Adam{LearningRate: 0.5, Beta1: 0.9, Beta2: 0.999, Hooks: []optimizer.Hook{hook.WeightDecay(0.0)}}
 	fmt.Println(opt.Update(m)[0][0])
 	fmt.Println(opt.Update(m)[0][0])
 	fmt.Println(opt.Update(m)[0][0])
