@@ -198,3 +198,11 @@ func ExampleFlatten() {
 	// Output:
 	// [0 1 2 0 1 2 3 4 5 3 4 5]
 }
+
+func ExampleArgmax() {
+	xs := []matrix.Matrix{{{0, 1, 2}, {0, 1, 2}}, {{3, 10, 5}, {3, 4, 5}}}
+	fmt.Println(tensor.Argmax(xs))
+
+	// Output:
+	// 7
+}

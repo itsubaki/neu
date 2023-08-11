@@ -109,8 +109,8 @@ func Flatten(m []matrix.Matrix) []float64 {
 }
 
 func Argmax(score []matrix.Matrix) int {
-	var arg int
 	max := math.SmallestNonzeroFloat64
+	var arg int
 	for i, v := range Flatten(score) {
 		if v > max {
 			max = v

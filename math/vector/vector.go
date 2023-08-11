@@ -44,29 +44,6 @@ func Abs(v []float64) []float64 {
 	return out
 }
 
-func Contains(v int, s []int) bool {
-	for _, ss := range s {
-		if v == ss {
-			return true
-		}
-	}
-
-	return false
-}
-
-func Transpose[T any](v []T) [][]T {
-	out := make([][]T, len(v))
-	for i := range v {
-		out[i] = []T{v[i]}
-	}
-
-	return out
-}
-
-func T[T any](v []T) [][]T {
-	return Transpose(v)
-}
-
 func Choice(p []float64, s ...rand.Source) int {
 	if len(s) == 0 {
 		s = append(s, rand.NewSource(time.Now().UnixNano()))
@@ -89,6 +66,29 @@ func Choice(p []float64, s ...rand.Source) int {
 	}
 
 	return ret
+}
+
+func Contains[T comparable](v T, s []T) bool {
+	for _, ss := range s {
+		if v == ss {
+			return true
+		}
+	}
+
+	return false
+}
+
+func Transpose[T any](v []T) [][]T {
+	out := make([][]T, len(v))
+	for i := range v {
+		out[i] = []T{v[i]}
+	}
+
+	return out
+}
+
+func T[T any](v []T) [][]T {
+	return Transpose(v)
 }
 
 // Shuffle shuffles the dataset.
