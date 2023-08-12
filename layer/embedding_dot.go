@@ -8,8 +8,7 @@ import (
 
 type EmbeddingDot struct {
 	Embedding Embedding
-	H         matrix.Matrix
-	W         matrix.Matrix
+	H, W      matrix.Matrix
 }
 
 func (l *EmbeddingDot) Params() []matrix.Matrix      { return []matrix.Matrix{l.Embedding.W} }

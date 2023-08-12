@@ -8,8 +8,8 @@ import (
 )
 
 type TimeSoftmaxWithLoss struct {
-	layer []*SoftmaxWithLoss
 	xs    []matrix.Matrix
+	layer []*SoftmaxWithLoss
 }
 
 func (l *TimeSoftmaxWithLoss) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }

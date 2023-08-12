@@ -8,8 +8,7 @@ import (
 
 // Mul is a layer that performs an element-wise multiplication.
 type Mul struct {
-	x matrix.Matrix
-	y matrix.Matrix
+	x, y matrix.Matrix
 }
 
 func (l *Mul) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }

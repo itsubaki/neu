@@ -9,8 +9,7 @@ import (
 
 // SoftmaxWithLoss is a layer that performs a softmax and a cross-entropy loss.
 type SoftmaxWithLoss struct {
-	t matrix.Matrix
-	y matrix.Matrix
+	y, t matrix.Matrix
 }
 
 func (l *SoftmaxWithLoss) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
