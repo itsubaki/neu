@@ -343,7 +343,6 @@ func (m Matrix) Broadcast(a, b int) Matrix {
 
 	if len(m[0]) == 1 {
 		// a is ignored
-
 		out := make(Matrix, len(m))
 		for i := 0; i < len(m); i++ {
 			out[i] = make([]float64, b)
