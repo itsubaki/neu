@@ -92,7 +92,7 @@ func Mask(m Matrix, f func(x float64) bool) Matrix {
 	return out
 }
 
-func From[T int | int32 | int64](x [][]T) Matrix {
+func From[T int ](x [][]T) Matrix {
 	out := make([][]float64, len(x))
 	for i, r := range x {
 		out[i] = make([]float64, len(r))
