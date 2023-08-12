@@ -60,12 +60,14 @@ go run cmd/seq2seq/main.go --dir ./testdata
 
 ```shell
 *model.PeekySeq2Seq
- 0: *layer.TimeEmbedding: W(13, 64): 832
- 1: *layer.TimeLSTM: Wx(64, 512), Wh(128, 512), B(1, 512): 98816
- 2: *layer.TimeEmbedding: W(13, 64): 832
- 3: *layer.TimeLSTM: Wx(192, 512), Wh(128, 512), B(1, 512): 164352
- 4: *layer.TimeAffine: W(256, 13), B(1, 13): 3341
- 5: *layer.TimeSoftmaxWithLoss
+ 0: *model.Encoder
+ 1: *layer.TimeEmbedding: W(13, 64): 832
+ 2: *layer.TimeLSTM: Wx(64, 512), Wh(128, 512), B(1, 512): 98816
+ 3: *model.PeekyDecoder
+ 4: *layer.TimeEmbedding: W(13, 64): 832
+ 5: *layer.TimeLSTM: Wx(192, 512), Wh(128, 512), B(1, 512): 164352
+ 6: *layer.TimeAffine: W(256, 13), B(1, 13): 3341
+ 7: *layer.TimeSoftmaxWithLoss
 
 ...
 [9 0 + 4 0 8  ] [_ 4 9 8  ]; [2 9 8  ] ([6 9 10 5])
