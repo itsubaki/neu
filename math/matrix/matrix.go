@@ -92,6 +92,18 @@ func Mask(m Matrix, f func(x float64) bool) Matrix {
 	return out
 }
 
+func From[T int | int32 | int64](x [][]T) Matrix {
+	out := make([][]float64, len(x))
+	for i, r := range x {
+		out[i] = make([]float64, len(r))
+		for j, v := range r {
+			out[i][j] = float64(v)
+		}
+	}
+
+	return out
+}
+
 // Batch returns a matrix with rows of the specified index.
 func Batch(m Matrix, index []int) Matrix {
 	out := make(Matrix, len(index))

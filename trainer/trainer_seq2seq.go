@@ -52,7 +52,7 @@ func (tr *Seq2SeqTrainer) Fit(in *Seq2SeqInput, s ...rand.Source) {
 	var count int
 	for i := 0; i < in.Epochs; i++ {
 		xt, tt := vector.Shuffle(in.Train, in.TrainLabel, s[0]) // (45000, 7), (45000, 5)
-		xs, ts := Float64(xt), Float64(tt)                      // (45000, 7), (45000, 5)
+		xs, ts := matrix.From(xt), matrix.From(tt)              // (45000, 7), (45000, 5)
 
 		for j := 0; j < len(in.Train)/in.BatchSize; j++ {
 			// batch
@@ -83,18 +83,6 @@ func Time(xs matrix.Matrix) []matrix.Matrix {
 		out[i] = matrix.New()
 		for j := 0; j < len(xs); j++ {
 			out[i] = append(out[i], []float64{xs[j][i]})
-		}
-	}
-
-	return out
-}
-
-func Float64(x [][]int) [][]float64 {
-	out := make([][]float64, len(x))
-	for i, r := range x {
-		out[i] = make([]float64, len(r))
-		for j, v := range r {
-			out[i][j] = float64(v)
 		}
 	}
 
