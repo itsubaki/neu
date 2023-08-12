@@ -57,7 +57,7 @@ func (l *LSTM) Forward(x, h, c matrix.Matrix, _ ...Opts) (matrix.Matrix, matrix.
 func (l *LSTM) Backward(dhNext, dcNext matrix.Matrix) (matrix.Matrix, matrix.Matrix, matrix.Matrix) {
 	tanhcNext := matrix.F(l.cNext, activation.Tanh) // tanh(cNext)
 	dt := matrix.F(tanhcNext, subpow2)              // 1 - tanh(cNext)**2
-	ds := dcNext.Add(dhNext.Mul(l.o).Mul(dt))       // dhNext + (dhNext * o) * (1 - tanh(cNext)**2)
+	ds := dcNext.Add(dhNext.Mul(l.o).Mul(dt))       // dcNext + (dhNext * o) * (1 - tanh(cNext)**2)
 
 	df := ds.Mul(l.c)           // ds * cPrev
 	dg := ds.Mul(l.i)           // ds * i
