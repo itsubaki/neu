@@ -51,7 +51,7 @@ jobs:
 
       - name: RNNLM(LSTM)
         run: |
-          make lstm10
+          make rnnlm_lstm10
 
       - name: RNNLMGen(LSTM)
         run: |

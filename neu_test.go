@@ -17,7 +17,7 @@ import (
 	"github.com/itsubaki/neu/weight"
 )
 
-func Example_rNNLM() {
+func Example_rnnlm() {
 	train := ptb.Must(ptb.Load("./testdata", ptb.TrainTxt))
 	corpusSize := 1000
 	corpus := train.Corpus[:corpusSize]
@@ -142,7 +142,7 @@ func Example_mnist() {
 
 }
 
-func Example_simpleNet() {
+func Example_simplenet() {
 	// https://github.com/oreilly-japan/deep-learning-from-scratch/wiki/errata#%E7%AC%AC7%E5%88%B7%E3%81%BE%E3%81%A7
 
 	// weight
@@ -193,7 +193,7 @@ func Example_simpleNet() {
 
 }
 
-func Example_neuralNet() {
+func Example_neuralnet() {
 	// weight
 	W1 := matrix.New([]float64{0.1, 0.3, 0.5}, []float64{0.2, 0.4, 0.6})
 	B1 := matrix.New([]float64{0.1, 0.2, 0.3})

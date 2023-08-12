@@ -18,12 +18,6 @@ func ExampleDecoder() {
 		WeightInit:  weight.Xavier,
 	}, s)
 
-	fmt.Printf("%T\n", m)
-	for i, l := range m.Layers() {
-		fmt.Printf("%2d: %v\n", i, l)
-	}
-	fmt.Println()
-
 	// forward
 	xs := []matrix.Matrix{
 		// (T, N, 1) = (2, 3, 1)
@@ -57,11 +51,6 @@ func ExampleDecoder() {
 	fmt.Println(sampeld)
 
 	// Output:
-	// *model.Decoder
-	//  0: *layer.TimeEmbedding: W(3, 3): 9
-	//  1: *layer.TimeLSTM: Wx(3, 12), Wh(3, 12), B(1, 12): 84
-	//  2: *layer.TimeAffine: W(3, 3), B(1, 3): 12
-	//
 	// 2
 	// 3 3
 	// 3 3
@@ -70,15 +59,45 @@ func ExampleDecoder() {
 
 }
 
-func ExampleDecoder_rand() {
-	model.NewDecoder(&model.RNNLMConfig{
+func ExampleDecoder_Summary() {
+	m := model.NewDecoder(&model.RNNLMConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
 		HiddenSize:  3, // H
 		WeightInit:  weight.Xavier,
 	})
 
+	fmt.Println(m.Summary()[0])
+	for i, s := range m.Summary()[1:] {
+		fmt.Printf("%2d: %v\n", i, s)
+	}
+
 	// Output:
+	// *model.Decoder
+	//  0: *layer.TimeEmbedding: W(3, 3): 9
+	//  1: *layer.TimeLSTM: Wx(3, 12), Wh(3, 12), B(1, 12): 84
+	//  2: *layer.TimeAffine: W(3, 3), B(1, 3): 12
+}
+
+func ExampleDecoder_Layers() {
+	m := model.NewDecoder(&model.RNNLMConfig{
+		VocabSize:   3, // V
+		WordVecSize: 3, // D
+		HiddenSize:  3, // H
+		WeightInit:  weight.Xavier,
+	})
+
+	fmt.Printf("%T\n", m)
+	for i, l := range m.Layers() {
+		fmt.Printf("%2d: %v\n", i, l)
+	}
+	fmt.Println()
+
+	// Output:
+	// *model.Decoder
+	//  0: *layer.TimeEmbedding: W(3, 3): 9
+	//  1: *layer.TimeLSTM: Wx(3, 12), Wh(3, 12), B(1, 12): 84
+	//  2: *layer.TimeAffine: W(3, 3), B(1, 3): 12
 }
 
 func ExampleDecoder_Params() {

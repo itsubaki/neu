@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -21,6 +22,7 @@ type Decode interface {
 	Params() []matrix.Matrix
 	Grads() []matrix.Matrix
 	SetParams(p ...matrix.Matrix)
+	Summary() []string
 }
 
 type Seq2Seq struct {
@@ -65,6 +67,14 @@ func (m *Seq2Seq) Generate(xs []matrix.Matrix, startID, length int) []int {
 	h := m.Encoder.Forward(xs)                        // xs(7, 1, 1), h(1, 128)
 	sampeld := m.Decoder.Generate(h, startID, length) //
 	return sampeld
+}
+
+func (m *Seq2Seq) Summary() []string {
+	s := []string{fmt.Sprintf("%T", m)}
+	s = append(s, m.Encoder.Summary()...)
+	s = append(s, m.Decoder.Summary()...)
+	s = append(s, m.Softmax.String())
+	return s
 }
 
 func (m *Seq2Seq) Layers() []TimeLayer {

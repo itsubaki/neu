@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -88,6 +89,16 @@ func (m *AttentionDecoder) Generate(enchs []matrix.Matrix, startID, length int) 
 	}
 
 	return sampled
+}
+
+func (m *AttentionDecoder) Summary() []string {
+	return []string{
+		fmt.Sprintf("%T", m),
+		m.TimeEmbedding.String(),
+		m.TimeLSTM.String(),
+		m.TimeAttention.String(),
+		m.TimeAffine.String(),
+	}
 }
 
 func (m *AttentionDecoder) Layers() []TimeLayer {

@@ -36,10 +36,10 @@ func main() {
 		WeightInit:  weight.Xavier,
 	})
 
-	// layer
-	fmt.Printf("%T\n", m)
-	for i, l := range m.Layers() {
-		fmt.Printf("%2d: %v\n", i, l)
+	// summary
+	fmt.Println(m.Summary()[0])
+	for i, s := range m.Summary()[1:] {
+		fmt.Printf("%2d: %v\n", i, s)
 	}
 	fmt.Println()
 

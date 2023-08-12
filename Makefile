@@ -20,7 +20,7 @@ cbow:
 rnnlm10:
 	go run cmd/rnnlm/main.go --dir ./testdata --epochs 10
 
-lstm10:
+rnnlm_lstm10:
 	go run cmd/rnnlm_lstm/main.go --dir ./testdata --epochs 10
 
 rnnlmgen0:

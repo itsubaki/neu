@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -51,6 +52,14 @@ func (m *Encoder) Backward(dh matrix.Matrix) {
 	dhs[len(m.hs)-1] = dh            // dhs[-1, N, H] = dh[N, H]
 	dout := m.TimeLSTM.Backward(dhs) //
 	m.TimeEmbedding.Backward(dout)
+}
+
+func (m *Encoder) Summary() []string {
+	return []string{
+		fmt.Sprintf("%T", m),
+		m.TimeEmbedding.String(),
+		m.TimeLSTM.String(),
+	}
 }
 
 func (m *Encoder) Layers() []TimeLayer {

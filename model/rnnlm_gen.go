@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"math/rand"
 
 	"github.com/itsubaki/neu/activation"
@@ -45,4 +46,13 @@ func (g *RNNLMGen) Generate(startID int, skipIDs []int, length int) []int {
 	}
 
 	return wordIDs
+}
+
+func (m *RNNLMGen) Summary() []string {
+	s := []string{fmt.Sprintf("%T", m)}
+	for _, l := range m.Layers() {
+		s = append(s, l.String())
+	}
+
+	return s
 }

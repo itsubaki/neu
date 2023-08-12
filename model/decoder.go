@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -74,6 +75,15 @@ func (m *Decoder) Generate(h matrix.Matrix, startID, length int) []int {
 	}
 
 	return sampled
+}
+
+func (m *Decoder) Summary() []string {
+	return []string{
+		fmt.Sprintf("%T", m),
+		m.TimeEmbedding.String(),
+		m.TimeLSTM.String(),
+		m.TimeAffine.String(),
+	}
 }
 
 func (m *Decoder) Layers() []TimeLayer {

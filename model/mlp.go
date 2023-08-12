@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -65,4 +66,13 @@ func NewMLP(c *MLPConfig, s ...rand.Source) *MLP {
 			Source: s[0],
 		},
 	}
+}
+
+func (m *MLP) Summary() []string {
+	s := []string{fmt.Sprintf("%T", m)}
+	for _, l := range m.Layers() {
+		s = append(s, l.String())
+	}
+
+	return s
 }

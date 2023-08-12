@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -85,4 +86,13 @@ func (m *PeekyDecoder) Generate(h matrix.Matrix, startID, length int) []int {
 	}
 
 	return sampled
+}
+
+func (m *PeekyDecoder) Summary() []string {
+	return []string{
+		fmt.Sprintf("%T", m),
+		m.TimeEmbedding.String(),
+		m.TimeLSTM.String(),
+		m.TimeAffine.String(),
+	}
 }

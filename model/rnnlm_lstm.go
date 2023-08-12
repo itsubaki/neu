@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -64,4 +65,13 @@ func NewLSTMLM(c *LSTMLMConfig, s ...rand.Source) *LSTMLM {
 			Source: s[0],
 		},
 	}
+}
+
+func (m *LSTMLM) Summary() []string {
+	s := []string{fmt.Sprintf("%T", m)}
+	for _, l := range m.Layers() {
+		s = append(s, l.String())
+	}
+
+	return s
 }

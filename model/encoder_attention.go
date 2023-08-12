@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"math/rand"
 
 	"github.com/itsubaki/neu/math/matrix"
@@ -25,4 +26,12 @@ func (m *AttentionEncoder) Forward(xs []matrix.Matrix) []matrix.Matrix {
 func (m *AttentionEncoder) Backward(dhs []matrix.Matrix) {
 	dout := m.TimeLSTM.Backward(dhs)
 	m.TimeEmbedding.Backward(dout)
+}
+
+func (m *AttentionEncoder) Summary() []string {
+	return []string{
+		fmt.Sprintf("%T", m),
+		m.TimeEmbedding.String(),
+		m.TimeLSTM.String(),
+	}
 }

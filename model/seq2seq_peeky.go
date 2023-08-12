@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -24,4 +25,12 @@ func NewPeekySeq2Seq(c *RNNLMConfig, s ...rand.Source) *PeekySeq2Seq {
 			Source:  s[0],
 		},
 	}
+}
+
+func (m *PeekySeq2Seq) Summary() []string {
+	s := []string{fmt.Sprintf("%T", m)}
+	s = append(s, m.Encoder.Summary()...)
+	s = append(s, m.Decoder.Summary()...)
+	s = append(s, m.Softmax.String())
+	return s
 }

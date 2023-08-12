@@ -54,6 +54,63 @@ func ExampleLSTMLM() {
 
 }
 
+func ExampleLSTMLM_Summary() {
+	m := model.NewLSTMLM(&model.LSTMLMConfig{
+		RNNLMConfig: model.RNNLMConfig{
+			VocabSize:   3,
+			WordVecSize: 3,
+			HiddenSize:  3,
+			WeightInit:  weight.Xavier,
+		},
+		DropoutRatio: 0.5,
+	})
+
+	fmt.Println(m.Summary()[0])
+	for i, s := range m.Summary()[1:] {
+		fmt.Printf("%2d: %v\n", i, s)
+	}
+
+	// Output:
+	// *model.LSTMLM
+	//  0: *layer.TimeEmbedding: W(3, 3): 9
+	//  1: *layer.TimeDropout: Ratio(0.5)
+	//  2: *layer.TimeLSTM: Wx(3, 12), Wh(3, 12), B(1, 12): 84
+	//  3: *layer.TimeDropout: Ratio(0.5)
+	//  4: *layer.TimeLSTM: Wx(3, 12), Wh(3, 12), B(1, 12): 84
+	//  5: *layer.TimeDropout: Ratio(0.5)
+	//  6: *layer.TimeAffine: W(3, 3), B(1, 3): 12
+	//  7: *layer.TimeSoftmaxWithLoss
+}
+
+func ExampleLSTMLM_Layers() {
+	m := model.NewLSTMLM(&model.LSTMLMConfig{
+		RNNLMConfig: model.RNNLMConfig{
+			VocabSize:   3,
+			WordVecSize: 3,
+			HiddenSize:  3,
+			WeightInit:  weight.Xavier,
+		},
+		DropoutRatio: 0.5,
+	})
+
+	fmt.Printf("%T\n", m)
+	for i, l := range m.Layers() {
+		fmt.Printf("%2d: %v\n", i, l)
+	}
+	fmt.Println()
+
+	// Output:
+	// *model.LSTMLM
+	//  0: *layer.TimeEmbedding: W(3, 3): 9
+	//  1: *layer.TimeDropout: Ratio(0.5)
+	//  2: *layer.TimeLSTM: Wx(3, 12), Wh(3, 12), B(1, 12): 84
+	//  3: *layer.TimeDropout: Ratio(0.5)
+	//  4: *layer.TimeLSTM: Wx(3, 12), Wh(3, 12), B(1, 12): 84
+	//  5: *layer.TimeDropout: Ratio(0.5)
+	//  6: *layer.TimeAffine: W(3, 3), B(1, 3): 12
+	//  7: *layer.TimeSoftmaxWithLoss
+}
+
 func ExampleLSTMLM_Params() {
 	s := rand.NewSource(1)
 	m := model.NewLSTMLM(&model.LSTMLMConfig{
@@ -129,33 +186,4 @@ func ExampleLSTMLM_ResetState() {
 	m.ResetState()
 
 	// Output:
-}
-
-func ExampleLSTMLM_rand() {
-	m := model.NewLSTMLM(&model.LSTMLMConfig{
-		RNNLMConfig: model.RNNLMConfig{
-			VocabSize:   3,
-			WordVecSize: 3,
-			HiddenSize:  3,
-			WeightInit:  weight.Xavier,
-		},
-		DropoutRatio: 0.5,
-	})
-
-	fmt.Printf("%T\n", m)
-	for i, l := range m.Layers() {
-		fmt.Printf("%2d: %v\n", i, l)
-	}
-	fmt.Println()
-
-	// Output:
-	// *model.LSTMLM
-	//  0: *layer.TimeEmbedding: W(3, 3): 9
-	//  1: *layer.TimeDropout: Ratio(0.5)
-	//  2: *layer.TimeLSTM: Wx(3, 12), Wh(3, 12), B(1, 12): 84
-	//  3: *layer.TimeDropout: Ratio(0.5)
-	//  4: *layer.TimeLSTM: Wx(3, 12), Wh(3, 12), B(1, 12): 84
-	//  5: *layer.TimeDropout: Ratio(0.5)
-	//  6: *layer.TimeAffine: W(3, 3), B(1, 3): 12
-	//  7: *layer.TimeSoftmaxWithLoss
 }

@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -47,6 +48,14 @@ func (m *AttentionSeq2Seq) Generate(xs []matrix.Matrix, startID, length int) []i
 	h := m.Encoder.Forward(xs)
 	sampeld := m.Decoder.Generate(h, startID, length)
 	return sampeld
+}
+
+func (m *AttentionSeq2Seq) Summary() []string {
+	s := []string{fmt.Sprintf("%T", m)}
+	s = append(s, m.Encoder.Summary()...)
+	s = append(s, m.Decoder.Summary()...)
+	s = append(s, m.Softmax.String())
+	return s
 }
 
 func (m *AttentionSeq2Seq) Layers() []TimeLayer {

@@ -18,12 +18,6 @@ func ExamplePeekyDecoder() {
 		WeightInit:  weight.Xavier,
 	}, s)
 
-	fmt.Printf("%T\n", m)
-	for i, l := range m.Layers() {
-		fmt.Printf("%2d: %v\n", i, l)
-	}
-	fmt.Println()
-
 	// forward
 	xs := []matrix.Matrix{
 		// (T, N, 1) = (2, 3, 1)
@@ -57,11 +51,6 @@ func ExamplePeekyDecoder() {
 	fmt.Println(sampeld)
 
 	// Output:
-	// *model.PeekyDecoder
-	//  0: *layer.TimeEmbedding: W(3, 3): 9
-	//  1: *layer.TimeLSTM: Wx(6, 12), Wh(3, 12), B(1, 12): 120
-	//  2: *layer.TimeAffine: W(6, 3), B(1, 3): 21
-	//
 	// 2
 	// 3 3
 	// 3 3
@@ -69,13 +58,43 @@ func ExamplePeekyDecoder() {
 	// [0 0 0 0 0 0 0 0 0 0]
 }
 
-func ExamplePeekyDecoder_rand() {
-	model.NewPeekyDecoder(&model.RNNLMConfig{
+func ExamplePeekyDecoder_Summary() {
+	m := model.NewPeekyDecoder(&model.RNNLMConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
 		HiddenSize:  3, // H
 		WeightInit:  weight.Xavier,
 	})
 
+	fmt.Println(m.Summary()[0])
+	for i, s := range m.Summary()[1:] {
+		fmt.Printf("%2d: %v\n", i, s)
+	}
+
 	// Output:
+	// *model.PeekyDecoder
+	//  0: *layer.TimeEmbedding: W(3, 3): 9
+	//  1: *layer.TimeLSTM: Wx(6, 12), Wh(3, 12), B(1, 12): 120
+	//  2: *layer.TimeAffine: W(6, 3), B(1, 3): 21
+}
+
+func ExamplePeekyDecoder_Layers() {
+	m := model.NewPeekyDecoder(&model.RNNLMConfig{
+		VocabSize:   3, // V
+		WordVecSize: 3, // D
+		HiddenSize:  3, // H
+		WeightInit:  weight.Xavier,
+	})
+
+	fmt.Printf("%T\n", m)
+	for i, l := range m.Layers() {
+		fmt.Printf("%2d: %v\n", i, l)
+	}
+	fmt.Println()
+
+	// Output:
+	// *model.PeekyDecoder
+	//  0: *layer.TimeEmbedding: W(3, 3): 9
+	//  1: *layer.TimeLSTM: Wx(6, 12), Wh(3, 12), B(1, 12): 120
+	//  2: *layer.TimeAffine: W(6, 3), B(1, 3): 21
 }

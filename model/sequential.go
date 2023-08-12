@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"math/rand"
 
 	"github.com/itsubaki/neu/layer"
@@ -40,6 +41,15 @@ func (m *Sequential) Backward() matrix.Matrix {
 	}
 
 	return dout
+}
+
+func (m *Sequential) Summary() []string {
+	s := []string{fmt.Sprintf("%T", m)}
+	for _, l := range m.Layers() {
+		s = append(s, l.String())
+	}
+
+	return s
 }
 
 func (m *Sequential) Layers() []Layer {

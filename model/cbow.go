@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -63,6 +64,16 @@ func (m *CBOW) Backward() {
 	da = da.MulC(0.5)
 	m.Win1.Backward(da)
 	m.Win0.Backward(da)
+}
+
+func (m *CBOW) Summary() []string {
+	return []string{
+		fmt.Sprintf("%T", m),
+		m.Win0.String(),
+		m.Win1.String(),
+		m.Wout.String(),
+		m.Loss.String(),
+	}
 }
 
 func (m *CBOW) Layers() []Layer {

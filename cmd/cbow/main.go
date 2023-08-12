@@ -21,6 +21,7 @@ func main() {
 	fmt.Println(corpus)
 	fmt.Println(w2id)
 	fmt.Println(id2w)
+	fmt.Println()
 
 	contexts := []matrix.Matrix{
 		{
@@ -64,6 +65,13 @@ func main() {
 		VocabSize:  len(w2id),
 		HiddenSize: 5,
 	})
+
+	fmt.Println(m.Summary()[0])
+	for i, s := range m.Summary()[1:] {
+		fmt.Printf("%2d: %v\n", i, s)
+	}
+	fmt.Println()
+
 	o := &optimizer.Adam{
 		LearningRate: 0.001,
 		Beta1:        0.9,

@@ -18,12 +18,6 @@ func ExampleEncoder() {
 		WeightInit:  weight.Xavier,
 	}, s)
 
-	fmt.Printf("%T\n", m)
-	for i, l := range m.Layers() {
-		fmt.Printf("%2d: %v\n", i, l)
-	}
-	fmt.Println()
-
 	// forward
 	xs := []matrix.Matrix{
 		// (T, N, 1) = (2, 3, 1)
@@ -45,22 +39,46 @@ func ExampleEncoder() {
 	m.Backward(dh)
 
 	// Output:
-	// *model.Encoder
-	//  0: *layer.TimeEmbedding: W(3, 3): 9
-	//  1: *layer.TimeLSTM: Wx(3, 12), Wh(3, 12), B(1, 12): 84
-	//
 	// 3 3
 }
 
-func ExampleEncoder_rand() {
-	model.NewEncoder(&model.RNNLMConfig{
+func ExampleEncoder_Summary() {
+	m := model.NewEncoder(&model.RNNLMConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
 		HiddenSize:  3, // H
 		WeightInit:  weight.Xavier,
 	})
 
+	fmt.Println(m.Summary()[0])
+	for i, s := range m.Summary()[1:] {
+		fmt.Printf("%2d: %v\n", i, s)
+	}
+
 	// Output:
+	// *model.Encoder
+	//  0: *layer.TimeEmbedding: W(3, 3): 9
+	//  1: *layer.TimeLSTM: Wx(3, 12), Wh(3, 12), B(1, 12): 84
+}
+
+func ExampleEncoder_Layers() {
+	m := model.NewEncoder(&model.RNNLMConfig{
+		VocabSize:   3, // V
+		WordVecSize: 3, // D
+		HiddenSize:  3, // H
+		WeightInit:  weight.Xavier,
+	})
+
+	fmt.Printf("%T\n", m)
+	for i, l := range m.Layers() {
+		fmt.Printf("%2d: %v\n", i, l)
+	}
+	fmt.Println()
+
+	// Output:
+	// *model.Encoder
+	//  0: *layer.TimeEmbedding: W(3, 3): 9
+	//  1: *layer.TimeLSTM: Wx(3, 12), Wh(3, 12), B(1, 12): 84
 }
 
 func ExampleEncoder_Params() {

@@ -47,6 +47,49 @@ func ExampleRNNLM() {
 
 }
 
+func ExampleRNNLM_Summary() {
+	m := model.NewRNNLM(&model.RNNLMConfig{
+		VocabSize:   3,
+		WordVecSize: 3,
+		HiddenSize:  3,
+		WeightInit:  weight.Xavier,
+	})
+
+	fmt.Println(m.Summary()[0])
+	for i, s := range m.Summary()[1:] {
+		fmt.Printf("%2d: %v\n", i, s)
+	}
+
+	// Output:
+	// *model.RNNLM
+	//  0: *layer.TimeEmbedding: W(3, 3): 9
+	//  1: *layer.TimeRNN: Wx(3, 3), Wh(3, 3), B(1, 3): 21
+	//  2: *layer.TimeAffine: W(3, 3), B(1, 3): 12
+	//  3: *layer.TimeSoftmaxWithLoss
+}
+
+func ExampleRNNLM_Layers() {
+	m := model.NewRNNLM(&model.RNNLMConfig{
+		VocabSize:   3,
+		WordVecSize: 3,
+		HiddenSize:  3,
+		WeightInit:  weight.Xavier,
+	})
+
+	fmt.Printf("%T\n", m)
+	for i, l := range m.Layers() {
+		fmt.Printf("%2d: %v\n", i, l)
+	}
+	fmt.Println()
+
+	// Output:
+	// *model.RNNLM
+	//  0: *layer.TimeEmbedding: W(3, 3): 9
+	//  1: *layer.TimeRNN: Wx(3, 3), Wh(3, 3), B(1, 3): 21
+	//  2: *layer.TimeAffine: W(3, 3), B(1, 3): 12
+	//  3: *layer.TimeSoftmaxWithLoss
+}
+
 func ExampleRNNLM_Params() {
 	s := rand.NewSource(1)
 	m := model.NewRNNLM(&model.RNNLMConfig{
@@ -104,26 +147,4 @@ func ExampleRNNLM_ResetState() {
 	m.ResetState()
 
 	// Output:
-}
-
-func ExampleRNNLM_rand() {
-	m := model.NewRNNLM(&model.RNNLMConfig{
-		VocabSize:   3,
-		WordVecSize: 3,
-		HiddenSize:  3,
-		WeightInit:  weight.Xavier,
-	})
-
-	fmt.Printf("%T\n", m)
-	for i, l := range m.Layers() {
-		fmt.Printf("%2d: %v\n", i, l)
-	}
-	fmt.Println()
-
-	// Output:
-	// *model.RNNLM
-	//  0: *layer.TimeEmbedding: W(3, 3): 9
-	//  1: *layer.TimeRNN: Wx(3, 3), Wh(3, 3), B(1, 3): 21
-	//  2: *layer.TimeAffine: W(3, 3), B(1, 3): 12
-	//  3: *layer.TimeSoftmaxWithLoss
 }

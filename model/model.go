@@ -59,6 +59,7 @@ type Layer interface {
 	Params() []matrix.Matrix
 	Grads() []matrix.Matrix
 	SetParams(p ...matrix.Matrix)
+	String() string
 }
 
 // TimeLayer is an interface that represents a time layer.
@@ -70,6 +71,7 @@ type TimeLayer interface {
 	SetParams(p ...matrix.Matrix)
 	SetState(h ...matrix.Matrix)
 	ResetState()
+	String() string
 }
 
 // AttentionLayer is an interface that represents an attention layer.
@@ -79,6 +81,7 @@ type AttentionLayer interface {
 	Params() []matrix.Matrix
 	Grads() []matrix.Matrix
 	SetParams(p ...matrix.Matrix)
+	String() string
 }
 
 // Save saves the params to a file.
