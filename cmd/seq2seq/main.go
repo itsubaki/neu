@@ -85,7 +85,7 @@ func generate(x, t [][]int, m trainer.Seq2Seq, v *sequence.Vocab, top int) float
 		guess := m.Generate(tq, correct[0], len(correct[1:])) //
 
 		acc += trainer.SeqAccuracy(correct[1:], guess)
-		fmt.Printf("%v %v; %v (%v)\n", v.ToString(xs[k]), v.ToString(correct), v.ToString(guess), guess)
+		fmt.Printf("%v %v; %v\n", v.ToString(xs[k]), v.ToString(correct), v.ToString(guess))
 	}
 
 	return float64(acc) / float64(top)
