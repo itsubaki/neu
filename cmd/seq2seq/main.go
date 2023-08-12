@@ -55,6 +55,7 @@ func main() {
 
 	now := time.Now()
 	xt, tt := x.Train[:dataSize], t.Train[:dataSize]
+	xv, tv := x.Test[:dataSize], t.Test[:dataSize]
 	tr.Fit(&trainer.Seq2SeqInput{
 		Train:      xt,
 		TrainLabel: tt,
@@ -65,8 +66,9 @@ func main() {
 				return
 			}
 
-			acc := generate(xt, tt, m, v, 10)
-			fmt.Printf("%2d, %2d: loss=%.04f, train_acc=%.4f\n", epoch, j, loss, acc)
+			tacc := generate(xt, tt, m, v, 5)
+			vacc := generate(xv, tv, m, v, 5)
+			fmt.Printf("%2d, %2d: loss=%.04f, train_acc=%.4f, test_acc=%.4f\n", epoch, j, loss, tacc, vacc)
 			fmt.Println()
 		},
 	})
@@ -74,7 +76,8 @@ func main() {
 	fmt.Printf("elapsed=%v\n", time.Since(now))
 }
 
-func generate(xs, ts [][]int, m trainer.Seq2Seq, v *sequence.Vocab, top int) float64 {
+func generate(x, t [][]int, m trainer.Seq2Seq, v *sequence.Vocab, top int) float64 {
+	xs, ts := vector.Shuffle(x, t)
 	var acc int
 	for k := 0; k < top; k++ {
 		q, correct := trainer.Float64(xs)[k], ts[k]           // (1, 7), (5)

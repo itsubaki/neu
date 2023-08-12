@@ -63,7 +63,7 @@ jobs:
 
       - name: Seq2Seq(Attention)
         run: |
-          make seq2seq_attn1
+          make seq2seq_attn
 
       - name: Codecov
         uses: codecov/codecov-action@v3
