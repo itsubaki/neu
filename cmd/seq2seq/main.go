@@ -81,11 +81,14 @@ func generate(x, t [][]int, m trainer.Seq2Seq, v *sequence.Vocab, top int) float
 
 	var acc int
 	for k := 0; k < top; k++ {
-		q, correct := matrix.From(xs)[k], ts[k]               // (1, 7), (5)
-		tq := vector.Reverse(trainer.Time(matrix.New(q)))     // (7, 1, 1)
-		guess := m.Generate(tq, correct[0], len(correct[1:])) //
+		q, correct := matrix.From(xs)[k], ts[k]           // (1, 7), (5)
+		tq := vector.Reverse(trainer.Time(matrix.New(q))) // (7, 1, 1)
 
-		acc += trainer.SeqAccuracy(correct[1:], guess)
+		guess := m.Generate(tq, correct[0], len(correct[1:])) //
+		if vector.Equals(correct[1:], guess) {
+			acc++
+		}
+
 		fmt.Printf("%v %v; %v\n", v.ToString(xs[k]), v.ToString(correct), v.ToString(guess))
 	}
 

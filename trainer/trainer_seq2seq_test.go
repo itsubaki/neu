@@ -87,14 +87,3 @@ func ExampleTime() {
 	// [[2] [5]]
 	// [[3] [6]]
 }
-
-func ExampleSeqAccuracy() {
-	fmt.Println(trainer.SeqAccuracy([]int{1, 2, 3}, []int{1}))
-	fmt.Println(trainer.SeqAccuracy([]int{1, 2, 3}, []int{4, 5, 6}))
-	fmt.Println(trainer.SeqAccuracy([]int{1, 2, 3}, []int{1, 2, 3}))
-
-	// Output:
-	// 0
-	// 0
-	// 1
-}

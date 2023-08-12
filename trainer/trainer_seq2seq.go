@@ -77,8 +77,8 @@ func (tr *Seq2SeqTrainer) Fit(in *Seq2SeqInput, s ...rand.Source) {
 }
 
 func Time(xs matrix.Matrix) []matrix.Matrix {
-	T := len(xs[0])                 // (128, 7)
-	out := make([]matrix.Matrix, T) // (7, 128, 1)
+	T := len(xs[0])                 // (N, T)    (128, 7)
+	out := make([]matrix.Matrix, T) // (T, N, 1) (7, 128, 1)
 	for i := 0; i < T; i++ {
 		out[i] = matrix.New()
 		for j := 0; j < len(xs); j++ {
@@ -87,18 +87,4 @@ func Time(xs matrix.Matrix) []matrix.Matrix {
 	}
 
 	return out
-}
-
-func SeqAccuracy(a, b []int) int {
-	if len(a) != len(b) {
-		return 0
-	}
-
-	for i := range a {
-		if a[i] != b[i] {
-			return 0
-		}
-	}
-
-	return 1
 }

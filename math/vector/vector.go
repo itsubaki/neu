@@ -122,3 +122,28 @@ func Reverse[T any](xs []T) []T {
 
 	return xs
 }
+
+// MatchCount returns the number of matches.
+func MatchCount(x, y []int) int {
+	var c int
+	for i := range x {
+		if x[i] == y[i] {
+			c++
+		}
+	}
+
+	return c
+}
+
+// Equals returns true if x and y are the same.
+func Equals(x, y []int) bool {
+	if len(x) != len(y) {
+		return false
+	}
+
+	if MatchCount(x, y) == len(x) {
+		return true
+	}
+
+	return false
+}

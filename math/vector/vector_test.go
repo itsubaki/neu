@@ -109,3 +109,35 @@ func ExampleReverse() {
 	// Output:
 	// [9 8 7 6 5 4 3 2 1]
 }
+
+func ExampleMatchCount() {
+	fmt.Println(vector.MatchCount(
+		[]int{1, 2, 3, 4, 5},
+		[]int{0, 2, 4, 3, 5},
+	))
+
+	// Output:
+	// 2
+}
+
+func ExampleEquals() {
+	fmt.Println(vector.Equals(
+		[]int{1, 2, 3, 4, 5},
+		[]int{1, 2, 3, 4, 5},
+	))
+
+	fmt.Println(vector.Equals(
+		[]int{1, 2, 3, 4, 5},
+		[]int{0, 2, 4, 3, 5},
+	))
+
+	fmt.Println(vector.Equals(
+		[]int{1, 2, 3},
+		[]int{0, 2, 4, 3, 5},
+	))
+
+	// Output:
+	// true
+	// false
+	// false
+}

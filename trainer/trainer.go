@@ -113,20 +113,7 @@ func Random(trainSize, batchSize int, s ...rand.Source) []int {
 }
 
 func Accuracy(y, t matrix.Matrix) float64 {
-	count := func(x, y []int) int {
-		var c int
-		for i := range x {
-			if x[i] == y[i] {
-				c++
-			}
-		}
-
-		return c
-	}
-
-	ymax := y.Argmax()
-	tmax := t.Argmax()
-
-	c := count(ymax, tmax)
+	ymax, tmax := y.Argmax(), t.Argmax()
+	c := vector.MatchCount(ymax, tmax)
 	return float64(c) / float64(len(ymax))
 }

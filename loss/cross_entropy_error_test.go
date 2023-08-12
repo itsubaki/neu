@@ -2,7 +2,6 @@ package loss_test
 
 import (
 	"fmt"
-	"math"
 
 	"github.com/itsubaki/neu/loss"
 )
@@ -28,12 +27,8 @@ func Example_crossEntropyErrorLabel() {
 	y1 := []float64{0.1, 0.05, 0.6, 0.0, 0.05, 0.1, 0.0, 0.1, 0.0, 0.0}
 	y2 := []float64{0.1, 0.05, 0.1, 0.0, 0.05, 0.1, 0.0, 0.6, 0.0, 0.0}
 
-	f := func(y []float64, t int) float64 {
-		return -1.0 * math.Log(y[t]+1e-7)
-	}
-
-	fmt.Println(f(y1, t))
-	fmt.Println(f(y2, t))
+	fmt.Println(loss.CrossEntropyErrorL(y1, t))
+	fmt.Println(loss.CrossEntropyErrorL(y2, t))
 
 	// Output:
 	// 0.510825457099338
