@@ -9,8 +9,7 @@ import (
 
 // SigmoidWithLoss is a layer that performs a sigmoid and a cross-entropy loss.
 type SigmoidWithLoss struct {
-	t matrix.Matrix
-	y matrix.Matrix
+	y, t matrix.Matrix
 }
 
 func (l *SigmoidWithLoss) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
@@ -19,8 +18,7 @@ func (l *SigmoidWithLoss) SetParams(p ...matrix.Matrix) {}
 func (l *SigmoidWithLoss) String() string               { return fmt.Sprintf("%T", l) }
 
 func (l *SigmoidWithLoss) Forward(x, t matrix.Matrix, _ ...Opts) matrix.Matrix {
-	l.t = t
-	l.y = x.F(activation.Sigmoid)
+	l.y, l.t = x.F(activation.Sigmoid), t
 
 	// loss = Loss(y, t) + Loss(1 - y, 1 - t)
 	one := matrix.One(l.y.Dimension())
