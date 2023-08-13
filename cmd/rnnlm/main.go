@@ -54,7 +54,7 @@ func main() {
 		BatchSize:  10,
 		TimeSize:   5,
 		Verbose: func(epoch, j int, perplexity float64, m trainer.RNNLM) {
-			fmt.Printf("%2d, %2d: ppl=%.04f\n", epoch, j, perplexity)
+			fmt.Printf("%2d, %2d: train_ppl=%.04f\n", epoch, j, perplexity)
 		},
 	})
 

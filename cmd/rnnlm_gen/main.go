@@ -82,7 +82,7 @@ func main() {
 				}
 			}
 
-			fmt.Printf("%2d, %2d: ppl=%.04f\n", epoch, j, perplexity)
+			fmt.Printf("%2d, %2d: train_ppl=%.04f\n", epoch, j, perplexity)
 		},
 	})
 	fmt.Printf("elapsed=%v\n", time.Since(now))
