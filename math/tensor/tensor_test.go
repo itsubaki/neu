@@ -181,6 +181,18 @@ func ExampleSplit() {
 
 }
 
+func ExampleRepeat() {
+	a := matrix.New([]float64{1, 2, 3}, []float64{4, 5, 6})
+	for _, r := range tensor.Repeat(a, 3) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [[1 2 3] [4 5 6]]
+	// [[1 2 3] [4 5 6]]
+	// [[1 2 3] [4 5 6]]
+}
+
 func ExampleFlatten() {
 	xs := []matrix.Matrix{
 		{

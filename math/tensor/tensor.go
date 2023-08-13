@@ -99,6 +99,15 @@ func Split(dout []matrix.Matrix, H int) ([]matrix.Matrix, []matrix.Matrix) {
 	return a, b
 }
 
+func Repeat(m matrix.Matrix, T int) []matrix.Matrix {
+	out := make([]matrix.Matrix, T)
+	for i := 0; i < T; i++ {
+		out[i] = m
+	}
+
+	return out
+}
+
 func Flatten(m []matrix.Matrix) []float64 {
 	flatten := make([]float64, 0)
 	for _, s := range m {

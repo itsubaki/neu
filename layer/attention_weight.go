@@ -20,10 +20,10 @@ func (l *AttentionWeight) String() string               { return fmt.Sprintf("%T
 
 func (l *AttentionWeight) Forward(hs []matrix.Matrix, h matrix.Matrix) matrix.Matrix {
 	l.hs = hs
-	l.hr = matrix.Repeat(h, len(hs))
+	l.hr = tensor.Repeat(h, len(hs))
 
 	T := len(hs)                         // (T, N, H)
-	l.hs, l.hr = hs, matrix.Repeat(h, T) // (N, H) -> (T, N, H)
+	l.hs, l.hr = hs, tensor.Repeat(h, T) // (N, H) -> (T, N, H)
 	t := tensor.Mul(hs, l.hr)            // (T, N, H)
 
 	c := make(matrix.Matrix, T) // (T, N)
