@@ -105,22 +105,3 @@ func (m *CBOW) SetParams(p [][]matrix.Matrix) {
 	m.Win1.SetParams(p[1]...)
 	m.Wout.SetParams(p[2]...)
 }
-
-func CreateContextsTarget(corpus []int, windowSize int) ([][]int, []int) {
-	targets := corpus[windowSize : len(corpus)-windowSize]
-	contexts := make([][]int, 0)
-
-	for i := windowSize; i < len(corpus)-windowSize; i++ {
-		cs := make([]int, 0)
-		for t := -windowSize; t < windowSize+1; t++ {
-			if t == 0 {
-				continue
-			}
-
-			cs = append(cs, corpus[i+t])
-		}
-		contexts = append(contexts, cs)
-	}
-
-	return contexts, targets
-}

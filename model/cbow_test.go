@@ -47,18 +47,6 @@ func ExampleCBOW() {
 
 }
 
-func ExampleCreateContextsTarget() {
-	corpus := []int{0, 1, 2, 3, 4, 1, 5, 6}
-	contexts, target := model.CreateContextsTarget(corpus, 1)
-
-	fmt.Println(contexts)
-	fmt.Println(target)
-
-	// Output:
-	// [[0 2] [1 3] [2 4] [3 1] [4 5] [1 6]]
-	// [1 2 3 4 1 5]
-}
-
 func ExampleCBOW_Summary() {
 	m := model.NewCBOW(&model.CBOWConfig{
 		VocabSize:  7,

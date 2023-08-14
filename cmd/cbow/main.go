@@ -17,47 +17,23 @@ func main() {
 	flag.IntVar(&epochs, "epochs", 1000, "")
 
 	text := "You say goodbye and I say hello ."
-	corpus, w2id, id2w := ptb.PreProcess(text)
+	corpus, id2w, w2id := ptb.PreProcess(text)
 	fmt.Println(corpus)
-	fmt.Println(w2id)
 	fmt.Println(id2w)
+	fmt.Println(w2id)
 	fmt.Println()
 
-	contexts := []matrix.Matrix{
-		{
-			{1, 0, 0, 0, 0, 0, 0}, // 0
-			{0, 0, 1, 0, 0, 0, 0}, // 2
-		},
-		{
-			{0, 1, 0, 0, 0, 0, 0}, // 1
-			{0, 0, 0, 1, 0, 0, 0}, // 3
-		},
-		{
-			{0, 0, 1, 0, 0, 0, 0}, // 2
-			{0, 0, 0, 0, 1, 0, 0}, // 4
-		},
-		{
-			{0, 0, 0, 1, 0, 0, 0}, // 3
-			{0, 1, 0, 0, 0, 0, 0}, // 1
-		},
-		{
-			{0, 0, 0, 0, 1, 0, 0}, // 4
-			{0, 0, 0, 0, 0, 1, 0}, // 5
-		},
-		{
-			{0, 1, 0, 0, 0, 0, 0}, // 1
-			{0, 0, 0, 0, 0, 0, 1}, // 6
-		},
+	c, t := createContextsTarget(corpus, 1)
+	targets := matrix.OneHot(t, len(w2id))
+	contexts := make([]matrix.Matrix, 0)
+	for _, v := range c {
+		contexts = append(contexts, matrix.OneHot(v, len(w2id)))
 	}
 
-	targets := matrix.Matrix{
-		{0, 1, 0, 0, 0, 0, 0}, // 1
-		{0, 0, 1, 0, 0, 0, 0}, // 2
-		{0, 0, 0, 1, 0, 0, 0}, // 3
-		{0, 0, 0, 0, 1, 0, 0}, // 4
-		{0, 1, 0, 0, 0, 0, 0}, // 1
-		{0, 0, 0, 0, 0, 1, 0}, // 5
+	for i := range contexts {
+		fmt.Printf("%v(%v): %v(%v)\n", c[i], contexts[i], t[i], targets[i])
 	}
+	fmt.Println()
 
 	m := model.NewCBOW(&model.CBOWConfig{
 		VocabSize:  len(w2id),
@@ -101,4 +77,24 @@ func main() {
 	fmt.Printf("goodbye: %.4f\n", goodbye)
 	fmt.Printf("target:  %.4f\n", target)
 	fmt.Printf("predict: %.4f\n", activation.Softmax(score[0]))
+}
+
+func createContextsTarget(corpus []int, windowSize int) ([][]int, []int) {
+	contexts := make([][]int, 0)
+	target := corpus[windowSize : len(corpus)-windowSize]
+
+	for i := windowSize; i < len(corpus)-windowSize; i++ {
+		cs := make([]int, 0)
+		for t := -windowSize; t < windowSize+1; t++ {
+			if t == 0 {
+				continue
+			}
+
+			cs = append(cs, corpus[i+t])
+		}
+
+		contexts = append(contexts, cs)
+	}
+
+	return contexts, target
 }

@@ -15,9 +15,9 @@ const (
 )
 
 type Dataset struct {
-	WordToID map[string]int
-	IDToWord map[int]string
 	Corpus   []int
+	IDToWord map[int]string
+	WordToID map[string]int
 }
 
 func Load(dir, fileName string) (*Dataset, error) {
@@ -27,20 +27,20 @@ func Load(dir, fileName string) (*Dataset, error) {
 		return nil, fmt.Errorf("open file=%v: %v", path, err)
 	}
 
-	corpus, w2id, id2w := PreProcess(string(bytes))
+	corpus, id2w, w2id := PreProcess(string(bytes))
 	return &Dataset{
-		WordToID: w2id,
 		IDToWord: id2w,
+		WordToID: w2id,
 		Corpus:   corpus,
 	}, nil
 }
 
-func PreProcess(text string) ([]int, map[string]int, map[int]string) {
+func PreProcess(text string) ([]int, map[int]string, map[string]int) {
 	rep := strings.TrimSpace(strings.ReplaceAll(text, "\n", "<eos>"))
 	words := strings.Split(rep, " ")
 
-	w2id := make(map[string]int)
 	id2w := make(map[int]string)
+	w2id := make(map[string]int)
 
 	for _, w := range words {
 		if _, ok := w2id[w]; ok {
@@ -57,7 +57,7 @@ func PreProcess(text string) ([]int, map[string]int, map[int]string) {
 		corpus = append(corpus, w2id[w])
 	}
 
-	return corpus, w2id, id2w
+	return corpus, id2w, w2id
 }
 
 func Must(dataset *Dataset, err error) *Dataset {
