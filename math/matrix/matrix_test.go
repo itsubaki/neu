@@ -92,6 +92,21 @@ func ExampleBatch() {
 	// [9 10]
 }
 
+func ExampleColumn() {
+	x := matrix.New(
+		[]float64{1, 2, 3},
+		[]float64{4, 5, 6},
+	)
+	fmt.Println(matrix.Column(x, 0))
+	fmt.Println(matrix.Column(x, 1))
+	fmt.Println(matrix.Column(x, 2))
+
+	// Output:
+	// [[1] [4]]
+	// [[2] [5]]
+	// [[3] [6]]
+}
+
 func ExampleFrom() {
 	fmt.Printf("%.2f", matrix.From([][]int{
 		{1, 2, 3},

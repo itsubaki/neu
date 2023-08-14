@@ -102,6 +102,16 @@ func Batch(m Matrix, index []int) Matrix {
 	return out
 }
 
+// Column returns a matrix with the specified column.
+func Column(m Matrix, j int) Matrix {
+	out := make(Matrix, 0)
+	for _, r := range m {
+		out = append(out, []float64{r[j]})
+	}
+
+	return out
+}
+
 // From returns a matrix from a slice of slice of T.
 func From[T int](x [][]T) Matrix {
 	out := make([][]float64, len(x))

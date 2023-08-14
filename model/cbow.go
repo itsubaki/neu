@@ -57,9 +57,8 @@ func (m *CBOW) Forward(contexts []matrix.Matrix, target matrix.Matrix) matrix.Ma
 }
 
 func (m *CBOW) Backward() {
-	dout := matrix.New([]float64{1})
-	ds, _ := m.Loss.Backward(dout)
-	da, _ := m.Wout.Backward(ds)
+	dout, _ := m.Loss.Backward(matrix.New([]float64{1}))
+	da, _ := m.Wout.Backward(dout)
 	da = da.MulC(0.5)
 	m.Win1.Backward(da)
 	m.Win0.Backward(da)
