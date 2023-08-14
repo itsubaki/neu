@@ -102,6 +102,20 @@ func ExampleFrom() {
 	// [[1.00 2.00 3.00] [4.00 5.00 6.00]]
 }
 
+func ExampleOneHot() {
+	fmt.Println(matrix.OneHot(3))
+
+	// Output:
+	// [[1 0 0] [0 1 0] [0 0 1]]
+}
+
+func ExampleInt() {
+	fmt.Println(matrix.Int(matrix.New([]float64{1.1, 2.2, 3.3})))
+
+	// Output:
+	// [[1 2 3]]
+}
+
 func ExampleMatrix_Dot() {
 	A := matrix.New(
 		[]float64{1, 2},
@@ -400,6 +414,25 @@ func ExampleMatrix_F() {
 
 }
 
+func ExampleMatrix_Broadcast() {
+	m := matrix.New([]float64{1})
+	for _, r := range m {
+		fmt.Println(r)
+	}
+	fmt.Println()
+
+	for _, r := range m.Broadcast(3, 5) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [1]
+	//
+	// [1 1 1 1 1]
+	// [1 1 1 1 1]
+	// [1 1 1 1 1]
+}
+
 func ExampleMatrix_Broadcast_row() {
 	m := matrix.New([]float64{1, 2})
 	for _, r := range m {
@@ -441,25 +474,6 @@ func ExampleMatrix_Broadcast_column() {
 	//
 	// [1 1 1 1 1]
 	// [2 2 2 2 2]
-}
-
-func ExampleMatrix_Broadcast_dout() {
-	m := matrix.New([]float64{1})
-	for _, r := range m {
-		fmt.Println(r)
-	}
-	fmt.Println()
-
-	for _, r := range m.Broadcast(3, 5) {
-		fmt.Println(r)
-	}
-
-	// Output:
-	// [1]
-	//
-	// [1 1 1 1 1]
-	// [1 1 1 1 1]
-	// [1 1 1 1 1]
 }
 
 func ExampleMatrix_Broadcast_noEffect() {

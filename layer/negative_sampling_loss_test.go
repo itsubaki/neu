@@ -37,12 +37,14 @@ func ExampleNegativeSamplingLoss() {
 		[]float64{0.1, 0.1, 0.1},
 		[]float64{0.1, 0.1, 0.1},
 		[]float64{0.1, 0.1, 0.1},
+		[]float64{0.1, 0.1, 0.1},
 	)
-	corpus := []int{0, 1, 2, 3, 4, 5, 6}
+	corpus := []int{0, 1, 2, 3}
 	power := 0.75
 	sampleSize := 2
 
-	l := layer.NewNegativeSamplingLoss(W, corpus, power, sampleSize)
+	s := rand.NewSource(0)
+	l := layer.NewNegativeSamplingLoss(W, corpus, power, sampleSize, s)
 	fmt.Println(l)
 
 	// forward
@@ -50,23 +52,23 @@ func ExampleNegativeSamplingLoss() {
 		[]float64{0, 1, 2},
 		[]float64{3, 4, 5},
 		[]float64{6, 7, 8},
+		[]float64{6, 7, 8},
 	)
 
-	idx := matrix.New(
+	target := matrix.New(
 		[]float64{0},
-		[]float64{3},
 		[]float64{1},
 	)
 
-	loss := l.Forward(h, idx)
+	loss := l.Forward(h, target)
 	dh, _ := l.Backward(matrix.New([]float64{1.0}))
 	fmt.Println(loss)
 	fmt.Println(dh)
 
 	// Output:
-	// *layer.NegativeSamplingLoss: W(3, 3)*3: 27
-	// []
-	// []
+	// *layer.NegativeSamplingLoss: W(4, 3)*3: 36
+	// [[6.652911195331367]]
+	// [[0.09361062920291476 0.09361062920291476 0.09361062920291476] [0.09361062920291476 0.09361062920291476 0.09361062920291476]]
 }
 
 func ExampleNegativeSamplingLoss_Params() {

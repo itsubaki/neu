@@ -115,6 +115,29 @@ func From[T int](x [][]T) Matrix {
 	return out
 }
 
+func Int(m Matrix) [][]int {
+	out := make([][]int, len(m))
+	for i, r := range m {
+		out[i] = make([]int, len(r))
+		for j, v := range r {
+			out[i][j] = int(v)
+		}
+	}
+
+	return out
+}
+
+func OneHot(size int) Matrix {
+	out := make(Matrix, size)
+	for i := 0; i < size; i++ {
+		v := make([]float64, size)
+		v[i] = 1
+		out[i] = v
+	}
+
+	return out
+}
+
 func (m Matrix) Dimension() (int, int) {
 	if len(m) == 0 {
 		return 0, 0

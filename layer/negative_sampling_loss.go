@@ -11,27 +11,27 @@ import (
 )
 
 type NegativeSamplingLoss struct {
-	W               matrix.Matrix
 	sampler         *UnigramSampler
 	embeddingDot    []*EmbeddingDot
 	sigmoidWithLoss []*SigmoidWithLoss
+	s               rand.Source
 }
 
-func NewNegativeSamplingLoss(W matrix.Matrix, corpus []int, power float64, sampleSize int) *NegativeSamplingLoss {
-	embed := make([]*EmbeddingDot, 0)
-	for i := 0; i < sampleSize+1; i++ {
-		embed = append(embed, &EmbeddingDot{W: W})
+func NewNegativeSamplingLoss(W matrix.Matrix, corpus []int, power float64, sampleSize int, s ...rand.Source) *NegativeSamplingLoss {
+	if len(s) == 0 {
+		s = append(s, rand.NewSource(time.Now().UnixNano()))
 	}
-	loss := make([]*SigmoidWithLoss, 0)
+
+	embed, loss := make([]*EmbeddingDot, sampleSize+1), make([]*SigmoidWithLoss, sampleSize+1)
 	for i := 0; i < sampleSize+1; i++ {
-		loss = append(loss, &SigmoidWithLoss{})
+		embed[i], loss[i] = &EmbeddingDot{Embedding: Embedding{W: W}}, &SigmoidWithLoss{}
 	}
 
 	return &NegativeSamplingLoss{
-		W:               W,
 		sampler:         NewUnigramSampler(corpus, power, sampleSize),
 		embeddingDot:    embed,
 		sigmoidWithLoss: loss,
+		s:               s[0],
 	}
 }
 
@@ -60,17 +60,38 @@ func (l *NegativeSamplingLoss) SetParams(p ...matrix.Matrix) {
 }
 
 func (l *NegativeSamplingLoss) String() string {
-	a, b := l.W.Dimension()
+	a, b := l.embeddingDot[0].Embedding.W.Dimension()
 	s := len(l.embeddingDot)
 	return fmt.Sprintf("%T: W(%v, %v)*%v: %v", l, a, b, s, a*b*s)
 }
 
 func (l *NegativeSamplingLoss) Forward(h, target matrix.Matrix, opts ...Opts) matrix.Matrix {
-	return nil
+	// correct
+	score := l.embeddingDot[0].Forward(h, target)
+	correct := matrix.OneHot(len(target))
+	loss := l.sigmoidWithLoss[0].Forward(score, correct)
+
+	// negative
+	sampled := l.sampler.NegativeSample(vector.Int(matrix.Flatten(target)), l.s)
+	label := matrix.Zero(1, len(target))
+	for i := 0; i < l.sampler.sampleSize; i++ {
+		negative := matrix.From([][]int{sampled[i]}).T()              // (1, N) -> (N, 1)
+		score := l.embeddingDot[i+1].Forward(h, negative)             //
+		loss = loss.Add(l.sigmoidWithLoss[i+1].Forward(score, label)) //
+	}
+
+	return loss
 }
 
 func (l *NegativeSamplingLoss) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	return nil, nil
+	dh := matrix.Zero(1, 1)
+	for i := len(l.embeddingDot) - 1; i > -1; i-- {
+		dscore, _ := l.sigmoidWithLoss[i].Backward(dout) //
+		dh0, _ := l.embeddingDot[i].Backward(dscore)     //
+		dh = dh0.Add(dh)                                 // Broadcast
+	}
+
+	return dh, nil
 }
 
 type UnigramSampler struct {
