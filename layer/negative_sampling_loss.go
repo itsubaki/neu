@@ -85,7 +85,7 @@ func (l *NegativeSamplingLoss) Forward(h, target matrix.Matrix, opts ...Opts) ma
 
 func (l *NegativeSamplingLoss) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	dh := matrix.Zero(1, 1)
-	for i := len(l.embeddingDot) - 1; i > -1; i-- {
+	for i := 0; i < l.sampler.sampleSize+1; i++ {
 		dscore, _ := l.sigmoidWithLoss[i].Backward(dout) //
 		dh0, _ := l.embeddingDot[i].Backward(dscore)     //
 		dh = dh0.Add(dh)                                 // Broadcast
