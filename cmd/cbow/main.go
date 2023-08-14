@@ -50,15 +50,13 @@ func main() {
 		},
 	}
 
-	targets := []matrix.Matrix{
-		{
-			{0, 1, 0, 0, 0, 0, 0}, // 1
-			{0, 0, 1, 0, 0, 0, 0}, // 2
-			{0, 0, 0, 1, 0, 0, 0}, // 3
-			{0, 0, 0, 0, 1, 0, 0}, // 4
-			{0, 1, 0, 0, 0, 0, 0}, // 1
-			{0, 0, 0, 0, 0, 1, 0}, // 5
-		},
+	targets := matrix.Matrix{
+		{0, 1, 0, 0, 0, 0, 0}, // 1
+		{0, 0, 1, 0, 0, 0, 0}, // 2
+		{0, 0, 0, 1, 0, 0, 0}, // 3
+		{0, 0, 0, 0, 1, 0, 0}, // 4
+		{0, 1, 0, 0, 0, 0, 0}, // 1
+		{0, 0, 0, 0, 0, 1, 0}, // 5
 	}
 
 	m := model.NewCBOW(&model.CBOWConfig{
@@ -102,5 +100,5 @@ func main() {
 	fmt.Printf("you:     %.4f\n", you)
 	fmt.Printf("goodbye: %.4f\n", goodbye)
 	fmt.Printf("target:  %.4f\n", target)
-	fmt.Printf("predict: %.4f\n", activation.Softmax(score[0][0]))
+	fmt.Printf("predict: %.4f\n", activation.Softmax(score[0]))
 }

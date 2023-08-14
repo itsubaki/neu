@@ -28,7 +28,7 @@ func ExampleAttentionSeq2Seq() {
 	fmt.Println(m.Generate(xs, 1, 10))
 
 	// Output:
-	// 1.0950
+	// [[[1.0950]]]
 	// [0 0 0 0 0 0 0 0 0 0]
 }
 

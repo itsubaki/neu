@@ -38,7 +38,7 @@ func NewCBOW(c *CBOWConfig, s ...rand.Source) *CBOW {
 	}
 }
 
-func (m *CBOW) Predict(xs []matrix.Matrix) []matrix.Matrix {
+func (m *CBOW) Predict(xs []matrix.Matrix) matrix.Matrix {
 	c0, c1 := matrix.New(), matrix.New()
 	for _, c := range xs {
 		c0, c1 = append(c0, c[0]), append(c1, c[1])
@@ -48,13 +48,12 @@ func (m *CBOW) Predict(xs []matrix.Matrix) []matrix.Matrix {
 	h1 := m.Win1.Forward(c1, nil)
 	h := h0.Add(h1).MulC(0.5)
 	score := m.Wout.Forward(h, nil)
-
-	return []matrix.Matrix{score}
+	return score
 }
 
-func (m *CBOW) Forward(contexts, target []matrix.Matrix) float64 {
+func (m *CBOW) Forward(contexts []matrix.Matrix, target matrix.Matrix) matrix.Matrix {
 	score := m.Predict(contexts)
-	return m.Loss.Forward(score[0], target[0])[0][0]
+	return m.Loss.Forward(score, target)
 }
 
 func (m *CBOW) Backward() {

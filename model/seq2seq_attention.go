@@ -29,12 +29,12 @@ func NewAttentionSeq2Seq(c *RNNLMConfig, s ...rand.Source) *AttentionSeq2Seq {
 	}
 }
 
-func (m *AttentionSeq2Seq) Forward(xs, ts []matrix.Matrix) float64 {
+func (m *AttentionSeq2Seq) Forward(xs, ts []matrix.Matrix) []matrix.Matrix {
 	dxs, dts := ts[:len(ts)-1], ts[1:]
 	h := m.Encoder.Forward(xs)
 	score := m.Decoder.Forward(dxs, h)
 	loss := m.Softmax.Forward(score, dts)
-	return loss[0][0][0]
+	return loss
 }
 
 func (m *AttentionSeq2Seq) Backward() {

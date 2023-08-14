@@ -28,7 +28,7 @@ func ExampleSeq2Seq() {
 	fmt.Println(m.Generate(xs, 1, 10))
 
 	// Output:
-	// 1.1011
+	// [[[1.1011]]]
 	// [2 0 0 2 0 2 2 2 2 2]
 }
 

@@ -25,8 +25,8 @@ func (l *TimeAffine) String() string {
 
 func (l *TimeAffine) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 	T := len(xs)
-	out := make([]matrix.Matrix, T)
 	l.layer = make([]*Affine, T)
+	out := make([]matrix.Matrix, T)
 
 	for t := 0; t < T; t++ {
 		l.layer[t] = &Affine{W: l.W, B: l.B}

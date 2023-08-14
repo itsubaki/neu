@@ -17,12 +17,28 @@ func ExampleAdd() {
 	// [5 7 9]
 }
 
-func ExampleInt() {
+func ExampleDiv() {
 	v := []float64{1, 2, 3}
-	fmt.Println(vector.Int(v))
+	fmt.Println(vector.Div(v, 2))
+
+	// Output:
+	// [0.5 1 1.5]
+}
+
+func ExampleAbs() {
+	v := []float64{1, -2, -3}
+	fmt.Println(vector.Abs(v))
 
 	// Output:
 	// [1 2 3]
+}
+
+func ExampleSum() {
+	v := []float64{1, 2, 3}
+	fmt.Println(vector.Sum(v))
+
+	// Output:
+	// 6
 }
 
 func ExampleMax() {
@@ -33,9 +49,9 @@ func ExampleMax() {
 	// 3
 }
 
-func ExampleAbs() {
-	v := []float64{1, -2, -3}
-	fmt.Println(vector.Abs(v))
+func ExampleInt() {
+	v := []float64{1, 2, 3}
+	fmt.Println(vector.Int(v))
 
 	// Output:
 	// [1 2 3]

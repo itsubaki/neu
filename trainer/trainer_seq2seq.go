@@ -16,7 +16,7 @@ var (
 
 type Seq2Seq interface {
 	Generate(xs []matrix.Matrix, startID, length int) []int
-	Forward(xs, ts []matrix.Matrix) float64
+	Forward(xs, ts []matrix.Matrix) []matrix.Matrix
 	Backward()
 	Params() [][]matrix.Matrix
 	Grads() [][]matrix.Matrix
@@ -65,7 +65,7 @@ func (tr *Seq2SeqTrainer) Fit(in *Seq2SeqInput, s ...rand.Source) {
 			tr.Model.Backward()
 			tr.Optimizer.Update(tr.Model)
 
-			total += loss
+			total += loss[0][0][0]
 			count++
 
 			// verbose

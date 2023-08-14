@@ -15,13 +15,31 @@ func Add(v, w []float64) []float64 {
 	return out
 }
 
-func Int(v []float64) []int {
-	out := make([]int, len(v))
-	for i, e := range v {
-		out[i] = int(e)
+func Div(v []float64, a float64) []float64 {
+	out := make([]float64, len(v))
+	for i := range v {
+		out[i] = v[i] / a
 	}
 
 	return out
+}
+
+func Abs(v []float64) []float64 {
+	out := make([]float64, len(v))
+	for i, e := range v {
+		out[i] = math.Abs(e)
+	}
+
+	return out
+}
+
+func Sum(v []float64) float64 {
+	var sum float64
+	for _, e := range v {
+		sum += e
+	}
+
+	return sum
 }
 
 func Max(v []int) int {
@@ -35,10 +53,10 @@ func Max(v []int) int {
 	return max
 }
 
-func Abs(v []float64) []float64 {
-	out := make([]float64, len(v))
+func Int(v []float64) []int {
+	out := make([]int, len(v))
 	for i, e := range v {
-		out[i] = math.Abs(e)
+		out[i] = int(e)
 	}
 
 	return out

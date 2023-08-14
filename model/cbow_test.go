@@ -11,17 +11,15 @@ import (
 func ExampleCBOW() {
 	// you, say, goodbye, and, I, hello, .
 
-	// context data
-	c := []matrix.Matrix{
+	// data
+	contexts := []matrix.Matrix{
 		{
 			{1, 0, 0, 0, 0, 0, 0}, // you
 			{0, 0, 1, 0, 0, 0, 0}, // goodbye
 		},
 	}
-	t := []matrix.Matrix{
-		{
-			{0, 1, 0, 0, 0, 0, 0}, // say
-		},
+	targets := matrix.Matrix{
+		[]float64{0, 1, 0, 0, 0, 0, 0}, // say
 	}
 
 	// model
@@ -31,7 +29,7 @@ func ExampleCBOW() {
 		HiddenSize: 5,
 	}, s)
 
-	loss := m.Forward(c, t)
+	loss := m.Forward(contexts, targets)
 	m.Backward()
 	fmt.Println(loss)
 
@@ -44,8 +42,8 @@ func ExampleCBOW() {
 	fmt.Println(score)
 
 	// Output:
-	// 1.9461398376656527
-	// [[[0.00012703871969382832 -1.2392940985965779e-05 6.8815266046905e-05 0.00022359874505051858 0.00012362319821868092 0.0006585876988009539 0.0003365497538731326]]]
+	// [[1.9461398376656527]]
+	// [[0.00012703871969382832 -1.2392940985965779e-05 6.8815266046905e-05 0.00022359874505051858 0.00012362319821868092 0.0006585876988009539 0.0003365497538731326]]
 
 }
 

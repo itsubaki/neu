@@ -96,7 +96,7 @@ func perplexity(m trainer.RNNLM, corpus []int, batchSize, timeSize int) float64 
 		}
 
 		loss := m.Forward(xs, ts)
-		total += loss[0][0]
+		total += loss[0][0][0]
 
 		fmt.Printf("%2d, %2d: loss=%.04f\n", j, maxIter, loss[0][0])
 	}

@@ -62,10 +62,10 @@ func (m *RNNLM) Predict(xs []matrix.Matrix, opts ...layer.Opts) []matrix.Matrix 
 	return xs
 }
 
-func (m *RNNLM) Forward(xs, ts []matrix.Matrix) matrix.Matrix {
+func (m *RNNLM) Forward(xs, ts []matrix.Matrix) []matrix.Matrix {
 	opts := layer.Opts{Train: true, Source: m.Source}
 	ys := m.Predict(xs, opts)
-	return m.Layer[len(m.Layer)-1].Forward(ys, ts, opts)[0]
+	return m.Layer[len(m.Layer)-1].Forward(ys, ts, opts)
 }
 
 func (m *RNNLM) Backward() []matrix.Matrix {

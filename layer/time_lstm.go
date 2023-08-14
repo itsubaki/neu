@@ -35,8 +35,8 @@ func (l *TimeLSTM) String() string {
 
 func (l *TimeLSTM) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matrix {
 	T, N, H := len(xs), len(xs[0]), len(l.Wh) // 7, 128, 128
+	l.layer = make([]*LSTM, T)                //
 	hs := make([]matrix.Matrix, T)            // (7, 128, 128)
-	l.layer = make([]*LSTM, T)
 
 	if !l.Stateful || len(l.h) == 0 {
 		l.h = matrix.Zero(N, H) // (128, 128)

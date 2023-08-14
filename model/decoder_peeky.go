@@ -45,9 +45,9 @@ func NewPeekyDecoder(c *RNNLMConfig, s ...rand.Source) *PeekyDecoder {
 
 func (m *PeekyDecoder) Forward(xs []matrix.Matrix, h matrix.Matrix) []matrix.Matrix {
 	T, H := len(xs), len(h[0])
-	hs := tensor.Repeat(h, T)
 	m.H = H
 	m.TimeLSTM.SetState(h)
+	hs := tensor.Repeat(h, T)
 
 	out := m.TimeEmbedding.Forward(xs, nil)
 	out = m.TimeLSTM.Forward(tensor.Concat(hs, out), nil)

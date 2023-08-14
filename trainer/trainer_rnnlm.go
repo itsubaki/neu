@@ -16,7 +16,7 @@ var (
 
 type RNNLM interface {
 	Predict(xs []matrix.Matrix, opts ...layer.Opts) []matrix.Matrix
-	Forward(xs, ts []matrix.Matrix) matrix.Matrix
+	Forward(xs, ts []matrix.Matrix) []matrix.Matrix
 	Backward() []matrix.Matrix
 	Params() [][]matrix.Matrix
 	Grads() [][]matrix.Matrix
@@ -68,7 +68,7 @@ func (tr *RNNLMTrainer) Fit(in *RNNLMInput) {
 			tr.Model.Backward()
 			tr.Optimizer.Update(tr.Model)
 
-			totalLoss += loss[0][0]
+			totalLoss += loss[0][0][0]
 			lossCount++
 
 			// verbose

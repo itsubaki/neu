@@ -21,9 +21,9 @@ func (l *TimeSoftmaxWithLoss) String() string               { return fmt.Sprintf
 
 func (l *TimeSoftmaxWithLoss) Forward(xs, ts []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 	T, V := len(xs), len(xs[0][0])
-	ots := tensor.OneHot(ts, V)
 	l.layer = make([]*SoftmaxWithLoss, T)
 	l.xs = xs
+	ots := tensor.OneHot(ts, V)
 
 	var loss float64
 	for t := 0; t < T; t++ {

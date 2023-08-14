@@ -49,7 +49,7 @@ func ExampleLSTMLM() {
 	//  6: *layer.TimeAffine: W(3, 3), B(1, 3): 12
 	//  7: *layer.TimeSoftmaxWithLoss
 	//
-	// [[1.0984]]
+	// [[[1.0984]]]
 	// []
 
 }

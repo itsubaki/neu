@@ -28,8 +28,8 @@ func (l *TimeRNN) String() string {
 
 func (l *TimeRNN) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matrix {
 	T, N, H := len(xs), len(xs[0]), len(l.Wx[0]) // xs(Time, N, D), Wx(D, H)
-	hs := make([]matrix.Matrix, T)
 	l.layer = make([]*RNN, T)
+	hs := make([]matrix.Matrix, T)
 
 	if !l.Stateful || len(l.h) == 0 {
 		l.h = matrix.Zero(N, H)

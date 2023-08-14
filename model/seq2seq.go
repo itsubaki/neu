@@ -45,7 +45,7 @@ func NewSeq2Seq(c *RNNLMConfig, s ...rand.Source) *Seq2Seq {
 	}
 }
 
-func (m *Seq2Seq) Forward(xs, ts []matrix.Matrix) float64 {
+func (m *Seq2Seq) Forward(xs, ts []matrix.Matrix) []matrix.Matrix {
 	// xs:  ['5', '7', '+', '5', ' ', ' ', ' ']
 	// dxs: ['_', '6', '2', ' ']
 	// dts: ['6', '2', ' ', ' ']
@@ -53,7 +53,7 @@ func (m *Seq2Seq) Forward(xs, ts []matrix.Matrix) float64 {
 	h := m.Encoder.Forward(xs)            // h(128, 128)
 	score := m.Decoder.Forward(dxs, h)    // score(4, 128, 13)
 	loss := m.Softmax.Forward(score, dts) // (1, 1, 1)
-	return loss[0][0][0]
+	return loss
 }
 
 func (m *Seq2Seq) Backward() {
