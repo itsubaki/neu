@@ -43,7 +43,7 @@ func ExampleNegativeSamplingLoss() {
 	power := 0.75
 	sampleSize := 2
 
-	s := rand.NewSource(0)
+	s := rand.NewSource(1)
 	l := layer.NewNegativeSamplingLoss(W, corpus, power, sampleSize, s)
 	fmt.Println(l)
 

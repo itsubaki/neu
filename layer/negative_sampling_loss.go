@@ -68,7 +68,7 @@ func (l *NegativeSamplingLoss) String() string {
 func (l *NegativeSamplingLoss) Forward(h, target matrix.Matrix, opts ...Opts) matrix.Matrix {
 	// correct
 	score := l.embeddingDot[0].Forward(h, target)
-	correct := matrix.OneHot(len(target))
+	correct := matrix.Identity(len(target))
 	loss := l.sigmoidWithLoss[0].Forward(score, correct)
 
 	// negative

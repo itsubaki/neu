@@ -127,12 +127,21 @@ func Int(m Matrix) [][]int {
 	return out
 }
 
-func OneHot(size int) Matrix {
+func Identity(size int) Matrix {
 	out := make(Matrix, size)
 	for i := 0; i < size; i++ {
-		v := make([]float64, size)
-		v[i] = 1
-		out[i] = v
+		out[i] = make([]float64, size)
+		out[i][i] = 1
+	}
+
+	return out
+}
+
+func OneHot(x []int, size int) Matrix {
+	out := make(Matrix, len(x))
+	for i, v := range x {
+		out[i] = make([]float64, size)
+		out[i][v] = 1
 	}
 
 	return out

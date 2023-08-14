@@ -102,11 +102,27 @@ func ExampleFrom() {
 	// [[1.00 2.00 3.00] [4.00 5.00 6.00]]
 }
 
-func ExampleOneHot() {
-	fmt.Println(matrix.OneHot(3))
+func ExampleIdentity() {
+	fmt.Println(matrix.Identity(3))
 
 	// Output:
 	// [[1 0 0] [0 1 0] [0 0 1]]
+}
+
+func ExampleOneHot() {
+	for _, v := range matrix.OneHot([]int{0, 1, 2, 3, 4, 1, 5, 6}, 7) {
+		fmt.Println(v)
+	}
+
+	// Output:
+	// [1 0 0 0 0 0 0]
+	// [0 1 0 0 0 0 0]
+	// [0 0 1 0 0 0 0]
+	// [0 0 0 1 0 0 0]
+	// [0 0 0 0 1 0 0]
+	// [0 1 0 0 0 0 0]
+	// [0 0 0 0 0 1 0]
+	// [0 0 0 0 0 0 1]
 }
 
 func ExampleInt() {
