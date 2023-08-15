@@ -26,7 +26,7 @@ func (l *TimeRNN) String() string {
 	return fmt.Sprintf("%T: Wx(%v, %v), Wh(%v, %v), B(%v, %v): %v", l, a, b, c, d, e, f, a*b+c*d+e*f)
 }
 
-func (l *TimeRNN) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matrix {
+func (l *TimeRNN) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 	T, N, H := len(xs), len(xs[0]), len(l.Wx[0]) // xs(Time, N, D), Wx(D, H)
 	l.layer = make([]*RNN, T)
 	hs := make([]matrix.Matrix, T)
@@ -37,7 +37,7 @@ func (l *TimeRNN) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matrix {
 
 	for t := 0; t < T; t++ {
 		l.layer[t] = &RNN{Wx: l.Wx, Wh: l.Wh, B: l.B}
-		l.h = l.layer[t].Forward(xs[t], l.h, opts...)
+		l.h = l.layer[t].Forward(xs[t], l.h)
 		hs[t] = l.h
 	}
 

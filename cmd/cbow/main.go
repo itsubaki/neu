@@ -23,13 +23,8 @@ func main() {
 	fmt.Println(w2id)
 	fmt.Println()
 
-	c, t := createContextsTarget(corpus, 1)
-	targets := matrix.OneHot(t, len(w2id))
-	contexts := make([]matrix.Matrix, 0)
-	for _, v := range c {
-		contexts = append(contexts, matrix.OneHot(v, len(w2id)))
-	}
-
+	c, t := ptb.CreateContextsTarget(corpus, 1)
+	contexts, targets := OneHot(c, t, len(w2id))
 	for i := range contexts {
 		fmt.Printf("%v(%v): %v(%v)\n", c[i], contexts[i], t[i], targets[i])
 	}
@@ -79,22 +74,11 @@ func main() {
 	fmt.Printf("predict: %.4f\n", activation.Softmax(score[0]))
 }
 
-func createContextsTarget(corpus []int, windowSize int) ([][]int, []int) {
-	contexts := make([][]int, 0)
-	target := corpus[windowSize : len(corpus)-windowSize]
-
-	for i := windowSize; i < len(corpus)-windowSize; i++ {
-		cs := make([]int, 0)
-		for t := -windowSize; t < windowSize+1; t++ {
-			if t == 0 {
-				continue
-			}
-
-			cs = append(cs, corpus[i+t])
-		}
-
-		contexts = append(contexts, cs)
+func OneHot(c [][]int, t []int, size int) ([]matrix.Matrix, matrix.Matrix) {
+	contexts := make([]matrix.Matrix, 0)
+	for _, v := range c {
+		contexts = append(contexts, matrix.OneHot(v, size))
 	}
 
-	return contexts, target
+	return contexts, matrix.OneHot(t, size)
 }

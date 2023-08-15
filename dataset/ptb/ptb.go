@@ -60,6 +60,26 @@ func PreProcess(text string) ([]int, map[int]string, map[string]int) {
 	return corpus, id2w, w2id
 }
 
+func CreateContextsTarget(corpus []int, windowSize int) ([][]int, []int) {
+	contexts := make([][]int, 0)
+	target := corpus[windowSize : len(corpus)-windowSize]
+
+	for i := windowSize; i < len(corpus)-windowSize; i++ {
+		cs := make([]int, 0)
+		for t := -windowSize; t < windowSize+1; t++ {
+			if t == 0 {
+				continue
+			}
+
+			cs = append(cs, corpus[i+t])
+		}
+
+		contexts = append(contexts, cs)
+	}
+
+	return contexts, target
+}
+
 func Must(dataset *Dataset, err error) *Dataset {
 	if err != nil {
 		panic(err)

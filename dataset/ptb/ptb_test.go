@@ -43,6 +43,23 @@ func ExamplePreProcess() {
 	// 6: .
 }
 
+func ExampleCreateContextsTarget() {
+	corpus := []int{0, 1, 2, 3, 4, 1, 5, 6}
+	contexts, targets := ptb.CreateContextsTarget(corpus, 1)
+
+	for i := range contexts {
+		fmt.Printf("%v: %v\n", contexts[i], targets[i])
+	}
+
+	// Output:
+	// [0 2]: 1
+	// [1 3]: 2
+	// [2 4]: 3
+	// [3 1]: 4
+	// [4 5]: 1
+	// [1 6]: 5
+}
+
 func ExampleLoad() {
 	train := ptb.Must(ptb.Load("../../testdata", ptb.TrainTxt))
 

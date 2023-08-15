@@ -22,14 +22,14 @@ func (l *TimeEmbedding) String() string {
 	return fmt.Sprintf("%T: W(%v, %v): %v", l, a, b, a*b)
 }
 
-func (l *TimeEmbedding) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matrix {
+func (l *TimeEmbedding) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 	T := len(xs)                    // (7, 128, 1)
 	l.layer = make([]*Embedding, T) //
 	out := make([]matrix.Matrix, T) // (7, 128, 16)
 
 	for t := 0; t < T; t++ {
 		l.layer[t] = &Embedding{W: l.W}
-		out[t] = l.layer[t].Forward(xs[t], nil, opts...)
+		out[t] = l.layer[t].Forward(xs[t], nil)
 	}
 
 	return out
