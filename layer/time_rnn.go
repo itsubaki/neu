@@ -10,7 +10,7 @@ type TimeRNN struct {
 	Wx, Wh, B    matrix.Matrix // params
 	DWx, DWh, DB matrix.Matrix // grads
 	h, dh        matrix.Matrix // hidden state
-	layer        []*RNN
+	layer        []RNN
 	Stateful     bool
 }
 
@@ -28,7 +28,7 @@ func (l *TimeRNN) String() string {
 
 func (l *TimeRNN) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 	T, N, H := len(xs), len(xs[0]), len(l.Wx[0]) // xs(Time, N, D), Wx(D, H)
-	l.layer = make([]*RNN, T)
+	l.layer = make([]RNN, T)
 	hs := make([]matrix.Matrix, T)
 
 	if !l.Stateful || len(l.h) == 0 {
@@ -36,7 +36,7 @@ func (l *TimeRNN) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 	}
 
 	for t := 0; t < T; t++ {
-		l.layer[t] = &RNN{Wx: l.Wx, Wh: l.Wh, B: l.B}
+		l.layer[t] = RNN{Wx: l.Wx, Wh: l.Wh, B: l.B}
 		l.h = l.layer[t].Forward(xs[t], l.h)
 		hs[t] = l.h
 	}

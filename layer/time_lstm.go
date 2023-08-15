@@ -11,7 +11,7 @@ type TimeLSTM struct {
 	DWx, DWh, DB matrix.Matrix // grads
 	h, dh        matrix.Matrix // hidden state
 	c            matrix.Matrix // cell state
-	layer        []*LSTM
+	layer        []LSTM
 	Stateful     bool
 }
 
@@ -35,7 +35,7 @@ func (l *TimeLSTM) String() string {
 
 func (l *TimeLSTM) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 	T, N, H := len(xs), len(xs[0]), len(l.Wh) // 7, 128, 128
-	l.layer = make([]*LSTM, T)                //
+	l.layer = make([]LSTM, T)                 //
 	hs := make([]matrix.Matrix, T)            // (7, 128, 128)
 
 	if !l.Stateful || len(l.h) == 0 {
@@ -46,7 +46,7 @@ func (l *TimeLSTM) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 	}
 
 	for t := 0; t < T; t++ {
-		l.layer[t] = &LSTM{Wx: l.Wx, Wh: l.Wh, B: l.B} // Wx(D, 4H), Wh(H, 4H), B(1, 4H)
+		l.layer[t] = LSTM{Wx: l.Wx, Wh: l.Wh, B: l.B}  // Wx(D, 4H), Wh(H, 4H), B(1, 4H)
 		l.h, l.c = l.layer[t].Forward(xs[t], l.h, l.c) // h(128, 128), c(128, 128)
 		hs[t] = l.h
 	}

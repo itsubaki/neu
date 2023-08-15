@@ -9,7 +9,7 @@ import (
 
 type TimeSoftmaxWithLoss struct {
 	xs    []matrix.Matrix
-	layer []*SoftmaxWithLoss
+	layer []SoftmaxWithLoss
 }
 
 func (l *TimeSoftmaxWithLoss) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
@@ -21,13 +21,13 @@ func (l *TimeSoftmaxWithLoss) String() string               { return fmt.Sprintf
 
 func (l *TimeSoftmaxWithLoss) Forward(xs, ts []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 	T, V := len(xs), len(xs[0][0])
-	l.layer = make([]*SoftmaxWithLoss, T)
+	l.layer = make([]SoftmaxWithLoss, T)
 	l.xs = xs
 	ots := tensor.OneHot(ts, V)
 
 	var loss float64
 	for t := 0; t < T; t++ {
-		l.layer[t] = &SoftmaxWithLoss{}
+		l.layer[t] = SoftmaxWithLoss{}
 		loss += l.layer[t].Forward(xs[t], ots[t])[0][0]
 	}
 

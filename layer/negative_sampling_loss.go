@@ -12,8 +12,8 @@ import (
 
 type NegativeSamplingLoss struct {
 	sampler         *UnigramSampler
-	embeddingDot    []*EmbeddingDot
-	sigmoidWithLoss []*SigmoidWithLoss
+	embeddingDot    []EmbeddingDot
+	sigmoidWithLoss []SigmoidWithLoss
 	s               rand.Source
 }
 
@@ -22,9 +22,9 @@ func NewNegativeSamplingLoss(W matrix.Matrix, corpus []int, power float64, sampl
 		s = append(s, rand.NewSource(time.Now().UnixNano()))
 	}
 
-	embed, loss := make([]*EmbeddingDot, sampleSize+1), make([]*SigmoidWithLoss, sampleSize+1)
+	embed, loss := make([]EmbeddingDot, sampleSize+1), make([]SigmoidWithLoss, sampleSize+1)
 	for i := 0; i < sampleSize+1; i++ {
-		embed[i], loss[i] = &EmbeddingDot{Embedding: Embedding{W: W}}, &SigmoidWithLoss{}
+		embed[i], loss[i] = EmbeddingDot{Embedding: Embedding{W: W}}, SigmoidWithLoss{}
 	}
 
 	return &NegativeSamplingLoss{

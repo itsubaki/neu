@@ -9,7 +9,7 @@ import (
 type TimeEmbedding struct {
 	W     matrix.Matrix // params
 	DW    matrix.Matrix // grads
-	layer []*Embedding
+	layer []Embedding
 }
 
 func (l *TimeEmbedding) Params() []matrix.Matrix      { return []matrix.Matrix{l.W} }
@@ -24,11 +24,11 @@ func (l *TimeEmbedding) String() string {
 
 func (l *TimeEmbedding) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 	T := len(xs)                    // (7, 128, 1)
-	l.layer = make([]*Embedding, T) //
+	l.layer = make([]Embedding, T)  //
 	out := make([]matrix.Matrix, T) // (7, 128, 16)
 
 	for t := 0; t < T; t++ {
-		l.layer[t] = &Embedding{W: l.W}
+		l.layer[t] = Embedding{W: l.W}
 		out[t] = l.layer[t].Forward(xs[t], nil)
 	}
 

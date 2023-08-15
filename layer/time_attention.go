@@ -8,7 +8,7 @@ import (
 )
 
 type TimeAttention struct {
-	layer []*Attention
+	layer []Attention
 }
 
 func (l *TimeAttention) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
@@ -20,11 +20,11 @@ func (l *TimeAttention) String() string               { return fmt.Sprintf("%T",
 
 func (l *TimeAttention) Forward(hsenc, hsdec []matrix.Matrix) []matrix.Matrix {
 	T := len(hsdec)
-	l.layer = make([]*Attention, T)
+	l.layer = make([]Attention, T)
 	out := make([]matrix.Matrix, T)
 
 	for t := 0; t < T; t++ {
-		l.layer[t] = &Attention{
+		l.layer[t] = Attention{
 			AttentionWeight: &AttentionWeight{
 				Softmax: &Softmax{},
 			},

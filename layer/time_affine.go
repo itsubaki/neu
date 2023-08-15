@@ -9,7 +9,7 @@ import (
 type TimeAffine struct {
 	W, B   matrix.Matrix // params
 	DW, DB matrix.Matrix // grads
-	layer  []*Affine
+	layer  []Affine
 }
 
 func (l *TimeAffine) Params() []matrix.Matrix      { return []matrix.Matrix{l.W, l.B} }
@@ -25,11 +25,11 @@ func (l *TimeAffine) String() string {
 
 func (l *TimeAffine) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 	T := len(xs)
-	l.layer = make([]*Affine, T)
+	l.layer = make([]Affine, T)
 	out := make([]matrix.Matrix, T)
 
 	for t := 0; t < T; t++ {
-		l.layer[t] = &Affine{W: l.W, B: l.B}
+		l.layer[t] = Affine{W: l.W, B: l.B}
 		out[t] = l.layer[t].Forward(xs[t], nil)
 	}
 
