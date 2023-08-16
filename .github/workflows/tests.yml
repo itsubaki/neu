@@ -28,10 +28,7 @@ jobs:
 
       - name: Download testdata
         run: |
-          make mnistdl
-          make ptbdl
-          make additiondl
-          make datedl
+          make datasetdl
 
       - name: Tests
         run: |
@@ -45,7 +42,7 @@ jobs:
         run: |
           make cbow_simple
 
-      - name: CBOW
+      - name: CBOW(Negative Sampling)
         run: |
           make cbow
 

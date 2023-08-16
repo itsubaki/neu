@@ -62,6 +62,27 @@ func Int(v []float64) []int {
 	return out
 }
 
+func Pow2(v []float64) []float64 {
+	out := make([]float64, len(v))
+	for i, e := range v {
+		out[i] = e * e
+	}
+
+	return out
+}
+
+func Cos(x, y []float64) float64 {
+	xps := math.Sqrt(Sum(Pow2(x)) + 1e-8)
+	yps := math.Sqrt(Sum(Pow2(y)) + 1e-8)
+
+	var sum float64
+	for i := range x {
+		sum += x[i] * y[i]
+	}
+
+	return sum / (xps * yps)
+}
+
 func Choice(p []float64, s ...rand.Source) int {
 	if len(s) == 0 {
 		s = append(s, rand.NewSource(time.Now().UnixNano()))

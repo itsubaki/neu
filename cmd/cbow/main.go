@@ -7,6 +7,7 @@ import (
 
 	"github.com/itsubaki/neu/dataset/ptb"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/vector"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/trainer"
@@ -24,18 +25,18 @@ func main() {
 	fmt.Println(w2id)
 	fmt.Println()
 
-	c, t := ptb.CreateContextsTarget(corpus, 1)
-	for i := range c {
-		fmt.Printf("%v: %v\n", c[i], t[i])
+	contexts, target := ptb.CreateContextsTarget(corpus, 1)
+	for i := range contexts {
+		fmt.Printf("%v: %v\n", contexts[i], target[i])
 	}
 	fmt.Println()
 
 	m := model.NewCBOWNegs(model.CBOWNegsConfig{
 		CBOWConfig: model.CBOWConfig{
-			VocabSize:  7,
+			VocabSize:  vector.Max(corpus) + 1,
 			HiddenSize: 5,
 		},
-		Corpus:     []int{0, 1, 2, 3, 4, 1, 5, 6},
+		Corpus:     corpus,
 		WindowSize: 1,
 		SampleSize: 2,
 		Power:      0.75,
@@ -56,19 +57,26 @@ func main() {
 
 	now := time.Now()
 	tr.Fit(&trainer.Input{
-		Train:      matrix.From(c),
-		TrainLabel: matrix.From([][]int{t}).T(),
+		Train:      matrix.From(contexts),
+		TrainLabel: matrix.From([][]int{target}).T(),
 		Epochs:     epochs,
 		BatchSize:  1,
 		Verbose: func(epoch, j int, loss float64, m trainer.Model) {
-			fmt.Println(loss)
+			if epoch%300 != 0 {
+				return
+			}
+
+			fmt.Printf("%3d, %2d: loss=%.04f\n", epoch, j, loss)
 		},
 	})
 	fmt.Printf("elapsed=%v\n", time.Since(now))
+	fmt.Println()
 
 	Win := m.Embedding[0].Params()[0]
 	for id, word := range id2w {
 		fmt.Printf("%v: %.4f\n", word, Win[id])
 	}
 	fmt.Println()
+
+	fmt.Println("cos('I', 'You'): ", vector.Cos(Win[w2id["I"]], Win[w2id["You"]]))
 }

@@ -18,7 +18,7 @@ cbow_simple:
 	go run cmd/cbow_simple/main.go
 
 cbow:
-	go run cmd/cbow/main.go
+	go run cmd/cbow/main.go --epochs 0
 
 rnnlm:
 	go run cmd/rnnlm_simple/main.go --dir ./testdata --corpus-size 1000
@@ -34,6 +34,8 @@ seq2seq:
 
 seq2seq_attn:
 	go run cmd/seq2seq_attn/main.go --dir ./testdata
+
+datasetdl: mnistdl ptbdl additiondl datedl
 
 mnistdl:
 	curl -s -o testdata/train-images-idx3-ubyte.gz http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz

@@ -57,6 +57,23 @@ func ExampleInt() {
 	// [1 2 3]
 }
 
+func ExamplePow2() {
+	v := []float64{1, 2, 3}
+	fmt.Println(vector.Pow2(v))
+
+	// Output:
+	// [1 4 9]
+}
+
+func ExampleCos() {
+	x := []float64{1, 2, 3}
+	y := []float64{1, 2, 4}
+	fmt.Println(vector.Cos(x, y))
+
+	// Output:
+	// 0.9914601333935124
+}
+
 func ExampleContains() {
 	fmt.Println(vector.Contains(3, []int{1, 2, 3}))
 	fmt.Println(vector.Contains(0, []int{1, 2, 3}))
