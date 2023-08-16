@@ -20,6 +20,7 @@ func main() {
 
 	text := "You say goodbye and I say hello ."
 	corpus, id2w, w2id := ptb.PreProcess(text)
+	fmt.Println(text)
 	fmt.Println(corpus)
 	fmt.Println(id2w)
 	fmt.Println(w2id)
