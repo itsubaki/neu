@@ -18,13 +18,16 @@ func main() {
 	var dir string
 	var epochs, corpusSize int
 	flag.StringVar(&dir, "dir", "./testdata", "")
-	flag.IntVar(&epochs, "epochs", 100, "")
-	flag.IntVar(&corpusSize, "corpus-size", 1000, "")
+	flag.IntVar(&epochs, "epochs", 10, "")
+	flag.IntVar(&corpusSize, "corpus-size", -1, "")
 	flag.Parse()
 
 	// data
 	train := ptb.Must(ptb.Load(dir, ptb.TrainTxt))
-	corpus := train.Corpus[:corpusSize]
+	corpus := train.Corpus
+	if corpusSize > 0 {
+		corpus = train.Corpus[:corpusSize]
+	}
 
 	// model
 	m := model.NewRNNLM(&model.RNNLMConfig{

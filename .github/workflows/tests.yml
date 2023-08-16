@@ -45,17 +45,17 @@ jobs:
         run: |
           make cbow
 
-      - name: RNNLM(Elman)
+      - name: RNNLM(Simple)
         run: |
-          make rnnlm10
+          make rnnlm
 
       - name: RNNLM(LSTM)
         run: |
-          make rnnlm_lstm10
+          make rnnlm_lstm
 
       - name: RNNLMGen(LSTM)
         run: |
-          make rnnlmgen0
+          make rnnlm_gen
 
       - name: Seq2Seq
         run: |

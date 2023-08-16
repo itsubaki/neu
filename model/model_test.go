@@ -17,7 +17,7 @@ func ExampleSave() {
 		WeightInit:  weight.Xavier,
 	}, s)
 
-	if err := model.Save(m.Params(), "../testdata/example_save.gob"); err != nil {
+	if err := model.Save("../testdata/example_save.gob", m.Params()); err != nil {
 		fmt.Println("failed to save params:", err)
 		return
 	}
@@ -52,7 +52,7 @@ func ExampleSave() {
 }
 
 func ExampleSave_nosuchdir() {
-	if err := model.Save(nil, "../nosuchdir/hoge.gob"); err != nil {
+	if err := model.Save("../nosuchdir/hoge.gob", nil); err != nil {
 		fmt.Println("failed to save params:", err)
 		return
 	}

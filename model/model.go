@@ -86,7 +86,7 @@ type AttentionLayer interface {
 }
 
 // Save saves the params to a file.
-func Save(params [][]matrix.Matrix, filename string) error {
+func Save(filename string, params [][]matrix.Matrix) error {
 	f, err := os.Create(filename)
 	if err != nil {
 		return fmt.Errorf("failed to create file: %v", err)

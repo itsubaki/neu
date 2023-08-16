@@ -23,10 +23,10 @@ func main() {
 	fmt.Println(w2id)
 	fmt.Println()
 
-	c, t := ptb.CreateContextsTarget(corpus, 1)
-	contexts, targets := OneHot(c, t, len(w2id))
+	contexts, target := ptb.CreateContextsTarget(corpus, 1)
+	c, t := OneHot(contexts, target, len(w2id))
 	for i := range contexts {
-		fmt.Printf("%v(%v): %v(%v)\n", c[i], contexts[i], t[i], targets[i])
+		fmt.Printf("%v(%v): %v(%v)\n", contexts[i], c[i], target[i], t[i])
 	}
 	fmt.Println()
 
@@ -48,7 +48,7 @@ func main() {
 	}
 
 	for i := 0; i < epochs; i++ {
-		loss := m.Forward(contexts, targets)
+		loss := m.Forward(c, t)
 		m.Backward()
 		o.Update(m)
 
@@ -65,20 +65,20 @@ func main() {
 
 	you := []float64{1, 0, 0, 0, 0, 0, 0}               // you
 	goodbye := []float64{0, 0, 1, 0, 0, 0, 0}           // goodbye
-	target := []float64{0, 1, 0, 0, 0, 0, 0}            // say
+	say := []float64{0, 1, 0, 0, 0, 0, 0}               // say
 	score := m.Predict([]matrix.Matrix{{you, goodbye}}) //
 
 	fmt.Printf("you:     %.4f\n", you)
 	fmt.Printf("goodbye: %.4f\n", goodbye)
-	fmt.Printf("target:  %.4f\n", target)
+	fmt.Printf("target:  %.4f\n", say)
 	fmt.Printf("predict: %.4f\n", activation.Softmax(score[0]))
 }
 
-func OneHot(c [][]int, t []int, size int) ([]matrix.Matrix, matrix.Matrix) {
-	contexts := make([]matrix.Matrix, 0)
-	for _, v := range c {
-		contexts = append(contexts, matrix.OneHot(v, size))
+func OneHot(contexts [][]int, target []int, size int) ([]matrix.Matrix, matrix.Matrix) {
+	c := make([]matrix.Matrix, 0)
+	for _, v := range contexts {
+		c = append(c, matrix.OneHot(v, size))
 	}
 
-	return contexts, matrix.OneHot(t, size)
+	return c, matrix.OneHot(target, size)
 }

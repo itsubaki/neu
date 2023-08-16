@@ -17,17 +17,14 @@ mnist1:
 cbow:
 	go run cmd/cbow/main.go
 
-rnnlm10:
-	go run cmd/rnnlm/main.go --dir ./testdata --epochs 10
+rnnlm:
+	go run cmd/rnnlm_simple/main.go --dir ./testdata --corpus-size 1000
 
-rnnlm_lstm10:
-	go run cmd/rnnlm_lstm/main.go --dir ./testdata --epochs 10
+rnnlm_lstm:
+	go run cmd/rnnlm_lstm/main.go --dir ./testdata --corpus-size 1000
 
-rnnlmgen0:
+rnnlm_gen:
 	go run cmd/rnnlm_gen/main.go --dir ./testdata --epochs 0
-
-rnnlmgen1:
-	go run cmd/rnnlm_gen/main.go --dir ./testdata --epochs 1
 
 seq2seq:
 	go run cmd/seq2seq/main.go --dir ./testdata
