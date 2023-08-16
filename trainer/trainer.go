@@ -14,6 +14,7 @@ import (
 var (
 	_ Model = (*model.Sequential)(nil)
 	_ Model = (*model.MLP)(nil)
+	_ Model = (*model.CBOWNegs)(nil)
 )
 
 var (

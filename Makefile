@@ -14,6 +14,9 @@ mnist:
 mnist1:
 	go run cmd/mnist/main.go --dir ./testdata --epochs 1
 
+cbow_simple:
+	go run cmd/cbow_simple/main.go
+
 cbow:
 	go run cmd/cbow/main.go
 

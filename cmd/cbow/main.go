@@ -3,12 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
+	"time"
 
-	"github.com/itsubaki/neu/activation"
 	"github.com/itsubaki/neu/dataset/ptb"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
+	"github.com/itsubaki/neu/trainer"
 )
 
 func main() {
@@ -23,16 +24,21 @@ func main() {
 	fmt.Println(w2id)
 	fmt.Println()
 
-	contexts, target := ptb.CreateContextsTarget(corpus, 1)
-	c, t := OneHot(contexts, target, len(w2id))
-	for i := range contexts {
-		fmt.Printf("%v(%v): %v(%v)\n", contexts[i], c[i], target[i], t[i])
+	c, t := ptb.CreateContextsTarget(corpus, 1)
+	for i := range c {
+		fmt.Printf("%v: %v\n", c[i], t[i])
 	}
 	fmt.Println()
 
-	m := model.NewCBOW(&model.CBOWConfig{
-		VocabSize:  len(w2id),
-		HiddenSize: 5,
+	m := model.NewCBOWNegs(model.CBOWNegsConfig{
+		CBOWConfig: model.CBOWConfig{
+			VocabSize:  7,
+			HiddenSize: 5,
+		},
+		Corpus:     []int{0, 1, 2, 3, 4, 1, 5, 6},
+		WindowSize: 1,
+		SampleSize: 2,
+		Power:      0.75,
 	})
 
 	fmt.Println(m.Summary()[0])
@@ -41,44 +47,28 @@ func main() {
 	}
 	fmt.Println()
 
-	o := &optimizer.Adam{
+	// training
+	tr := trainer.New(m, &optimizer.Adam{
 		LearningRate: 0.001,
 		Beta1:        0.9,
 		Beta2:        0.999,
-	}
+	})
 
-	for i := 0; i < epochs; i++ {
-		loss := m.Forward(c, t)
-		m.Backward()
-		o.Update(m)
+	now := time.Now()
+	tr.Fit(&trainer.Input{
+		Train:      matrix.From(c),
+		TrainLabel: matrix.From([][]int{t}).T(),
+		Epochs:     epochs,
+		BatchSize:  1,
+		Verbose: func(epoch, j int, loss float64, m trainer.Model) {
+			fmt.Println(loss)
+		},
+	})
+	fmt.Printf("elapsed=%v\n", time.Since(now))
 
-		if (i+1)%200 == 0 {
-			fmt.Printf("%4v: loss=%.4f\n", i+1, loss)
-		}
-	}
-	fmt.Println()
-
+	Win := m.Embedding[0].Params()[0]
 	for id, word := range id2w {
-		fmt.Printf("%v: %.4f\n", word, m.Win0.Params()[0][id])
+		fmt.Printf("%v: %.4f\n", word, Win[id])
 	}
 	fmt.Println()
-
-	you := []float64{1, 0, 0, 0, 0, 0, 0}               // you
-	goodbye := []float64{0, 0, 1, 0, 0, 0, 0}           // goodbye
-	say := []float64{0, 1, 0, 0, 0, 0, 0}               // say
-	score := m.Predict([]matrix.Matrix{{you, goodbye}}) //
-
-	fmt.Printf("you:     %.4f\n", you)
-	fmt.Printf("goodbye: %.4f\n", goodbye)
-	fmt.Printf("target:  %.4f\n", say)
-	fmt.Printf("predict: %.4f\n", activation.Softmax(score[0]))
-}
-
-func OneHot(contexts [][]int, target []int, size int) ([]matrix.Matrix, matrix.Matrix) {
-	c := make([]matrix.Matrix, 0)
-	for _, v := range contexts {
-		c = append(c, matrix.OneHot(v, size))
-	}
-
-	return c, matrix.OneHot(target, size)
 }

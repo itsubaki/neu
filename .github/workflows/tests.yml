@@ -41,6 +41,10 @@ jobs:
         run: |
           make mnist1
 
+      - name: CBOW(Simple)
+        run: |
+          make cbow_simple
+
       - name: CBOW
         run: |
           make cbow

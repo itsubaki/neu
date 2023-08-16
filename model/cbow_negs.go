@@ -49,22 +49,29 @@ func NewCBOWNegs(c CBOWNegsConfig, s ...rand.Source) *CBOWNegs {
 	}
 }
 
-func (m *CBOWNegs) Forward(contexts, target matrix.Matrix) matrix.Matrix {
+func (m *CBOWNegs) Predict(x matrix.Matrix, _ ...layer.Opts) matrix.Matrix {
 	h := matrix.Zero(1, 1)
 	for i, l := range m.Embedding {
-		h = l.Forward(matrix.Column(contexts, i), nil).Add(h)
+		h = l.Forward(matrix.Column(x, i), nil).Add(h)
 	}
 	h = h.MulC(1.0 / float64(len(m.Embedding)))
 
+	return h
+}
+
+func (m *CBOWNegs) Forward(contexts, target matrix.Matrix) matrix.Matrix {
+	h := m.Predict(contexts)
 	return m.Loss.Forward(h, target)
 }
 
-func (m *CBOWNegs) Backward() {
+func (m *CBOWNegs) Backward() matrix.Matrix {
 	dout, _ := m.Loss.Backward(matrix.New([]float64{1}))
 	dout = dout.MulC(1.0 / float64(len(m.Embedding)))
 	for _, l := range m.Embedding {
 		l.Backward(dout)
 	}
+
+	return nil
 }
 
 func (m *CBOWNegs) Summary() []string {
