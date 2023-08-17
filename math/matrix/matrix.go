@@ -346,6 +346,23 @@ func (m Matrix) F2(n Matrix, f func(a, b float64) float64) Matrix {
 	return out
 }
 
+func (m Matrix) F3(n, l Matrix, f func(a, b, c float64) float64) Matrix {
+	p, q := m.Dim()
+
+	out := make(Matrix, 0, p)
+	for i := 0; i < p; i++ {
+		v := make([]float64, 0, q)
+
+		for j := 0; j < q; j++ {
+			v = append(v, f(m[i][j], n[i][j], l[i][j]))
+		}
+
+		out = append(out, v)
+	}
+
+	return out
+}
+
 // Broadcast returns the broadcasted matrix.
 func (m Matrix) Broadcast(a, b int) Matrix {
 	if len(m) == 1 && len(m[0]) == 1 {
@@ -412,6 +429,10 @@ func F(m Matrix, f func(a float64) float64) Matrix {
 
 func F2(m, n Matrix, f func(a, b float64) float64) Matrix {
 	return m.F2(n, f)
+}
+
+func F3(m, n, l Matrix, f func(a, b, c float64) float64) Matrix {
+	return m.F3(n, l, f)
 }
 
 // Padding returns the padded matrix.

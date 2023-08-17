@@ -566,6 +566,32 @@ func ExampleF2() {
 
 }
 
+func ExampleF3() {
+	A := matrix.New(
+		[]float64{1, 2},
+		[]float64{3, 4},
+	)
+
+	B := matrix.New(
+		[]float64{5, 6},
+		[]float64{7, 8},
+	)
+
+	C := matrix.New(
+		[]float64{9, 9},
+		[]float64{9, 9},
+	)
+
+	for _, r := range matrix.F3(A, B, C, func(a, b, c float64) float64 { return a*b - c }) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [-4 3]
+	// [12 23]
+
+}
+
 func ExamplePadding() {
 	x := matrix.New(
 		[]float64{1, 2},
