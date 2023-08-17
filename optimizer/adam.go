@@ -29,9 +29,8 @@ func (o *Adam) Update(m Model) [][]matrix.Matrix {
 	bottom := 1.0 - math.Pow(o.Beta1, float64(o.iter))         // 1 - beta1^t
 	lrt := o.LearningRate * top / bottom                       // lr * sqrt(1 - beta2^t) / (1 - beta1^t)
 
-	updated := make([][]matrix.Matrix, len(params))
+	updated := ZeroLike(params)
 	for i := range params {
-		updated[i] = make([]matrix.Matrix, len(params[i]))
 		for j := range params[i] {
 			o.m[i][j] = o.m[i][j].Add(grads[i][j].Sub(o.m[i][j]).MulC(1.0 - o.Beta1))        // m = m + (1 - beta1) * (grads - m)
 			o.v[i][j] = o.v[i][j].Add(grads[i][j].Pow2().Sub(o.v[i][j]).MulC(1.0 - o.Beta2)) // v = v + (1 - beta2) * (grads * grads - v)
