@@ -34,7 +34,7 @@ func (o *Adam) Update(m Model) [][]matrix.Matrix {
 		for j := range params[i] {
 			o.m[i][j] = o.m[i][j].Add(grads[i][j].Sub(o.m[i][j]).MulC(1.0 - o.Beta1))        // m = m + (1 - beta1) * (grads - m)
 			o.v[i][j] = o.v[i][j].Add(grads[i][j].Pow2().Sub(o.v[i][j]).MulC(1.0 - o.Beta2)) // v = v + (1 - beta2) * (grads * grads - v)
-			updated[i][j] = params[i][j].Sub(matrix.F2(o.m[i][j], o.v[i][j], adam(lrt)))     // params = params - lrt * m / (sqrt(v) + 1e-7)
+			updated[i][j] = matrix.F3(params[i][j], o.m[i][j], o.v[i][j], adam(lrt))         // params = params - lrt * m / (sqrt(v) + 1e-7)
 		}
 	}
 
@@ -42,6 +42,6 @@ func (o *Adam) Update(m Model) [][]matrix.Matrix {
 	return updated
 }
 
-func adam(learningRate float64) func(m, v float64) float64 {
-	return func(m, v float64) float64 { return learningRate * m / (math.Sqrt(v) + 1e-7) }
+func adam(learningRate float64) func(p, m, v float64) float64 {
+	return func(p, m, v float64) float64 { return p - learningRate*m/(math.Sqrt(v)+1e-7) }
 }

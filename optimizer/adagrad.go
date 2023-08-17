@@ -27,8 +27,8 @@ func (o *AdaGrad) Update(m Model) [][]matrix.Matrix {
 	updated := ZeroLike(params)
 	for i := range params {
 		for j := range params[i] {
-			o.h[i][j] = o.h[i][j].Add(grads[i][j].Pow2())                                                // h[k] = h[k] + grads[k] * grads[k]
-			updated[i][j] = params[i][j].Sub(matrix.F2(grads[i][j], o.h[i][j], adagrad(o.LearningRate))) // params[k] = params[k] - o.LearningRate * grads[k]/sqrt(h[k])
+			o.h[i][j] = o.h[i][j].Add(grads[i][j].Pow2())                                            // h[k] = h[k] + grads[k] * grads[k]
+			updated[i][j] = matrix.F3(params[i][j], grads[i][j], o.h[i][j], adagrad(o.LearningRate)) // params[k] = params[k] - o.LearningRate * grads[k]/sqrt(h[k])
 		}
 	}
 
@@ -36,6 +36,6 @@ func (o *AdaGrad) Update(m Model) [][]matrix.Matrix {
 	return updated
 }
 
-func adagrad(learningRate float64) func(a, b float64) float64 {
-	return func(a, b float64) float64 { return learningRate * a / (math.Sqrt(b) + 1e-7) }
+func adagrad(learningRate float64) func(p, a, b float64) float64 {
+	return func(p, a, b float64) float64 { return p - learningRate*a/(math.Sqrt(b)+1e-7) }
 }
