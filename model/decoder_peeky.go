@@ -73,16 +73,16 @@ func (m *PeekyDecoder) Generate(h matrix.Matrix, startID, length int) []int {
 	peekyH := []matrix.Matrix{matrix.Reshape(h, 1, H)}
 	m.TimeLSTM.SetState(h)
 
-	sampleID := startID
+	x := startID
 	for i := 0; i < length; i++ {
-		xs := []matrix.Matrix{{{float64(sampleID)}}}
+		xs := []matrix.Matrix{{{float64(x)}}}
 
 		out := m.TimeEmbedding.Forward(xs, nil)
 		out = m.TimeLSTM.Forward(tensor.Concat(peekyH, out), nil)
 		score := m.TimeAffine.Forward(tensor.Concat(peekyH, out), nil)
 
-		sampleID = tensor.Argmax(score)
-		sampled = append(sampled, sampleID)
+		x = tensor.Argmax(score)
+		sampled = append(sampled, x)
 	}
 
 	return sampled

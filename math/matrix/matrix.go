@@ -183,39 +183,39 @@ func (m Matrix) T() Matrix {
 }
 
 func (m Matrix) Add(n Matrix) Matrix {
-	return m.F2(n.Broadcast(m.Dim()), func(a, b float64) float64 { return a + b })
+	return F2(m, n.Broadcast(m.Dim()), func(a, b float64) float64 { return a + b })
 }
 
 func (m Matrix) Sub(n Matrix) Matrix {
-	return m.F2(n.Broadcast(m.Dim()), func(a, b float64) float64 { return a - b })
+	return F2(m, n.Broadcast(m.Dim()), func(a, b float64) float64 { return a - b })
 }
 
 func (m Matrix) Mul(n Matrix) Matrix {
-	return m.F2(n.Broadcast(m.Dim()), func(a, b float64) float64 { return a * b })
+	return F2(m, n.Broadcast(m.Dim()), func(a, b float64) float64 { return a * b })
 }
 
 func (m Matrix) Div(n Matrix) Matrix {
-	return m.F2(n.Broadcast(m.Dim()), func(a, b float64) float64 { return a / b })
+	return F2(m, n.Broadcast(m.Dim()), func(a, b float64) float64 { return a / b })
 }
 
 func (m Matrix) AddC(c float64) Matrix {
-	return m.F(func(v float64) float64 { return c + v })
+	return F(m, func(v float64) float64 { return c + v })
 }
 
 func (m Matrix) MulC(c float64) Matrix {
-	return m.F(func(v float64) float64 { return c * v })
+	return F(m, func(v float64) float64 { return c * v })
 }
 
 func (m Matrix) Sqrt(eps float64) Matrix {
-	return m.F(func(v float64) float64 { return math.Sqrt(v + eps) })
+	return F(m, func(v float64) float64 { return math.Sqrt(v + eps) })
 }
 
 func (m Matrix) Pow2() Matrix {
-	return m.F(func(v float64) float64 { return v * v })
+	return F(m, func(v float64) float64 { return v * v })
 }
 
 func (m Matrix) Abs() Matrix {
-	return m.F(func(v float64) float64 { return math.Abs(v) })
+	return F(m, func(v float64) float64 { return math.Abs(v) })
 }
 
 // Sum returns the sum of all elements.
@@ -311,58 +311,6 @@ func (m Matrix) MaxAxis1() []float64 {
 	return out
 }
 
-// F applies a function to each element of the matrix.
-func (m Matrix) F(f func(v float64) float64) Matrix {
-	p, q := m.Dim()
-
-	out := make(Matrix, 0, p)
-	for i := 0; i < p; i++ {
-		v := make([]float64, 0, q)
-
-		for j := 0; j < q; j++ {
-			v = append(v, f(m[i][j]))
-		}
-
-		out = append(out, v)
-	}
-
-	return out
-}
-
-func (m Matrix) F2(n Matrix, f func(a, b float64) float64) Matrix {
-	p, q := m.Dim()
-
-	out := make(Matrix, 0, p)
-	for i := 0; i < p; i++ {
-		v := make([]float64, 0, q)
-
-		for j := 0; j < q; j++ {
-			v = append(v, f(m[i][j], n[i][j]))
-		}
-
-		out = append(out, v)
-	}
-
-	return out
-}
-
-func (m Matrix) F3(n, l Matrix, f func(a, b, c float64) float64) Matrix {
-	p, q := m.Dim()
-
-	out := make(Matrix, 0, p)
-	for i := 0; i < p; i++ {
-		v := make([]float64, 0, q)
-
-		for j := 0; j < q; j++ {
-			v = append(v, f(m[i][j], n[i][j], l[i][j]))
-		}
-
-		out = append(out, v)
-	}
-
-	return out
-}
-
 // Broadcast returns the broadcasted matrix.
 func (m Matrix) Broadcast(a, b int) Matrix {
 	if len(m) == 1 && len(m[0]) == 1 {
@@ -424,15 +372,56 @@ func Dot(m, n Matrix) Matrix {
 
 // F applies a function to each element of the matrix.
 func F(m Matrix, f func(a float64) float64) Matrix {
-	return m.F(f)
+	p, q := m.Dim()
+
+	out := make(Matrix, 0, p)
+	for i := 0; i < p; i++ {
+		v := make([]float64, 0, q)
+
+		for j := 0; j < q; j++ {
+			v = append(v, f(m[i][j]))
+		}
+
+		out = append(out, v)
+	}
+
+	return out
 }
 
+// F2 applies a function to each element of the matrix.
 func F2(m, n Matrix, f func(a, b float64) float64) Matrix {
-	return m.F2(n, f)
+	p, q := m.Dim()
+
+	out := make(Matrix, 0, p)
+	for i := 0; i < p; i++ {
+		v := make([]float64, 0, q)
+
+		for j := 0; j < q; j++ {
+			v = append(v, f(m[i][j], n[i][j]))
+		}
+
+		out = append(out, v)
+	}
+
+	return out
 }
 
-func F3(m, n, l Matrix, f func(a, b, c float64) float64) Matrix {
-	return m.F3(n, l, f)
+// F3 applies a function to each element of the matrix.
+func F3(m, n, o Matrix, f func(a, b, c float64) float64) Matrix {
+	p, q := m.Dim()
+
+	out := make(Matrix, 0, p)
+	for i := 0; i < p; i++ {
+		v := make([]float64, 0, q)
+
+		for j := 0; j < q; j++ {
+			v = append(v, f(m[i][j], n[i][j], o[i][j]))
+		}
+
+		out = append(out, v)
+	}
+
+	return out
 }
 
 // Padding returns the padded matrix.

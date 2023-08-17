@@ -18,7 +18,7 @@ func (l *Sigmoid) SetParams(p ...matrix.Matrix) {}
 func (l *Sigmoid) String() string               { return fmt.Sprintf("%T", l) }
 
 func (l *Sigmoid) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
-	l.out = x.F(activation.Sigmoid)
+	l.out = matrix.F(x, activation.Sigmoid)
 	return l.out
 }
 

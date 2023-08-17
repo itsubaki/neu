@@ -39,10 +39,9 @@ func (g *RNNLMGen) Generate(startID int, skipIDs []int, length int) []int {
 		if vector.Contains(sampled, skipIDs) {
 			continue
 		}
-		wordIDs = append(wordIDs, sampled)
 
-		// next
 		x = sampled
+		wordIDs = append(wordIDs, x)
 	}
 
 	return wordIDs

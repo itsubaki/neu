@@ -7,6 +7,13 @@ import (
 	"github.com/itsubaki/neu/math/tensor"
 )
 
+func ExampleZero() {
+	fmt.Println(tensor.Zero(2, 2, 2))
+
+	// Output:
+	// [[[0 0] [0 0]] [[0 0] [0 0]]]
+}
+
 func ExampleZeroLike() {
 	x := []matrix.Matrix{
 		{

@@ -18,7 +18,7 @@ func (l *SigmoidWithLoss) SetParams(p ...matrix.Matrix) {}
 func (l *SigmoidWithLoss) String() string               { return fmt.Sprintf("%T", l) }
 
 func (l *SigmoidWithLoss) Forward(x, t matrix.Matrix, _ ...Opts) matrix.Matrix {
-	l.y, l.t = x.F(activation.Sigmoid), t
+	l.y, l.t = matrix.F(x, activation.Sigmoid), t
 
 	// loss = Loss(y, t) + Loss(1 - y, 1 - t)
 	one := matrix.One(l.y.Dim())

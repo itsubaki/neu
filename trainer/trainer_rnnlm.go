@@ -5,6 +5,7 @@ import (
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/tensor"
 	"github.com/itsubaki/neu/model"
 )
 
@@ -81,15 +82,13 @@ func (tr *RNNLMTrainer) Fit(in *RNNLMInput) {
 }
 
 func (tr *RNNLMTrainer) Batch(xs, ts, offsets []int, T, N int) ([]matrix.Matrix, []matrix.Matrix) {
-	xbatch, tbatch := make([]matrix.Matrix, T), make([]matrix.Matrix, T)
+	xbatch, tbatch := tensor.Zero(T, N, 1), tensor.Zero(T, N, 1)
 	for t := 0; t < T; t++ {
-		xv, tv := make(matrix.Matrix, N), make(matrix.Matrix, N)
 		for i, offset := range offsets {
-			xv[i] = []float64{float64(xs[(offset+tr.timeIdx)%len(xs)])}
-			tv[i] = []float64{float64(ts[(offset+tr.timeIdx)%len(xs)])}
+			xbatch[t][i] = []float64{float64(xs[(offset+tr.timeIdx)%len(xs)])}
+			tbatch[t][i] = []float64{float64(ts[(offset+tr.timeIdx)%len(xs)])}
 		}
 
-		xbatch[t], tbatch[t] = xv, tv
 		tr.timeIdx++
 	}
 

@@ -9,6 +9,7 @@ import (
 
 	"github.com/itsubaki/neu/dataset/ptb"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/tensor"
 	"github.com/itsubaki/neu/math/vector"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
@@ -130,7 +131,8 @@ func perplexity(m trainer.RNNLM, corpus []int, batchSize, timeSize int) float64 
 
 	var total float64
 	for j := 0; j < maxIter; j++ {
-		xs, ts := make([]matrix.Matrix, timeSize), make([]matrix.Matrix, timeSize)
+		xs, ts := tensor.Zero(timeSize, batchSize, 1), tensor.Zero(timeSize, batchSize, 1)
+
 		timeOffset := j * timeSize
 		offsets := make([]int, batchSize)
 		for i := 0; i < batchSize; i++ {
@@ -138,7 +140,6 @@ func perplexity(m trainer.RNNLM, corpus []int, batchSize, timeSize int) float64 
 		}
 
 		for t := 0; t < timeSize; t++ {
-			xs[t], ts[t] = make(matrix.Matrix, batchSize), make(matrix.Matrix, batchSize)
 			for i, offset := range offsets {
 				xs[t][i] = []float64{float64(corpus[(offset+t)%corpusSize])}
 				ts[t][i] = []float64{float64(corpus[(offset+t+1)%corpusSize])}
@@ -148,7 +149,7 @@ func perplexity(m trainer.RNNLM, corpus []int, batchSize, timeSize int) float64 
 		loss := m.Forward(xs, ts)
 		total += loss[0][0][0]
 
-		fmt.Printf("%2d, %2d: loss=%.04f\n", j, maxIter, loss[0][0])
+		fmt.Printf("%3d/%3d: loss=%.04f\n", j, maxIter, loss)
 	}
 
 	return trainer.Perplexity(total, maxIter)

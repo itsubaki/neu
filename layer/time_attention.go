@@ -25,10 +25,8 @@ func (l *TimeAttention) Forward(hsenc, hsdec []matrix.Matrix) []matrix.Matrix {
 
 	for t := 0; t < T; t++ {
 		l.layer[t] = Attention{
-			AttentionWeight: &AttentionWeight{
-				Softmax: &Softmax{},
-			},
-			WeightSum: &WeightSum{},
+			AttentionWeight: &AttentionWeight{Softmax: &Softmax{}},
+			WeightSum:       &WeightSum{},
 		}
 
 		out[t] = l.layer[t].Forward(hsenc, hsdec[t])

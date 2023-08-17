@@ -6,6 +6,16 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 )
 
+func Zero(m, n, o int) []matrix.Matrix {
+	out := make([]matrix.Matrix, m)
+	for i := 0; i < m; i++ {
+		out[i] = matrix.Zero(n, o)
+	}
+
+	return out
+
+}
+
 func ZeroLike(x []matrix.Matrix) []matrix.Matrix {
 	out := make([]matrix.Matrix, len(x))
 	for i := 0; i < len(x); i++ {

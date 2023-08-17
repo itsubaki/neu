@@ -429,22 +429,6 @@ func ExampleMatrix_T() {
 	// [3 6]
 }
 
-func ExampleMatrix_F() {
-	A := matrix.New(
-		[]float64{1, 2},
-		[]float64{3, 4},
-	)
-
-	for _, r := range A.F(func(v float64) float64 { return v * 3.0 }) {
-		fmt.Println(r)
-	}
-
-	// Output:
-	// [3 6]
-	// [9 12]
-
-}
-
 func ExampleMatrix_Broadcast() {
 	m := matrix.New([]float64{1})
 	for _, r := range m {

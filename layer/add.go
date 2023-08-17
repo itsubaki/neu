@@ -19,8 +19,8 @@ func (l *Add) Forward(x, y matrix.Matrix, _ ...Opts) matrix.Matrix {
 }
 
 func (l *Add) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	dx := dout.F(x1)
-	dy := dout.F(x1)
+	dx := matrix.F(dout, x1)
+	dy := matrix.F(dout, x1)
 	return dx, dy
 }
 
