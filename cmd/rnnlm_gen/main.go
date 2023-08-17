@@ -22,6 +22,7 @@ func main() {
 	var dir string
 	var length int
 	var epochs, wordvecSize, hiddenSize, batchSize, timeSize int
+	var learningRate, dropoutRatio, max float64
 	flag.StringVar(&dir, "dir", "./testdata", "")
 	flag.IntVar(&length, "length", 100, "")
 	flag.IntVar(&epochs, "epochs", 10, "")
@@ -29,6 +30,9 @@ func main() {
 	flag.IntVar(&hiddenSize, "hidden-size", 650, "")
 	flag.IntVar(&batchSize, "batch-size", 20, "")
 	flag.IntVar(&timeSize, "time-size", 35, "")
+	flag.Float64Var(&dropoutRatio, "dropout-ratio", 0.5, "")
+	flag.Float64Var(&learningRate, "learning-rate", 20, "")
+	flag.Float64Var(&max, "grads-cliping-max", 0.25, "")
 	flag.Parse()
 
 	// data
@@ -43,7 +47,7 @@ func main() {
 			HiddenSize:  hiddenSize,
 			WeightInit:  weight.Xavier,
 		},
-		DropoutRatio: 0.5,
+		DropoutRatio: dropoutRatio,
 	})
 
 	// summary
@@ -61,9 +65,9 @@ func main() {
 
 	// train
 	o := &optimizer.SGD{
-		LearningRate: 20,
+		LearningRate: learningRate,
 		Hooks: []optimizer.Hook{
-			hook.GradsClipping(0.25),
+			hook.GradsClipping(max),
 		},
 	}
 	tr := trainer.NewRNNLM(m, o)

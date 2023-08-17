@@ -18,10 +18,15 @@ import (
 func main() {
 	// flags
 	var dir string
-	var epochs, batchSize int
+	var epochs, hiddenSize, batchSize int
+	var momentum, learningRate, lambda float64
 	flag.StringVar(&dir, "dir", "./testdata", "")
 	flag.IntVar(&epochs, "epochs", 10, "")
+	flag.IntVar(&hiddenSize, "hidden-size", 50, "")
 	flag.IntVar(&batchSize, "batch-size", 100, "")
+	flag.Float64Var(&momentum, "batch-norm-momentum", 0.9, "")
+	flag.Float64Var(&learningRate, "learning-rate", 0.01, "")
+	flag.Float64Var(&lambda, "weight-decay", 1e-6, "")
 	flag.Parse()
 
 	// data
@@ -37,11 +42,11 @@ func main() {
 
 	// model
 	m := model.NewMLP(&model.MLPConfig{
-		InputSize:         mnist.Width * mnist.Height, // 24 * 24 = 784
-		OutputSize:        mnist.Labels,               // 0 ~ 9
-		HiddenSize:        []int{50, 50, 50},
+		InputSize:         mnist.Width * mnist.Height,                // 24 * 24 = 784
+		OutputSize:        mnist.Labels,                              // 0 ~ 9
+		HiddenSize:        []int{hiddenSize, hiddenSize, hiddenSize}, //
 		WeightInit:        weight.He,
-		BatchNormMomentum: 0.9,
+		BatchNormMomentum: momentum,
 	})
 
 	// summary
@@ -53,9 +58,9 @@ func main() {
 
 	// training
 	tr := trainer.New(m, &optimizer.AdaGrad{
-		LearningRate: 0.01,
+		LearningRate: learningRate,
 		Hooks: []optimizer.Hook{
-			hook.WeightDecay(1e-6),
+			hook.WeightDecay(lambda),
 		},
 	})
 

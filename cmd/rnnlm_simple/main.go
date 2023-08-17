@@ -16,10 +16,16 @@ import (
 func main() {
 	// flags
 	var dir string
-	var epochs, corpusSize int
+	var epochs, corpusSize, wordvecSize, hiddenSize, batchSize, timeSize int
+	var learningRate float64
 	flag.StringVar(&dir, "dir", "./testdata", "")
 	flag.IntVar(&epochs, "epochs", 10, "")
 	flag.IntVar(&corpusSize, "corpus-size", -1, "")
+	flag.IntVar(&wordvecSize, "wordvec-size", 100, "")
+	flag.IntVar(&hiddenSize, "hidden-size", 100, "")
+	flag.IntVar(&batchSize, "batch-size", 10, "")
+	flag.IntVar(&timeSize, "time-size", 5, "")
+	flag.Float64Var(&learningRate, "learning-rate", 0.1, "")
 	flag.Parse()
 
 	// data
@@ -32,8 +38,8 @@ func main() {
 	// model
 	m := model.NewRNNLM(&model.RNNLMConfig{
 		VocabSize:   vector.Max(corpus) + 1,
-		WordVecSize: 100,
-		HiddenSize:  100,
+		WordVecSize: wordvecSize,
+		HiddenSize:  hiddenSize,
 		WeightInit:  weight.Xavier,
 	})
 
@@ -46,7 +52,7 @@ func main() {
 
 	// training
 	tr := trainer.NewRNNLM(m, &optimizer.SGD{
-		LearningRate: 0.1,
+		LearningRate: learningRate,
 	})
 
 	now := time.Now()
@@ -54,8 +60,8 @@ func main() {
 		Train:      corpus[:len(corpus)-1],
 		TrainLabel: corpus[1:],
 		Epochs:     epochs,
-		BatchSize:  10,
-		TimeSize:   5,
+		BatchSize:  batchSize,
+		TimeSize:   timeSize,
 		Verbose: func(epoch, j int, perplexity float64, m trainer.RNNLM) {
 			fmt.Printf("%2d, %2d: train_ppl=%.04f\n", epoch, j, perplexity)
 		},

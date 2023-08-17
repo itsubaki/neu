@@ -18,7 +18,7 @@ cbow_simple:
 	go run cmd/cbow_simple/main.go
 
 cbow:
-	go run cmd/cbow/main.go --epochs 0
+	go run cmd/cbow/main.go
 
 rnnlm:
 	go run cmd/rnnlm_simple/main.go --dir ./testdata --corpus-size 1000

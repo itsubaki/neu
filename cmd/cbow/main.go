@@ -15,8 +15,18 @@ import (
 
 func main() {
 	// flags
-	var epochs int
+	var epochs, hiddenSize, windowSize, sampleSize, batchSize int
+	var power, learningRate, beta1, beta2 float64
 	flag.IntVar(&epochs, "epochs", 1000, "")
+	flag.IntVar(&hiddenSize, "hidden-size", 5, "")
+	flag.IntVar(&windowSize, "window-size", 1, "")
+	flag.IntVar(&sampleSize, "sample-size", 2, "")
+	flag.IntVar(&batchSize, "batch-size", 1, "")
+	flag.Float64Var(&power, "power", 0.75, "")
+	flag.Float64Var(&learningRate, "learning-rate", 0.001, "")
+	flag.Float64Var(&beta1, "beta1", 0.9, "")
+	flag.Float64Var(&beta2, "beta2", 0.999, "")
+	flag.Parse()
 
 	text := "You say goodbye and I say hello ."
 	corpus, id2w, w2id := ptb.PreProcess(text)
@@ -35,12 +45,12 @@ func main() {
 	m := model.NewCBOWNegs(model.CBOWNegsConfig{
 		CBOWConfig: model.CBOWConfig{
 			VocabSize:  vector.Max(corpus) + 1,
-			HiddenSize: 5,
+			HiddenSize: hiddenSize,
 		},
 		Corpus:     corpus,
-		WindowSize: 1,
-		SampleSize: 2,
-		Power:      0.75,
+		WindowSize: windowSize,
+		SampleSize: sampleSize,
+		Power:      power,
 	})
 
 	fmt.Println(m.Summary()[0])
@@ -51,9 +61,9 @@ func main() {
 
 	// training
 	tr := trainer.New(m, &optimizer.Adam{
-		LearningRate: 0.001,
-		Beta1:        0.9,
-		Beta2:        0.999,
+		LearningRate: learningRate,
+		Beta1:        beta1,
+		Beta2:        beta2,
 	})
 
 	now := time.Now()
@@ -61,9 +71,9 @@ func main() {
 		Train:      matrix.From(contexts),
 		TrainLabel: matrix.From([][]int{target}).T(),
 		Epochs:     epochs,
-		BatchSize:  1,
+		BatchSize:  batchSize,
 		Verbose: func(epoch, j int, loss float64, m trainer.Model) {
-			if epoch%300 != 0 {
+			if epoch%200 != 0 {
 				return
 			}
 
@@ -79,5 +89,6 @@ func main() {
 	}
 	fmt.Println()
 
-	fmt.Println("cos('I', 'You'): ", vector.Cos(Win[w2id["I"]], Win[w2id["You"]]))
+	w0, w1 := "I", "You"
+	fmt.Printf("cos(%q, %q): %v\n", w0, w1, vector.Cos(Win[w2id[w0]], Win[w2id[w1]]))
 }

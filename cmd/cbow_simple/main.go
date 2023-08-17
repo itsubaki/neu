@@ -13,8 +13,14 @@ import (
 
 func main() {
 	// flags
-	var epochs int
+	var epochs, hiddenSize int
+	var learningRate, beta1, beta2 float64
 	flag.IntVar(&epochs, "epochs", 1000, "")
+	flag.IntVar(&hiddenSize, "hidden-size", 5, "")
+	flag.Float64Var(&learningRate, "learning-rate", 0.001, "")
+	flag.Float64Var(&beta1, "beta1", 0.9, "")
+	flag.Float64Var(&beta2, "beta2", 0.999, "")
+	flag.Parse()
 
 	text := "You say goodbye and I say hello ."
 	corpus, id2w, w2id := ptb.PreProcess(text)
@@ -33,7 +39,7 @@ func main() {
 
 	m := model.NewCBOW(&model.CBOWConfig{
 		VocabSize:  len(w2id),
-		HiddenSize: 5,
+		HiddenSize: hiddenSize,
 	})
 
 	fmt.Println(m.Summary()[0])
@@ -43,9 +49,9 @@ func main() {
 	fmt.Println()
 
 	o := &optimizer.Adam{
-		LearningRate: 0.001,
-		Beta1:        0.9,
-		Beta2:        0.999,
+		LearningRate: learningRate,
+		Beta1:        beta1,
+		Beta2:        beta2,
 	}
 
 	for i := 0; i < epochs; i++ {
