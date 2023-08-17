@@ -6,6 +6,26 @@ import (
 	"time"
 )
 
+func Int(v []float64) []int {
+	out := make([]int, len(v))
+	for i, e := range v {
+		out[i] = int(e)
+	}
+
+	return out
+}
+
+func Max(v []int) int {
+	max := math.MinInt
+	for _, e := range v {
+		if e > max {
+			max = e
+		}
+	}
+
+	return max
+}
+
 func Add(v, w []float64) []float64 {
 	out := make([]float64, len(v))
 	for i := range v {
@@ -40,26 +60,6 @@ func Sum(v []float64) float64 {
 	}
 
 	return sum
-}
-
-func Max(v []int) int {
-	max := math.MinInt
-	for _, e := range v {
-		if e > max {
-			max = e
-		}
-	}
-
-	return max
-}
-
-func Int(v []float64) []int {
-	out := make([]int, len(v))
-	for i, e := range v {
-		out[i] = int(e)
-	}
-
-	return out
 }
 
 func Pow2(v []float64) []float64 {
@@ -117,17 +117,13 @@ func Contains[T comparable](v T, s []T) bool {
 	return false
 }
 
-func Transpose[T any](v []T) [][]T {
+func T[T any](v []T) [][]T {
 	out := make([][]T, len(v))
 	for i := range v {
 		out[i] = []T{v[i]}
 	}
 
 	return out
-}
-
-func T[T any](v []T) [][]T {
-	return Transpose(v)
 }
 
 // Shuffle shuffles the dataset.

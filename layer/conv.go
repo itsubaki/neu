@@ -39,7 +39,7 @@ func im2col(im matrix.Matrix, fh, fw, pad, stride int) matrix.Matrix {
 	// [0 0 0 1 2 0 3 4 0]
 	// [0 1 2 0 3 4 0 0 0]
 	// [1 2 0 3 4 0 0 0 0]
-	xh, xw := im.Dimension()
+	xh, xw := im.Dim()
 	outh, outw := outhw(xh, xw, fh, fw, pad, stride)
 	out := matrix.New()
 	for y := 0; y < fh; y++ {

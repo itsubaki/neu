@@ -109,7 +109,7 @@ func ExampleCBOWNegs_Params() {
 
 	for _, p := range m.Params() {
 		for _, m := range p {
-			fmt.Println(m.Dimension())
+			fmt.Println(m.Dim())
 		}
 	}
 

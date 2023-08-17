@@ -60,7 +60,7 @@ func (l *NegativeSamplingLoss) SetParams(p ...matrix.Matrix) {
 }
 
 func (l *NegativeSamplingLoss) String() string {
-	a, b := l.embeddingDot[0].Embedding.W.Dimension()
+	a, b := l.embeddingDot[0].Embedding.W.Dim()
 	s := len(l.embeddingDot)
 	return fmt.Sprintf("%T: W(%v, %v)*%v: %v", l, a, b, s, a*b*s)
 }

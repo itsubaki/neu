@@ -17,8 +17,8 @@ func (l *Affine) Params() []matrix.Matrix      { return []matrix.Matrix{l.W, l.B
 func (l *Affine) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DW, l.DB} }
 func (l *Affine) SetParams(p ...matrix.Matrix) { l.W, l.B = p[0], p[1] }
 func (l *Affine) String() string {
-	a, b := l.W.Dimension()
-	c, d := l.B.Dimension()
+	a, b := l.W.Dim()
+	c, d := l.B.Dim()
 	return fmt.Sprintf("%T: W(%v, %v), B(%v, %v): %v", l, a, b, c, d, a*b+c*d)
 }
 

@@ -15,7 +15,7 @@ func (l *EmbeddingDot) Params() []matrix.Matrix      { return []matrix.Matrix{l.
 func (l *EmbeddingDot) Grads() []matrix.Matrix       { return []matrix.Matrix{l.Embedding.DW} }
 func (l *EmbeddingDot) SetParams(p ...matrix.Matrix) { l.Embedding.W = p[0] }
 func (l *EmbeddingDot) String() string {
-	a, b := l.Embedding.W.Dimension()
+	a, b := l.Embedding.W.Dim()
 	return fmt.Sprintf("%T: W(%v, %v): %v", l, a, b, a*b)
 }
 

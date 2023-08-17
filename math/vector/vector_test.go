@@ -83,12 +83,10 @@ func ExampleContains() {
 	// false
 }
 
-func ExampleTranspose() {
-	fmt.Println(vector.Transpose([]int{1, 2, 3}))
+func ExampleT() {
 	fmt.Println(vector.T([]int{1, 2, 3}))
 
 	// Output:
-	// [[1] [2] [3]]
 	// [[1] [2] [3]]
 }
 

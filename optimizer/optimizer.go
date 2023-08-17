@@ -34,7 +34,7 @@ func ZeroLike(param [][]matrix.Matrix) [][]matrix.Matrix {
 	for i := range param {
 		z[i] = make([]matrix.Matrix, len(param[i]))
 		for j := range param[i] {
-			z[i][j] = matrix.Zero(param[i][j].Dimension())
+			z[i][j] = matrix.Zero(param[i][j].Dim())
 		}
 	}
 

@@ -17,7 +17,7 @@ func (l *Dot) Params() []matrix.Matrix      { return []matrix.Matrix{l.W} }
 func (l *Dot) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DW} }
 func (l *Dot) SetParams(p ...matrix.Matrix) { l.W = p[0] }
 func (l *Dot) String() string {
-	a, b := l.W.Dimension()
+	a, b := l.W.Dim()
 	return fmt.Sprintf("%T: W(%v, %v): %v", l, a, b, a*b)
 }
 

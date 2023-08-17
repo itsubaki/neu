@@ -25,7 +25,7 @@ func ExampleTimeRNN() {
 
 	hs := rnn.Forward(xs, nil)
 	for i := range hs {
-		fmt.Print(hs[i].Dimension())
+		fmt.Print(hs[i].Dim())
 		fmt.Println(":", hs[i])
 	}
 
@@ -39,7 +39,7 @@ func ExampleTimeRNN() {
 
 	dxs := rnn.Backward(dhs)
 	for i := range dxs {
-		fmt.Print(dxs[i].Dimension())
+		fmt.Print(dxs[i].Dim())
 		fmt.Println(":", dxs[i])
 	}
 	fmt.Println()
@@ -82,7 +82,7 @@ func ExampleTimeRNN_time2() {
 
 	hs := rnn.Forward(xs, nil)
 	for i := range hs {
-		fmt.Print(hs[i].Dimension())
+		fmt.Print(hs[i].Dim())
 		fmt.Println(":", hs[i])
 	}
 	fmt.Println()
@@ -101,7 +101,7 @@ func ExampleTimeRNN_time2() {
 
 	dxs := rnn.Backward(dhs)
 	for i := range dxs {
-		fmt.Print(dxs[i].Dimension())
+		fmt.Print(dxs[i].Dim())
 		fmt.Println(":", dxs[i])
 	}
 	fmt.Println()

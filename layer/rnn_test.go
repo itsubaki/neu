@@ -26,7 +26,7 @@ func ExampleRNN() {
 	)
 
 	hNext := rnn.Forward(x, hPrev)
-	fmt.Print(hNext.Dimension())
+	fmt.Print(hNext.Dim())
 	fmt.Println(":", hNext)
 
 	// backward
@@ -36,9 +36,9 @@ func ExampleRNN() {
 	)
 
 	dx, dhPrev := rnn.Backward(dhNext)
-	fmt.Print(dx.Dimension())
+	fmt.Print(dx.Dim())
 	fmt.Println(":", dx)
-	fmt.Print(dhPrev.Dimension())
+	fmt.Print(dhPrev.Dim())
 	fmt.Println(":", dhPrev)
 	fmt.Println()
 

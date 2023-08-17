@@ -35,7 +35,7 @@ func ExamplePeekyDecoder() {
 	score := m.Forward(xs, h)
 	fmt.Println(len(score))
 	for _, s := range score {
-		fmt.Println(s.Dimension())
+		fmt.Println(s.Dim())
 	}
 
 	// backward
@@ -44,7 +44,7 @@ func ExamplePeekyDecoder() {
 		{{0.1}, {0.1}, {0.1}},
 	}
 	dh := m.Backward(dout)
-	fmt.Println(dh.Dimension())
+	fmt.Println(dh.Dim())
 
 	// generate
 	sampeld := m.Generate(h, 1, 10)

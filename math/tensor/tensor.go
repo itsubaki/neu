@@ -9,7 +9,7 @@ import (
 func ZeroLike(x []matrix.Matrix) []matrix.Matrix {
 	out := make([]matrix.Matrix, len(x))
 	for i := 0; i < len(x); i++ {
-		out[i] = matrix.Zero(x[i].Dimension())
+		out[i] = matrix.Zero(x[i].Dim())
 	}
 
 	return out

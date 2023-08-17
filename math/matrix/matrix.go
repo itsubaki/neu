@@ -157,7 +157,7 @@ func OneHot(x []int, size int) Matrix {
 	return out
 }
 
-func (m Matrix) Dimension() (int, int) {
+func (m Matrix) Dim() (int, int) {
 	if len(m) == 0 {
 		return 0, 0
 	}
@@ -165,30 +165,8 @@ func (m Matrix) Dimension() (int, int) {
 	return len(m), len(m[0])
 }
 
-func (m Matrix) Apply(n Matrix) Matrix {
-	a, b := n.Dimension()
-	_, p := m.Dimension()
-
-	out := make(Matrix, a)
-	for i := 0; i < a; i++ {
-		out[i] = make([]float64, p)
-
-		for j := 0; j < p; j++ {
-			for k := 0; k < b; k++ {
-				out[i][j] = out[i][j] + n[i][k]*m[k][j]
-			}
-		}
-	}
-
-	return out
-}
-
-func (m Matrix) Dot(n Matrix) Matrix {
-	return n.Apply(m)
-}
-
-func (m Matrix) Transpose() Matrix {
-	p, q := m.Dimension()
+func (m Matrix) T() Matrix {
+	p, q := m.Dim()
 
 	out := make(Matrix, q)
 	for i := range out {
@@ -204,24 +182,20 @@ func (m Matrix) Transpose() Matrix {
 	return out
 }
 
-func (m Matrix) T() Matrix {
-	return m.Transpose()
-}
-
 func (m Matrix) Add(n Matrix) Matrix {
-	return m.F2(n.Broadcast(m.Dimension()), func(a, b float64) float64 { return a + b })
+	return m.F2(n.Broadcast(m.Dim()), func(a, b float64) float64 { return a + b })
 }
 
 func (m Matrix) Sub(n Matrix) Matrix {
-	return m.F2(n.Broadcast(m.Dimension()), func(a, b float64) float64 { return a - b })
+	return m.F2(n.Broadcast(m.Dim()), func(a, b float64) float64 { return a - b })
 }
 
 func (m Matrix) Mul(n Matrix) Matrix {
-	return m.F2(n.Broadcast(m.Dimension()), func(a, b float64) float64 { return a * b })
+	return m.F2(n.Broadcast(m.Dim()), func(a, b float64) float64 { return a * b })
 }
 
 func (m Matrix) Div(n Matrix) Matrix {
-	return m.F2(n.Broadcast(m.Dimension()), func(a, b float64) float64 { return a / b })
+	return m.F2(n.Broadcast(m.Dim()), func(a, b float64) float64 { return a / b })
 }
 
 func (m Matrix) AddC(c float64) Matrix {
@@ -232,12 +206,12 @@ func (m Matrix) MulC(c float64) Matrix {
 	return m.F(func(v float64) float64 { return c * v })
 }
 
-func (m Matrix) Pow2() Matrix {
-	return m.F(func(v float64) float64 { return v * v })
-}
-
 func (m Matrix) Sqrt(eps float64) Matrix {
 	return m.F(func(v float64) float64 { return math.Sqrt(v + eps) })
+}
+
+func (m Matrix) Pow2() Matrix {
+	return m.F(func(v float64) float64 { return v * v })
 }
 
 func (m Matrix) Abs() Matrix {
@@ -258,7 +232,7 @@ func (m Matrix) Sum() float64 {
 
 // Avg returns the average of all elements.
 func (m Matrix) Avg() float64 {
-	a, b := m.Dimension()
+	a, b := m.Dim()
 	return m.Sum() / float64(a*b)
 }
 
@@ -280,7 +254,7 @@ func (m Matrix) Argmax() []int {
 
 // SumAxis0 returns the sum of each column.
 func (m Matrix) SumAxis0() []float64 {
-	p, q := m.Dimension()
+	p, q := m.Dim()
 
 	v := make([]float64, 0, q)
 	for j := 0; j < q; j++ {
@@ -297,7 +271,7 @@ func (m Matrix) SumAxis0() []float64 {
 
 // SumAxis1 returns the sum of each row.
 func (m Matrix) SumAxis1() []float64 {
-	p, q := m.Dimension()
+	p, q := m.Dim()
 
 	v := make([]float64, 0, p)
 	for i := 0; i < p; i++ {
@@ -339,7 +313,7 @@ func (m Matrix) MaxAxis1() []float64 {
 
 // F applies a function to each element of the matrix.
 func (m Matrix) F(f func(v float64) float64) Matrix {
-	p, q := m.Dimension()
+	p, q := m.Dim()
 
 	out := make(Matrix, 0, p)
 	for i := 0; i < p; i++ {
@@ -356,7 +330,7 @@ func (m Matrix) F(f func(v float64) float64) Matrix {
 }
 
 func (m Matrix) F2(n Matrix, f func(a, b float64) float64) Matrix {
-	p, q := m.Dimension()
+	p, q := m.Dim()
 
 	out := make(Matrix, 0, p)
 	for i := 0; i < p; i++ {
@@ -414,7 +388,21 @@ func (m Matrix) Broadcast(a, b int) Matrix {
 
 // Dot returns the dot product of m and n.
 func Dot(m, n Matrix) Matrix {
-	return m.Dot(n)
+	a, b := m.Dim()
+	_, p := n.Dim()
+
+	out := make(Matrix, a)
+	for i := 0; i < a; i++ {
+		out[i] = make([]float64, p)
+
+		for j := 0; j < p; j++ {
+			for k := 0; k < b; k++ {
+				out[i][j] = out[i][j] + m[i][k]*n[k][j]
+			}
+		}
+	}
+
+	return out
 }
 
 // F applies a function to each element of the matrix.
@@ -428,7 +416,7 @@ func F2(m, n Matrix, f func(a, b float64) float64) Matrix {
 
 // Padding returns the padded matrix.
 func Padding(x Matrix, pad int) Matrix {
-	_, q := x.Dimension()
+	_, q := x.Dim()
 	pw := pad + q + pad // right + row + left
 
 	// top
@@ -454,7 +442,7 @@ func Padding(x Matrix, pad int) Matrix {
 
 // Unpadding returns the unpadded matrix.
 func Unpadding(x Matrix, pad int) Matrix {
-	m, n := x.Dimension()
+	m, n := x.Dim()
 
 	out := New()
 	for _, r := range x[pad : m-pad] {
@@ -478,12 +466,12 @@ func Reshape(x Matrix, m, n int) Matrix {
 	v := Flatten(x)
 
 	if m < 1 {
-		p, q := x.Dimension()
+		p, q := x.Dim()
 		m = p * q / n
 	}
 
 	if n < 1 {
-		p, q := x.Dimension()
+		p, q := x.Dim()
 		n = p * q / m
 	}
 

@@ -30,7 +30,7 @@ func ExampleOne() {
 }
 
 func ExampleRand() {
-	fmt.Println(matrix.Rand(2, 3).Dimension())
+	fmt.Println(matrix.Rand(2, 3).Dim())
 
 	s := rand.NewSource(1)
 	for _, r := range matrix.Rand(2, 3, s) {
@@ -44,7 +44,7 @@ func ExampleRand() {
 
 }
 func ExampleRandn() {
-	fmt.Println(matrix.Randn(2, 3).Dimension())
+	fmt.Println(matrix.Randn(2, 3).Dim())
 
 	s := rand.NewSource(1)
 	for _, r := range matrix.Randn(2, 3, s) {
@@ -147,7 +147,7 @@ func ExampleInt() {
 	// [[1 2 3]]
 }
 
-func ExampleMatrix_Dot() {
+func ExampleDot() {
 	A := matrix.New(
 		[]float64{1, 2},
 		[]float64{3, 4},
@@ -168,9 +168,9 @@ func ExampleMatrix_Dot() {
 
 }
 
-func ExampleMatrix_Dimension() {
-	fmt.Println(matrix.New().Dimension())
-	fmt.Println(matrix.New([]float64{1, 2, 3}).Dimension())
+func ExampleMatrix_Dim() {
+	fmt.Println(matrix.New().Dim())
+	fmt.Println(matrix.New([]float64{1, 2, 3}).Dim())
 
 	// Output:
 	// 0 0

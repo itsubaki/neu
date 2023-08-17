@@ -9,7 +9,7 @@ import (
 
 func Example_outhw() {
 	x := matrix.New([]float64{1, 2}, []float64{3, 4})
-	xh, xw := x.Dimension()
+	xh, xw := x.Dim()
 	fh, fw := 2, 2
 	pad, stride := 1, 1
 

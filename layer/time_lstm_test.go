@@ -42,7 +42,7 @@ func ExampleTimeLSTM() {
 
 	hs := lstm.Forward(xs, nil)
 	for i := range hs {
-		fmt.Print(hs[i].Dimension()) // (N, H) = (2, 1)
+		fmt.Print(hs[i].Dim()) // (N, H) = (2, 1)
 		fmt.Println(":", hs[i])
 	}
 
@@ -56,7 +56,7 @@ func ExampleTimeLSTM() {
 	}
 	dxs := lstm.Backward(dhs)
 	for i := range dxs {
-		fmt.Print(dxs[i].Dimension()) // (T, N, D) = (1, 2, 3)
+		fmt.Print(dxs[i].Dim()) // (T, N, D) = (1, 2, 3)
 		fmt.Println(":", dxs[i])
 	}
 

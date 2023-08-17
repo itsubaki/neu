@@ -18,7 +18,7 @@ func (l *TimeEmbedding) SetParams(p ...matrix.Matrix) { l.W = p[0] }
 func (l *TimeEmbedding) SetState(_ ...matrix.Matrix)  {}
 func (l *TimeEmbedding) ResetState()                  {}
 func (l *TimeEmbedding) String() string {
-	a, b := l.W.Dimension()
+	a, b := l.W.Dim()
 	return fmt.Sprintf("%T: W(%v, %v): %v", l, a, b, a*b)
 }
 

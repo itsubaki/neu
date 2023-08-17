@@ -26,7 +26,7 @@ func ExampleEncoder() {
 	}
 
 	hs := m.Forward(xs)
-	fmt.Println(hs.Dimension()) // (N, H) = (3, 3)
+	fmt.Println(hs.Dim()) // (N, H) = (3, 3)
 
 	// backward
 	// (N, H) = (3, 3)

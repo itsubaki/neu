@@ -21,13 +21,13 @@ func (l *SigmoidWithLoss) Forward(x, t matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.y, l.t = x.F(activation.Sigmoid), t
 
 	// loss = Loss(y, t) + Loss(1 - y, 1 - t)
-	one := matrix.One(l.y.Dimension())
+	one := matrix.One(l.y.Dim())
 	loss := Loss(l.y, l.t) + Loss(one.Sub(l.y), one.Sub(l.t))
 	return matrix.New([]float64{loss})
 }
 
 func (l *SigmoidWithLoss) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	size, _ := l.t.Dimension()
+	size, _ := l.t.Dim()
 	dx := l.y.Sub(l.t).Mul(dout).MulC(1.0 / float64(size)) // (y - t) * dout / size
 	return dx, nil
 }
