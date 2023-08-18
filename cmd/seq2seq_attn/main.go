@@ -22,9 +22,9 @@ func main() {
 	var learningRate, beta1, beta2, max float64
 	flag.StringVar(&dir, "dir", "./testdata", "")
 	flag.IntVar(&epochs, "epochs", 100, "")
+	flag.IntVar(&dataSize, "data-size", -1, "")
 	flag.IntVar(&wordvecSize, "wordvec-size", 64, "")
 	flag.IntVar(&hiddenSize, "hidden-size", 128, "")
-	flag.IntVar(&dataSize, "data-size", 10, "")
 	flag.IntVar(&batchSize, "batch-size", 2, "")
 	flag.Float64Var(&learningRate, "learning-rate", 0.001, "")
 	flag.Float64Var(&beta1, "beta1", 0.9, "")
@@ -34,6 +34,12 @@ func main() {
 
 	// data
 	x, t, v := sequence.Must(sequence.Load(dir, sequence.DateTxt))
+	xt, tt := x.Train, t.Train
+	xv, tv := x.Test, t.Test
+	if dataSize > 0 {
+		xt, tt = x.Train[:dataSize], t.Train[:dataSize]
+		xv, tv = x.Test[:dataSize], t.Test[:dataSize]
+	}
 
 	// model
 	m := model.NewAttentionSeq2Seq(&model.RNNLMConfig{
@@ -61,8 +67,6 @@ func main() {
 	})
 
 	now := time.Now()
-	xt, tt := x.Train[:dataSize], t.Train[:dataSize]
-	xv, tv := x.Test[:dataSize], t.Test[:dataSize]
 	tr.Fit(&trainer.Seq2SeqInput{
 		Train:      xt,
 		TrainLabel: tt,
@@ -73,8 +77,8 @@ func main() {
 				return
 			}
 
-			tacc := generate(xt, tt, m, v, dataSize/2)
-			vacc := generate(xv, tv, m, v, dataSize/2)
+			tacc := generate(xt, tt, m, v, 5)
+			vacc := generate(xv, tv, m, v, 5)
 			fmt.Printf("%2d, %2d: loss=%.04f, train_acc=%.4f, test_acc=%.4f\n", epoch, j, loss, tacc, vacc)
 			fmt.Println()
 		},

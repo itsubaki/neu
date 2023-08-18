@@ -48,7 +48,7 @@ jobs:
 
       - name: RNNLM(Simple)
         run: |
-          make rnnlm
+          make rnnlm_simple
 
       - name: RNNLM(LSTM)
         run: |

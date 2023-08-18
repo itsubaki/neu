@@ -20,7 +20,7 @@ cbow_simple:
 cbow:
 	go run cmd/cbow/main.go
 
-rnnlm:
+rnnlm_simple:
 	go run cmd/rnnlm_simple/main.go --dir ./testdata --corpus-size 1000
 
 rnnlm_lstm:
@@ -30,10 +30,10 @@ rnnlm_gen:
 	go run cmd/rnnlm_gen/main.go --dir ./testdata --epochs 0
 
 seq2seq:
-	go run cmd/seq2seq/main.go --dir ./testdata
+	go run cmd/seq2seq/main.go --dir ./testdata --data-size 10
 
 seq2seq_attn:
-	go run cmd/seq2seq_attn/main.go --dir ./testdata
+	go run cmd/seq2seq_attn/main.go --dir ./testdata --data-size 10
 
 datasetdl: mnistdl ptbdl additiondl datedl
 
