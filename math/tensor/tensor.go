@@ -13,7 +13,6 @@ func Zero(m, n, o int) []matrix.Matrix {
 	}
 
 	return out
-
 }
 
 func ZeroLike(x []matrix.Matrix) []matrix.Matrix {
