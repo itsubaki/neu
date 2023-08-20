@@ -27,20 +27,12 @@ func (l *LSTM) String() string {
 
 func (l *LSTM) Forward(x, h, c matrix.Matrix, _ ...Opts) (matrix.Matrix, matrix.Matrix) {
 	A := matrix.Dot(x, l.Wx).Add(matrix.Dot(h, l.Wh)).Add(l.B) // A(N, 4H) = x(N, D).Wx(D, 4H) + h(N, H).Wh(H, 4H) + b(4*H, 1)
-	_, H := h.Dim()                                            // h(N, H)
+	AH := matrix.Split(A, len(h[0]))                           // h(N, H)
 
-	f, g, i, o := matrix.New(), matrix.New(), matrix.New(), matrix.New()
-	for _, r := range A {
-		f = append(f, r[:H])
-		g = append(g, r[H:2*H])
-		i = append(i, r[2*H:3*H])
-		o = append(o, r[3*H:])
-	}
-
-	f = matrix.F(f, activation.Sigmoid) // (N, H)
-	g = matrix.F(g, activation.Tanh)    // (N, H)
-	i = matrix.F(i, activation.Sigmoid) // (N, H)
-	o = matrix.F(o, activation.Sigmoid) // (N, H)
+	f := matrix.F(AH[0], activation.Sigmoid) // (N, H)
+	g := matrix.F(AH[1], activation.Tanh)    // (N, H)
+	i := matrix.F(AH[2], activation.Sigmoid) // (N, H)
+	o := matrix.F(AH[3], activation.Sigmoid) // (N, H)
 
 	// next
 	cNext := f.Mul(c).Add(g.Mul(i))                  // f * cPrev + g * i

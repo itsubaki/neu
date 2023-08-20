@@ -494,6 +494,20 @@ func Reshape(x Matrix, m, n int) Matrix {
 	return out
 }
 
+// Split returns the matrix split into H parts.
+func Split(x Matrix, H int) []Matrix {
+	out := make([]Matrix, len(x[0])/H)
+	for i := 0; i < len(out); i++ {
+		out[i] = New()
+		for _, r := range x {
+			out[i] = append(out[i], r[i*H:(i+1)*H])
+		}
+	}
+
+	return out
+}
+
+// HStack returns the matrix horizontally stacked.
 func HStack(x ...Matrix) Matrix {
 	out := Zero(len(x[0]), 0)
 	for _, m := range x {

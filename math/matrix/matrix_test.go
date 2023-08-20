@@ -639,6 +639,23 @@ func ExampleReshape() {
 	// [[1 2] [3 4]]
 }
 
+func ExampleSplit() {
+	x := matrix.New(
+		[]float64{1.1, 2.1, 3.1, 4.1, 5.1, 6.1},
+		[]float64{1.2, 2.2, 3.2, 4.2, 5.2, 6.2},
+		[]float64{1.3, 2.3, 3.3, 4.3, 5.3, 6.3},
+		[]float64{1.4, 2.4, 3.4, 4.4, 5.4, 6.4},
+	)
+	for _, v := range matrix.Split(x, 2) {
+		fmt.Println(v)
+	}
+
+	// Output:
+	// [[1.1 2.1] [1.2 2.2] [1.3 2.3] [1.4 2.4]]
+	// [[3.1 4.1] [3.2 4.2] [3.3 4.3] [3.4 4.4]]
+	// [[5.1 6.1] [5.2 6.2] [5.3 6.3] [5.4 6.4]]
+}
+
 func ExampleHStack() {
 	a := matrix.New([]float64{1, 2, 3}, []float64{4, 5, 6})
 	b := matrix.New([]float64{7, 8, 9}, []float64{10, 11, 12})

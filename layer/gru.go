@@ -25,23 +25,15 @@ func (l *GRU) String() string {
 }
 
 func (l *GRU) Forward(x, h matrix.Matrix, _ ...Opts) matrix.Matrix {
-	H := len(l.Wh) // (H, 4H)
+	H := len(l.Wh) // (H, 3H)
 
 	// Wx
-	Wxz, Wxr, Wxh := matrix.New(), matrix.New(), matrix.New()
-	for _, r := range l.Wx {
-		Wxz = append(Wxz, r[:H])
-		Wxr = append(Wxr, r[H:2*H])
-		Wxh = append(Wxh, r[2*H:])
-	}
+	WxH := matrix.Split(l.Wx, H)
+	Wxz, Wxr, Wxh := WxH[0], WxH[1], WxH[2]
 
 	// Wh
-	Whz, Whr, Whh := matrix.New(), matrix.New(), matrix.New()
-	for _, r := range l.Wh {
-		Whz = append(Whz, r[:H])
-		Whr = append(Whr, r[H:2*H])
-		Whh = append(Whh, r[2*H:])
-	}
+	WhH := matrix.Split(l.Wh, H)
+	Whz, Whr, Whh := WhH[0], WhH[1], WhH[2]
 
 	// B
 	Bz, Br, Bh := l.B[:H], l.B[H:2*H], l.B[2*H:]
@@ -58,23 +50,15 @@ func (l *GRU) Forward(x, h matrix.Matrix, _ ...Opts) matrix.Matrix {
 }
 
 func (l *GRU) Backward(dhnext matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	H := len(l.Wh) // (H, 4H)
+	H := len(l.Wh) // (H, 3H)
 
 	// Wx
-	Wxz, Wxr, Wxh := matrix.New(), matrix.New(), matrix.New()
-	for _, r := range l.Wx {
-		Wxz = append(Wxz, r[:H])
-		Wxr = append(Wxr, r[H:2*H])
-		Wxh = append(Wxh, r[2*H:])
-	}
+	WxH := matrix.Split(l.Wx, H)
+	Wxz, Wxr, Wxh := WxH[0], WxH[1], WxH[2]
 
 	// Wh
-	Whz, Whr, Whh := matrix.New(), matrix.New(), matrix.New()
-	for _, r := range l.Wh {
-		Whz = append(Whz, r[:H])
-		Whr = append(Whr, r[H:2*H])
-		Whh = append(Whh, r[2*H:])
-	}
+	WhH := matrix.Split(l.Wh, H)
+	Whz, Whr, Whh := WhH[0], WhH[1], WhH[2]
 
 	// dh
 	dhhat := dhnext.Mul(l.z)                             // dhhat = dhnext * z
