@@ -9,10 +9,8 @@ import (
 
 func ExampleAttention() {
 	at := &layer.Attention{
-		AttentionWeight: &layer.AttentionWeight{
-			Softmax: &layer.Softmax{},
-		},
-		WeightSum: &layer.WeightSum{},
+		AttentionWeight: &layer.AttentionWeight{Softmax: &layer.Softmax{}},
+		WeightSum:       &layer.WeightSum{},
 	}
 	fmt.Println(at)
 

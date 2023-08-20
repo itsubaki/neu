@@ -26,7 +26,7 @@ func (l *LSTM) String() string {
 }
 
 func (l *LSTM) Forward(x, h, c matrix.Matrix, _ ...Opts) (matrix.Matrix, matrix.Matrix) {
-	A := matrix.Dot(x, l.Wx).Add(matrix.Dot(h, l.Wh)).Add(l.B) // A(N, 4H) = x(N, D).Wx(D, 4H) + h(N, H).Wh(H, 4H) + b(4*H, 1)
+	A := matrix.Dot(x, l.Wx).Add(matrix.Dot(h, l.Wh)).Add(l.B) // A(N, 4H) = x(N, D).Wx(D, 4H) + h(N, H).Wh(H, 4H) + b(1, 4H)
 	AH := matrix.Split(A, len(h[0]))                           // h(N, H)
 
 	f := matrix.F(AH[0], activation.Sigmoid) // (N, H)

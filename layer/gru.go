@@ -28,10 +28,11 @@ func (l *GRU) Forward(x, h matrix.Matrix, _ ...Opts) matrix.Matrix {
 	H := len(l.Wh)               // (H, 3H)
 	WxH := matrix.Split(l.Wx, H) // (3, D, H)
 	WhH := matrix.Split(l.Wh, H) // (3, H, H)
+	BH := matrix.Split(l.B, H)   // (3, H)
 
 	Wxz, Wxr, Wxh := WxH[0], WxH[1], WxH[2]
 	Whz, Whr, Whh := WhH[0], WhH[1], WhH[2]
-	Bz, Br, Bh := l.B[:H], l.B[H:2*H], l.B[2*H:]
+	Bz, Br, Bh := BH[0], BH[1], BH[2]
 
 	l.z = matrix.F(matrix.Dot(x, Wxz).Add(matrix.Dot(h, Whz)).Add(Bz), activation.Sigmoid)          // z = sigmoid(x.Wxz + h.Whz + bz)
 	l.r = matrix.F(matrix.Dot(x, Wxr).Add(matrix.Dot(h, Whr)).Add(Br), activation.Sigmoid)          // r = sigmoid(x.Wxr + h.Whr + br)
