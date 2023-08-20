@@ -25,39 +25,29 @@ func (l *GRU) String() string {
 }
 
 func (l *GRU) Forward(x, h matrix.Matrix, _ ...Opts) matrix.Matrix {
-	H := len(l.Wh) // (H, 3H)
+	H := len(l.Wh)               // (H, 3H)
+	WxH := matrix.Split(l.Wx, H) // (3, D, H)
+	WhH := matrix.Split(l.Wh, H) // (3, H, H)
 
-	// Wx
-	WxH := matrix.Split(l.Wx, H)
 	Wxz, Wxr, Wxh := WxH[0], WxH[1], WxH[2]
-
-	// Wh
-	WhH := matrix.Split(l.Wh, H)
 	Whz, Whr, Whh := WhH[0], WhH[1], WhH[2]
-
-	// B
 	Bz, Br, Bh := l.B[:H], l.B[H:2*H], l.B[2*H:]
 
-	// z, r, hhat
 	l.z = matrix.F(matrix.Dot(x, Wxz).Add(matrix.Dot(h, Whz)).Add(Bz), activation.Sigmoid)          // z = sigmoid(x.Wxz + h.Whz + bz)
 	l.r = matrix.F(matrix.Dot(x, Wxr).Add(matrix.Dot(h, Whr)).Add(Br), activation.Sigmoid)          // r = sigmoid(x.Wxr + h.Whr + br)
 	l.hhat = matrix.F(matrix.Dot(x, Wxh).Add(matrix.Dot(h.Mul(l.r), Whh)).Add(Bh), activation.Tanh) // hhat = tanh(x.Wxh + (h * r).Whh + bh)
 	l.x, l.hprev = x, h
 
-	// hnext
 	hnext := (matrix.One(l.z.Dim()).Sub(l.z)).Mul(l.hprev).Add(l.z.Mul(l.hhat)) // (1 - z) * hprev + z * hhat
 	return hnext
 }
 
 func (l *GRU) Backward(dhnext matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	H := len(l.Wh) // (H, 3H)
+	H := len(l.Wh)               // (H, 3H)
+	WxH := matrix.Split(l.Wx, H) // (3, D, H)
+	WhH := matrix.Split(l.Wh, H) // (3, H, H)
 
-	// Wx
-	WxH := matrix.Split(l.Wx, H)
 	Wxz, Wxr, Wxh := WxH[0], WxH[1], WxH[2]
-
-	// Wh
-	WhH := matrix.Split(l.Wh, H)
 	Whz, Whr, Whh := WhH[0], WhH[1], WhH[2]
 
 	// dh
