@@ -44,4 +44,5 @@ func (l *RNN) Backward(dhNext matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	return dx, dh
 }
 
+// subpow2 returns 1 - a**2
 func subpow2(a float64) float64 { return 1 - a*a }

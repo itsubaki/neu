@@ -27,4 +27,5 @@ func (l *Sigmoid) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	return dx, nil
 }
 
-func dsigmoid(a float64) float64 { return a * (1.0 - a) } // out * (1.0 - out)
+// dsigmoid returns a * (1.0 - a)
+func dsigmoid(a float64) float64 { return a * (1.0 - a) }
