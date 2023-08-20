@@ -138,3 +138,12 @@ func Argmax(score []matrix.Matrix) int {
 
 	return arg
 }
+
+func Reverse(m []matrix.Matrix) []matrix.Matrix {
+	out := make([]matrix.Matrix, len(m))
+	for i := 0; i < len(m); i++ {
+		out[i] = m[len(m)-1-i]
+	}
+
+	return out
+}
