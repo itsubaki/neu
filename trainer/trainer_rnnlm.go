@@ -12,6 +12,7 @@ import (
 var (
 	_ RNNLM = (*model.RNNLM)(nil)
 	_ RNNLM = (*model.LSTMLM)(nil)
+	_ RNNLM = (*model.GRULM)(nil)
 	_ RNNLM = (*model.RNNLMGen)(nil)
 )
 

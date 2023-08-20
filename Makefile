@@ -26,6 +26,9 @@ rnnlm_simple:
 rnnlm_lstm:
 	go run cmd/rnnlm_lstm/main.go --dir ./testdata --corpus-size 1000
 
+rnnlm_gru:
+	go run cmd/rnnlm_gru/main.go --dir ./testdata --corpus-size 1000
+
 rnnlm_gen:
 	go run cmd/rnnlm_gen/main.go --dir ./testdata --epochs 0
 

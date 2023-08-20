@@ -14,6 +14,7 @@ var (
 	_ Model = (*model.CBOWNegs)(nil)
 	_ Model = (*model.RNNLM)(nil)
 	_ Model = (*model.LSTMLM)(nil)
+	_ Model = (*model.GRULM)(nil)
 	_ Model = (*model.RNNLMGen)(nil)
 	_ Model = (*model.Seq2Seq)(nil)
 	_ Model = (*model.AttentionSeq2Seq)(nil)

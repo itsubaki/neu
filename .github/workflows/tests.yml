@@ -54,7 +54,11 @@ jobs:
         run: |
           make rnnlm_lstm
 
-      - name: RNNLMGen(LSTM)
+      - name: RNNLM(GRU)
+        run: |
+          make rnnlm_gru
+
+      - name: RNNLMGen(GRU)
         run: |
           make rnnlm_gen
 

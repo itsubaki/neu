@@ -11,12 +11,12 @@ import (
 )
 
 type RNNLMGen struct {
-	LSTMLM
+	GRULM
 }
 
 func NewRNNLMGen(c *LSTMLMConfig, s ...rand.Source) *RNNLMGen {
 	return &RNNLMGen{
-		LSTMLM: *NewLSTMLM(c, s...),
+		GRULM: *NewGRULM(c, s...),
 	}
 }
 
