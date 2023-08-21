@@ -18,8 +18,7 @@ func (l *TimeAffine) SetParams(p ...matrix.Matrix) { l.W, l.B = p[0], p[1] }
 func (l *TimeAffine) SetState(_ ...matrix.Matrix)  {}
 func (l *TimeAffine) ResetState()                  {}
 func (l *TimeAffine) String() string {
-	a, b := l.W.Dim()
-	c, d := l.B.Dim()
+	a, b, c, d := len(l.W), len(l.W[0]), len(l.B), len(l.B[0])
 	return fmt.Sprintf("%T: W(%v, %v), B(%v, %v): %v", l, a, b, c, d, a*b+c*d)
 }
 

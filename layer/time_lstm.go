@@ -19,11 +19,11 @@ func (l *TimeLSTM) DH() matrix.Matrix            { return l.dh }
 func (l *TimeLSTM) Params() []matrix.Matrix      { return []matrix.Matrix{l.Wx, l.Wh, l.B} }
 func (l *TimeLSTM) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DWx, l.DWh, l.DB} }
 func (l *TimeLSTM) SetParams(p ...matrix.Matrix) { l.Wx, l.Wh, l.B = p[0], p[1], p[2] }
-func (l *TimeLSTM) SetState(h ...matrix.Matrix) {
-	l.h, l.c = h[0], matrix.New()
-	if len(h) > 1 {
-		l.c = h[1]
+func (l *TimeLSTM) SetState(s ...matrix.Matrix) {
+	if len(s) == 1 {
+		s = append(s, matrix.New())
 	}
+	l.h, l.c = s[0], s[1]
 }
 func (l *TimeLSTM) ResetState() { l.h, l.c = matrix.New(), matrix.New() }
 func (l *TimeLSTM) String() string {
