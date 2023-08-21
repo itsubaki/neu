@@ -23,9 +23,9 @@ func (l *Sigmoid) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 }
 
 func (l *Sigmoid) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	dx := dout.Mul(matrix.F(l.out, dsigmoid))
+	dx := dout.Mul(matrix.F(l.out, dSigmoid))
 	return dx, nil
 }
 
-// dsigmoid returns a * (1.0 - a)
-func dsigmoid(a float64) float64 { return a * (1.0 - a) }
+// dSigmoid returns a * (1.0 - a)
+func dSigmoid(a float64) float64 { return a * (1.0 - a) }

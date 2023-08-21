@@ -24,8 +24,7 @@ func (l *SoftmaxWithLoss) Forward(x, t matrix.Matrix, _ ...Opts) matrix.Matrix {
 }
 
 func (l *SoftmaxWithLoss) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	s := float64(len(l.t))
-	dx := l.y.Sub(l.t).Mul(dout).MulC(1.0 / s) // (y - t) * dout / size
+	dx := l.y.Sub(l.t).Mul(dout).MulC(1.0 / float64(len(l.t))) // (y - t) * dout / size
 	return dx, nil
 }
 

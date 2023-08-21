@@ -40,7 +40,7 @@ func (l *BatchNorm) Forward(x, _ matrix.Matrix, opts ...Opts) matrix.Matrix {
 		std := va.Sqrt(1e-7)                    // sqrt(var + 1e-7)
 		xn = xc.Div(std)                        // (x - mu) / sqrt(var + eps)
 
-		// for backword
+		// cache
 		l.batchSize = len(x)
 		l.xc = xc
 		l.xn = xn
