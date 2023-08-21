@@ -31,6 +31,7 @@ var (
 
 var (
 	_ TimeLayer = (*layer.TimeAffine)(nil)
+	_ TimeLayer = (*layer.TimeBiLSTM)(nil)
 	_ TimeLayer = (*layer.TimeDropout)(nil)
 	_ TimeLayer = (*layer.TimeEmbedding)(nil)
 	_ TimeLayer = (*layer.TimeGRU)(nil)
