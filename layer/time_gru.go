@@ -21,7 +21,9 @@ func (l *TimeGRU) SetParams(p ...matrix.Matrix) { l.Wx, l.Wh, l.B = p[0], p[1], 
 func (l *TimeGRU) SetState(h ...matrix.Matrix)  { l.h = h[0] }
 func (l *TimeGRU) ResetState()                  { l.h = matrix.New() }
 func (l *TimeGRU) String() string {
-	a, b, c, d, e, f := len(l.Wx), len(l.Wx[0]), len(l.Wh), len(l.Wh[0]), len(l.B), len(l.B[0])
+	a, b := l.Wx.Dim()
+	c, d := l.Wh.Dim()
+	e, f := l.B.Dim()
 	return fmt.Sprintf("%T: Wx(%v, %v), Wh(%v, %v), B(%v, %v): %v", l, a, b, c, d, e, f, a*b+c*d+e*f)
 }
 

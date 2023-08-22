@@ -27,7 +27,9 @@ func (l *TimeLSTM) SetState(s ...matrix.Matrix) {
 }
 func (l *TimeLSTM) ResetState() { l.h, l.c = matrix.New(), matrix.New() }
 func (l *TimeLSTM) String() string {
-	a, b, c, d, e, f := len(l.Wx), len(l.Wx[0]), len(l.Wh), len(l.Wh[0]), len(l.B), len(l.B[0])
+	a, b := l.Wx.Dim()
+	c, d := l.Wh.Dim()
+	e, f := l.B.Dim()
 	return fmt.Sprintf("%T: Wx(%v, %v), Wh(%v, %v), B(%v, %v): %v", l, a, b, c, d, e, f, a*b+c*d+e*f)
 }
 

@@ -36,7 +36,9 @@ func (l *TimeBiLSTM) ResetState() {
 }
 
 func (l *TimeBiLSTM) String() string {
-	a, b, c, d, e, f := len(l.F.Wx), len(l.F.Wx[0]), len(l.F.Wh), len(l.F.Wh[0]), len(l.F.B), len(l.F.B[0])
+	a, b := l.F.Wx.Dim()
+	c, d := l.F.Wh.Dim()
+	e, f := l.F.B.Dim()
 	return fmt.Sprintf("%T: Wx(%v, %v), Wh(%v, %v), B(%v, %v): %v", l, a, b, c, d, e, f, (a*b+c*d+e*f)*2)
 }
 

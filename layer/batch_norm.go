@@ -19,7 +19,8 @@ func (l *BatchNorm) Params() []matrix.Matrix      { return []matrix.Matrix{l.Gam
 func (l *BatchNorm) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DGamma, l.DBeta} }
 func (l *BatchNorm) SetParams(p ...matrix.Matrix) { l.Gamma, l.Beta = p[0], p[1] }
 func (l *BatchNorm) String() string {
-	a, b, c, d := len(l.Gamma), len(l.Gamma[0]), len(l.Beta), len(l.Beta[0])
+	a, b := l.Gamma.Dim()
+	c, d := l.Beta.Dim()
 	return fmt.Sprintf("%T: G(%v, %v), B(%v, %v): %v", l, a, b, c, d, a*b+c*d)
 }
 
