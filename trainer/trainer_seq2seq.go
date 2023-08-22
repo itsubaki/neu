@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/tensor"
 	"github.com/itsubaki/neu/math/vector"
 	"github.com/itsubaki/neu/model"
 )
@@ -77,12 +78,11 @@ func (tr *Seq2SeqTrainer) Fit(in *Seq2SeqInput, s ...rand.Source) {
 }
 
 func Time(xs matrix.Matrix) []matrix.Matrix {
-	T := len(xs[0])                 // (N, T)    (128, 7)
-	out := make([]matrix.Matrix, T) // (T, N, 1) (7, 128, 1)
+	N, T := xs.Dim()            // (N, T)    (128, 7)
+	out := tensor.Zero(T, N, 1) // (T, N, 1) (7, 128, 1)
 	for i := 0; i < T; i++ {
-		out[i] = matrix.New()
-		for j := 0; j < len(xs); j++ {
-			out[i] = append(out[i], []float64{xs[j][i]})
+		for j := 0; j < N; j++ {
+			out[i][j] = []float64{xs[j][i]}
 		}
 	}
 

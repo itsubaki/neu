@@ -18,9 +18,7 @@ func (l *GRU) Params() []matrix.Matrix      { return []matrix.Matrix{l.Wx, l.Wh,
 func (l *GRU) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DWx, l.DWh, l.DB} }
 func (l *GRU) SetParams(p ...matrix.Matrix) { l.Wx, l.Wh, l.B = p[0], p[1], p[2] }
 func (l *GRU) String() string {
-	a, b := l.Wx.Dim()
-	c, d := l.Wh.Dim()
-	e, f := l.B.Dim()
+	a, b, c, d, e, f := len(l.Wx), len(l.Wx[0]), len(l.Wh), len(l.Wh[0]), len(l.B), len(l.B[0])
 	return fmt.Sprintf("%T: Wx(%v, %v), Wh(%v, %v), B(%v, %v): %v", l, a, b, c, d, e, f, a*b+c*d+e*f)
 }
 

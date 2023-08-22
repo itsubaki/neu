@@ -97,9 +97,15 @@ func ExampleSequential_gradientCheck() {
 func ExampleSequential_Summary() {
 	m := model.NewSequential(
 		[]model.Layer{
-			&layer.Affine{},
+			&layer.Affine{
+				W: matrix.New([]float64{0.1, 0.2, 0.3}, []float64{0.4, 0.5, 0.6}),
+				B: matrix.New([]float64{0.1, 0.2, 0.3}),
+			},
 			&layer.ReLU{},
-			&layer.Affine{},
+			&layer.Affine{
+				W: matrix.New([]float64{0.1, 0.2, 0.3}, []float64{0.4, 0.5, 0.6}),
+				B: matrix.New([]float64{0.1, 0.2, 0.3}),
+			},
 			&layer.SoftmaxWithLoss{},
 		},
 		rand.NewSource(1),
@@ -112,8 +118,8 @@ func ExampleSequential_Summary() {
 
 	// Output:
 	// *model.Sequential
-	//  0: *layer.Affine: W(0, 0), B(0, 0): 0
+	//  0: *layer.Affine: W(2, 3), B(1, 3): 9
 	//  1: *layer.ReLU
-	//  2: *layer.Affine: W(0, 0), B(0, 0): 0
+	//  2: *layer.Affine: W(2, 3), B(1, 3): 9
 	//  3: *layer.SoftmaxWithLoss
 }

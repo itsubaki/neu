@@ -25,13 +25,13 @@ func (l *TimeSoftmaxWithLoss) Forward(xs, ts []matrix.Matrix, _ ...Opts) []matri
 	l.xs = xs
 	ots := tensor.OneHot(ts, V)
 
-	var loss float64
+	loss := matrix.Zero(1, 1)
 	for t := 0; t < T; t++ {
 		l.layer[t] = SoftmaxWithLoss{}
-		loss += l.layer[t].Forward(xs[t], ots[t])[0][0]
+		loss = l.layer[t].Forward(xs[t], ots[t]).Add(loss) // Broadcast
 	}
 
-	return []matrix.Matrix{matrix.New([]float64{loss / float64(T)})}
+	return []matrix.Matrix{loss.MulC(1.0 / float64(T))}
 }
 
 func (l *TimeSoftmaxWithLoss) Backward(dout []matrix.Matrix) []matrix.Matrix {

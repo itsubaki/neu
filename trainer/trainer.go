@@ -96,17 +96,17 @@ func Random(trainSize, batchSize int, s ...rand.Source) []int {
 	}
 	rng := rand.New(s[0])
 
-	tmp := make(map[int]bool)
+	counter := make(map[int]bool)
 	for c := 0; c < batchSize; {
 		n := rng.Intn(trainSize)
-		if _, ok := tmp[n]; !ok {
-			tmp[n] = true
+		if _, ok := counter[n]; !ok {
+			counter[n] = true
 			c++
 		}
 	}
 
-	out := make([]int, 0, len(tmp))
-	for k := range tmp {
+	out := make([]int, 0, len(counter))
+	for k := range counter {
 		out = append(out, k)
 	}
 

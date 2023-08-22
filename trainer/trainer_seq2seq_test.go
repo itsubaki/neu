@@ -72,10 +72,12 @@ func ExampleSeq2SeqTrainer_rand() {
 
 func ExampleTime() {
 	xs := matrix.New(
+		// (N, T) (2, 3)
 		[]float64{1, 2, 3},
 		[]float64{4, 5, 6},
 	)
 
+	// (T, N, 1) (3, 2, 1)
 	txs := trainer.Time(xs)
 	for _, tx := range txs {
 		fmt.Println(tx)

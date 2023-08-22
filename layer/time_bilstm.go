@@ -15,21 +15,26 @@ type TimeBiLSTM struct {
 func (l *TimeBiLSTM) Params() []matrix.Matrix {
 	return []matrix.Matrix{l.F.Wx, l.F.Wh, l.F.B, l.B.Wx, l.B.Wh, l.B.B}
 }
+
 func (l *TimeBiLSTM) Grads() []matrix.Matrix {
 	return []matrix.Matrix{l.F.DWx, l.F.DWh, l.F.DB, l.B.DWx, l.B.DWh, l.B.DB}
 }
+
 func (l *TimeBiLSTM) SetParams(p ...matrix.Matrix) {
 	l.F.SetParams(p[0], p[1], p[2])
 	l.B.SetParams(p[3], p[4], p[5])
 }
+
 func (l *TimeBiLSTM) SetState(h ...matrix.Matrix) {
 	l.F.SetState(h...)
 	l.B.SetState(h...)
 }
+
 func (l *TimeBiLSTM) ResetState() {
 	l.F.ResetState()
 	l.B.ResetState()
 }
+
 func (l *TimeBiLSTM) String() string {
 	a, b, c, d, e, f := len(l.F.Wx), len(l.F.Wx[0]), len(l.F.Wh), len(l.F.Wh[0]), len(l.F.B), len(l.F.B[0])
 	return fmt.Sprintf("%T: Wx(%v, %v), Wh(%v, %v), B(%v, %v): %v", l, a, b, c, d, e, f, (a*b+c*d+e*f)*2)
