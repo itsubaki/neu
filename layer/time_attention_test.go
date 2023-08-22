@@ -72,7 +72,7 @@ func ExampleTimeAttention_Params() {
 	// []
 }
 
-func ExampleTimeAttention_state() {
+func ExampleTimeAttention_SetState() {
 	at := &layer.TimeAttention{}
 	at.SetState(matrix.New())
 	at.ResetState()

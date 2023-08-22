@@ -53,7 +53,7 @@ func ExampleTimeDropout_Params() {
 	// []
 }
 
-func ExampleTimeDropout_state() {
+func ExampleTimeDropout_SetState() {
 	dropout := &layer.TimeDropout{}
 	dropout.SetState(matrix.New())
 	dropout.ResetState()

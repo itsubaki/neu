@@ -125,7 +125,7 @@ func ExampleTimeBiLSTM_Params() {
 	// [[] [] [] [] [] []]
 }
 
-func ExampleTimeBiLSTM_state() {
+func ExampleTimeBiLSTM_SetState() {
 	lstm := &layer.TimeBiLSTM{
 		F: &layer.TimeLSTM{
 			Wx: matrix.New(

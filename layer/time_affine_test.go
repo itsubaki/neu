@@ -76,7 +76,7 @@ func ExampleTimeAffine_Params() {
 	// [[] []]
 }
 
-func ExampleTimeAffine_state() {
+func ExampleTimeAffine_SetState() {
 	affine := &layer.TimeAffine{}
 	affine.SetState(matrix.New())
 	affine.ResetState()

@@ -67,7 +67,7 @@ func ExampleTimeEmbedding_Params() {
 	// [[]]
 }
 
-func ExampleTimeEmbedding_state() {
+func ExampleTimeEmbedding_SetState() {
 	embed := &layer.TimeEmbedding{}
 	embed.SetState()
 	embed.ResetState()

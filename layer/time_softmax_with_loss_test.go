@@ -56,7 +56,7 @@ func ExampleTimeSoftmaxWithLoss_Params() {
 	// []
 }
 
-func ExampleTimeSoftmaxWithLoss_state() {
+func ExampleTimeSoftmaxWithLoss_SetState() {
 	l := &layer.TimeSoftmaxWithLoss{}
 	l.SetState(matrix.New())
 	l.ResetState()

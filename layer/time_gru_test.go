@@ -78,7 +78,7 @@ func ExampleTimeGRU_Params() {
 	// [[] [] []]
 }
 
-func ExampleTimeGRU_state() {
+func ExampleTimeGRU_SetState() {
 	gru := &layer.TimeGRU{}
 	gru.SetState(matrix.New())
 	gru.SetState(matrix.New(), matrix.New())

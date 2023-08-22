@@ -147,7 +147,7 @@ func ExampleTimeRNN_Params() {
 	// [[] [] []]
 }
 
-func ExampleTimeRNN_state() {
+func ExampleTimeRNN_SetState() {
 	rnn := &layer.TimeRNN{}
 	rnn.SetState(matrix.New())
 	rnn.ResetState()

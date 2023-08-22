@@ -78,7 +78,7 @@ func ExampleTimeLSTM_Params() {
 	// [[] [] []]
 }
 
-func ExampleTimeLSTM_state() {
+func ExampleTimeLSTM_SetState() {
 	lstm := &layer.TimeLSTM{}
 	lstm.SetState(matrix.New())
 	lstm.SetState(matrix.New(), matrix.New())
