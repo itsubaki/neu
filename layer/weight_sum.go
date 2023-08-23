@@ -25,8 +25,8 @@ func (l *WeightSum) Forward(hs []matrix.Matrix, a matrix.Matrix) matrix.Matrix {
 		ar[i] = matrix.New(vector.T(a[i])...).Broadcast(N, H) // (1, N) -> (N, 1) -> (N, H)
 	}
 
-	l.hs, l.ar = hs, ar                   // (T, N, H) (T, N, H)
-	return tensor.Sum(tensor.Mul(hs, ar)) // (T, N, H) -> (N, H)
+	l.hs, l.ar = hs, ar                        // (T, N, H) (T, N, H)
+	return tensor.SumAxis0(tensor.Mul(hs, ar)) // (T, N, H) -> (N, H)
 }
 
 func (l *WeightSum) Backward(dc matrix.Matrix) ([]matrix.Matrix, matrix.Matrix) {

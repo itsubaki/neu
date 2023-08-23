@@ -104,7 +104,7 @@ func ExampleMul() {
 	// [[[1 4 9] [16 25 36]]]
 }
 
-func ExampleSum() {
+func ExampleSumAxis0() {
 	x := []matrix.Matrix{
 		{
 			{1, 2, 3},
@@ -116,7 +116,7 @@ func ExampleSum() {
 		},
 	}
 
-	fmt.Println(tensor.Sum(x))
+	fmt.Println(tensor.SumAxis0(x))
 
 	// Output:
 	// [[2 4 6] [8 10 12]]

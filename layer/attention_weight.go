@@ -38,7 +38,7 @@ func (l *AttentionWeight) Backward(da matrix.Matrix) ([]matrix.Matrix, matrix.Ma
 	dt := Expand(ds, T, N, H)       // (T, N, H)
 	dhs := tensor.Mul(dt, l.hr)     // (T, N, H)
 	dhr := tensor.Mul(dt, l.hs)     // (T, N, H)
-	dh := tensor.Sum(dhr)           // (N, H)
+	dh := tensor.SumAxis0(dhr)      // (N, H)
 
 	return dhs, dh // (T, N, H), (N, H)
 }

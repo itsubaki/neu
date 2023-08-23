@@ -142,6 +142,7 @@ func ExampleTimeBiLSTM_SetState() {
 				// (1, 4H) = (1, 4)
 				[]float64{0, 0, 0, 0},
 			),
+			Stateful: false,
 		},
 		B: &layer.TimeLSTM{
 			Wx: matrix.New(
@@ -158,6 +159,7 @@ func ExampleTimeBiLSTM_SetState() {
 				// (1, 4H) = (1, 4)
 				[]float64{0, 0, 0, 0},
 			),
+			Stateful: false,
 		},
 	}
 	lstm.SetState(matrix.New())

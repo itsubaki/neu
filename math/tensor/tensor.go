@@ -60,7 +60,7 @@ func Mul(x, y []matrix.Matrix) []matrix.Matrix {
 	return out
 }
 
-func Sum(hr []matrix.Matrix) matrix.Matrix {
+func SumAxis0(hr []matrix.Matrix) matrix.Matrix {
 	T, N, H := len(hr), len(hr[0]), len(hr[0][0])
 	out := make(matrix.Matrix, N)
 	for i := 0; i < N; i++ {

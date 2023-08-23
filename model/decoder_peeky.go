@@ -63,7 +63,7 @@ func (m *PeekyDecoder) Backward(dscore []matrix.Matrix) matrix.Matrix {
 	m.TimeEmbedding.Backward(dout)
 
 	dhs := append(dhs0, dhs1...)
-	dh := m.TimeLSTM.DH().Add(tensor.Sum(dhs))
+	dh := m.TimeLSTM.DH().Add(tensor.SumAxis0(dhs))
 	return dh
 }
 
