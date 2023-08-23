@@ -55,7 +55,7 @@ func ExamplePeekyDecoder() {
 	// 3 3
 	// 3 3
 	// 3 3
-	// [0 0 0 0 0 0 0 0 0 0]
+	// [1 1 1 1 1 1 1 1 1 1]
 }
 
 func ExamplePeekyDecoder_Summary() {

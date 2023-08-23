@@ -38,17 +38,9 @@ func (l *TimeBiLSTM) SetState(h ...matrix.Matrix) {
 	l.B.SetState(h[2], h[3])
 }
 
-func (l *TimeBiLSTM) ResetState() {
-	l.F.ResetState()
-	l.B.ResetState()
-}
-
-func (l *TimeBiLSTM) String() string {
-	a, b := l.F.Wx.Dim()
-	c, d := l.F.Wh.Dim()
-	e, f := l.F.B.Dim()
-	return fmt.Sprintf("%T: Wx(%v, %v), Wh(%v, %v), B(%v, %v): %v", l, a, b, c, d, e, f, (a*b+c*d+e*f)*2)
-}
+func (l *TimeBiLSTM) ResetState()       { l.F.ResetState(); l.B.ResetState() }
+func (l *TimeBiLSTM) String() string    { return fmt.Sprintf("%T", l) }
+func (l *TimeBiLSTM) Summary() []string { return []string{l.String(), l.F.String(), l.B.String()} }
 
 func (l *TimeBiLSTM) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 	o1 := l.F.Forward(xs, nil)

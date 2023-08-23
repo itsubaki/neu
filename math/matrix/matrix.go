@@ -24,6 +24,10 @@ func Zero(m, n int) Matrix {
 	return out
 }
 
+func ZeroLike(m Matrix) Matrix {
+	return Zero(m.Dim())
+}
+
 // One returns a matrix with all elements 1.
 func One(m, n int) Matrix {
 	out := make(Matrix, m)
@@ -46,9 +50,8 @@ func Rand(m, n int, s ...rand.Source) Matrix {
 	}
 	rng := rand.New(s[0])
 
-	out := make(Matrix, m)
+	out := Zero(m, n)
 	for i := 0; i < m; i++ {
-		out[i] = make([]float64, n)
 		for j := 0; j < n; j++ {
 			out[i][j] = rng.Float64()
 		}
@@ -66,9 +69,8 @@ func Randn(m, n int, s ...rand.Source) Matrix {
 	}
 	rng := rand.New(s[0])
 
-	out := make(Matrix, m)
+	out := Zero(m, n)
 	for i := 0; i < m; i++ {
-		out[i] = make([]float64, n)
 		for j := 0; j < n; j++ {
 			out[i][j] = rng.NormFloat64()
 		}
@@ -79,17 +81,16 @@ func Randn(m, n int, s ...rand.Source) Matrix {
 
 // Mask returns a matrix with elements that 1 if f() is true and 0 otherwise.
 func Mask(m Matrix, f func(x float64) bool) Matrix {
-	out := make(Matrix, len(m))
+	mask := ZeroLike(m)
 	for i := range m {
-		out[i] = make([]float64, len(m[i]))
 		for j := range m[i] {
 			if f(m[i][j]) {
-				out[i][j] = 1
+				mask[i][j] = 1
 			}
 		}
 	}
 
-	return out
+	return mask
 }
 
 // Batch returns a matrix with rows of the specified index.
@@ -104,9 +105,9 @@ func Batch(m Matrix, index []int) Matrix {
 
 // Column returns a matrix with the specified column.
 func Column(m Matrix, j int) Matrix {
-	out := make(Matrix, 0)
-	for _, r := range m {
-		out = append(out, []float64{r[j]})
+	out := make(Matrix, len(m))
+	for i, r := range m {
+		out[i] = []float64{r[j]}
 	}
 
 	return out
@@ -114,9 +115,8 @@ func Column(m Matrix, j int) Matrix {
 
 // From returns a matrix from a slice of slice of T.
 func From[T int](x [][]T) Matrix {
-	out := make([][]float64, len(x))
+	out := Zero(len(x), len(x[0]))
 	for i, r := range x {
-		out[i] = make([]float64, len(r))
 		for j, v := range r {
 			out[i][j] = float64(v)
 		}
@@ -138,9 +138,8 @@ func Int(m Matrix) [][]int {
 }
 
 func Identity(size int) Matrix {
-	out := make(Matrix, size)
+	out := Zero(size, size)
 	for i := 0; i < size; i++ {
-		out[i] = make([]float64, size)
 		out[i][i] = 1
 	}
 
@@ -148,9 +147,8 @@ func Identity(size int) Matrix {
 }
 
 func OneHot(x []int, size int) Matrix {
-	out := make(Matrix, len(x))
+	out := Zero(len(x), size)
 	for i, v := range x {
-		out[i] = make([]float64, size)
 		out[i][v] = 1
 	}
 
@@ -168,11 +166,7 @@ func (m Matrix) Dim() (int, int) {
 func (m Matrix) T() Matrix {
 	p, q := m.Dim()
 
-	out := make(Matrix, q)
-	for i := range out {
-		out[i] = make([]float64, p)
-	}
-
+	out := Zero(q, p)
 	for i := 0; i < q; i++ {
 		for j := 0; j < p; j++ {
 			out[i][j] = m[j][i]
@@ -240,7 +234,7 @@ func (m Matrix) Avg() float64 {
 func (m Matrix) Argmax() []int {
 	out := make([]int, len(m))
 	for i := range m {
-		max := math.SmallestNonzeroFloat64
+		max := m[i][0]
 		for j := range m[i] {
 			if m[i][j] > max {
 				max = m[i][j]
@@ -300,7 +294,7 @@ func (m Matrix) MeanAxis0() []float64 {
 func (m Matrix) MaxAxis1() []float64 {
 	out := make([]float64, len(m))
 	for i := range m {
-		out[i] = -math.MaxFloat64
+		out[i] = m[i][0]
 		for j := range m[i] {
 			if m[i][j] > out[i] {
 				out[i] = m[i][j]
@@ -314,9 +308,8 @@ func (m Matrix) MaxAxis1() []float64 {
 // Broadcast returns the broadcasted matrix.
 func (m Matrix) Broadcast(a, b int) Matrix {
 	if len(m) == 1 && len(m[0]) == 1 {
-		out := make(Matrix, a)
+		out := Zero(a, b)
 		for i := 0; i < a; i++ {
-			out[i] = make([]float64, b)
 			for j := 0; j < b; j++ {
 				out[i][j] = m[0][0]
 			}
@@ -337,9 +330,8 @@ func (m Matrix) Broadcast(a, b int) Matrix {
 
 	if len(m[0]) == 1 {
 		// a is ignored
-		out := make(Matrix, len(m))
+		out := Zero(len(m), b)
 		for i := 0; i < len(m); i++ {
-			out[i] = make([]float64, b)
 			for j := 0; j < b; j++ {
 				out[i][j] = m[i][0]
 			}
@@ -356,10 +348,8 @@ func Dot(m, n Matrix) Matrix {
 	a, b := m.Dim()
 	_, p := n.Dim()
 
-	out := make(Matrix, a)
+	out := Zero(a, p)
 	for i := 0; i < a; i++ {
-		out[i] = make([]float64, p)
-
 		for j := 0; j < p; j++ {
 			for k := 0; k < b; k++ {
 				out[i][j] = out[i][j] + m[i][k]*n[k][j]
@@ -374,15 +364,11 @@ func Dot(m, n Matrix) Matrix {
 func F(m Matrix, f func(a float64) float64) Matrix {
 	p, q := m.Dim()
 
-	out := make(Matrix, 0, p)
+	out := Zero(p, q)
 	for i := 0; i < p; i++ {
-		v := make([]float64, 0, q)
-
 		for j := 0; j < q; j++ {
-			v = append(v, f(m[i][j]))
+			out[i][j] = f(m[i][j])
 		}
-
-		out = append(out, v)
 	}
 
 	return out
@@ -392,15 +378,11 @@ func F(m Matrix, f func(a float64) float64) Matrix {
 func F2(m, n Matrix, f func(a, b float64) float64) Matrix {
 	p, q := m.Dim()
 
-	out := make(Matrix, 0, p)
+	out := Zero(p, q)
 	for i := 0; i < p; i++ {
-		v := make([]float64, 0, q)
-
 		for j := 0; j < q; j++ {
-			v = append(v, f(m[i][j], n[i][j]))
+			out[i][j] = f(m[i][j], n[i][j])
 		}
-
-		out = append(out, v)
 	}
 
 	return out
@@ -410,15 +392,11 @@ func F2(m, n Matrix, f func(a, b float64) float64) Matrix {
 func F3(m, n, o Matrix, f func(a, b, c float64) float64) Matrix {
 	p, q := m.Dim()
 
-	out := make(Matrix, 0, p)
+	out := Zero(p, q)
 	for i := 0; i < p; i++ {
-		v := make([]float64, 0, q)
-
 		for j := 0; j < q; j++ {
-			v = append(v, f(m[i][j], n[i][j], o[i][j]))
+			out[i][j] = f(m[i][j], n[i][j], o[i][j])
 		}
-
-		out = append(out, v)
 	}
 
 	return out

@@ -29,7 +29,7 @@ func ExampleSeq2Seq() {
 
 	// Output:
 	// [[[1.1011]]]
-	// [2 0 0 2 0 2 2 2 2 2]
+	// [2 2 2 2 2 2 2 2 2 2]
 }
 
 func ExampleSeq2Seq_Summary() {

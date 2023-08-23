@@ -16,7 +16,7 @@ func Int(v []float64) []int {
 }
 
 func Max(v []int) int {
-	max := math.MinInt
+	max := v[0]
 	for _, e := range v {
 		if e > max {
 			max = e

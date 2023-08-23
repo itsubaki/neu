@@ -42,7 +42,10 @@ func ExampleTimeBiLSTM() {
 			),
 		},
 	}
-	fmt.Println(lstm)
+
+	for _, s := range lstm.Summary() {
+		fmt.Println(s)
+	}
 
 	// forward
 	xs := []matrix.Matrix{
@@ -75,7 +78,9 @@ func ExampleTimeBiLSTM() {
 	}
 
 	// Output:
-	// *layer.TimeBiLSTM: Wx(3, 4), Wh(1, 4), B(1, 4): 40
+	// *layer.TimeBiLSTM
+	// *layer.TimeLSTM: Wx(3, 4), Wh(1, 4), B(1, 4): 20
+	// *layer.TimeLSTM: Wx(3, 4), Wh(1, 4), B(1, 4): 20
 	// 2 2: [[0.03637115410746597 0.03637115410746597] [0.08514639710269788 0.08514639710269788]]
 	// 2 3: [[0.021368657475674596 0.021368657475674596 0.021368657475674596] [0.06357173872462146 0.06357173872462146 0.06357173872462146]]
 }

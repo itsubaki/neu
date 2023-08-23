@@ -1,10 +1,6 @@
 package tensor
 
-import (
-	"math"
-
-	"github.com/itsubaki/neu/math/matrix"
-)
+import "github.com/itsubaki/neu/math/matrix"
 
 func Zero(m, n, o int) []matrix.Matrix {
 	out := make([]matrix.Matrix, m)
@@ -18,25 +14,23 @@ func Zero(m, n, o int) []matrix.Matrix {
 func ZeroLike(x []matrix.Matrix) []matrix.Matrix {
 	out := make([]matrix.Matrix, len(x))
 	for i := 0; i < len(x); i++ {
-		out[i] = matrix.Zero(x[i].Dim())
+		out[i] = matrix.ZeroLike(x[i])
 	}
 
 	return out
 }
 
 func OneHot(ts []matrix.Matrix, size int) []matrix.Matrix {
-	out := make([]matrix.Matrix, 0)
-	for _, t := range ts {
-		m := make(matrix.Matrix, 0)
+	out := make([]matrix.Matrix, len(ts))
+	for i, t := range ts {
+		out[i] = make(matrix.Matrix, 0)
 		for _, r := range t {
 			for _, v := range r {
 				onehot := make([]float64, size)
 				onehot[int(v)] = 1
-				m = append(m, onehot)
+				out[i] = append(out[i], onehot)
 			}
 		}
-
-		out = append(out, m)
 	}
 
 	return out
@@ -62,9 +56,8 @@ func Mul(x, y []matrix.Matrix) []matrix.Matrix {
 
 func SumAxis0(hr []matrix.Matrix) matrix.Matrix {
 	T, N, H := len(hr), len(hr[0]), len(hr[0][0])
-	out := make(matrix.Matrix, N)
+	out := matrix.Zero(N, H)
 	for i := 0; i < N; i++ {
-		out[i] = make([]float64, H)
 		for j := 0; j < H; j++ {
 			var sum float64
 			for t := 0; t < T; t++ {
@@ -127,9 +120,11 @@ func Flatten(m []matrix.Matrix) []float64 {
 }
 
 func Argmax(score []matrix.Matrix) int {
-	max := math.SmallestNonzeroFloat64
+	flatten := Flatten(score)
+
+	max := flatten[0]
 	var arg int
-	for i, v := range Flatten(score) {
+	for i, v := range flatten {
 		if v > max {
 			max = v
 			arg = i
