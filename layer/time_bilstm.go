@@ -25,8 +25,23 @@ func (l *TimeBiLSTM) SetParams(p ...matrix.Matrix) {
 	l.B.SetParams(p[3], p[4], p[5])
 }
 
-func (l *TimeBiLSTM) SetState(h ...matrix.Matrix) {}
-func (l *TimeBiLSTM) ResetState()                 {}
+// SetState sets hidden state and cell state.
+// SetState(hf, hb) or SetState(hf, cf, hb, cb)
+func (l *TimeBiLSTM) SetState(h ...matrix.Matrix) {
+	if len(h) == 2 {
+		l.F.SetState(h[0])
+		l.B.SetState(h[1])
+		return
+	}
+
+	l.F.SetState(h[0], h[1])
+	l.B.SetState(h[2], h[3])
+}
+
+func (l *TimeBiLSTM) ResetState() {
+	l.F.ResetState()
+	l.B.ResetState()
+}
 
 func (l *TimeBiLSTM) String() string {
 	a, b := l.F.Wx.Dim()

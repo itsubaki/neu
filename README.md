@@ -5,9 +5,9 @@
 [![tests](https://github.com/itsubaki/neu/workflows/tests/badge.svg?branch=main)](https://github.com/itsubaki/neu/actions)
 [![codecov](https://codecov.io/gh/itsubaki/neu/branch/main/graph/badge.svg?token=KMJ2GUC1FJ)](https://codecov.io/gh/itsubaki/neu)
 
- * Deep Learning framework for Go from scratch.
- * pure Go implementation.
- * using only the plot library for testing.
+- Deep Learning framework for Go from scratch.
+- pure Go implementation.
+- using only the `plot` library for testing.
 
 ## MNIST
 

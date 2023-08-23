@@ -162,8 +162,8 @@ func ExampleTimeBiLSTM_SetState() {
 			Stateful: false,
 		},
 	}
-	lstm.SetState(matrix.New())
 	lstm.SetState(matrix.New(), matrix.New())
+	lstm.SetState(matrix.New(), matrix.New(), matrix.New(), matrix.New())
 	lstm.ResetState()
 
 	// Output:
