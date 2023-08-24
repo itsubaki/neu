@@ -42,7 +42,7 @@ func main() {
 	}
 	fmt.Println()
 
-	m := model.NewCBOWNegs(model.CBOWNegsConfig{
+	m := model.NewCBOWNegativeSampling(model.CBOWNegativeSamplingConfig{
 		CBOWConfig: model.CBOWConfig{
 			VocabSize:  vector.Max(corpus) + 1,
 			HiddenSize: hiddenSize,

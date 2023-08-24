@@ -9,7 +9,7 @@ import (
 	"github.com/itsubaki/neu/math/matrix"
 )
 
-type CBOWNegsConfig struct {
+type CBOWNegativeSamplingConfig struct {
 	CBOWConfig
 	Corpus     []int
 	WindowSize int
@@ -17,13 +17,13 @@ type CBOWNegsConfig struct {
 	Power      float64
 }
 
-type CBOWNegs struct {
+type CBOWNegativeSampling struct {
 	Embedding []Layer
 	Loss      Layer
 	s         rand.Source
 }
 
-func NewCBOWNegs(c CBOWNegsConfig, s ...rand.Source) *CBOWNegs {
+func NewCBOWNegativeSampling(c CBOWNegativeSamplingConfig, s ...rand.Source) *CBOWNegativeSampling {
 	if len(s) == 0 {
 		s = append(s, rand.NewSource(time.Now().UnixNano()))
 	}
@@ -42,14 +42,14 @@ func NewCBOWNegs(c CBOWNegsConfig, s ...rand.Source) *CBOWNegs {
 	}
 	loss := layer.NewNegativeSamplingLoss(Wout, c.Corpus, c.Power, c.SampleSize, s[0])
 
-	return &CBOWNegs{
+	return &CBOWNegativeSampling{
 		Embedding: embed,
 		Loss:      loss,
 		s:         s[0],
 	}
 }
 
-func (m *CBOWNegs) Predict(x matrix.Matrix, _ ...layer.Opts) matrix.Matrix {
+func (m *CBOWNegativeSampling) Predict(x matrix.Matrix, _ ...layer.Opts) matrix.Matrix {
 	h := matrix.Zero(1, 1)
 	for i, l := range m.Embedding {
 		h = l.Forward(matrix.Column(x, i), nil).Add(h)
@@ -59,12 +59,12 @@ func (m *CBOWNegs) Predict(x matrix.Matrix, _ ...layer.Opts) matrix.Matrix {
 	return h
 }
 
-func (m *CBOWNegs) Forward(contexts, target matrix.Matrix) matrix.Matrix {
+func (m *CBOWNegativeSampling) Forward(contexts, target matrix.Matrix) matrix.Matrix {
 	h := m.Predict(contexts)
 	return m.Loss.Forward(h, target)
 }
 
-func (m *CBOWNegs) Backward() matrix.Matrix {
+func (m *CBOWNegativeSampling) Backward() matrix.Matrix {
 	dout, _ := m.Loss.Backward(matrix.New([]float64{1}))
 	dout = dout.MulC(1.0 / float64(len(m.Embedding)))
 	for _, l := range m.Embedding {
@@ -74,7 +74,7 @@ func (m *CBOWNegs) Backward() matrix.Matrix {
 	return nil
 }
 
-func (m *CBOWNegs) Summary() []string {
+func (m *CBOWNegativeSampling) Summary() []string {
 	s := []string{fmt.Sprintf("%T", m)}
 	for _, l := range m.Layers() {
 		s = append(s, l.String())
@@ -83,11 +83,11 @@ func (m *CBOWNegs) Summary() []string {
 	return s
 }
 
-func (m *CBOWNegs) Layers() []Layer {
+func (m *CBOWNegativeSampling) Layers() []Layer {
 	return append(m.Embedding, m.Loss)
 }
 
-func (m *CBOWNegs) Params() [][]matrix.Matrix {
+func (m *CBOWNegativeSampling) Params() [][]matrix.Matrix {
 	params := make([][]matrix.Matrix, 0)
 	for _, l := range m.Layers() {
 		params = append(params, l.Params())
@@ -96,7 +96,7 @@ func (m *CBOWNegs) Params() [][]matrix.Matrix {
 	return params
 }
 
-func (m *CBOWNegs) Grads() [][]matrix.Matrix {
+func (m *CBOWNegativeSampling) Grads() [][]matrix.Matrix {
 	grads := make([][]matrix.Matrix, 0)
 	for _, l := range m.Layers() {
 		grads = append(grads, l.Grads())
@@ -105,7 +105,7 @@ func (m *CBOWNegs) Grads() [][]matrix.Matrix {
 	return grads
 }
 
-func (m *CBOWNegs) SetParams(p [][]matrix.Matrix) {
+func (m *CBOWNegativeSampling) SetParams(p [][]matrix.Matrix) {
 	for i, l := range m.Layers() {
 		l.SetParams(p[i]...)
 	}

@@ -14,7 +14,7 @@ import (
 var (
 	_ Model = (*model.Sequential)(nil)
 	_ Model = (*model.MLP)(nil)
-	_ Model = (*model.CBOWNegs)(nil)
+	_ Model = (*model.CBOWNegativeSampling)(nil)
 )
 
 var (

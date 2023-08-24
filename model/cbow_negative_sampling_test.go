@@ -8,9 +8,9 @@ import (
 	"github.com/itsubaki/neu/model"
 )
 
-func ExampleCBOWNegs() {
+func ExampleCBOWNegativeSampling() {
 	s := rand.NewSource(1)
-	m := model.NewCBOWNegs(model.CBOWNegsConfig{
+	m := model.NewCBOWNegativeSampling(model.CBOWNegativeSamplingConfig{
 		CBOWConfig: model.CBOWConfig{
 			VocabSize:  7,
 			HiddenSize: 5,
@@ -47,8 +47,8 @@ func ExampleCBOWNegs() {
 	// [[12.476638924761186]]
 }
 
-func ExampleCBOWNegs_Summary() {
-	m := model.NewCBOWNegs(model.CBOWNegsConfig{
+func ExampleCBOWNegativeSampling_Summary() {
+	m := model.NewCBOWNegativeSampling(model.CBOWNegativeSamplingConfig{
 		CBOWConfig: model.CBOWConfig{
 			VocabSize:  7,
 			HiddenSize: 5,
@@ -65,14 +65,14 @@ func ExampleCBOWNegs_Summary() {
 	}
 
 	// Output:
-	// *model.CBOWNegs
+	// *model.CBOWNegativeSampling
 	//  0: *layer.Embedding: W(7, 5): 35
 	//  1: *layer.Embedding: W(7, 5): 35
 	//  2: *layer.NegativeSamplingLoss: W(7, 5)*3: 105
 }
 
-func ExampleCBOWNegs_Layers() {
-	m := model.NewCBOWNegs(model.CBOWNegsConfig{
+func ExampleCBOWNegativeSampling_Layers() {
+	m := model.NewCBOWNegativeSampling(model.CBOWNegativeSamplingConfig{
 		CBOWConfig: model.CBOWConfig{
 			VocabSize:  7,
 			HiddenSize: 5,
@@ -89,14 +89,14 @@ func ExampleCBOWNegs_Layers() {
 	}
 
 	// Output:
-	// *model.CBOWNegs
+	// *model.CBOWNegativeSampling
 	//  0: *layer.Embedding: W(7, 5): 35
 	//  1: *layer.Embedding: W(7, 5): 35
 	//  2: *layer.NegativeSamplingLoss: W(7, 5)*3: 105
 }
 
-func ExampleCBOWNegs_Params() {
-	m := model.NewCBOWNegs(model.CBOWNegsConfig{
+func ExampleCBOWNegativeSampling_Params() {
+	m := model.NewCBOWNegativeSampling(model.CBOWNegativeSamplingConfig{
 		CBOWConfig: model.CBOWConfig{
 			VocabSize:  7,
 			HiddenSize: 5,

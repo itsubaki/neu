@@ -11,7 +11,7 @@ var (
 	_ Model = (*model.Sequential)(nil)
 	_ Model = (*model.MLP)(nil)
 	_ Model = (*model.CBOW)(nil)
-	_ Model = (*model.CBOWNegs)(nil)
+	_ Model = (*model.CBOWNegativeSampling)(nil)
 	_ Model = (*model.RNNLM)(nil)
 	_ Model = (*model.LSTMLM)(nil)
 	_ Model = (*model.GRULM)(nil)
