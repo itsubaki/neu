@@ -38,17 +38,17 @@ jobs:
         run: |
           make mnist1
 
-      - name: CBOW(Simple)
-        run: |
-          make cbow_simple
-
-      - name: CBOW(Negative Sampling)
+      - name: CBOW
         run: |
           make cbow
 
-      - name: RNNLM(Simple)
+      - name: CBOW(Negative Sampling)
         run: |
-          make rnnlm_simple
+          make cbow_negative_sampling
+
+      - name: RNNLM
+        run: |
+          make rnnlm
 
       - name: RNNLM(LSTM)
         run: |

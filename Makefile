@@ -14,14 +14,14 @@ mnist:
 mnist1:
 	go run cmd/mnist/main.go --dir ./testdata --epochs 1
 
-cbow_simple:
-	go run cmd/cbow_simple/main.go
-
 cbow:
 	go run cmd/cbow/main.go
 
-rnnlm_simple:
-	go run cmd/rnnlm_simple/main.go --dir ./testdata --corpus-size 1000
+cbow_negative_sampling:
+	go run cmd/cbow_negative_sampling/main.go
+
+rnnlm:
+	go run cmd/rnnlm/main.go --dir ./testdata --corpus-size 1000
 
 rnnlm_lstm:
 	go run cmd/rnnlm_lstm/main.go --dir ./testdata --corpus-size 1000
