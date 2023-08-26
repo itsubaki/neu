@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"math/rand"
 	"time"
@@ -77,12 +78,19 @@ func (a *AlphaAgent) Update(action int, reward float64) {
 }
 
 func main() {
-	arms, steps, runs := 10, 1000, 200
+	var arms, steps, runs int
+	var eps, alpha float64
+	flag.IntVar(&arms, "arms", 10, "")
+	flag.IntVar(&steps, "steps", 1000, "")
+	flag.IntVar(&runs, "runs", 200, "")
+	flag.Float64Var(&eps, "epsilon", 0.1, "")
+	flag.Float64Var(&alpha, "alpha", 0.8, "")
+	flag.Parse()
 
 	all := make([][]float64, runs)
 	for r := 0; r < runs; r++ {
 		bandit := NonStatBandit{Arms: arms, Rates: vector.Rand(arms)}
-		agent := AlphaAgent{Epsilon: 0.1, Alpha: 0.8, Qs: make([]float64, arms)}
+		agent := AlphaAgent{Epsilon: eps, Alpha: alpha, Qs: make([]float64, arms)}
 
 		var total float64
 		rates := make([]float64, steps)
@@ -99,6 +107,6 @@ func main() {
 	}
 
 	for i, r := range all {
-		fmt.Printf("step=%v: %.4f\n", i, vector.Mean(r))
+		fmt.Printf("step=%3v: mean(rate)=%.4f\n", i, vector.Mean(r))
 	}
 }
