@@ -89,6 +89,10 @@ func Sum(v []float64) float64 {
 	return sum
 }
 
+func Mean(v []float64) float64 {
+	return Sum(v) / float64(len(v))
+}
+
 func Pow2(v []float64) []float64 {
 	out := make([]float64, len(v))
 	for i, e := range v {

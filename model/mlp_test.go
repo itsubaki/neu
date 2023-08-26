@@ -158,7 +158,7 @@ func ExampleMLP_gradientCheck() {
 	for i := range gradsn {
 		// 20, 21 is ReLU. empty
 		for j := range gradsn[i] {
-			eps := gradsn[i][j].Sub(grads[i][j]).Abs().Avg() // avg(| A - B |)
+			eps := gradsn[i][j].Sub(grads[i][j]).Abs().Mean() // mean(| A - B |)
 			fmt.Printf("%v%v: %v\n", i, j, eps)
 		}
 	}

@@ -58,6 +58,14 @@ func ExampleSum() {
 	// 6
 }
 
+func ExampleMean() {
+	v := []float64{1, 2, 3}
+	fmt.Println(vector.Mean(v))
+
+	// Output:
+	// 2
+}
+
 func ExampleMax() {
 	v := []int{1, 2, 3}
 	fmt.Println(vector.Max(v))

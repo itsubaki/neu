@@ -224,8 +224,8 @@ func (m Matrix) Sum() float64 {
 	return sum
 }
 
-// Avg returns the average of all elements.
-func (m Matrix) Avg() float64 {
+// Mean returns the average of all elements.
+func (m Matrix) Mean() float64 {
 	a, b := m.Dim()
 	return m.Sum() / float64(a*b)
 }

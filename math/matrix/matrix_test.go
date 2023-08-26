@@ -342,14 +342,14 @@ func ExampleMatrix_Abs() {
 
 }
 
-func ExampleMatrix_Avg() {
+func ExampleMatrix_Mean() {
 	A := matrix.New(
 		[]float64{1, 2, 3},
 		[]float64{4, 5, 6},
 	)
 
 	fmt.Println(A.Sum())
-	fmt.Println(A.Avg())
+	fmt.Println(A.Mean())
 
 	// Output:
 	// 21

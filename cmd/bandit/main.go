@@ -42,25 +42,28 @@ func (a *Agent) Update(action int, reward float64) {
 }
 
 func main() {
-	arms, steps := 10, 1000
-	bandit := Bandit{Rates: vector.Rand(arms)}
-	agent := Agent{Epsilon: 0.1, Qs: make([]float64, arms), Ns: make([]float64, arms)}
+	arms, steps, runs := 10, 1000, 200
 
-	var total float64
-	rewards, rates := make([]float64, steps), make([]float64, steps)
+	all := make([][]float64, runs)
+	for r := 0; r < runs; r++ {
+		bandit := Bandit{Rates: vector.Rand(arms)}
+		agent := Agent{Epsilon: 0.1, Qs: make([]float64, arms), Ns: make([]float64, arms)}
 
-	for i := 0; i < steps; i++ {
-		action := agent.GetAction()
-		reward := bandit.Play(action)
-		agent.Update(action, reward)
+		var total float64
+		rates := make([]float64, steps)
+		for i := 0; i < steps; i++ {
+			action := agent.GetAction()
+			reward := bandit.Play(action)
+			agent.Update(action, reward)
 
-		total += reward
-		rewards[i] = total
-		rates[i] = total / float64(i+1)
+			total += reward
+			rates[i] = total / float64(i+1)
+		}
+
+		all[r] = rates
 	}
 
-	fmt.Printf("%4f\n", bandit.Rates)
-	fmt.Printf("%4f\n", agent.Qs)
-	fmt.Println(rewards[len(rewards)-1])
-	fmt.Println(rates[len(rates)-1])
+	for i, r := range all {
+		fmt.Printf("step=%v: %.4f\n", i, vector.Mean(r))
+	}
 }
