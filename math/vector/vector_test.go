@@ -16,6 +16,14 @@ func ExampleRand() {
 	// 10
 }
 
+func ExampleArgmax() {
+	v := []float64{1, 2, 3}
+	fmt.Println(vector.Argmax(v))
+
+	// Output:
+	// 2
+}
+
 func ExampleAdd() {
 	v := []float64{1, 2, 3}
 	w := []float64{4, 5, 6}

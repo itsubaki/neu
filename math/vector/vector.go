@@ -40,6 +40,19 @@ func Max(v []int) int {
 	return max
 }
 
+func Argmax(v []float64) int {
+	var max float64
+	var arg int
+	for i, e := range v {
+		if e > max {
+			max = e
+			arg = i
+		}
+	}
+
+	return arg
+}
+
 func Add(v, w []float64) []float64 {
 	out := make([]float64, len(v))
 	for i := range v {
