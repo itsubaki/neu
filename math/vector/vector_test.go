@@ -16,6 +16,15 @@ func ExampleRand() {
 	// 10
 }
 
+func ExampleRandn() {
+	fmt.Println(vector.Randn(3, rand.NewSource(1)))
+	fmt.Println(len(vector.Randn(10)))
+
+	// Output:
+	// [-1.233758177597947 -0.12634751070237293 -0.5209945711531503]
+	// 10
+}
+
 func ExampleArgmax() {
 	v := []float64{1, 2, 3}
 	fmt.Println(vector.Argmax(v))
@@ -32,6 +41,14 @@ func ExampleAdd() {
 
 	// Output:
 	// [5 7 9]
+}
+
+func ExampleMul() {
+	v := []float64{1, 2, 3}
+	fmt.Println(vector.Mul(v, 2))
+
+	// Output:
+	// [2 4 6]
 }
 
 func ExampleDiv() {

@@ -20,6 +20,20 @@ func Rand(n int, s ...rand.Source) []float64 {
 	return out
 }
 
+func Randn(n int, s ...rand.Source) []float64 {
+	if len(s) == 0 {
+		s = append(s, rand.NewSource(time.Now().UnixNano()))
+	}
+	rng := rand.New(s[0])
+
+	out := make([]float64, n)
+	for i := 0; i < n; i++ {
+		out[i] = rng.NormFloat64()
+	}
+
+	return out
+}
+
 func Int(v []float64) []int {
 	out := make([]int, len(v))
 	for i, e := range v {
@@ -57,6 +71,15 @@ func Add(v, w []float64) []float64 {
 	out := make([]float64, len(v))
 	for i := range v {
 		out[i] = v[i] + w[i]
+	}
+
+	return out
+}
+
+func Mul(v []float64, a float64) []float64 {
+	out := make([]float64, len(v))
+	for i := range v {
+		out[i] = v[i] * a
 	}
 
 	return out

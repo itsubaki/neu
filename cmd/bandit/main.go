@@ -41,13 +41,48 @@ func (a *Agent) Update(action int, reward float64) {
 	a.Qs[action] += (reward - a.Qs[action]) / a.Ns[action]
 }
 
+type NonStatBandit struct {
+	Arms  int
+	Rates []float64
+}
+
+func (b *NonStatBandit) Play(arm int) float64 {
+	rate := b.Rates[arm]
+	b.Rates = vector.Add(b.Rates, vector.Mul(vector.Randn(b.Arms), -0.1))
+
+	if rate > rand.New(rand.NewSource(time.Now().UnixNano())).Float64() {
+		return 1
+	}
+
+	return 0
+}
+
+type AlphaAgent struct {
+	Epsilon float64
+	Alpha   float64
+	Qs      []float64
+}
+
+func (a *AlphaAgent) GetAction() int {
+	rng := rand.New(rand.NewSource(time.Now().UnixNano()))
+	if a.Epsilon > rng.Float64() {
+		return rng.Intn(len(a.Qs))
+	}
+
+	return vector.Argmax(a.Qs)
+}
+
+func (a *AlphaAgent) Update(action int, reward float64) {
+	a.Qs[action] += (reward - a.Qs[action]) * a.Alpha
+}
+
 func main() {
 	arms, steps, runs := 10, 1000, 200
 
 	all := make([][]float64, runs)
 	for r := 0; r < runs; r++ {
-		bandit := Bandit{Rates: vector.Rand(arms)}
-		agent := Agent{Epsilon: 0.1, Qs: make([]float64, arms), Ns: make([]float64, arms)}
+		bandit := NonStatBandit{Arms: arms, Rates: vector.Rand(arms)}
+		agent := AlphaAgent{Epsilon: 0.1, Alpha: 0.8, Qs: make([]float64, arms)}
 
 		var total float64
 		rates := make([]float64, steps)
