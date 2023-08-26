@@ -7,6 +7,15 @@ import (
 	"github.com/itsubaki/neu/math/vector"
 )
 
+func ExampleRand() {
+	fmt.Println(vector.Rand(3, rand.NewSource(1)))
+	fmt.Println(len(vector.Rand(10)))
+
+	// Output:
+	// [0.6046602879796196 0.9405090880450124 0.6645600532184904]
+	// 10
+}
+
 func ExampleAdd() {
 	v := []float64{1, 2, 3}
 	w := []float64{4, 5, 6}
