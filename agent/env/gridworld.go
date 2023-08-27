@@ -74,7 +74,7 @@ func (w *GridWorld) Actions() []Action {
 
 func (w *GridWorld) State() *GridState {
 	w.counter++
-	if w.counter > len(w.state) {
+	if w.counter > len(w.state)-1 {
 		return nil
 	}
 
