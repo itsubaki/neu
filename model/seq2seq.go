@@ -10,11 +10,11 @@ import (
 )
 
 var (
-	_ Decode = (*Decoder)(nil)
-	_ Decode = (*PeekyDecoder)(nil)
+	_ decoder = (*Decoder)(nil)
+	_ decoder = (*PeekyDecoder)(nil)
 )
 
-type Decode interface {
+type decoder interface {
 	Forward(xs []matrix.Matrix, h matrix.Matrix) []matrix.Matrix
 	Backward(dscore []matrix.Matrix) matrix.Matrix
 	Generate(h matrix.Matrix, startID, length int) []int
@@ -27,7 +27,7 @@ type Decode interface {
 
 type Seq2Seq struct {
 	Encoder *Encoder
-	Decoder Decode
+	Decoder decoder
 	Softmax *layer.TimeSoftmaxWithLoss
 	Source  rand.Source
 }
