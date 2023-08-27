@@ -114,3 +114,19 @@ func (w *GridWorld) NextState(s *GridState, a Action) *GridState {
 func (w *GridWorld) Reward(s *GridState, a Action, n *GridState) float64 {
 	return w.RewardMap[n.Height][n.Width]
 }
+
+func (w *GridWorld) Reset() *GridState {
+	w.counter = -1
+	w.AgentState = w.StartState
+	return w.AgentState
+}
+
+func (w *GridWorld) Step(a Action) (*GridState, float64, bool) {
+	s := w.AgentState
+	n := w.NextState(s, a)
+	r := w.Reward(s, a, n)
+	done := n.Equals(w.GoalState)
+
+	w.AgentState = n
+	return n, r, done
+}

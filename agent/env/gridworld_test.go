@@ -6,6 +6,24 @@ import (
 	"github.com/itsubaki/neu/agent/env"
 )
 
+func ExampleGridState() {
+	s0 := &env.GridState{Height: 0, Width: 0}
+	s1 := &env.GridState{Height: 0, Width: 1}
+	s2 := &env.GridState{Height: 1, Width: 0}
+	s3 := &env.GridState{Height: 1, Width: 1}
+
+	fmt.Println(s0.Equals(s0))
+	fmt.Println(s0.Equals(s1))
+	fmt.Println(s0.Equals(s2))
+	fmt.Println(s0.Equals(s3))
+
+	// Output:
+	// true
+	// false
+	// false
+	// false
+}
+
 func ExampleGridWorld() {
 	e := env.NewGridWorld()
 
@@ -82,20 +100,18 @@ func ExampleGridWorld_NextState() {
 	// &{2 3}
 }
 
-func ExampleGridState() {
-	s0 := &env.GridState{Height: 0, Width: 0}
-	s1 := &env.GridState{Height: 0, Width: 1}
-	s2 := &env.GridState{Height: 1, Width: 0}
-	s3 := &env.GridState{Height: 1, Width: 1}
+func ExampleGridWorld_Reset() {
+	e := env.NewGridWorld()
 
-	fmt.Println(s0.Equals(s0))
-	fmt.Println(s0.Equals(s1))
-	fmt.Println(s0.Equals(s2))
-	fmt.Println(s0.Equals(s3))
+	fmt.Println(e.AgentState)
+	fmt.Println(e.Step(0))
+	fmt.Println(e.AgentState)
+
+	fmt.Println(e.Reset())
 
 	// Output:
-	// true
-	// false
-	// false
-	// false
+	// &{2 0}
+	// &{1 0} 0 false
+	// &{1 0}
+	// &{2 0}
 }
