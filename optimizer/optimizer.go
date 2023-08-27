@@ -17,6 +17,7 @@ var (
 	_ Model = (*model.GRULM)(nil)
 	_ Model = (*model.RNNLMGen)(nil)
 	_ Model = (*model.Seq2Seq)(nil)
+	_ Model = (*model.PeekySeq2Seq)(nil)
 	_ Model = (*model.AttentionSeq2Seq)(nil)
 )
 
