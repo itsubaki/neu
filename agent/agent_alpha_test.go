@@ -5,6 +5,7 @@ import (
 	"math/rand"
 
 	"github.com/itsubaki/neu/agent"
+	"github.com/itsubaki/neu/agent/env"
 	"github.com/itsubaki/neu/math/vector"
 )
 
@@ -42,7 +43,7 @@ func ExampleAlphaAgent_bandit() {
 
 	all := make([][]float64, runs)
 	for r := 0; r < runs; r++ {
-		bandit := NonStatBandit{Arms: arms, Rates: vector.Rand(arms, s), Source: s}
+		bandit := env.NewNonStatBandit(arms, s)
 		agent := agent.AlphaAgent{Epsilon: eps, Alpha: alpha, Qs: make([]float64, arms), Source: s}
 
 		var total float64

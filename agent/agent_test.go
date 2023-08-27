@@ -5,6 +5,7 @@ import (
 	"math/rand"
 
 	"github.com/itsubaki/neu/agent"
+	"github.com/itsubaki/neu/agent/env"
 	"github.com/itsubaki/neu/math/vector"
 )
 
@@ -35,45 +36,13 @@ func ExampleAgent() {
 	// 4: [1 1 0 0 1]
 }
 
-type Bandit struct {
-	Rates  []float64
-	Source rand.Source
-}
-
-func (b *Bandit) Play(arm int) float64 {
-	rng := rand.New(b.Source)
-	if b.Rates[arm] > rng.Float64() {
-		return 1
-	}
-
-	return 0
-}
-
-type NonStatBandit struct {
-	Arms   int
-	Rates  []float64
-	Source rand.Source
-}
-
-func (b *NonStatBandit) Play(arm int) float64 {
-	rate := b.Rates[arm]
-	randn := vector.Randn(b.Arms, b.Source)
-	b.Rates = vector.Add(b.Rates, vector.Mul(randn, -0.1))
-
-	if rate > rand.New(b.Source).Float64() {
-		return 1
-	}
-
-	return 0
-}
-
 func ExampleAgent_bandit() {
 	arms, steps, runs, eps := 10, 1000, 200, 0.1
 	s := rand.NewSource(1)
 
 	all := make([][]float64, runs)
 	for r := 0; r < runs; r++ {
-		bandit := NonStatBandit{Arms: arms, Rates: vector.Rand(arms, s), Source: s}
+		bandit := env.NewNonStatBandit(arms, s)
 		agent := agent.Agent{Epsilon: eps, Qs: make([]float64, arms), Ns: make([]float64, arms), Source: s}
 
 		var total float64
