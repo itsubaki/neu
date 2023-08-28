@@ -14,8 +14,12 @@ func ExampleDeque() {
 
 	fmt.Println(q.Get(0))
 	fmt.Println(q.Get(1))
+	fmt.Println(q.Len())
+	fmt.Println(q.Size())
 
 	// Output:
 	// {b 2 2 false}
 	// {c 3 3 true}
+	// 2
+	// 2
 }

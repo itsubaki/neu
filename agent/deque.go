@@ -12,6 +12,14 @@ func NewDeque(size int) *Deque {
 	}
 }
 
+func (d *Deque) Len() int {
+	return len(d.data)
+}
+
+func (d *Deque) Size() int {
+	return d.size
+}
+
 func (d *Deque) Append(m Memory) {
 	if len(d.data) == d.size {
 		d.data = d.data[1:]
