@@ -12,6 +12,7 @@ type Memory struct {
 	State  string
 	Action int
 	Reward float64
+	Done   bool
 }
 
 type RandomAgent struct {

@@ -1,1 +1,21 @@
 package agent_test
+
+import (
+	"fmt"
+
+	"github.com/itsubaki/neu/agent"
+)
+
+func ExampleDeque() {
+	q := agent.NewDeque(2)
+	q.Append(agent.Memory{State: "a", Action: 1, Reward: 1, Done: false})
+	q.Append(agent.Memory{State: "b", Action: 2, Reward: 2, Done: false})
+	q.Append(agent.Memory{State: "c", Action: 3, Reward: 3, Done: true})
+
+	fmt.Println(q.Get(0))
+	fmt.Println(q.Get(1))
+
+	// Output:
+	// {b 2 2 false}
+	// {c 3 3 true}
+}
