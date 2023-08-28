@@ -45,7 +45,7 @@ func (a *MonteCarloAgent) Add(state string, action int, reward float64) {
 }
 
 func (a *MonteCarloAgent) Reset() {
-	a.Memory = make([]Memory, 0)
+	a.Memory = a.Memory[:0]
 }
 
 func (a *MonteCarloAgent) Update() {
