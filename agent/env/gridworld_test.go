@@ -45,9 +45,9 @@ func ExampleGridWorld() {
 	// 3 4
 	// 3 4
 	// 0 UP
-	// 1 RIGHT
-	// 2 DOWN
-	// 3 LEFT
+	// 1 DOWN
+	// 2 LEFT
+	// 3 RIGHT
 	// (0, 0) 0
 	// (0, 1) 0
 	// (0, 2) 0
