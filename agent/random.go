@@ -1,7 +1,9 @@
 package agent
 
 import (
+	"fmt"
 	"math/rand"
+	"sort"
 
 	"github.com/itsubaki/neu/math/vector"
 )
@@ -26,20 +28,22 @@ type RandomAgent struct {
 	Source        rand.Source
 }
 
-func (a *RandomAgent) GetAction(state string) int {
-	if _, ok := a.Pi[state]; !ok {
-		a.Pi[state] = a.RandomActions
+func (a *RandomAgent) GetAction(state fmt.Stringer) int {
+	s := state.String()
+	if _, ok := a.Pi[s]; !ok {
+		a.Pi[s] = a.RandomActions
 	}
+
 	probs := make([]float64, a.ActionSize)
-	for i, p := range a.Pi[state] {
+	for i, p := range a.Pi[s] {
 		probs[i] = p
 	}
 
 	return vector.Choice(probs, a.Source)
 }
 
-func (a *RandomAgent) Add(state string, action int, reward float64) {
-	a.Memory = append(a.Memory, Memory{State: state, Action: action, Reward: reward})
+func (a *RandomAgent) Add(state fmt.Stringer, action int, reward float64) {
+	a.Memory = append(a.Memory, Memory{State: state.String(), Action: action, Reward: reward})
 }
 
 func (a *RandomAgent) Reset() {
@@ -55,4 +59,14 @@ func (a *RandomAgent) Eval() {
 		a.Counts[state]++
 		a.V[state] += (G - a.V[state]) / float64(a.Counts[state])
 	}
+}
+
+func Keys(m map[string]float64) []string {
+	keys := make([]string, 0)
+	for k := range m {
+		keys = append(keys, k)
+	}
+
+	sort.Strings(keys)
+	return keys
 }

@@ -28,20 +28,22 @@ type MonteCarloAgent struct {
 	Source        rand.Source
 }
 
-func (a *MonteCarloAgent) GetAction(state string) int {
-	if _, ok := a.Pi[state]; !ok {
-		a.Pi[state] = a.RandomActions
+func (a *MonteCarloAgent) GetAction(state fmt.Stringer) int {
+	s := state.String()
+	if _, ok := a.Pi[s]; !ok {
+		a.Pi[s] = a.RandomActions
 	}
+
 	probs := make([]float64, a.ActionSize)
-	for i, p := range a.Pi[state] {
+	for i, p := range a.Pi[s] {
 		probs[i] = p
 	}
 
 	return vector.Choice(probs, a.Source)
 }
 
-func (a *MonteCarloAgent) Add(state string, action int, reward float64) {
-	a.Memory = append(a.Memory, Memory{State: state, Action: action, Reward: reward})
+func (a *MonteCarloAgent) Add(state fmt.Stringer, action int, reward float64) {
+	a.Memory = append(a.Memory, Memory{State: state.String(), Action: action, Reward: reward})
 }
 
 func (a *MonteCarloAgent) Reset() {

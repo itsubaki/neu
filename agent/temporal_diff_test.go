@@ -3,7 +3,6 @@ package agent_test
 import (
 	"fmt"
 	"math/rand"
-	"sort"
 
 	"github.com/itsubaki/neu/agent"
 	"github.com/itsubaki/neu/agent/env"
@@ -26,10 +25,10 @@ func ExampleTemporalDiffAgent() {
 		state := env.Reset()
 
 		for {
-			action := a.GetAction(state.String())
+			action := a.GetAction(state)
 			next, reward, done := env.Step(action)
+			a.Eval(state, reward, next, done)
 
-			a.Eval(state.String(), reward, next.String(), done)
 			if done {
 				break
 			}
@@ -38,13 +37,7 @@ func ExampleTemporalDiffAgent() {
 		}
 	}
 
-	keys := make([]string, 0)
-	for k := range a.V {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-
-	for _, k := range keys {
+	for _, k := range agent.Keys(a.V) {
 		fmt.Printf("%s: %.2f\n", k, a.V[k])
 	}
 

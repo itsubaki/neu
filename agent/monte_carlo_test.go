@@ -3,7 +3,6 @@ package agent_test
 import (
 	"fmt"
 	"math/rand"
-	"sort"
 	"strconv"
 	"strings"
 
@@ -31,9 +30,9 @@ func ExampleMonteCarloAgent() {
 		a.Reset()
 
 		for {
-			action := a.GetAction(state.String())
+			action := a.GetAction(state)
 			next, reward, done := env.Step(action)
-			a.Add(state.String(), action, reward)
+			a.Add(state, action, reward)
 
 			if done {
 				a.Update()
@@ -44,13 +43,7 @@ func ExampleMonteCarloAgent() {
 		}
 	}
 
-	keys := make([]string, 0)
-	for k := range a.Q {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-
-	for _, k := range keys {
+	for _, k := range agent.Keys(a.Q) {
 		s := strings.Split(k, ": ")
 		move, _ := strconv.Atoi(s[1])
 		fmt.Printf("%s %-6s: %.2f\n", s[0], env.ActionMeaning[move], a.Q[k])

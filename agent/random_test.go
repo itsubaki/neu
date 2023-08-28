@@ -3,7 +3,6 @@ package agent_test
 import (
 	"fmt"
 	"math/rand"
-	"sort"
 
 	"github.com/itsubaki/neu/agent"
 	"github.com/itsubaki/neu/agent/env"
@@ -28,9 +27,9 @@ func ExampleRandomAgent() {
 		a.Reset()
 
 		for {
-			action := a.GetAction(state.String())
+			action := a.GetAction(state)
 			next, reward, done := env.Step(action)
-			a.Add(state.String(), action, reward)
+			a.Add(state, action, reward)
 
 			if done {
 				a.Eval()
@@ -41,13 +40,7 @@ func ExampleRandomAgent() {
 		}
 	}
 
-	keys := make([]string, 0)
-	for k := range a.V {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-
-	for _, k := range keys {
+	for _, k := range agent.Keys(a.V) {
 		fmt.Println(k, a.V[k])
 	}
 
