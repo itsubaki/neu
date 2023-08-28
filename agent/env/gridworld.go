@@ -36,9 +36,9 @@ func NewGridWorld() *GridWorld {
 		ActionSpace: []int{0, 1, 2, 3},
 		ActionMeaning: map[int]string{
 			0: "UP",
-			1: "RIGHT",
-			2: "DOWN",
-			3: "LEFT",
+			1: "DOWN",
+			2: "LEFT",
+			3: "RIGHT",
 		},
 		RewardMap: matrix.Matrix{
 			{0, 0, 0, 1},
