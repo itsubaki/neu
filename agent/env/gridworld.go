@@ -1,10 +1,14 @@
 package env
 
-import "github.com/itsubaki/neu/math/matrix"
+import (
+	"fmt"
+
+	"github.com/itsubaki/neu/math/matrix"
+)
 
 type GridWorld struct {
-	ActionSpace   []Action
-	ActionMeaning map[Action]string
+	ActionSpace   []int
+	ActionMeaning map[int]string
 	RewardMap     matrix.Matrix
 	GoalState     *GridState
 	WallState     *GridState
@@ -13,8 +17,6 @@ type GridWorld struct {
 	state         []GridState
 	counter       int
 }
-
-type Action int
 
 type GridState struct {
 	Height int
@@ -25,10 +27,14 @@ func (s *GridState) Equals(o *GridState) bool {
 	return s.Height == o.Height && s.Width == o.Width
 }
 
+func (s GridState) String() string {
+	return fmt.Sprintf("(%d, %d)", s.Height, s.Width)
+}
+
 func NewGridWorld() *GridWorld {
 	w := &GridWorld{
-		ActionSpace: []Action{0, 1, 2, 3},
-		ActionMeaning: map[Action]string{
+		ActionSpace: []int{0, 1, 2, 3},
+		ActionMeaning: map[int]string{
 			0: "UP",
 			1: "RIGHT",
 			2: "DOWN",
@@ -68,7 +74,7 @@ func (w *GridWorld) Shape() (int, int) {
 	return w.Height(), w.Width()
 }
 
-func (w *GridWorld) Actions() []Action {
+func (w *GridWorld) Actions() []int {
 	return w.ActionSpace
 }
 
@@ -81,7 +87,7 @@ func (w *GridWorld) State() *GridState {
 	return &w.state[w.counter]
 }
 
-func (w *GridWorld) NextState(s *GridState, a Action) *GridState {
+func (w *GridWorld) NextState(s *GridState, a int) *GridState {
 	moveMap := []GridState{
 		{Height: -1, Width: 0},
 		{Height: 1, Width: 0},
@@ -111,7 +117,7 @@ func (w *GridWorld) NextState(s *GridState, a Action) *GridState {
 	return next
 }
 
-func (w *GridWorld) Reward(s *GridState, a Action, n *GridState) float64 {
+func (w *GridWorld) Reward(s *GridState, a int, n *GridState) float64 {
 	return w.RewardMap[n.Height][n.Width]
 }
 
@@ -121,7 +127,7 @@ func (w *GridWorld) Reset() *GridState {
 	return w.AgentState
 }
 
-func (w *GridWorld) Step(a Action) (*GridState, float64, bool) {
+func (w *GridWorld) Step(a int) (*GridState, float64, bool) {
 	s := w.AgentState
 	n := w.NextState(s, a)
 	r := w.Reward(s, a, n)
