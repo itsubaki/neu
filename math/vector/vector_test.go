@@ -7,6 +7,13 @@ import (
 	"github.com/itsubaki/neu/math/vector"
 )
 
+func ExampleZero() {
+	fmt.Println(vector.Zero(3))
+
+	// Output:
+	// [0 0 0]
+}
+
 func ExampleRand() {
 	fmt.Println(vector.Rand(3, rand.NewSource(1)))
 	fmt.Println(len(vector.Rand(10)))

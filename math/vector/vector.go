@@ -6,6 +6,10 @@ import (
 	"time"
 )
 
+func Zero(n int) []float64 {
+	return make([]float64, n)
+}
+
 func Rand(n int, s ...rand.Source) []float64 {
 	if len(s) == 0 {
 		s = append(s, rand.NewSource(time.Now().UnixNano()))
