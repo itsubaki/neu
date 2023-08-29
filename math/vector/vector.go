@@ -43,7 +43,7 @@ func Int(v []float64) []int {
 	return out
 }
 
-func Max(v []int) int {
+func Max[T int | float64](v []T) T {
 	max := v[0]
 	for _, e := range v {
 		if e > max {
