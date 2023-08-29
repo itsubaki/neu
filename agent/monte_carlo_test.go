@@ -43,7 +43,7 @@ func ExampleMonteCarloAgent() {
 		}
 	}
 
-	for _, k := range agent.Keys(a.Q) {
+	for _, k := range agent.SortedKeys(a.Q) {
 		s := strings.Split(k, ": ")
 		move, _ := strconv.Atoi(s[1])
 		fmt.Printf("%s %-6s: %.2f\n", s[0], env.ActionMeaning[move], a.Q[k])

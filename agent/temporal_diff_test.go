@@ -37,7 +37,7 @@ func ExampleTemporalDiffAgent() {
 		}
 	}
 
-	for _, k := range agent.Keys(a.V) {
+	for _, k := range agent.SortedKeys(a.V) {
 		fmt.Printf("%s: %.2f\n", k, a.V[k])
 	}
 

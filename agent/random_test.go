@@ -40,7 +40,7 @@ func ExampleRandomAgent() {
 		}
 	}
 
-	for _, k := range agent.Keys(a.V) {
+	for _, k := range agent.SortedKeys(a.V) {
 		fmt.Println(k, a.V[k])
 	}
 

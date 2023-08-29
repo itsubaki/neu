@@ -61,7 +61,7 @@ func (a *RandomAgent) Eval() {
 	}
 }
 
-func Keys(m map[string]float64) []string {
+func SortedKeys(m map[string]float64) []string {
 	keys := make([]string, 0)
 	for k := range m {
 		keys = append(keys, k)
