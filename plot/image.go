@@ -8,7 +8,7 @@ import (
 	"gonum.org/v1/plot/vg"
 )
 
-// XRange returns a slice of float64 values from begin to end with a specified delta.
+// Range returns a slice of float64 values from begin to end with a specified delta.
 func Range(begin, end, delta float64) []float64 {
 	out := []float64{begin}
 	for {
@@ -23,6 +23,7 @@ func Range(begin, end, delta float64) []float64 {
 	return out
 }
 
+// Save saves a plot to a file.
 func Save(x, y []float64, filename string) error {
 	xys := make(plotter.XYs, 0)
 	for i := range x {
