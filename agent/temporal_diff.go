@@ -18,13 +18,8 @@ type TemporalDiffAgent struct {
 }
 
 func (a *TemporalDiffAgent) GetAction(state fmt.Stringer) int {
-	s := state.String()
-	if _, ok := a.Pi[s]; !ok {
-		a.Pi[s] = a.DefaultActions
-	}
-
 	probs := make([]float64, a.ActionSize)
-	for i, p := range a.Pi[s] {
+	for i, p := range Get(a.Pi, state, a.DefaultActions) {
 		probs[i] = p
 	}
 

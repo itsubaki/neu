@@ -21,13 +21,8 @@ type SarsaOffPolicyAgent struct {
 }
 
 func (a *SarsaOffPolicyAgent) GetAction(state fmt.Stringer) int {
-	s := state.String()
-	if _, ok := a.B[s]; !ok {
-		a.B[s] = a.DefaultActions
-	}
-
 	probs := make([]float64, a.ActionSize)
-	for i, p := range a.B[s] {
+	for i, p := range Get(a.B, state, a.DefaultActions) {
 		probs[i] = p
 	}
 
@@ -47,8 +42,7 @@ func (a *SarsaOffPolicyAgent) Update(state fmt.Stringer, action int, reward floa
 	m0, m1 := a.Memory.Get(0), a.Memory.Get(1)
 	nextq, rho := 0.0, 1.0
 	if !m0.Done {
-		next := StateAction{State: m1.State, Action: m1.Action}.String()
-		nextq = a.Q[next]
+		nextq = a.Q[StateAction{State: m1.State, Action: m1.Action}.String()]
 		rho = a.Pi[m1.State][m1.Action] / a.B[m1.State][m1.Action]
 	}
 

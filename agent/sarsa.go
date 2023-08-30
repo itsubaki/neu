@@ -20,13 +20,8 @@ type SarsaAgent struct {
 }
 
 func (a *SarsaAgent) GetAction(state fmt.Stringer) int {
-	s := state.String()
-	if _, ok := a.Pi[s]; !ok {
-		a.Pi[s] = a.DefaultActions
-	}
-
 	probs := make([]float64, a.ActionSize)
-	for i, p := range a.Pi[s] {
+	for i, p := range Get(a.Pi, state, a.DefaultActions) {
 		probs[i] = p
 	}
 
@@ -46,8 +41,7 @@ func (a *SarsaAgent) Update(state fmt.Stringer, action int, reward float64, done
 	m0, m1 := a.Memory.Get(0), a.Memory.Get(1)
 	var nextq float64
 	if !m0.Done {
-		next := StateAction{State: m1.State, Action: m1.Action}.String()
-		nextq = a.Q[next]
+		nextq = a.Q[StateAction{State: m1.State, Action: m1.Action}.String()]
 	}
 
 	target := m0.Reward + a.Gamma*nextq

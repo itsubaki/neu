@@ -17,11 +17,22 @@ type Memory struct {
 	Done   bool
 }
 
+type DefaultMap[T any] map[string]T
+
+func Get[T RandomActions | float64](m DefaultMap[T], key fmt.Stringer, defaultValue T) T {
+	k := key.String()
+	if _, ok := m[k]; !ok {
+		m[k] = defaultValue
+	}
+
+	return m[k]
+}
+
 type RandomAgent struct {
 	Gamma          float64
 	ActionSize     int
 	DefaultActions RandomActions
-	Pi             map[string]RandomActions
+	Pi             DefaultMap[RandomActions]
 	V              map[string]float64
 	Counts         map[string]int
 	Memory         []Memory
@@ -29,13 +40,8 @@ type RandomAgent struct {
 }
 
 func (a *RandomAgent) GetAction(state fmt.Stringer) int {
-	s := state.String()
-	if _, ok := a.Pi[s]; !ok {
-		a.Pi[s] = a.DefaultActions
-	}
-
 	probs := make([]float64, a.ActionSize)
-	for i, p := range a.Pi[s] {
+	for i, p := range Get(a.Pi, state, a.DefaultActions) {
 		probs[i] = p
 	}
 

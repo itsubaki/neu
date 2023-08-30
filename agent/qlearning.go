@@ -23,14 +23,9 @@ func (a *QLearningAgent) GetAction(state fmt.Stringer) int {
 		return vector.Choice(a.Probs, a.Source)
 	}
 
-	qs, s := make([]float64, 0), state.String()
+	qs := make([]float64, 0)
 	for i := 0; i < a.ActionSize; i++ {
-		key := StateAction{State: s, Action: i}.String()
-		if _, ok := a.Q[key]; !ok {
-			a.Q[key] = 0
-		}
-
-		qs = append(qs, a.Q[key])
+		qs = append(qs, Get(a.Q, StateAction{State: state.String(), Action: i}, 0.0))
 	}
 
 	return vector.Argmax(qs)
@@ -41,12 +36,7 @@ func (a *QLearningAgent) Update(state fmt.Stringer, action int, reward float64, 
 	if !done {
 		nextqs := make([]float64, 0)
 		for i := 0; i < a.ActionSize; i++ {
-			key := StateAction{State: n, Action: i}.String()
-			if _, ok := a.Q[key]; !ok {
-				a.Q[key] = 0
-			}
-
-			nextqs = append(nextqs, a.Q[key])
+			nextqs = append(nextqs, Get(a.Q, StateAction{State: n, Action: i}, 0.0))
 		}
 
 		nextqmax = vector.Max(nextqs)

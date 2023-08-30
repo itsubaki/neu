@@ -29,13 +29,8 @@ type MonteCarloAgent struct {
 }
 
 func (a *MonteCarloAgent) GetAction(state fmt.Stringer) int {
-	s := state.String()
-	if _, ok := a.Pi[s]; !ok {
-		a.Pi[s] = a.DefaultActions
-	}
-
 	probs := make([]float64, a.ActionSize)
-	for i, p := range a.Pi[s] {
+	for i, p := range Get(a.Pi, state, a.DefaultActions) {
 		probs[i] = p
 	}
 
@@ -65,12 +60,7 @@ func (a *MonteCarloAgent) Update() {
 func greedyProbs(Q map[string]float64, state string, epsilon float64, actionSize int) RandomActions {
 	qs := make([]float64, 0)
 	for i := 0; i < actionSize; i++ {
-		key := StateAction{State: state, Action: i}.String()
-		if _, ok := Q[key]; !ok {
-			Q[key] = 0
-		}
-
-		qs = append(qs, Q[key])
+		qs = append(qs, Get(Q, StateAction{State: state, Action: i}, 0.0))
 	}
 	max := vector.Argmax(qs)
 
