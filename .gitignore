@@ -22,3 +22,6 @@ oryxBuildBinary
 testdata/*.txt
 testdata/*.gz
 testdata/*.gob
+
+# plot
+*.png
