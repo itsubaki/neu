@@ -8,19 +8,19 @@ import (
 )
 
 type TemporalDiffAgent struct {
-	Gamma         float64
-	Alpha         float64
-	ActionSize    int
-	RandomActions RandomActions
-	Pi            map[string]RandomActions
-	V             map[string]float64
-	Source        rand.Source
+	Gamma          float64
+	Alpha          float64
+	ActionSize     int
+	DefaultActions RandomActions
+	Pi             map[string]RandomActions
+	V              map[string]float64
+	Source         rand.Source
 }
 
 func (a *TemporalDiffAgent) GetAction(state fmt.Stringer) int {
 	s := state.String()
 	if _, ok := a.Pi[s]; !ok {
-		a.Pi[s] = a.RandomActions
+		a.Pi[s] = a.DefaultActions
 	}
 
 	probs := make([]float64, a.ActionSize)

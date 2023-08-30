@@ -17,21 +17,21 @@ func (s StateAction) String() string {
 }
 
 type MonteCarloAgent struct {
-	Gamma         float64
-	Epsilon       float64
-	Alpha         float64
-	ActionSize    int
-	RandomActions RandomActions
-	Pi            map[string]RandomActions
-	Q             map[string]float64
-	Memory        []Memory
-	Source        rand.Source
+	Gamma          float64
+	Epsilon        float64
+	Alpha          float64
+	ActionSize     int
+	DefaultActions RandomActions
+	Pi             map[string]RandomActions
+	Q              map[string]float64
+	Memory         []Memory
+	Source         rand.Source
 }
 
 func (a *MonteCarloAgent) GetAction(state fmt.Stringer) int {
 	s := state.String()
 	if _, ok := a.Pi[s]; !ok {
-		a.Pi[s] = a.RandomActions
+		a.Pi[s] = a.DefaultActions
 	}
 
 	probs := make([]float64, a.ActionSize)
@@ -58,11 +58,11 @@ func (a *MonteCarloAgent) Update() {
 		G = a.Gamma*G + reward
 		key := StateAction{State: state, Action: action}.String()
 		a.Q[key] += a.Alpha * (G - a.Q[key])
-		a.Pi[state] = greedyProps(a.Q, state, a.Epsilon, a.ActionSize)
+		a.Pi[state] = greedyProbs(a.Q, state, a.Epsilon, a.ActionSize)
 	}
 }
 
-func greedyProps(Q map[string]float64, state string, epsilon float64, actionSize int) RandomActions {
+func greedyProbs(Q map[string]float64, state string, epsilon float64, actionSize int) RandomActions {
 	qs := make([]float64, 0)
 	for i := 0; i < actionSize; i++ {
 		key := StateAction{State: state, Action: i}.String()

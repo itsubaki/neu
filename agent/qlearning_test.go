@@ -17,7 +17,7 @@ func ExampleQLearningAgent() {
 		Alpha:      0.8,
 		Epsilon:    0.1,
 		ActionSize: 4,
-		Props:      []float64{0.25, 0.25, 0.25, 0.25},
+		Probs:      []float64{0.25, 0.25, 0.25, 0.25},
 		Q:          make(map[string]float64),
 		Source:     rand.NewSource(1),
 	}

@@ -12,7 +12,7 @@ type QLearningAgent struct {
 	Alpha      float64
 	Epsilon    float64
 	ActionSize int
-	Props      []float64
+	Probs      []float64
 	Q          map[string]float64
 	Source     rand.Source
 }
@@ -20,7 +20,7 @@ type QLearningAgent struct {
 func (a *QLearningAgent) GetAction(state fmt.Stringer) int {
 	rng := rand.New(a.Source)
 	if a.Epsilon > rng.Float64() {
-		return vector.Choice(a.Props, a.Source)
+		return vector.Choice(a.Probs, a.Source)
 	}
 
 	qs, s := make([]float64, 0), state.String()

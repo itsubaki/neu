@@ -8,21 +8,21 @@ import (
 )
 
 type SarsaAgent struct {
-	Gamma         float64
-	Alpha         float64
-	Epsilon       float64
-	ActionSize    int
-	RandomActions RandomActions
-	Pi            map[string]RandomActions
-	Q             map[string]float64
-	Memory        *Deque
-	Source        rand.Source
+	Gamma          float64
+	Alpha          float64
+	Epsilon        float64
+	ActionSize     int
+	DefaultActions RandomActions
+	Pi             map[string]RandomActions
+	Q              map[string]float64
+	Memory         *Deque
+	Source         rand.Source
 }
 
 func (a *SarsaAgent) GetAction(state fmt.Stringer) int {
 	s := state.String()
 	if _, ok := a.Pi[s]; !ok {
-		a.Pi[s] = a.RandomActions
+		a.Pi[s] = a.DefaultActions
 	}
 
 	probs := make([]float64, a.ActionSize)
@@ -54,5 +54,5 @@ func (a *SarsaAgent) Update(state fmt.Stringer, action int, reward float64, done
 	s := StateAction{State: m0.State, Action: m0.Action}.String()
 	a.Q[s] += a.Alpha * (target - a.Q[s])
 
-	a.Pi[m0.State] = greedyProps(a.Q, m0.State, a.Epsilon, a.ActionSize)
+	a.Pi[m0.State] = greedyProbs(a.Q, m0.State, a.Epsilon, a.ActionSize)
 }

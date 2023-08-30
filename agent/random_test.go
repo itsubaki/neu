@@ -11,14 +11,14 @@ import (
 func ExampleRandomAgent() {
 	env := env.NewGridWorld()
 	a := agent.RandomAgent{
-		Gamma:         0.9,
-		ActionSize:    4,
-		RandomActions: agent.RandomActions{0: 0.25, 1: 0.25, 2: 0.25, 3: 0.25},
-		Pi:            make(map[string]agent.RandomActions),
-		V:             make(map[string]float64),
-		Counts:        make(map[string]int),
-		Memory:        make([]agent.Memory, 0),
-		Source:        rand.NewSource(1),
+		Gamma:          0.9,
+		ActionSize:     4,
+		DefaultActions: agent.RandomActions{0: 0.25, 1: 0.25, 2: 0.25, 3: 0.25},
+		Pi:             make(map[string]agent.RandomActions),
+		V:              make(map[string]float64),
+		Counts:         make(map[string]int),
+		Memory:         make([]agent.Memory, 0),
+		Source:         rand.NewSource(1),
 	}
 
 	episodes := 1000

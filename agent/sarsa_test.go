@@ -13,15 +13,15 @@ import (
 func ExampleSarsaAgent() {
 	env := env.NewGridWorld()
 	a := agent.SarsaAgent{
-		Gamma:         0.9,
-		Alpha:         0.8,
-		Epsilon:       0.1,
-		ActionSize:    4,
-		RandomActions: agent.RandomActions{0: 0.25, 1: 0.25, 2: 0.25, 3: 0.25},
-		Pi:            make(map[string]agent.RandomActions),
-		Q:             make(map[string]float64),
-		Memory:        agent.NewDeque(2),
-		Source:        rand.NewSource(1),
+		Gamma:          0.9,
+		Alpha:          0.8,
+		Epsilon:        0.1,
+		ActionSize:     4,
+		DefaultActions: agent.RandomActions{0: 0.25, 1: 0.25, 2: 0.25, 3: 0.25},
+		Pi:             make(map[string]agent.RandomActions),
+		Q:              make(map[string]float64),
+		Memory:         agent.NewDeque(2),
+		Source:         rand.NewSource(1),
 	}
 
 	episodes := 10000

@@ -13,15 +13,15 @@ import (
 func ExampleMonteCarloAgent() {
 	env := env.NewGridWorld()
 	a := agent.MonteCarloAgent{
-		Gamma:         0.9,
-		Epsilon:       0.1,
-		Alpha:         0.1,
-		ActionSize:    4,
-		RandomActions: agent.RandomActions{0: 0.25, 1: 0.25, 2: 0.25, 3: 0.25},
-		Pi:            make(map[string]agent.RandomActions),
-		Q:             make(map[string]float64),
-		Memory:        make([]agent.Memory, 0),
-		Source:        rand.NewSource(1),
+		Gamma:          0.9,
+		Epsilon:        0.1,
+		Alpha:          0.1,
+		ActionSize:     4,
+		DefaultActions: agent.RandomActions{0: 0.25, 1: 0.25, 2: 0.25, 3: 0.25},
+		Pi:             make(map[string]agent.RandomActions),
+		Q:              make(map[string]float64),
+		Memory:         make([]agent.Memory, 0),
+		Source:         rand.NewSource(1),
 	}
 
 	episodes := 10000
