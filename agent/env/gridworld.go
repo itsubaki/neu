@@ -2,14 +2,12 @@ package env
 
 import (
 	"fmt"
-
-	"github.com/itsubaki/neu/math/matrix"
 )
 
 type GridWorld struct {
 	ActionSpace   []int
 	ActionMeaning map[int]string
-	RewardMap     matrix.Matrix
+	RewardMap     [][]float64
 	GoalState     *GridState
 	WallState     *GridState
 	StartState    *GridState
@@ -40,7 +38,7 @@ func NewGridWorld() *GridWorld {
 			2: "LEFT",
 			3: "RIGHT",
 		},
-		RewardMap: matrix.Matrix{
+		RewardMap: [][]float64{
 			{0, 0, 0, 1},
 			{0, 0, 0, -1},
 			{0, 0, 0, 0},
@@ -135,4 +133,10 @@ func (w *GridWorld) Step(a int) (*GridState, float64, bool) {
 
 	w.AgentState = n
 	return n, r, done
+}
+
+func (w *GridWorld) OneHot(state *GridState) [][]float64 {
+	out := make([]float64, w.Height()*w.Width())
+	out[w.Width()*state.Height+state.Width] = 1.0
+	return [][]float64{out}
 }

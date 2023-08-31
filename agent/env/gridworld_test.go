@@ -115,3 +115,18 @@ func ExampleGridWorld_Reset() {
 	// (1, 0)
 	// (2, 0)
 }
+
+func ExampleGridWorld_OneHot() {
+	e := env.NewGridWorld()
+
+	fmt.Println(e.OneHot(&env.GridState{Height: 0, Width: 0}))
+	fmt.Println(e.OneHot(&env.GridState{Height: 1, Width: 1}))
+	fmt.Println(e.OneHot(&env.GridState{Height: 2, Width: 0}))
+	fmt.Println(e.OneHot(&env.GridState{Height: 2, Width: 3}))
+
+	// Output:
+	// [[1 0 0 0 0 0 0 0 0 0 0 0]]
+	// [[0 0 0 0 0 1 0 0 0 0 0 0]]
+	// [[0 0 0 0 0 0 0 0 1 0 0 0]]
+	// [[0 0 0 0 0 0 0 0 0 0 0 1]]
+}
