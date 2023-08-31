@@ -19,7 +19,6 @@ var (
 	_ Model = (*model.Seq2Seq)(nil)
 	_ Model = (*model.PeekySeq2Seq)(nil)
 	_ Model = (*model.AttentionSeq2Seq)(nil)
-	_ Model = (*model.QNet)(nil)
 )
 
 var (

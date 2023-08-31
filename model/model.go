@@ -19,7 +19,6 @@ var (
 	_ Layer = (*layer.EmbeddingDot)(nil)
 	_ Layer = (*layer.Embedding)(nil)
 	_ Layer = (*layer.GRU)(nil)
-	_ Layer = (*layer.MeanSquaredError)(nil)
 	_ Layer = (*layer.Mul)(nil)
 	_ Layer = (*layer.NegativeSamplingLoss)(nil)
 	_ Layer = (*layer.ReLU)(nil)
