@@ -1,7 +1,6 @@
 package agent
 
 import (
-	"log"
 	"math/rand"
 
 	"github.com/itsubaki/neu/math/matrix"
@@ -33,7 +32,6 @@ func (a *QLearningAgentNN) Update(state [][]float64, action int, reward float64,
 	var nextq float64
 	if !done {
 		nextqs := a.Q.Forward(matrix.New(next...))
-		log.Println(nextqs)
 		nextq = vector.Max(nextqs[0])
 	}
 

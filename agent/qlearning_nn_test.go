@@ -23,7 +23,7 @@ func ExampleQLearningAgentNN() {
 			HiddenSize: 100,
 			WeightInit: weight.Xavier,
 		}, rand.NewSource(1)),
-		Optimizer: &optimizer.SGD{LearningRate: 0.001},
+		Optimizer: &optimizer.SGD{LearningRate: 0.01},
 		Source:    rand.NewSource(1),
 	}
 
