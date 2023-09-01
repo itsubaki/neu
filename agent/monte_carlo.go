@@ -58,10 +58,7 @@ func (a *MonteCarloAgent) Update() {
 }
 
 func greedyProbs(Q map[string]float64, state string, epsilon float64, actionSize int) RandomActions {
-	qs := make([]float64, 0)
-	for i := 0; i < actionSize; i++ {
-		qs = append(qs, Get(Q, StateAction{State: state, Action: i}, 0.0))
-	}
+	qs := qstate(Q, state, actionSize)
 	max := vector.Argmax(qs)
 
 	probs := make(RandomActions)
@@ -71,4 +68,13 @@ func greedyProbs(Q map[string]float64, state string, epsilon float64, actionSize
 
 	probs[max] += 1 - epsilon
 	return probs
+}
+
+func qstate(Q map[string]float64, state string, actionSize int) []float64 {
+	qs := make([]float64, 0)
+	for i := 0; i < actionSize; i++ {
+		qs = append(qs, Get(Q, StateAction{State: state, Action: i}, 0.0))
+	}
+
+	return qs
 }
