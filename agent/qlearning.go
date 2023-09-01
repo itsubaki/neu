@@ -27,13 +27,13 @@ func (a *QLearningAgent) GetAction(state fmt.Stringer) int {
 }
 
 func (a *QLearningAgent) Update(state fmt.Stringer, action int, reward float64, next fmt.Stringer, done bool) {
-	nextqmax, s, n := 0.0, state.String(), next.String()
+	var nextqmax float64
 	if !done {
-		nextqs := qstate(a.Q, n, a.ActionSize)
+		nextqs := qstate(a.Q, next.String(), a.ActionSize)
 		nextqmax = vector.Max(nextqs)
 	}
 
 	target := reward + a.Gamma*nextqmax
-	key := StateAction{State: s, Action: action}.String()
-	a.Q[key] += a.Alpha * (target - a.Q[key])
+	s := StateAction{State: state.String(), Action: action}.String()
+	a.Q[s] += a.Alpha * (target - a.Q[s])
 }

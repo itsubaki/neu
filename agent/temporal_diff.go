@@ -18,11 +18,7 @@ type TemporalDiffAgent struct {
 }
 
 func (a *TemporalDiffAgent) GetAction(state fmt.Stringer) int {
-	probs := make([]float64, a.ActionSize)
-	for i, p := range Get(a.Pi, state, a.DefaultActions) {
-		probs[i] = p
-	}
-
+	probs := Get(a.Pi, state, a.DefaultActions).Probs()
 	return vector.Choice(probs, a.Source)
 }
 

@@ -8,26 +8,6 @@ import (
 	"github.com/itsubaki/neu/math/vector"
 )
 
-type RandomActions map[int]float64
-
-type Memory struct {
-	State  string
-	Action int
-	Reward float64
-	Done   bool
-}
-
-type DefaultMap[T any] map[string]T
-
-func Get[T RandomActions | float64](m DefaultMap[T], key fmt.Stringer, defaultValue T) T {
-	k := key.String()
-	if _, ok := m[k]; !ok {
-		m[k] = defaultValue
-	}
-
-	return m[k]
-}
-
 type RandomAgent struct {
 	Gamma          float64
 	ActionSize     int
@@ -40,16 +20,12 @@ type RandomAgent struct {
 }
 
 func (a *RandomAgent) GetAction(state fmt.Stringer) int {
-	probs := make([]float64, a.ActionSize)
-	for i, p := range Get(a.Pi, state, a.DefaultActions) {
-		probs[i] = p
-	}
-
+	probs := Get(a.Pi, state, a.DefaultActions).Probs()
 	return vector.Choice(probs, a.Source)
 }
 
 func (a *RandomAgent) Add(state fmt.Stringer, action int, reward float64) {
-	a.Memory = append(a.Memory, Memory{State: state.String(), Action: action, Reward: reward})
+	a.Memory = append(a.Memory, NewMemory(state, action, reward, false))
 }
 
 func (a *RandomAgent) Reset() {
@@ -65,6 +41,39 @@ func (a *RandomAgent) Eval() {
 		a.Counts[state]++
 		a.V[state] += (G - a.V[state]) / float64(a.Counts[state])
 	}
+}
+
+type Memory struct {
+	State  string
+	Action int
+	Reward float64
+	Done   bool
+}
+
+func NewMemory(state fmt.Stringer, action int, reward float64, done bool) Memory {
+	return Memory{State: state.String(), Action: action, Reward: reward, Done: done}
+}
+
+type RandomActions map[int]float64
+
+func (a RandomActions) Probs() []float64 {
+	probs := make([]float64, len(a))
+	for i, p := range a {
+		probs[i] = p
+	}
+
+	return probs
+}
+
+type DefaultMap[T any] map[string]T
+
+func Get[T RandomActions | float64](m DefaultMap[T], key fmt.Stringer, defaultValue T) T {
+	k := key.String()
+	if _, ok := m[k]; !ok {
+		m[k] = defaultValue
+	}
+
+	return m[k]
 }
 
 func SortedKeys(m map[string]float64) []string {
