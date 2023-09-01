@@ -177,19 +177,19 @@ func (m Matrix) T() Matrix {
 }
 
 func (m Matrix) Add(n Matrix) Matrix {
-	return F2(m, n.Broadcast(m.Dim()), func(a, b float64) float64 { return a + b })
+	return F2(m, n, func(a, b float64) float64 { return a + b })
 }
 
 func (m Matrix) Sub(n Matrix) Matrix {
-	return F2(m, n.Broadcast(m.Dim()), func(a, b float64) float64 { return a - b })
+	return F2(m, n, func(a, b float64) float64 { return a - b })
 }
 
 func (m Matrix) Mul(n Matrix) Matrix {
-	return F2(m, n.Broadcast(m.Dim()), func(a, b float64) float64 { return a * b })
+	return F2(m, n, func(a, b float64) float64 { return a * b })
 }
 
 func (m Matrix) Div(n Matrix) Matrix {
-	return F2(m, n.Broadcast(m.Dim()), func(a, b float64) float64 { return a / b })
+	return F2(m, n, func(a, b float64) float64 { return a / b })
 }
 
 func (m Matrix) AddC(c float64) Matrix {
@@ -377,6 +377,7 @@ func F(m Matrix, f func(a float64) float64) Matrix {
 // F2 applies a function to each element of the matrix.
 func F2(m, n Matrix, f func(a, b float64) float64) Matrix {
 	p, q := m.Dim()
+	n = n.Broadcast(p, q)
 
 	out := Zero(p, q)
 	for i := 0; i < p; i++ {
@@ -391,6 +392,8 @@ func F2(m, n Matrix, f func(a, b float64) float64) Matrix {
 // F3 applies a function to each element of the matrix.
 func F3(m, n, o Matrix, f func(a, b, c float64) float64) Matrix {
 	p, q := m.Dim()
+	n = n.Broadcast(p, q)
+	o = o.Broadcast(p, q)
 
 	out := Zero(p, q)
 	for i := 0; i < p; i++ {
