@@ -9,5 +9,5 @@ func SumSquaredError(y, t []float64) float64 {
 		sum = sum + math.Pow((y[i]-t[i]), 2)
 	}
 
-	return 0.5 * sum
+	return sum / 2.0
 }

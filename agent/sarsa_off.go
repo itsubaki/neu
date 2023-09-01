@@ -21,11 +21,7 @@ type SarsaOffPolicyAgent struct {
 }
 
 func (a *SarsaOffPolicyAgent) GetAction(state fmt.Stringer) int {
-	probs := make([]float64, a.ActionSize)
-	for i, p := range Get(a.B, state, a.DefaultActions) {
-		probs[i] = p
-	}
-
+	probs := Get(a.B, state, a.DefaultActions).Probs()
 	return vector.Choice(probs, a.Source)
 }
 
@@ -34,7 +30,7 @@ func (a *SarsaOffPolicyAgent) Reset() {
 }
 
 func (a *SarsaOffPolicyAgent) Update(state fmt.Stringer, action int, reward float64, done bool) {
-	a.Memory.Append(Memory{State: state.String(), Action: action, Reward: reward, Done: done})
+	a.Memory.Append(NewMemory(state, action, reward, done))
 	if a.Memory.Len() < 2 {
 		return
 	}
@@ -42,7 +38,8 @@ func (a *SarsaOffPolicyAgent) Update(state fmt.Stringer, action int, reward floa
 	m0, m1 := a.Memory.Get(0), a.Memory.Get(1)
 	nextq, rho := 0.0, 1.0
 	if !m0.Done {
-		nextq = a.Q[StateAction{State: m1.State, Action: m1.Action}.String()]
+		s := StateAction{State: m1.State, Action: m1.Action}.String()
+		nextq = a.Q[s]
 		rho = a.Pi[m1.State][m1.Action] / a.B[m1.State][m1.Action]
 	}
 
