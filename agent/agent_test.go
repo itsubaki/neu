@@ -78,14 +78,14 @@ func ExampleAgent_bandit() {
 
 func Example_rand() {
 	for i := 0; i < 5; i++ {
-		rng := rand.New(rand.NewSource(1))
-		fmt.Println(rng.Float64())
+		r := rand.New(rand.NewSource(1))
+		fmt.Println(r.Float64())
 	}
 
 	s := rand.NewSource(1)
 	for i := 0; i < 5; i++ {
-		rng := rand.New(s)
-		fmt.Println(rng.Float64())
+		r := rand.New(s)
+		fmt.Println(r.Float64())
 	}
 
 	// Output:
