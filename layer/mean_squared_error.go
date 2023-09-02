@@ -3,7 +3,6 @@ package layer
 import (
 	"fmt"
 
-	"github.com/itsubaki/neu/loss"
 	"github.com/itsubaki/neu/math/matrix"
 )
 
@@ -19,15 +18,11 @@ func (l *MeanSquaredError) String() string               { return fmt.Sprintf("%
 func (l *MeanSquaredError) Forward(x, t matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.x, l.t = x, t
 
-	out := make([]float64, len(t))
-	for i := range t {
-		out[i] = loss.MeanSquaredError(x[i], t[i])
-	}
-
-	return matrix.New(out)
+	mse := l.x.Sub(l.t).Pow2().Sum() / float64(l.x.Size()) // sum((x - t)**2)/size
+	return matrix.New([]float64{mse})
 }
 
 func (l *MeanSquaredError) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	gx0 := l.x.Sub(l.t).Mul(dout).MulC(2.0 / float64(len(l.t))) // (x - t) * dout * (2.0 / size)
+	gx0 := l.x.Sub(l.t).Mul(dout).MulC(2.0 / float64(l.x.Size())) // (x - t) * dout * (2.0 / size)
 	return gx0, gx0.MulC(-1.0)
 }

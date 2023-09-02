@@ -163,6 +163,11 @@ func (m Matrix) Dim() (int, int) {
 	return len(m), len(m[0])
 }
 
+func (m Matrix) Size() int {
+	a, b := m.Dim()
+	return a * b
+}
+
 func (m Matrix) T() Matrix {
 	p, q := m.Dim()
 

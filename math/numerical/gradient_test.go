@@ -8,6 +8,7 @@ import (
 )
 
 func ExampleGradient() {
+	// p104
 	f := func(x ...float64) float64 {
 		return math.Pow(x[0], 2) + math.Pow(x[1], 2)
 	}
@@ -24,6 +25,7 @@ func ExampleGradient() {
 }
 
 func ExampleGradientDescent() {
+	// p108
 	f := func(x ...float64) float64 {
 		return math.Pow(x[0], 2) + math.Pow(x[1], 2)
 	}

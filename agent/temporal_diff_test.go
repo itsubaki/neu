@@ -10,7 +10,7 @@ import (
 
 func ExampleTemporalDiffAgent() {
 	env := env.NewGridWorld()
-	a := agent.TemporalDiffAgent{
+	a := &agent.TemporalDiffAgent{
 		Gamma:          0.9,
 		Alpha:          0.1,
 		ActionSize:     4,

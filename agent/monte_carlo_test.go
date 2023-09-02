@@ -12,7 +12,7 @@ import (
 
 func ExampleMonteCarloAgent() {
 	env := env.NewGridWorld()
-	a := agent.MonteCarloAgent{
+	a := &agent.MonteCarloAgent{
 		Gamma:          0.9,
 		Epsilon:        0.1,
 		Alpha:          0.1,

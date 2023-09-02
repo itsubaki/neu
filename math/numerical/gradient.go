@@ -18,6 +18,8 @@ func Gradient(f func(x ...float64) float64, x []float64) []float64 {
 
 		// grad
 		grad[i] = (fxh1 - fxh2) / (2 * h)
+
+		// revert
 		x[i] = xi
 	}
 

@@ -10,7 +10,7 @@ import (
 
 func ExampleRandomAgent() {
 	env := env.NewGridWorld()
-	a := agent.RandomAgent{
+	a := &agent.RandomAgent{
 		Gamma:          0.9,
 		ActionSize:     4,
 		DefaultActions: agent.RandomActions{0: 0.25, 1: 0.25, 2: 0.25, 3: 0.25},

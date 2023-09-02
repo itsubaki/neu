@@ -13,6 +13,7 @@ import (
 var (
 	_ Seq2Seq = (*model.Seq2Seq)(nil)
 	_ Seq2Seq = (*model.PeekySeq2Seq)(nil)
+	_ Seq2Seq = (*model.AttentionSeq2Seq)(nil)
 )
 
 type Seq2Seq interface {
