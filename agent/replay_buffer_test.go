@@ -3,6 +3,7 @@ package agent_test
 import (
 	"fmt"
 	"math/rand"
+	"sort"
 
 	"github.com/itsubaki/neu/agent"
 )
@@ -13,11 +14,14 @@ func ExampleReplayBuffer() {
 		buf.Append(fmt.Sprintf("%d", i))
 	}
 	fmt.Println(buf.Len())
-	fmt.Println(buf.Batch())
+
+	batch := buf.Batch()
+	sort.Strings(batch)
+	fmt.Println(batch)
 
 	// Output:
 	// 10
-	// [9 1 7]
+	// [1 7 9]
 }
 
 func ExampleReplayBuffer_rand() {
