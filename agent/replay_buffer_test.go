@@ -14,16 +14,16 @@ func ExampleReplayBuffer() {
 	}
 	fmt.Println(buf.Len())
 
-	batch := buf.Batch()
-	for _, b := range batch {
-		fmt.Println(b)
+	state, action, reward, next, done := buf.Batch()
+	for i := range state {
+		fmt.Println(state[i], action[i], reward[i], next[i], done[i])
 	}
 
 	// Unordered output:
 	// 10
-	// {[1 1] 1 1 [10 10] false}
-	// {[7 7] 7 7 [70 70] false}
-	// {[9 9] 9 9 [90 90] false}
+	// [1 1] 1 1 [10 10] false
+	// [7 7] 7 7 [70 70] false
+	// [9 9] 9 9 [90 90] false
 }
 
 func ExampleReplayBuffer_rand() {
