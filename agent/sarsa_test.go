@@ -12,7 +12,7 @@ import (
 
 func ExampleSarsaAgent() {
 	env := env.NewGridWorld()
-	a := agent.SarsaAgent{
+	a := &agent.SarsaAgent{
 		Gamma:          0.9,
 		Alpha:          0.8,
 		Epsilon:        0.1,

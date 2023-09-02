@@ -12,7 +12,7 @@ import (
 
 func ExampleQLearningAgent() {
 	env := env.NewGridWorld()
-	a := agent.QLearningAgent{
+	a := &agent.QLearningAgent{
 		Gamma:      0.9,
 		Alpha:      0.8,
 		Epsilon:    0.1,
