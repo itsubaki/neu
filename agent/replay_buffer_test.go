@@ -17,7 +17,7 @@ func ExampleReplayBuffer() {
 
 	// Output:
 	// 10
-	// [1 7 9]
+	// [9 1 7]
 }
 
 func ExampleReplayBuffer_rand() {
