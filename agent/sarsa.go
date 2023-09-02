@@ -29,7 +29,7 @@ func (a *SarsaAgent) Reset() {
 }
 
 func (a *SarsaAgent) Update(state fmt.Stringer, action int, reward float64, done bool) {
-	a.Memory.Append(NewMemory(state, action, reward, done))
+	a.Memory.Add(NewMemory(state, action, reward, done))
 	if a.Memory.Len() < 2 {
 		return
 	}

@@ -31,8 +31,8 @@ func NewReplayBuffer(bufferSize, batchSize int, s ...rand.Source) *ReplayBuffer 
 	}
 }
 
-func (b *ReplayBuffer) Append(state []float64, action int, reward float64, next []float64, done bool) {
-	b.Buffer.Append(Buffer{
+func (b *ReplayBuffer) Add(state []float64, action int, reward float64, next []float64, done bool) {
+	b.Buffer.Add(Buffer{
 		State:     state,
 		Action:    action,
 		Reward:    reward,
