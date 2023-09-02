@@ -12,15 +12,15 @@ func ExampleMeanSquaredError() {
 	fmt.Println(l)
 
 	// forward
-	x := matrix.New(
+	target := matrix.New(
 		[]float64{0.1, 0.05, 0.6, 0.0, 0.05, 0.1, 0.0, 0.1, 0.0, 0.0},
 		[]float64{0.1, 0.05, 0.1, 0.0, 0.05, 0.1, 0.0, 0.6, 0.0, 0.0},
 	)
-	t := matrix.New(
+	q := matrix.New(
 		[]float64{0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
 		[]float64{0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
 	)
-	loss := l.Forward(x, t)
+	loss := l.Forward(target, q)
 	fmt.Println(loss)
 
 	// backward

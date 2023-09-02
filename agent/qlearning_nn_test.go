@@ -53,7 +53,7 @@ func ExampleQLearningAgentNN() {
 
 	for i := 0; i < 12; i++ {
 		s := env.State()
-		q := a.Q.Forward(env.OneHot(s))
+		q := a.Q.Predict(env.OneHot(s))
 		for j := 0; j < 4; j++ {
 			fmt.Printf("%s %-6s: %.4f\n", s, env.ActionMeaning[j], q[0][j])
 		}

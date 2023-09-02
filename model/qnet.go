@@ -48,14 +48,8 @@ func NewQNet(c *QNetConfig, s ...rand.Source) *QNet {
 	}
 }
 
-func (m *QNet) Forward(x matrix.Matrix) matrix.Matrix {
-	opts := layer.Opts{Train: true, Source: m.Source}
-	return m.Predict(x, opts)
-}
-
-func (m *QNet) MeanSquaredError(y, t matrix.Matrix) matrix.Matrix {
-	opts := layer.Opts{Train: true, Source: m.Source}
-	return m.Layer[len(m.Layer)-1].Forward(y, t, opts)
+func (m *QNet) Loss(target, q matrix.Matrix) matrix.Matrix {
+	return m.Layer[len(m.Layer)-1].Forward(target, q)
 }
 
 func (m *QNet) Summary() []string {
