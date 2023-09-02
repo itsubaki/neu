@@ -6,10 +6,10 @@ import (
 )
 
 type Buffer struct {
-	State     string
+	State     []float64
 	Action    int
 	Reward    float64
-	NextState string
+	NextState []float64
 	Done      bool
 }
 
@@ -31,7 +31,7 @@ func NewReplyBuffer(bufferSize, batchSize int, s ...rand.Source) *ReplayBuffer {
 	}
 }
 
-func (b *ReplayBuffer) Append(state string, action int, reward float64, next string, done bool) {
+func (b *ReplayBuffer) Append(state []float64, action int, reward float64, next []float64, done bool) {
 	b.Buffer.Append(Buffer{
 		State:     state,
 		Action:    action,
