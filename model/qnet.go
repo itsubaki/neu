@@ -12,7 +12,7 @@ import (
 type QNetConfig struct {
 	InputSize  int
 	OutputSize int
-	HiddenSize int
+	HiddenSize []int
 	WeightInit WeightInit
 }
 
@@ -25,20 +25,31 @@ func NewQNet(c *QNetConfig, s ...rand.Source) *QNet {
 		s = append(s, rand.NewSource(time.Now().UnixNano()))
 	}
 
-	S, H, O := c.InputSize, c.HiddenSize, c.OutputSize
+	// size
+	size := append([]int{c.InputSize}, c.HiddenSize...)
+	size = append(size, c.OutputSize)
 
-	layers := []Layer{
-		&layer.Affine{
+	// layer
+	layers := make([]Layer, 0)
+	for i := 0; i < len(size)-2; i++ {
+		S, H := size[i], size[i+1]
+
+		layers = append(layers, &layer.Affine{
 			W: matrix.Randn(S, H, s[0]).MulC(c.WeightInit(S)),
 			B: matrix.Zero(1, H),
-		},
-		&layer.ReLU{},
-		&layer.Affine{
-			W: matrix.Randn(H, O, s[0]).MulC(c.WeightInit(H)),
-			B: matrix.Zero(1, O),
-		},
-		&layer.MeanSquaredError{},
+		})
+
+		layers = append(layers, &layer.ReLU{})
 	}
+
+	H, O := size[len(size)-2], size[len(size)-1]
+
+	layers = append(layers, &layer.Affine{
+		W: matrix.Randn(H, O, s[0]).MulC(c.WeightInit(H)),
+		B: matrix.Zero(1, O),
+	})
+
+	layers = append(layers, &layer.MeanSquaredError{})
 
 	return &QNet{
 		Sequential{
