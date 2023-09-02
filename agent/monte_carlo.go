@@ -7,15 +7,6 @@ import (
 	"github.com/itsubaki/neu/math/vector"
 )
 
-type StateAction struct {
-	State  string
-	Action int
-}
-
-func (s StateAction) String() string {
-	return fmt.Sprintf("%s: %v", s.State, s.Action)
-}
-
 type MonteCarloAgent struct {
 	Gamma          float64
 	Epsilon        float64
@@ -74,4 +65,13 @@ func qstate(Q map[string]float64, state string, actionSize int) []float64 {
 	}
 
 	return qs
+}
+
+type StateAction struct {
+	State  string
+	Action int
+}
+
+func (s StateAction) String() string {
+	return fmt.Sprintf("%s: %v", s.State, s.Action)
 }
