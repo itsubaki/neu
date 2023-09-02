@@ -1,26 +1,26 @@
 package agent
 
-type Deque struct {
-	data []Memory
+type Deque[T any] struct {
+	data []T
 	size int
 }
 
-func NewDeque(size int) *Deque {
-	return &Deque{
-		data: make([]Memory, 0),
+func NewDeque[T any](size int) *Deque[T] {
+	return &Deque[T]{
+		data: make([]T, 0),
 		size: size,
 	}
 }
 
-func (d *Deque) Len() int {
+func (d *Deque[T]) Len() int {
 	return len(d.data)
 }
 
-func (d *Deque) Size() int {
+func (d *Deque[T]) Size() int {
 	return d.size
 }
 
-func (d *Deque) Append(m Memory) {
+func (d *Deque[T]) Append(m T) {
 	if len(d.data) == d.size {
 		d.data = d.data[1:]
 	}
@@ -28,6 +28,6 @@ func (d *Deque) Append(m Memory) {
 	d.data = append(d.data, m)
 }
 
-func (d *Deque) Get(i int) Memory {
+func (d *Deque[T]) Get(i int) T {
 	return d.data[i]
 }

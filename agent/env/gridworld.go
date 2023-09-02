@@ -121,8 +121,8 @@ func (w *GridWorld) Step(a int) (*GridState, float64, bool) {
 	return n, r, done
 }
 
-func (w *GridWorld) OneHot(state *GridState) [][]float64 {
+func (w *GridWorld) OneHot(state *GridState) []float64 {
 	out := make([]float64, w.Height()*w.Width())
 	out[w.Width()*state.Height+state.Width] = 1.0
-	return [][]float64{out}
+	return out
 }

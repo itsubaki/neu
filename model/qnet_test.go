@@ -15,7 +15,7 @@ func ExampleQNet() {
 	m := model.NewQNet(&model.QNetConfig{
 		InputSize:  12,
 		OutputSize: 4,
-		HiddenSize: 100,
+		HiddenSize: []int{100},
 		WeightInit: weight.Std(0.01),
 	}, s)
 
