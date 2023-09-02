@@ -19,7 +19,7 @@ type ReplayBuffer struct {
 	Source    rand.Source
 }
 
-func NewReplyBuffer(bufferSize, batchSize int, s ...rand.Source) *ReplayBuffer {
+func NewReplayBuffer(bufferSize, batchSize int, s ...rand.Source) *ReplayBuffer {
 	if len(s) == 0 {
 		s = append(s, rand.NewSource(time.Now().UnixNano()))
 	}

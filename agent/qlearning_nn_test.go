@@ -6,6 +6,7 @@ import (
 
 	"github.com/itsubaki/neu/agent"
 	"github.com/itsubaki/neu/agent/env"
+	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/weight"
@@ -20,7 +21,7 @@ func ExampleQLearningAgentNN() {
 		Q: model.NewQNet(&model.QNetConfig{
 			InputSize:  12,
 			OutputSize: 4,
-			HiddenSize: 100,
+			HiddenSize: []int{100},
 			WeightInit: weight.Xavier,
 		}, rand.NewSource(1)),
 		Optimizer: &optimizer.SGD{
@@ -29,7 +30,7 @@ func ExampleQLearningAgentNN() {
 		Source: rand.NewSource(1),
 	}
 
-	episodes := 3
+	episodes := 2
 	for i := 0; i < episodes; i++ {
 		state := env.OneHot(env.Reset())
 		var totalLoss float64
@@ -58,7 +59,7 @@ func ExampleQLearningAgentNN() {
 			continue
 		}
 
-		q := a.Q.Predict(env.OneHot(&s))
+		q := a.Q.Predict(matrix.New(env.OneHot(&s)))
 		for _, a := range env.Actions() {
 			fmt.Printf("%s %-6s: %.4f\n", s, env.ActionMeaning[a], q[0][a])
 		}

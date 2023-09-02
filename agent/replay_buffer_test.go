@@ -8,7 +8,7 @@ import (
 )
 
 func ExampleReplayBuffer() {
-	buf := agent.NewReplyBuffer(10, 3, rand.NewSource(1))
+	buf := agent.NewReplayBuffer(10, 3, rand.NewSource(1))
 	for i := 0; i < 10; i++ {
 		buf.Append([]float64{float64(i), float64(i)}, i, float64(i), []float64{float64(i * 10), float64(i * 10)}, false)
 	}
@@ -27,7 +27,7 @@ func ExampleReplayBuffer() {
 }
 
 func ExampleReplayBuffer_rand() {
-	buf := agent.NewReplyBuffer(10, 3)
+	buf := agent.NewReplayBuffer(10, 3)
 	for i := 0; i < 10; i++ {
 		buf.Append([]float64{float64(i)}, i, float64(i), []float64{float64(i * 10)}, false)
 	}

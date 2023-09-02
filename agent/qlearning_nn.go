@@ -18,25 +18,25 @@ type QLearningAgentNN struct {
 	Source     rand.Source
 }
 
-func (a *QLearningAgentNN) GetAction(state [][]float64) int {
+func (a *QLearningAgentNN) GetAction(state []float64) int {
 	rng := rand.New(a.Source)
 	if a.Epsilon > rng.Float64() {
 		return rng.Intn(a.ActionSize)
 	}
 
-	qs := a.Q.Predict(matrix.New(state...))
+	qs := a.Q.Predict(matrix.New(state))
 	return vector.Argmax(qs[0])
 }
 
-func (a *QLearningAgentNN) Update(state [][]float64, action int, reward float64, next [][]float64, done bool) matrix.Matrix {
+func (a *QLearningAgentNN) Update(state []float64, action int, reward float64, next []float64, done bool) matrix.Matrix {
 	var nextq float64
 	if !done {
-		nextqs := a.Q.Predict(matrix.New(next...))
+		nextqs := a.Q.Predict(matrix.New(next))
 		nextq = vector.Max(nextqs[0])
 	}
 
 	target := matrix.New([]float64{reward + a.Gamma*nextq})
-	qs := a.Q.Predict(matrix.New(state...))
+	qs := a.Q.Predict(matrix.New(state))
 	q := matrix.New([]float64{qs[0][action]})
 	loss := a.Q.Loss(target, q)
 
