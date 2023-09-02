@@ -178,6 +178,16 @@ func ExampleMatrix_Dim() {
 
 }
 
+func ExampleMatrix_Size() {
+	fmt.Println(matrix.New().Size())
+	fmt.Println(matrix.New([]float64{1, 2, 3}, []float64{1, 2, 3}).Size())
+
+	// Output:
+	// 0
+	// 6
+
+}
+
 func ExampleMatrix_Add() {
 	A := matrix.New(
 		[]float64{1, 2},
