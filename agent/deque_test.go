@@ -7,7 +7,7 @@ import (
 )
 
 func ExampleDeque() {
-	q := agent.NewDeque(2)
+	q := agent.NewDeque[agent.Memory](2)
 	q.Append(agent.Memory{State: "a", Action: 1, Reward: 1, Done: false})
 	q.Append(agent.Memory{State: "b", Action: 2, Reward: 2, Done: false})
 	q.Append(agent.Memory{State: "c", Action: 3, Reward: 3, Done: true})

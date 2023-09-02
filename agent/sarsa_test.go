@@ -20,7 +20,7 @@ func ExampleSarsaAgent() {
 		DefaultActions: agent.RandomActions{0: 0.25, 1: 0.25, 2: 0.25, 3: 0.25},
 		Pi:             make(map[string]agent.RandomActions),
 		Q:              make(map[string]float64),
-		Memory:         agent.NewDeque(2),
+		Memory:         agent.NewDeque[agent.Memory](2),
 		Source:         rand.NewSource(1),
 	}
 

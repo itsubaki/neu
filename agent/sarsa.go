@@ -15,7 +15,7 @@ type SarsaAgent struct {
 	DefaultActions RandomActions
 	Pi             map[string]RandomActions
 	Q              map[string]float64
-	Memory         *Deque
+	Memory         *Deque[Memory]
 	Source         rand.Source
 }
 
@@ -25,7 +25,7 @@ func (a *SarsaAgent) GetAction(state fmt.Stringer) int {
 }
 
 func (a *SarsaAgent) Reset() {
-	a.Memory = NewDeque(a.Memory.Size())
+	a.Memory = NewDeque[Memory](a.Memory.Size())
 }
 
 func (a *SarsaAgent) Update(state fmt.Stringer, action int, reward float64, done bool) {

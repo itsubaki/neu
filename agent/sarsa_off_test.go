@@ -21,7 +21,7 @@ func ExampleSarsaOffPolicyAgent() {
 		Pi:             make(map[string]agent.RandomActions),
 		B:              make(map[string]agent.RandomActions),
 		Q:              make(map[string]float64),
-		Memory:         agent.NewDeque(2),
+		Memory:         agent.NewDeque[agent.Memory](2),
 		Source:         rand.NewSource(1),
 	}
 
