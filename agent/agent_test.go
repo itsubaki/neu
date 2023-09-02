@@ -75,3 +75,28 @@ func ExampleAgent_bandit() {
 	// step=198: mean(rate)=0.7172
 	// step=199: mean(rate)=0.8401
 }
+
+func Example_rand() {
+	for i := 0; i < 5; i++ {
+		r := rand.New(rand.NewSource(1))
+		fmt.Println(r.Float64())
+	}
+
+	s := rand.NewSource(1)
+	for i := 0; i < 5; i++ {
+		r := rand.New(s)
+		fmt.Println(r.Float64())
+	}
+
+	// Output:
+	// 0.6046602879796196
+	// 0.6046602879796196
+	// 0.6046602879796196
+	// 0.6046602879796196
+	// 0.6046602879796196
+	// 0.6046602879796196
+	// 0.9405090880450124
+	// 0.6645600532184904
+	// 0.4377141871869802
+	// 0.4246374970712657
+}
