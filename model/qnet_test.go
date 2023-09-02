@@ -79,13 +79,13 @@ func ExampleQNet_Sync() {
 	t := model.NewQNet(c, s)
 	fmt.Println("new:", diff(m, t))
 
-	m.Sync(t)
+	t.Sync(m)
 	fmt.Println("sync:", diff(m, t))
 
 	m.SetParams(model.NewQNet(c, s).Params())
 	fmt.Println("set:", diff(m, t))
 
-	m.Sync(t)
+	t.Sync(m)
 	fmt.Println("sync:", diff(m, t))
 
 	// Output:
