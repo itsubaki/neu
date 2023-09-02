@@ -54,7 +54,7 @@ func ExampleQLearningAgentNN() {
 	}
 
 	for _, s := range env.State {
-		if s.Equals(env.GoalState) {
+		if s.Equals(env.GoalState) || s.Equals(env.WallState) {
 			continue
 		}
 
@@ -91,10 +91,6 @@ func ExampleQLearningAgentNN() {
 	// (1, 0) DOWN  : -0.5254
 	// (1, 0) LEFT  : -0.4311
 	// (1, 0) RIGHT : -0.2963
-	// (1, 1) UP    : -0.2138
-	// (1, 1) DOWN  : -0.4489
-	// (1, 1) LEFT  : 0.1267
-	// (1, 1) RIGHT : 0.2966
 	// (1, 2) UP    : 0.1548
 	// (1, 2) DOWN  : -0.3841
 	// (1, 2) LEFT  : -0.2472
