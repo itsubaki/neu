@@ -34,12 +34,9 @@ func ExampleGridWorld() {
 		fmt.Println(a, e.ActionMeaning[a])
 	}
 
-	for i := 0; i < e.Height()*e.Width(); i++ {
-		s := e.State()
-		fmt.Println(s, e.Reward(nil, 0, s))
+	for _, s := range e.State {
+		fmt.Println(s, e.Reward(nil, 0, &s))
 	}
-
-	fmt.Println(e.State())
 
 	// Output:
 	// 3 4
@@ -60,7 +57,6 @@ func ExampleGridWorld() {
 	// (2, 1) 0
 	// (2, 2) 0
 	// (2, 3) 0
-	// <nil>
 }
 
 func ExampleGridWorld_NextState() {

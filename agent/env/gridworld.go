@@ -1,8 +1,6 @@
 package env
 
-import (
-	"fmt"
-)
+import "fmt"
 
 type GridWorld struct {
 	ActionSpace   []int
@@ -12,8 +10,7 @@ type GridWorld struct {
 	WallState     *GridState
 	StartState    *GridState
 	AgentState    *GridState
-	state         []GridState
-	counter       int
+	State         []GridState
 }
 
 type GridState struct {
@@ -47,13 +44,12 @@ func NewGridWorld() *GridWorld {
 		WallState:  &GridState{Height: 1, Width: 1},
 		StartState: &GridState{Height: 2, Width: 0},
 		AgentState: &GridState{Height: 2, Width: 0},
-		state:      make([]GridState, 0),
-		counter:    -1,
+		State:      make([]GridState, 0),
 	}
 
 	for y := 0; y < w.Height(); y++ {
 		for x := 0; x < w.Width(); x++ {
-			w.state = append(w.state, GridState{Height: y, Width: x})
+			w.State = append(w.State, GridState{Height: y, Width: x})
 		}
 	}
 
@@ -74,15 +70,6 @@ func (w *GridWorld) Shape() (int, int) {
 
 func (w *GridWorld) Actions() []int {
 	return w.ActionSpace
-}
-
-func (w *GridWorld) State() *GridState {
-	w.counter++
-	if w.counter > len(w.state)-1 {
-		return nil
-	}
-
-	return &w.state[w.counter]
 }
 
 func (w *GridWorld) NextState(s *GridState, a int) *GridState {
@@ -120,7 +107,6 @@ func (w *GridWorld) Reward(s *GridState, a int, n *GridState) float64 {
 }
 
 func (w *GridWorld) Reset() *GridState {
-	w.counter = -1
 	w.AgentState = w.StartState
 	return w.AgentState
 }

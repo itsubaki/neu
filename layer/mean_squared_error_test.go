@@ -43,6 +43,23 @@ func ExampleMeanSquaredError() {
 	// [-0.0100 -0.0050 0.0900 -0.0000 -0.0050 -0.0100 -0.0000 -0.0600 -0.0000 -0.0000]
 }
 
+func ExampleMeanSquaredError_Backward() {
+	f := func(target, q matrix.Matrix) (matrix.Matrix, matrix.Matrix, matrix.Matrix) {
+		l := &layer.MeanSquaredError{}
+		loss := l.Forward(target, q)
+		gx0, gx1 := l.Backward(matrix.New([]float64{1}))
+		return loss, gx0, gx1
+	}
+
+	target, q := matrix.New([]float64{1}), matrix.New([]float64{2})
+	fmt.Println(f(target, q))
+	fmt.Println(f(target.Broadcast(1, 4), q.Broadcast(1, 4)))
+
+	// Output:
+	// [[1]] [[-2]] [[2]]
+	// [[1]] [[-0.5 -0.5 -0.5 -0.5]] [[0.5 0.5 0.5 0.5]]
+}
+
 func ExampleMeanSquaredError_Params() {
 	l := &layer.MeanSquaredError{}
 
