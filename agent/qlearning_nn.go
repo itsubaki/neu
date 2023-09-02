@@ -35,9 +35,9 @@ func (a *QLearningAgentNN) Update(state [][]float64, action int, reward float64,
 		nextq = vector.Max(nextqs[0])
 	}
 
-	target := matrix.New([]float64{reward + a.Gamma*nextq}).Broadcast(1, a.ActionSize)
+	target := matrix.New([]float64{reward + a.Gamma*nextq})
 	qs := a.Q.Predict(matrix.New(state...))
-	q := matrix.New([]float64{qs[0][action]}).Broadcast(1, a.ActionSize)
+	q := matrix.New([]float64{qs[0][action]})
 	loss := a.Q.Loss(target, q)
 
 	a.Q.Backward()
