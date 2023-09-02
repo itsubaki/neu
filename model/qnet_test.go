@@ -54,3 +54,43 @@ func ExampleQNet() {
 	// p(100,   4), g(100,  1)
 	// p(  1,   4), g(  1,  1)
 }
+
+func ExampleQNet_Sync() {
+	diff := func(m, t *model.QNet) []float64 {
+		out := make([]float64, 0)
+		for i := range m.Params() {
+			for j := range m.Params()[i] {
+				out = append(out, m.Params()[i][j].Sub(t.Params()[i][j]).Abs().Sum())
+			}
+		}
+
+		return out
+	}
+
+	s := rand.NewSource(1)
+	c := &model.QNetConfig{
+		InputSize:  12,
+		OutputSize: 4,
+		HiddenSize: []int{100},
+		WeightInit: weight.Std(0.01),
+	}
+
+	m := model.NewQNet(c, s)
+	t := model.NewQNet(c, s)
+	fmt.Println("new:", diff(m, t))
+
+	m.Sync(t)
+	fmt.Println("sync:", diff(m, t))
+
+	m.SetParams(model.NewQNet(c, s).Params())
+	fmt.Println("set:", diff(m, t))
+
+	m.Sync(t)
+	fmt.Println("sync:", diff(m, t))
+
+	// Output:
+	// new: [13.589057285251876 0 4.387607068711152 0]
+	// sync: [0 0 0 0]
+	// set: [13.90911363704504 0 4.797890879215467 0]
+	// sync: [0 0 0 0]
+}

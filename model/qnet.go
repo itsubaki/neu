@@ -71,3 +71,15 @@ func (m *QNet) Summary() []string {
 
 	return s
 }
+
+func (m *QNet) Sync(target *QNet) {
+	params := make([][]matrix.Matrix, len(m.Params()))
+	for i := range m.Params() {
+		params[i] = make([]matrix.Matrix, len(m.Params()[i]))
+		for j := range m.Params()[i] {
+			params[i][j] = matrix.New(m.Params()[i][j]...)
+		}
+	}
+
+	target.SetParams(params)
+}
