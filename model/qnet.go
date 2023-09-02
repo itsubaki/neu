@@ -48,14 +48,6 @@ func NewQNet(c *QNetConfig, s ...rand.Source) *QNet {
 	}
 }
 
-func (m *QNet) Forward(x matrix.Matrix) matrix.Matrix {
-	for _, l := range m.Layer[:len(m.Layer)-1] {
-		x = l.Forward(x, nil)
-	}
-
-	return x
-}
-
 func (m *QNet) Loss(target, q matrix.Matrix) matrix.Matrix {
 	return m.Layer[len(m.Layer)-1].Forward(target, q)
 }

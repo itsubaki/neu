@@ -25,7 +25,7 @@ func ExampleQNet() {
 	}
 
 	target := matrix.New([]float64{1})
-	qs := m.Forward(matrix.New([]float64{0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0}))
+	qs := m.Predict(matrix.New([]float64{0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0}))
 	q := matrix.New([]float64{vector.Max(qs[0])})
 	fmt.Printf("%.8f, %0.8f\n", qs, q)
 	fmt.Printf("%.8f\n", m.Loss(target, q))
