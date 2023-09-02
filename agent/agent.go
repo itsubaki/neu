@@ -10,12 +10,13 @@ type Agent struct {
 	Epsilon float64
 	Qs      []float64
 	Ns      []float64
-	RNG     *rand.Rand
+	Source  rand.Source
 }
 
 func (a *Agent) GetAction() int {
-	if a.Epsilon > a.RNG.Float64() {
-		return a.RNG.Intn(len(a.Qs))
+	rng := rand.New(a.Source)
+	if a.Epsilon > rng.Float64() {
+		return rng.Intn(len(a.Qs))
 	}
 
 	return vector.Argmax(a.Qs)
