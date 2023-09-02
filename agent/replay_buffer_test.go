@@ -3,31 +3,33 @@ package agent_test
 import (
 	"fmt"
 	"math/rand"
-	"sort"
 
 	"github.com/itsubaki/neu/agent"
 )
 
 func ExampleReplayBuffer() {
-	buf := agent.NewReplyBuffer[string](10, 3, rand.NewSource(1))
+	buf := agent.NewReplyBuffer(10, 3, rand.NewSource(1))
 	for i := 0; i < 10; i++ {
-		buf.Append(fmt.Sprintf("%d", i))
+		buf.Append("s", i, float64(i), "n", false)
 	}
 	fmt.Println(buf.Len())
 
 	batch := buf.Batch()
-	sort.Strings(batch)
-	fmt.Println(batch)
+	for _, b := range batch {
+		fmt.Println(b)
+	}
 
-	// Output:
+	// Unordered output:
 	// 10
-	// [1 7 9]
+	// {s 7 7 n false}
+	// {s 9 9 n false}
+	// {s 1 1 n false}
 }
 
 func ExampleReplayBuffer_rand() {
-	buf := agent.NewReplyBuffer[string](10, 3)
+	buf := agent.NewReplyBuffer(10, 3)
 	for i := 0; i < 10; i++ {
-		buf.Append(fmt.Sprintf("%d", i))
+		buf.Append("s", i, float64(i), "n", false)
 	}
 	fmt.Println(buf.Len())
 
