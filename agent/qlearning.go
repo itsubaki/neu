@@ -13,12 +13,13 @@ type QLearningAgent struct {
 	Epsilon    float64
 	ActionSize int
 	Q          map[string]float64
-	RNG        *rand.Rand
+	Source     rand.Source
 }
 
 func (a *QLearningAgent) GetAction(state fmt.Stringer) int {
-	if a.Epsilon > a.RNG.Float64() {
-		return a.RNG.Intn(a.ActionSize)
+	rng := rand.New(a.Source)
+	if a.Epsilon > rng.Float64() {
+		return rng.Intn(a.ActionSize)
 	}
 
 	qs := qstate(a.Q, state.String(), a.ActionSize)

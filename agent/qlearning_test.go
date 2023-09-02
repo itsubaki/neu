@@ -18,7 +18,7 @@ func ExampleQLearningAgent() {
 		Epsilon:    0.1,
 		ActionSize: 4,
 		Q:          make(map[string]float64),
-		RNG:        rand.New(rand.NewSource(1)),
+		Source:     rand.NewSource(1),
 	}
 
 	episodes := 10000

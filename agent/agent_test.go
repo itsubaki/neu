@@ -14,7 +14,7 @@ func ExampleAgent() {
 		Epsilon: 0.5,
 		Qs:      []float64{0, 0, 0, 0, 0},
 		Ns:      []float64{0, 0, 0, 0, 0},
-		RNG:     rand.New(rand.NewSource(1)),
+		Source:  rand.NewSource(1),
 	}
 
 	for i := 0; i < 10; i++ {
@@ -43,18 +43,13 @@ func ExampleAgent_bandit() {
 	all := make([][]float64, runs)
 	for r := 0; r < runs; r++ {
 		bandit := env.NewNonStatBandit(arms, s)
-		agent := &agent.Agent{
-			Epsilon: eps,
-			Qs:      make([]float64, arms),
-			Ns:      make([]float64, arms),
-			RNG:     rand.New(s),
-		}
+		agent := &agent.Agent{Epsilon: eps, Qs: make([]float64, arms), Ns: make([]float64, arms), Source: s}
 
 		var total float64
 		rates := make([]float64, steps)
 		for i := 0; i < steps; i++ {
 			action := agent.GetAction()
-			reward := bandit.Play(action, s)
+			reward := bandit.Play(action)
 			agent.Update(action, reward)
 
 			total += reward

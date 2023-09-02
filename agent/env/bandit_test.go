@@ -22,9 +22,9 @@ func ExampleNonStatBandit() {
 	bandit := env.NewNonStatBandit(10, rand.NewSource(1))
 
 	for i := 0; i < 10; i++ {
-		fmt.Print(bandit.Play(i, rand.NewSource(1)))
+		fmt.Print(bandit.Play(i))
 	}
 
 	// Output:
-	// 1110000010
+	// 1110100110
 }

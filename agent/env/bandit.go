@@ -7,19 +7,20 @@ import (
 )
 
 type Bandit struct {
-	Rates []float64
-	RNG   *rand.Rand
+	Rates  []float64
+	Source rand.Source
 }
 
 func NewBandit(arms int, s rand.Source) *Bandit {
 	return &Bandit{
-		Rates: vector.Rand(arms, s),
-		RNG:   rand.New(s),
+		Rates:  vector.Rand(arms, s),
+		Source: s,
 	}
 }
 
 func (b *Bandit) Play(arm int) float64 {
-	if b.Rates[arm] > b.RNG.Float64() {
+	rng := rand.New(b.Source)
+	if b.Rates[arm] > rng.Float64() {
 		return 1
 	}
 
@@ -27,25 +28,25 @@ func (b *Bandit) Play(arm int) float64 {
 }
 
 type NonStatBandit struct {
-	Arms  int
-	Rates []float64
-	RNG   *rand.Rand
+	Arms   int
+	Rates  []float64
+	Source rand.Source
 }
 
 func NewNonStatBandit(arms int, s rand.Source) *NonStatBandit {
 	return &NonStatBandit{
-		Arms:  arms,
-		Rates: vector.Rand(arms, s),
-		RNG:   rand.New(s),
+		Arms:   arms,
+		Rates:  vector.Rand(arms, s),
+		Source: s,
 	}
 }
 
-func (b *NonStatBandit) Play(arm int, s ...rand.Source) float64 {
+func (b *NonStatBandit) Play(arm int) float64 {
 	rate := b.Rates[arm]
-	randn := vector.Randn(b.Arms, s...)
+	randn := vector.Randn(b.Arms, b.Source)
 	b.Rates = vector.Add(b.Rates, vector.Mul(randn, -0.1))
 
-	if rate > b.RNG.Float64() {
+	if rate > rand.New(b.Source).Float64() {
 		return 1
 	}
 
