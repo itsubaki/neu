@@ -28,7 +28,7 @@ func ExampleGridWorld() {
 	e := env.NewGridWorld()
 
 	fmt.Println(e.Height(), e.Width())
-	fmt.Println(e.Shape())
+	fmt.Println(e.Size())
 
 	for _, a := range e.Actions() {
 		fmt.Println(a, e.ActionMeaning[a])
@@ -40,7 +40,7 @@ func ExampleGridWorld() {
 
 	// Output:
 	// 3 4
-	// 3 4
+	// 12
 	// 0 UP
 	// 1 DOWN
 	// 2 LEFT

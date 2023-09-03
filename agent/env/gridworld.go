@@ -64,8 +64,8 @@ func (w *GridWorld) Width() int {
 	return len(w.RewardMap[0])
 }
 
-func (w *GridWorld) Shape() (int, int) {
-	return w.Height(), w.Width()
+func (w *GridWorld) Size() int {
+	return w.Height() * w.Width()
 }
 
 func (w *GridWorld) Actions() []int {
