@@ -13,7 +13,7 @@ import (
 )
 
 func ExampleDQNAgent() {
-	env := env.NewGridWorld()
+	e := env.NewGridWorld()
 	s := rand.NewSource(1)
 	a := &agent.DQNAgent{
 		Gamma:        0.98,
@@ -42,14 +42,14 @@ func ExampleDQNAgent() {
 
 	episodes, syncInterval := 1, 1
 	for i := 0; i < episodes; i++ {
-		state := env.OneHot(env.Reset())
+		state := e.OneHot(e.Reset())
 		var totalLoss, totalReward float64
 		var count int
 
 		for {
 			action := a.GetAction(state)
-			next, reward, done := env.Step(action)
-			nextoh := env.OneHot(next)
+			next, reward, done := e.Step(action)
+			nextoh := e.OneHot(next)
 			loss := a.Update(state, action, reward, nextoh, done)
 			state = nextoh
 
@@ -69,14 +69,14 @@ func ExampleDQNAgent() {
 		fmt.Printf("%d: %.4f, %.4f\n", i, totalLoss/float64(count), totalReward/float64(count))
 	}
 
-	for _, s := range env.State {
-		if s.Equals(env.GoalState) || s.Equals(env.WallState) {
+	for _, s := range e.State {
+		if s.Equals(e.GoalState) || s.Equals(e.WallState) {
 			continue
 		}
 
-		q := a.Q.Predict(matrix.New(env.OneHot(&s)))
-		for _, a := range env.Actions() {
-			fmt.Printf("%s %-6s: %.4f\n", s, env.ActionMeaning[a], q[0][a])
+		q := a.Q.Predict(matrix.New(e.OneHot(&s)))
+		for _, a := range e.Actions() {
+			fmt.Printf("%s %-6s: %.4f\n", s, e.ActionMeaning[a], q[0][a])
 		}
 	}
 

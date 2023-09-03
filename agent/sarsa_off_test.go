@@ -11,7 +11,7 @@ import (
 )
 
 func ExampleSarsaOffPolicyAgent() {
-	env := env.NewGridWorld()
+	e := env.NewGridWorld()
 	a := &agent.SarsaOffPolicyAgent{
 		Gamma:          0.9,
 		Alpha:          0.8,
@@ -27,12 +27,12 @@ func ExampleSarsaOffPolicyAgent() {
 
 	episodes := 10000
 	for i := 0; i < episodes; i++ {
-		state := env.Reset()
+		state := e.Reset()
 		a.Reset()
 
 		for {
 			action := a.GetAction(state)
-			next, reward, done := env.Step(action)
+			next, reward, done := e.Step(action)
 			a.Update(state, action, reward, done)
 
 			if done {
@@ -47,7 +47,7 @@ func ExampleSarsaOffPolicyAgent() {
 	for _, k := range agent.SortedKeys(a.Q) {
 		s := strings.Split(k, ": ")
 		move, _ := strconv.Atoi(s[1])
-		fmt.Printf("%s %-6s: %.4f\n", s[0], env.ActionMeaning[move], a.Q[k])
+		fmt.Printf("%s %-6s: %.4f\n", s[0], e.ActionMeaning[move], a.Q[k])
 	}
 
 	// Output:

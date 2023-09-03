@@ -9,7 +9,7 @@ import (
 )
 
 func ExampleTemporalDiffAgent() {
-	env := env.NewGridWorld()
+	e := env.NewGridWorld()
 	a := &agent.TemporalDiffAgent{
 		Gamma:          0.9,
 		Alpha:          0.1,
@@ -22,11 +22,11 @@ func ExampleTemporalDiffAgent() {
 
 	episodes := 1000
 	for i := 0; i < episodes; i++ {
-		state := env.Reset()
+		state := e.Reset()
 
 		for {
 			action := a.GetAction(state)
-			next, reward, done := env.Step(action)
+			next, reward, done := e.Step(action)
 			a.Eval(state, reward, next, done)
 
 			if done {

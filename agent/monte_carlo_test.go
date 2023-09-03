@@ -11,7 +11,7 @@ import (
 )
 
 func ExampleMonteCarloAgent() {
-	env := env.NewGridWorld()
+	e := env.NewGridWorld()
 	a := &agent.MonteCarloAgent{
 		Gamma:          0.9,
 		Epsilon:        0.1,
@@ -26,12 +26,12 @@ func ExampleMonteCarloAgent() {
 
 	episodes := 10000
 	for i := 0; i < episodes; i++ {
-		state := env.Reset()
+		state := e.Reset()
 		a.Reset()
 
 		for {
 			action := a.GetAction(state)
-			next, reward, done := env.Step(action)
+			next, reward, done := e.Step(action)
 			a.Add(state, action, reward)
 
 			if done {
@@ -46,7 +46,7 @@ func ExampleMonteCarloAgent() {
 	for _, k := range agent.SortedKeys(a.Q) {
 		s := strings.Split(k, ": ")
 		move, _ := strconv.Atoi(s[1])
-		fmt.Printf("%s %-6s: %.2f\n", s[0], env.ActionMeaning[move], a.Q[k])
+		fmt.Printf("%s %-6s: %.2f\n", s[0], e.ActionMeaning[move], a.Q[k])
 	}
 
 	// Output:

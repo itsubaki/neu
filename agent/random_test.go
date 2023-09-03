@@ -9,7 +9,7 @@ import (
 )
 
 func ExampleRandomAgent() {
-	env := env.NewGridWorld()
+	e := env.NewGridWorld()
 	a := &agent.RandomAgent{
 		Gamma:          0.9,
 		ActionSize:     4,
@@ -23,12 +23,12 @@ func ExampleRandomAgent() {
 
 	episodes := 1000
 	for i := 0; i < episodes; i++ {
-		state := env.Reset()
+		state := e.Reset()
 		a.Reset()
 
 		for {
 			action := a.GetAction(state)
-			next, reward, done := env.Step(action)
+			next, reward, done := e.Step(action)
 			a.Add(state, action, reward)
 
 			if done {
