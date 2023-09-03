@@ -42,18 +42,11 @@ func (a *DQNAgent) Update(state []float64, action int, reward float64, next []fl
 
 	s, ac, r, n, d := a.ReplayBuffer.Batch()
 	qs := a.Q.Predict(s)
-	q := matrix.Zero(a.ReplayBuffer.BatchSize, 1)
-	for i := 0; i < a.ReplayBuffer.BatchSize; i++ {
-		q[i] = []float64{qs[i][ac[i]]}
-	}
+	q := q(qs, ac)
 
 	nextqs := a.QTarget.Predict(n)
 	nextq := nextqs.MaxAxis1()
-
-	target := matrix.Zero(a.ReplayBuffer.BatchSize, 1)
-	for i := 0; i < a.ReplayBuffer.BatchSize; i++ {
-		target[i] = Target(r[i], nextq[i], d[i], a.Gamma)
-	}
+	target := target(r, d, a.Gamma, nextq)
 
 	loss := a.Q.Loss(q, target)
 
@@ -62,10 +55,28 @@ func (a *DQNAgent) Update(state []float64, action int, reward float64, next []fl
 	return loss
 }
 
-func Target(r, nextq float64, done bool, gamma float64) []float64 {
-	if done {
-		return []float64{r}
+func q(qs matrix.Matrix, action []int) matrix.Matrix {
+	out := matrix.Zero(len(qs), 1)
+	for i := 0; i < len(qs); i++ {
+		out[i] = []float64{qs[i][action[i]]}
 	}
 
-	return []float64{r + gamma*nextq}
+	return out
+}
+
+func target(r []float64, done []bool, gamma float64, nextq []float64) matrix.Matrix {
+	target := func(r float64, done bool, gamma float64, nextq float64) float64 {
+		if done {
+			return r
+		}
+
+		return r + gamma*nextq
+	}
+
+	out := matrix.Zero(len(r), 1)
+	for i := 0; i < len(r); i++ {
+		out[i] = []float64{target(r[i], done[i], gamma, nextq[i])}
+	}
+
+	return out
 }
