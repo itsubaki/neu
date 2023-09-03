@@ -20,7 +20,7 @@ func (d *Deque[T]) Size() int {
 	return d.size
 }
 
-func (d *Deque[T]) Append(m T) {
+func (d *Deque[T]) Add(m T) {
 	if len(d.data) == d.size {
 		d.data = d.data[1:]
 	}
