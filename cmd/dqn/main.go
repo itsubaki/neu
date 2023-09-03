@@ -64,8 +64,7 @@ func main() {
 			stateoh := e.OneHot(state)
 			action := a.GetAction(stateoh)
 			next, reward, done := e.Step(action)
-			nextoh := e.OneHot(next)
-			loss := a.Update(stateoh, action, reward, nextoh, done)
+			loss := a.Update(stateoh, action, reward, e.OneHot(next), done)
 			state = next
 
 			totalLoss += loss[0][0]
