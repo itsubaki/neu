@@ -15,9 +15,9 @@ import (
 )
 
 func main() {
-	var episodes, syncInterval, hiddenSize, bufferSize, batchSize int
+	var episode, syncInterval, hiddenSize, bufferSize, batchSize int
 	var gamma, epsilon, learningRate, beta1, beta2 float64
-	flag.IntVar(&episodes, "episodes", 300, "")
+	flag.IntVar(&episode, "episode", 300, "")
 	flag.IntVar(&syncInterval, "sync-interval", 100, "")
 	flag.IntVar(&hiddenSize, "hidden-size", 128, "")
 	flag.IntVar(&bufferSize, "buffer-size", 10000, "")
@@ -55,7 +55,7 @@ func main() {
 		Source: rand.NewSource(time.Now().UnixNano()),
 	}
 
-	for i := 0; i < episodes; i++ {
+	for i := 0; i < episode; i++ {
 		state := e.Reset()
 		var totalLoss, totalReward float64
 		var count int
