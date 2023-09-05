@@ -63,7 +63,7 @@ func (tr *RNNLMTrainer) Fit(in *RNNLMInput) {
 	for epoch := 0; epoch < in.Epochs; epoch++ {
 		for j := 0; j < maxIter; j++ {
 			// (Time, N, 1)
-			xbatch, tbatch := tr.Batch(xs, ts, offsets, in.TimeSize, in.BatchSize)
+			xbatch, tbatch := tr.Batch(xs, ts, offsets, in.TimeSize)
 
 			// update
 			loss := tr.Model.Forward(xbatch, tbatch)
@@ -82,8 +82,8 @@ func (tr *RNNLMTrainer) Fit(in *RNNLMInput) {
 	}
 }
 
-func (tr *RNNLMTrainer) Batch(xs, ts, offsets []int, T, N int) ([]matrix.Matrix, []matrix.Matrix) {
-	xbatch, tbatch := tensor.Zero(T, N, 1), tensor.Zero(T, N, 1)
+func (tr *RNNLMTrainer) Batch(xs, ts, offsets []int, T int) ([]matrix.Matrix, []matrix.Matrix) {
+	xbatch, tbatch := tensor.Zero(T, len(offsets), 1), tensor.Zero(T, len(offsets), 1)
 	for t := 0; t < T; t++ {
 		for i, offset := range offsets {
 			xbatch[t][i] = []float64{float64(xs[(offset+tr.timeIdx)%len(xs)])}
