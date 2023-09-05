@@ -35,8 +35,8 @@ rnnlm_gen:
 seq2seq:
 	go run cmd/seq2seq/main.go --dir ./testdata --data-size 10
 
-seq2seq_attn:
-	go run cmd/seq2seq_attn/main.go --dir ./testdata --data-size 10
+seq2seq_attention:
+	go run cmd/seq2seq_attention/main.go --dir ./testdata --data-size 10
 
 datasetdl: mnistdl ptbdl additiondl datedl
 
