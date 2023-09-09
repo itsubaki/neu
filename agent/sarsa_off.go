@@ -13,15 +13,15 @@ type SarsaOffPolicyAgent struct {
 	Epsilon        float64
 	ActionSize     int
 	DefaultActions RandomActions
-	Pi             map[string]RandomActions
-	B              map[string]RandomActions
-	Q              map[string]float64
+	Pi             DefaultMap[RandomActions]
+	B              DefaultMap[RandomActions]
+	Q              DefaultMap[float64]
 	Memory         *Deque[Memory]
 	Source         rand.Source
 }
 
 func (a *SarsaOffPolicyAgent) GetAction(state fmt.Stringer) int {
-	probs := Get(a.B, state, a.DefaultActions).Probs()
+	probs := a.B.Get(state, a.DefaultActions).Probs()
 	return vector.Choice(probs, a.Source)
 }
 

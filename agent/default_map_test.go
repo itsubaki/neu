@@ -10,7 +10,7 @@ import (
 func ExampleDefaultMap() {
 	m := agent.DefaultMap[agent.RandomActions]{}
 
-	fmt.Println(agent.Get(m, env.GridState{Height: 1, Width: 1}, agent.RandomActions{0: 0.25, 1: 0.25, 2: 0.25, 3: 0.25}).Probs())
+	fmt.Println(m.Get(env.GridState{Height: 1, Width: 1}, agent.RandomActions{0: 0.25, 1: 0.25, 2: 0.25, 3: 0.25}).Probs())
 	for k, v := range m {
 		fmt.Println(k, v)
 	}

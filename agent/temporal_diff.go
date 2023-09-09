@@ -12,13 +12,13 @@ type TemporalDiffAgent struct {
 	Alpha          float64
 	ActionSize     int
 	DefaultActions RandomActions
-	Pi             map[string]RandomActions
+	Pi             DefaultMap[RandomActions]
 	V              map[string]float64
 	Source         rand.Source
 }
 
 func (a *TemporalDiffAgent) GetAction(state fmt.Stringer) int {
-	probs := Get(a.Pi, state, a.DefaultActions).Probs()
+	probs := a.Pi.Get(state, a.DefaultActions).Probs()
 	return vector.Choice(probs, a.Source)
 }
 

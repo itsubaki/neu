@@ -13,14 +13,14 @@ type MonteCarloAgent struct {
 	Alpha          float64
 	ActionSize     int
 	DefaultActions RandomActions
-	Pi             map[string]RandomActions
-	Q              map[string]float64
+	Pi             DefaultMap[RandomActions]
+	Q              DefaultMap[float64]
 	Memory         []Memory
 	Source         rand.Source
 }
 
 func (a *MonteCarloAgent) GetAction(state fmt.Stringer) int {
-	probs := Get(a.Pi, state, a.DefaultActions).Probs()
+	probs := a.Pi.Get(state, a.DefaultActions).Probs()
 	return vector.Choice(probs, a.Source)
 }
 
@@ -45,7 +45,7 @@ func (a *MonteCarloAgent) Update() {
 	}
 }
 
-func greedyProbs(Q map[string]float64, state string, epsilon float64, actionSize int) RandomActions {
+func greedyProbs(Q DefaultMap[float64], state string, epsilon float64, actionSize int) RandomActions {
 	qs := qstate(Q, state, actionSize)
 	max := vector.Argmax(qs)
 
@@ -58,10 +58,10 @@ func greedyProbs(Q map[string]float64, state string, epsilon float64, actionSize
 	return probs
 }
 
-func qstate(Q map[string]float64, state string, actionSize int) []float64 {
+func qstate(Q DefaultMap[float64], state string, actionSize int) []float64 {
 	qs := make([]float64, 0)
 	for i := 0; i < actionSize; i++ {
-		qs = append(qs, Get(Q, StateAction{State: state, Action: i}, 0.0))
+		qs = append(qs, Q.Get(StateAction{State: state, Action: i}, 0.0))
 	}
 
 	return qs

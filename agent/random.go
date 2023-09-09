@@ -20,7 +20,7 @@ type RandomAgent struct {
 }
 
 func (a *RandomAgent) GetAction(state fmt.Stringer) int {
-	probs := Get(a.Pi, state, a.DefaultActions).Probs()
+	probs := a.Pi.Get(state, a.DefaultActions).Probs()
 	return vector.Choice(probs, a.Source)
 }
 
