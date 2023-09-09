@@ -12,7 +12,7 @@ type QLearningAgent struct {
 	Alpha      float64
 	Epsilon    float64
 	ActionSize int
-	Q          map[string]float64
+	Q          DefaultMap[float64]
 	Source     rand.Source
 }
 
