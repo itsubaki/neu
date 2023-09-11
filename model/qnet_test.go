@@ -94,3 +94,24 @@ func ExampleQNet_Sync() {
 	// set: [13.90911363704504 0 4.797890879215467 0]
 	// sync: [0 0 0 0]
 }
+
+func ExampleQNet_Summary() {
+	m := model.NewQNet(&model.QNetConfig{
+		InputSize:  12,
+		OutputSize: 4,
+		HiddenSize: []int{100},
+		WeightInit: weight.Std(0.01),
+	})
+
+	fmt.Println(m.Summary()[0])
+	for i, s := range m.Summary()[1:] {
+		fmt.Printf("%2d: %v\n", i, s)
+	}
+
+	// Output:
+	// *model.QNet
+	//  0: *layer.Affine: W(12, 100), B(1, 100): 1300
+	//  1: *layer.ReLU
+	//  2: *layer.Affine: W(100, 4), B(1, 4): 404
+	//  3: *layer.MeanSquaredError
+}

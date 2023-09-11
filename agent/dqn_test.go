@@ -123,3 +123,15 @@ func ExampleDQNAgent() {
 	// (2, 3) LEFT  : -0.4197
 	// (2, 3) RIGHT : -1.0760
 }
+
+func Example_target() {
+	fmt.Println(agent.Target(
+		[]float64{1, 2, 3},
+		[]bool{false, false, true},
+		0.98,
+		[]float64{1, 2, 3},
+	))
+
+	// Output:
+	// [[1.98] [3.96] [3]]
+}

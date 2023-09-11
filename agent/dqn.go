@@ -65,7 +65,7 @@ func q(qs matrix.Matrix, action []int) matrix.Matrix {
 }
 
 func target(r []float64, done []bool, gamma float64, nextq []float64) matrix.Matrix {
-	target := func(r float64, done bool, gamma float64, nextq float64) float64 {
+	single := func(r float64, done bool, gamma float64, nextq float64) float64 {
 		if done {
 			return r
 		}
@@ -75,7 +75,7 @@ func target(r []float64, done []bool, gamma float64, nextq []float64) matrix.Mat
 
 	out := matrix.Zero(len(r), 1)
 	for i := 0; i < len(r); i++ {
-		out[i] = []float64{target(r[i], done[i], gamma, nextq[i])}
+		out[i] = []float64{single(r[i], done[i], gamma, nextq[i])}
 	}
 
 	return out
