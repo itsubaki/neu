@@ -48,7 +48,7 @@ func (l *LSTM) Forward(x, h, c matrix.Matrix, _ ...Opts) (matrix.Matrix, matrix.
 
 func (l *LSTM) Backward(dhNext, dcNext matrix.Matrix) (matrix.Matrix, matrix.Matrix, matrix.Matrix) {
 	tanh := matrix.F(l.cNext, activation.Tanh) // tanh(cNext)
-	dt := matrix.F(tanh, oneSubPow2)           // 1 - tanh(cNext)**2
+	dt := matrix.F(tanh, dtanh)                // 1 - tanh(cNext)**2
 	ds := dcNext.Add(dhNext.Mul(l.o).Mul(dt))  // dcNext + (dhNext * o) * (1 - tanh(cNext)**2)
 
 	df := ds.Mul(l.c)      // ds * cPrev
@@ -56,10 +56,10 @@ func (l *LSTM) Backward(dhNext, dcNext matrix.Matrix) (matrix.Matrix, matrix.Mat
 	di := ds.Mul(l.g)      // ds * g
 	do := dhNext.Mul(tanh) // dhNext * tanh(cNext)
 
-	df = df.Mul(matrix.F(l.f, dSigmoid))   // df = df * f * (1 - f)
-	dg = dg.Mul(matrix.F(l.g, oneSubPow2)) // dg = dg * (1 - g**2)
-	di = di.Mul(matrix.F(l.i, dSigmoid))   // di = di * i * (1 - i)
-	do = do.Mul(matrix.F(l.o, dSigmoid))   // do = do * o * (1 - o)
+	df = df.Mul(matrix.F(l.f, dSigmoid)) // df = df * f * (1 - f)
+	dg = dg.Mul(matrix.F(l.g, dtanh))    // dg = dg * (1 - g**2)
+	di = di.Mul(matrix.F(l.i, dSigmoid)) // di = di * i * (1 - i)
+	do = do.Mul(matrix.F(l.o, dSigmoid)) // do = do * o * (1 - o)
 
 	dA := matrix.HStack(df, dg, di, do) // (N, 4H)
 

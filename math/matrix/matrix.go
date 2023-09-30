@@ -348,6 +348,11 @@ func (m Matrix) Broadcast(a, b int) Matrix {
 	return m
 }
 
+// SubC returns c - m
+func SubC(c float64, m Matrix) Matrix {
+	return F(m, func(v float64) float64 { return c - v })
+}
+
 // Dot returns the dot product of m and n.
 func Dot(m, n Matrix) Matrix {
 	a, b := m.Dim()

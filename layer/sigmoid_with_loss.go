@@ -21,7 +21,7 @@ func (l *SigmoidWithLoss) Forward(x, t matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.y, l.t = matrix.F(x, activation.Sigmoid), t
 
 	// loss = Loss(y, t) + Loss(1 - y, 1 - t)
-	loss := Loss(l.y, l.t) + Loss(matrix.F(l.y, oneSub), matrix.F(l.t, oneSub))
+	loss := Loss(l.y, l.t) + Loss(matrix.SubC(1, l.y), matrix.SubC(1, l.t))
 	return matrix.New([]float64{loss})
 }
 
@@ -29,5 +29,3 @@ func (l *SigmoidWithLoss) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Ma
 	dx := l.y.Sub(l.t).Mul(dout).MulC(1.0 / float64(len(l.t))) // (y - t) * dout / size
 	return dx, nil
 }
-
-func oneSub(v float64) float64 { return 1 - v }

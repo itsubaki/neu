@@ -32,9 +32,9 @@ func (l *RNN) Forward(x, h matrix.Matrix, _ ...Opts) matrix.Matrix {
 }
 
 func (l *RNN) Backward(dhNext matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	dt := dhNext.Mul(matrix.F(l.hNext, oneSubPow2)) // dt = dhNext * (1 - hNext**2)
-	dx := matrix.Dot(dt, l.Wx.T())                  // dot(dt(N, H), Wx.T(H, D)) -> dx(N, D)
-	dh := matrix.Dot(dt, l.Wh.T())                  // dot(dt(N, H), Wh.T(H, H)) -> dh(N, H)
+	dt := dhNext.Mul(matrix.F(l.hNext, dtanh)) // dt = dhNext * (1 - hNext**2)
+	dx := matrix.Dot(dt, l.Wx.T())             // dot(dt(N, H), Wx.T(H, D)) -> dx(N, D)
+	dh := matrix.Dot(dt, l.Wh.T())             // dot(dt(N, H), Wh.T(H, H)) -> dh(N, H)
 
 	l.DWx = matrix.Dot(l.x.T(), dt)  // dot(x.T(D, N), dt(N, H)) -> (D, H)
 	l.DWh = matrix.Dot(l.h.T(), dt)  // dot(hPrev.T(H, N), dt(N, H)) -> (H, H)
@@ -42,5 +42,5 @@ func (l *RNN) Backward(dhNext matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	return dx, dh
 }
 
-// oneSubPow2 returns 1 - a**2
-func oneSubPow2(a float64) float64 { return 1 - a*a }
+// dtanh returns 1 - a**2
+func dtanh(y float64) float64 { return 1 - y*y }

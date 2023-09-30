@@ -15,7 +15,6 @@ func ExampleZero() {
 	// Output:
 	// [0 0 0]
 	// [0 0 0]
-
 }
 
 func ExampleOne() {
@@ -26,7 +25,6 @@ func ExampleOne() {
 	// Output:
 	// [1 1 1]
 	// [1 1 1]
-
 }
 
 func ExampleRand() {
@@ -41,8 +39,8 @@ func ExampleRand() {
 	// 2 3
 	// [0.6046602879796196 0.9405090880450124 0.6645600532184904]
 	// [0.4377141871869802 0.4246374970712657 0.6868230728671094]
-
 }
+
 func ExampleRandn() {
 	fmt.Println(matrix.Randn(2, 3).Dim())
 
@@ -55,7 +53,6 @@ func ExampleRandn() {
 	// 2 3
 	// [-1.233758177597947 -0.12634751070237293 -0.5209945711531503]
 	// [2.28571911769958 0.3228052526115799 0.5900672875996937]
-
 }
 
 func ExampleMask() {
@@ -165,7 +162,6 @@ func ExampleDot() {
 	// Output:
 	// [19 22]
 	// [43 50]
-
 }
 
 func ExampleMatrix_Dim() {
@@ -175,7 +171,6 @@ func ExampleMatrix_Dim() {
 	// Output:
 	// 0 0
 	// 1 3
-
 }
 
 func ExampleMatrix_Size() {
@@ -185,7 +180,6 @@ func ExampleMatrix_Size() {
 	// Output:
 	// 0
 	// 6
-
 }
 
 func ExampleMatrix_Add() {
@@ -206,7 +200,6 @@ func ExampleMatrix_Add() {
 	// Output:
 	// [6 8]
 	// [10 12]
-
 }
 
 func ExampleMatrix_Sub() {
@@ -227,7 +220,21 @@ func ExampleMatrix_Sub() {
 	// Output:
 	// [-4 -4]
 	// [-4 -4]
+}
 
+func ExampleSubC() {
+	A := matrix.New(
+		[]float64{1, 2},
+		[]float64{3, 4},
+	)
+
+	for _, r := range matrix.SubC(1, A) {
+		fmt.Println(r)
+	}
+
+	// Output:
+	// [0 -1]
+	// [-2 -3]
 }
 
 func ExampleMatrix_Mul() {
@@ -248,7 +255,6 @@ func ExampleMatrix_Mul() {
 	// Output:
 	// [5 12]
 	// [21 32]
-
 }
 
 func ExampleMatrix_Div() {
@@ -269,7 +275,6 @@ func ExampleMatrix_Div() {
 	// Output:
 	// [0.2 1]
 	// [3 0.5]
-
 }
 
 func ExampleMatrix_AddC() {
@@ -285,7 +290,6 @@ func ExampleMatrix_AddC() {
 	// Output:
 	// [3 4]
 	// [5 6]
-
 }
 
 func ExampleMatrix_MulC() {
@@ -301,7 +305,6 @@ func ExampleMatrix_MulC() {
 	// Output:
 	// [2 4]
 	// [6 8]
-
 }
 
 func ExampleMatrix_Pow2() {
@@ -317,7 +320,6 @@ func ExampleMatrix_Pow2() {
 	// Output:
 	// [1 4]
 	// [9 16]
-
 }
 
 func ExampleMatrix_Sqrt() {
@@ -333,7 +335,6 @@ func ExampleMatrix_Sqrt() {
 	// Output:
 	// [1 1.4142135623730951]
 	// [1.7320508075688772 2]
-
 }
 
 func ExampleMatrix_Abs() {
@@ -349,7 +350,6 @@ func ExampleMatrix_Abs() {
 	// Output:
 	// [1 2]
 	// [3 4]
-
 }
 
 func ExampleMatrix_Mean() {
@@ -557,7 +557,6 @@ func ExampleF2() {
 	// Output:
 	// [5 12]
 	// [21 32]
-
 }
 
 func ExampleF3() {
@@ -583,7 +582,6 @@ func ExampleF3() {
 	// Output:
 	// [-4 3]
 	// [12 23]
-
 }
 
 func ExamplePadding() {
@@ -611,7 +609,6 @@ func ExamplePadding() {
 	//
 	// [1 2]
 	// [3 4]
-
 }
 
 func ExampleReshape() {
@@ -677,5 +674,4 @@ func ExampleHStack() {
 	// Output:
 	// [1 2 3 7 8 9]
 	// [4 5 6 10 11 12]
-
 }

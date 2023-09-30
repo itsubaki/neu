@@ -39,7 +39,7 @@ func (l *GRU) Forward(x, h matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.hhat = matrix.F(matrix.Dot(x, Wxh).Add(matrix.Dot(h.Mul(l.r), Whh)).Add(Bh), activation.Tanh) // hhat = tanh(x.Wxh + (h * r).Whh + bh)
 	l.x, l.hprev = x, h
 
-	hnext := matrix.F(l.z, oneSub).Mul(l.hprev).Add(l.z.Mul(l.hhat)) // (1 - z) * hprev + z * hhat
+	hnext := matrix.SubC(1, l.z).Mul(l.hprev).Add(l.z.Mul(l.hhat)) // (1 - z) * hprev + z * hhat
 	return hnext
 }
 
@@ -52,17 +52,17 @@ func (l *GRU) Backward(dhnext matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	Whz, Whr, Whh := WhH[0], WhH[1], WhH[2]
 
 	// dh
-	dhhat := dhnext.Mul(l.z)                    // dhhat = dhnext * z
-	dhprev := dhnext.Mul(matrix.F(l.z, oneSub)) // dhprev = dhnext * (1 - z)
+	dhhat := dhnext.Mul(l.z)                  // dhhat = dhnext * z
+	dhprev := dhnext.Mul(matrix.SubC(1, l.z)) // dhprev = dhnext * (1 - z)
 
 	// tanh
-	dt := dhhat.Mul(matrix.F(l.hhat, oneSubPow2)) // dt = dhhat * (1 - hhat**2)
-	dbh := matrix.New(dt.SumAxis0())              // dbh = sum(dt, axis=0)
-	dWhh := matrix.Dot(l.r.Mul(l.hprev).T(), dt)  // dWhh = (r * hprev).T.dt
-	dhr := matrix.Dot(dt, Whh.T())                // dhr = dt.Whh.T
-	dWxh := matrix.Dot(l.x.T(), dt)               // dWxh = x.T.dt
-	dx := matrix.Dot(dt, Wxh.T())                 // dx = dt.Wxh.T
-	dhprev = dhprev.Add(dhr.Mul(l.r))             // dhprev = dhprev + dhr * r
+	dt := dhhat.Mul(matrix.F(l.hhat, dtanh))     // dt = dhhat * (1 - hhat**2)
+	dbh := matrix.New(dt.SumAxis0())             // dbh = sum(dt, axis=0)
+	dWhh := matrix.Dot(l.r.Mul(l.hprev).T(), dt) // dWhh = (r * hprev).T.dt
+	dhr := matrix.Dot(dt, Whh.T())               // dhr = dt.Whh.T
+	dWxh := matrix.Dot(l.x.T(), dt)              // dWxh = x.T.dt
+	dx := matrix.Dot(dt, Wxh.T())                // dx = dt.Wxh.T
+	dhprev = dhprev.Add(dhr.Mul(l.r))            // dhprev = dhprev + dhr * r
 
 	// gate(z)
 	dz := dhnext.Mul(l.hhat).Sub(dhnext.Mul(l.hprev)) // dz = dhnext * hhat - dhnext * hprev
