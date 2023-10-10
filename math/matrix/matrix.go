@@ -41,42 +41,27 @@ func One(m, n int) Matrix {
 	return out
 }
 
-// Rand returns a matrix with elements that pseudo-random number in the half-open interval [0.0,1.0).
-// m, n is the dimension of the matrix.
-// s is the source of the pseudo-random number.
-func Rand(m, n int, s ...rand.Source) Matrix {
+// rnd returns a pseudo-random number generator.
+func rnd(s ...rand.Source) *rand.Rand {
 	if len(s) == 0 {
 		s = append(s, rand.NewSource(time.Now().UnixNano()))
 	}
-	rng := rand.New(s[0])
 
-	out := Zero(m, n)
-	for i := 0; i < m; i++ {
-		for j := 0; j < n; j++ {
-			out[i][j] = rng.Float64()
-		}
-	}
+	return rand.New(s[0])
+}
 
-	return out
+// Rand returns a matrix with elements that pseudo-random number in the half-open interval [0.0,1.0).
+// m, n is the dimension of the matrix.
+// s is the source of the pseudo-random number generator.
+func Rand(m, n int, s ...rand.Source) Matrix {
+	return F(Zero(m, n), func(_ float64) float64 { return rnd(s...).Float64() })
 }
 
 // Randn returns a matrix with elements that normally distributed float64 in the range [-math.MaxFloat64, +math.MaxFloat64] with standard normal distribution.
 // m, n is the dimension of the matrix.
-// s is the source of the pseudo-random number.
+// s is the source of the pseudo-random number generator.
 func Randn(m, n int, s ...rand.Source) Matrix {
-	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
-	}
-	rng := rand.New(s[0])
-
-	out := Zero(m, n)
-	for i := 0; i < m; i++ {
-		for j := 0; j < n; j++ {
-			out[i][j] = rng.NormFloat64()
-		}
-	}
-
-	return out
+	return F(Zero(m, n), func(_ float64) float64 { return rnd(s...).NormFloat64() })
 }
 
 // Mask returns a matrix with elements that 1 if f() is true and 0 otherwise.
