@@ -10,11 +10,17 @@ func Zero(n int) []float64 {
 	return make([]float64, n)
 }
 
-func Rand(n int, s ...rand.Source) []float64 {
+// randg returns a pseudo-random number generator.
+func randg(s ...rand.Source) *rand.Rand {
 	if len(s) == 0 {
 		s = append(s, rand.NewSource(time.Now().UnixNano()))
 	}
-	rng := rand.New(s[0])
+
+	return rand.New(s[0])
+}
+
+func Rand(n int, s ...rand.Source) []float64 {
+	rng := randg(s...)
 
 	out := make([]float64, n)
 	for i := 0; i < n; i++ {
@@ -25,10 +31,7 @@ func Rand(n int, s ...rand.Source) []float64 {
 }
 
 func Randn(n int, s ...rand.Source) []float64 {
-	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
-	}
-	rng := rand.New(s[0])
+	rng := randg(s...)
 
 	out := make([]float64, n)
 	for i := 0; i < n; i++ {
