@@ -229,7 +229,7 @@ func MatchCount[T comparable](x, y []T) int {
 }
 
 // Equals returns true if x and y are the same.
-func Equals[T comparable](x, y []T) bool {
+func Equals(x, y []int) bool {
 	if len(x) != len(y) {
 		return false
 	}
