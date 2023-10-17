@@ -2,7 +2,7 @@ package hook
 
 import "github.com/itsubaki/neu/math/matrix"
 
-// Decay returns a function that applies weight decay to the gradients.
+// WeightDecay returns a function that applies weight decay to the gradients.
 func WeightDecay(lambda float64) func(params, grads [][]matrix.Matrix) [][]matrix.Matrix {
 	return func(params, grads [][]matrix.Matrix) [][]matrix.Matrix {
 		out := make([][]matrix.Matrix, len(params))
