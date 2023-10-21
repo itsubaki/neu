@@ -16,7 +16,7 @@ import (
 
 func main() {
 	var episode, syncInterval, hiddenSize, bufferSize, batchSize int
-	var gamma, epsilon, learningRate, beta1, beta2 float64
+	var gamma, epsilon, alpha, beta1, beta2 float64
 	flag.IntVar(&episode, "episode", 300, "")
 	flag.IntVar(&syncInterval, "sync-interval", 100, "")
 	flag.IntVar(&hiddenSize, "hidden-size", 128, "")
@@ -24,7 +24,7 @@ func main() {
 	flag.IntVar(&batchSize, "batch-size", 2, "")
 	flag.Float64Var(&gamma, "gamma", 0.98, "")
 	flag.Float64Var(&epsilon, "epsilon", 0.1, "")
-	flag.Float64Var(&learningRate, "learning-rate", 0.001, "")
+	flag.Float64Var(&alpha, "alpha", 0.001, "")
 	flag.Float64Var(&beta1, "beta1", 0.9, "")
 	flag.Float64Var(&beta2, "beta2", 0.999, "")
 	flag.Parse()
@@ -48,9 +48,9 @@ func main() {
 			WeightInit: weight.Xavier,
 		}),
 		Optimizer: &optimizer.Adam{
-			LearningRate: learningRate,
-			Beta1:        beta1,
-			Beta2:        beta2,
+			Alpha: alpha,
+			Beta1: beta1,
+			Beta2: beta2,
 		},
 		Source: rand.NewSource(time.Now().UnixNano()),
 	}

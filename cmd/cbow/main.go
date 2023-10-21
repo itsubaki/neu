@@ -14,10 +14,10 @@ import (
 func main() {
 	// flags
 	var epochs, hiddenSize int
-	var learningRate, beta1, beta2 float64
+	var alpha, beta1, beta2 float64
 	flag.IntVar(&epochs, "epochs", 1000, "")
 	flag.IntVar(&hiddenSize, "hidden-size", 5, "")
-	flag.Float64Var(&learningRate, "learning-rate", 0.001, "")
+	flag.Float64Var(&alpha, "alpha", 0.001, "")
 	flag.Float64Var(&beta1, "beta1", 0.9, "")
 	flag.Float64Var(&beta2, "beta2", 0.999, "")
 	flag.Parse()
@@ -49,9 +49,9 @@ func main() {
 	fmt.Println()
 
 	o := &optimizer.Adam{
-		LearningRate: learningRate,
-		Beta1:        beta1,
-		Beta2:        beta2,
+		Alpha: alpha,
+		Beta1: beta1,
+		Beta2: beta2,
 	}
 
 	for i := 0; i < epochs; i++ {

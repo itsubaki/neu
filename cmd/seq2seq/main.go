@@ -19,14 +19,14 @@ func main() {
 	// flag
 	var dir string
 	var epochs, dataSize, wordvecSize, hiddenSize, batchSize int
-	var learningRate, beta1, beta2, max float64
+	var alpha, beta1, beta2, max float64
 	flag.StringVar(&dir, "dir", "./testdata", "")
 	flag.IntVar(&epochs, "epochs", 100, "")
 	flag.IntVar(&dataSize, "data-size", -1, "")
 	flag.IntVar(&wordvecSize, "wordvec-size", 64, "")
 	flag.IntVar(&hiddenSize, "hidden-size", 128, "")
 	flag.IntVar(&batchSize, "batch-size", 2, "")
-	flag.Float64Var(&learningRate, "learning-rate", 0.001, "")
+	flag.Float64Var(&alpha, "alpha", 0.001, "")
 	flag.Float64Var(&beta1, "beta1", 0.9, "")
 	flag.Float64Var(&beta2, "beta2", 0.999, "")
 	flag.Float64Var(&max, "grads-cliping-max", 5.0, "")
@@ -58,9 +58,9 @@ func main() {
 
 	// training
 	tr := trainer.NewSeq2Seq(m, &optimizer.Adam{
-		LearningRate: learningRate,
-		Beta1:        beta1,
-		Beta2:        beta2,
+		Alpha: alpha,
+		Beta1: beta1,
+		Beta2: beta2,
 		Hooks: []optimizer.Hook{
 			hook.GradsClipping(max),
 		},

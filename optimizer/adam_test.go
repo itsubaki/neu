@@ -14,17 +14,17 @@ func ExampleAdam() {
 		grads:  [][]matrix.Matrix{{{{2, 4, 6}, {8, 10, 12}}}},
 	}
 
-	for _, lr := range []float64{0.0, 0.5, 1.0} {
+	for _, alpha := range []float64{0.0, 0.5, 1.0} {
 		opt := optimizer.Adam{
-			LearningRate: lr,
-			Beta1:        0.9,
-			Beta2:        0.999,
+			Alpha: alpha,
+			Beta1: 0.9,
+			Beta2: 0.999,
 		}
 		fmt.Println(opt.Update(m)[0][0])
 	}
 	fmt.Println()
 
-	opt := optimizer.Adam{LearningRate: 0.5, Beta1: 0.9, Beta2: 0.999, Hooks: []optimizer.Hook{hook.WeightDecay(0.0)}}
+	opt := optimizer.Adam{Alpha: 0.5, Beta1: 0.9, Beta2: 0.999, Hooks: []optimizer.Hook{hook.WeightDecay(0.0)}}
 	fmt.Println(opt.Update(m)[0][0])
 	fmt.Println(opt.Update(m)[0][0])
 	fmt.Println(opt.Update(m)[0][0])

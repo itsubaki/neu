@@ -7,7 +7,7 @@ import (
 )
 
 type Adam struct {
-	LearningRate float64
+	Alpha        float64
 	Beta1, Beta2 float64
 	Hooks        []Hook
 	m, v         [][]matrix.Matrix
@@ -25,16 +25,16 @@ func (o *Adam) Update(m Model) [][]matrix.Matrix {
 	}
 
 	o.iter++
-	top := math.Sqrt(1.0 - math.Pow(o.Beta2, float64(o.iter))) // sqrt(1 - beta2^t)
-	bottom := 1.0 - math.Pow(o.Beta1, float64(o.iter))         // 1 - beta1^t
-	lrt := o.LearningRate * top / bottom                       // lr * sqrt(1 - beta2^t) / (1 - beta1^t)
+	fix1 := 1.0 - math.Pow(o.Beta1, float64(o.iter)) // 1 - beta1^t
+	fix2 := 1.0 - math.Pow(o.Beta2, float64(o.iter)) // 1 - beta2^t
+	lr := o.Alpha * math.Sqrt(fix2) / fix1           // lr * sqrt(1 - beta2^t) / (1 - beta1^t)
 
 	updated := ZeroLike(params)
 	for i := range params {
 		for j := range params[i] {
 			o.m[i][j] = o.m[i][j].Add(grads[i][j].Sub(o.m[i][j]).MulC(1.0 - o.Beta1))        // m = m + (1 - beta1) * (grads - m)
 			o.v[i][j] = o.v[i][j].Add(grads[i][j].Pow2().Sub(o.v[i][j]).MulC(1.0 - o.Beta2)) // v = v + (1 - beta2) * (grads * grads - v)
-			updated[i][j] = matrix.F3(params[i][j], o.m[i][j], o.v[i][j], adam(lrt))         // params = params - lrt * m / (sqrt(v) + 1e-7)
+			updated[i][j] = matrix.F3(params[i][j], o.m[i][j], o.v[i][j], adam(lr))          // params = params - lrt * m / (sqrt(v) + 1e-7)
 		}
 	}
 

@@ -19,9 +19,9 @@ func ExampleSeq2SeqTrainer() {
 			HiddenSize:  128,
 			WeightInit:  weight.Xavier,
 		}), &optimizer.Adam{
-			LearningRate: 0.001,
-			Beta1:        0.9,
-			Beta2:        0.999,
+			Alpha: 0.001,
+			Beta1: 0.9,
+			Beta2: 0.999,
 		})
 
 	tr.Fit(&trainer.Seq2SeqInput{
@@ -48,9 +48,9 @@ func ExampleSeq2SeqTrainer_rand() {
 			HiddenSize:  128,
 			WeightInit:  weight.Xavier,
 		}), &optimizer.Adam{
-			LearningRate: 0.001,
-			Beta1:        0.9,
-			Beta2:        0.999,
+			Alpha: 0.001,
+			Beta1: 0.9,
+			Beta2: 0.999,
 		})
 
 	s := rand.NewSource(1)

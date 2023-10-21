@@ -33,9 +33,9 @@ func ExampleDQNAgent() {
 			WeightInit: weight.Xavier,
 		}, s),
 		Optimizer: &optimizer.Adam{
-			LearningRate: 0.0005,
-			Beta1:        0.9,
-			Beta2:        0.999,
+			Alpha: 0.0005,
+			Beta1: 0.9,
+			Beta2: 0.999,
 		},
 		Source: s,
 	}

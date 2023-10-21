@@ -16,14 +16,14 @@ import (
 func main() {
 	// flags
 	var epochs, hiddenSize, windowSize, sampleSize, batchSize int
-	var power, learningRate, beta1, beta2 float64
+	var power, alpha, beta1, beta2 float64
 	flag.IntVar(&epochs, "epochs", 1000, "")
 	flag.IntVar(&hiddenSize, "hidden-size", 5, "")
 	flag.IntVar(&windowSize, "window-size", 1, "")
 	flag.IntVar(&sampleSize, "sample-size", 2, "")
 	flag.IntVar(&batchSize, "batch-size", 1, "")
 	flag.Float64Var(&power, "power", 0.75, "")
-	flag.Float64Var(&learningRate, "learning-rate", 0.001, "")
+	flag.Float64Var(&alpha, "alpha", 0.001, "")
 	flag.Float64Var(&beta1, "beta1", 0.9, "")
 	flag.Float64Var(&beta2, "beta2", 0.999, "")
 	flag.Parse()
@@ -61,9 +61,9 @@ func main() {
 
 	// training
 	tr := trainer.New(m, &optimizer.Adam{
-		LearningRate: learningRate,
-		Beta1:        beta1,
-		Beta2:        beta2,
+		Alpha: alpha,
+		Beta1: beta1,
+		Beta2: beta2,
 	})
 
 	now := time.Now()
