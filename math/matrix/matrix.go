@@ -99,7 +99,7 @@ func Column(m Matrix, j int) Matrix {
 }
 
 // From returns a matrix from a slice of slice of T.
-func From[T int](x [][]T) Matrix {
+func From(x [][]int) Matrix {
 	out := Zero(len(x), len(x[0]))
 	for i, r := range x {
 		for j, v := range r {
