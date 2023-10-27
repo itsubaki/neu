@@ -89,6 +89,8 @@ func main() {
 	}
 	fmt.Println()
 
-	w0, w1 := "I", "You"
+	w0, w1, w2, w3 := "I", "You", "and", "say"
 	fmt.Printf("cos(%q, %q): %v\n", w0, w1, vector.Cos(Win[w2id[w0]], Win[w2id[w1]]))
+	fmt.Printf("cos(%q, %q): %v\n", w0, w2, vector.Cos(Win[w2id[w0]], Win[w2id[w2]]))
+	fmt.Printf("cos(%q, %q): %v\n", w0, w3, vector.Cos(Win[w2id[w0]], Win[w2id[w3]]))
 }
