@@ -9,7 +9,9 @@
 - pure Go implementation
 - using only the standard library
 
-## MNIST
+## Example
+
+### MNIST
 
 ```shell
 make mnistdl
@@ -53,7 +55,7 @@ label  : [4 1 2 6 7 1 8 7 5 5 7 6 7 5 8 4 7 4 3 2]
 ...
 ```
 
-## Seq2Seq
+### Seq2Seq
 
 ```shell
 make additiondl
@@ -98,7 +100,7 @@ go run cmd/seq2seq/main.go --dir ./testdata
 ...
 ```
 
-# Links
+## Link
 
 - [oreilly-japan/deep-learning-from-scratch](https://github.com/oreilly-japan/deep-learning-from-scratch)
 - [oreilly-japan/deep-learning-from-scratch-2](https://github.com/oreilly-japan/deep-learning-from-scratch-2)
