@@ -11,32 +11,32 @@ func Zero(n int) []float64 {
 	return make([]float64, n)
 }
 
-// randg returns a pseudo-random number generator.
-func randg(s ...randv2.Source) *randv2.Rand {
+// rng returns a pseudo-random number generator.
+func rng(s ...randv2.Source) *randv2.Rand {
 	if len(s) == 0 {
-		s = append(s, rand.MustNewSource())
+		s = append(s, rand.NewSource(rand.MustRead()))
 	}
 
 	return randv2.New(s[0])
 }
 
 func Rand(n int, s ...randv2.Source) []float64 {
-	rng := randg(s...)
+	g := rng(s...)
 
 	out := make([]float64, n)
 	for i := 0; i < n; i++ {
-		out[i] = rng.Float64()
+		out[i] = g.Float64()
 	}
 
 	return out
 }
 
 func Randn(n int, s ...randv2.Source) []float64 {
-	rng := randg(s...)
+	g := rng(s...)
 
 	out := make([]float64, n)
 	for i := 0; i < n; i++ {
-		out[i] = rng.NormFloat64()
+		out[i] = g.NormFloat64()
 	}
 
 	return out
@@ -147,7 +147,7 @@ func Cos(x, y []float64) float64 {
 
 func Choice(p []float64, s ...randv2.Source) int {
 	if len(s) == 0 {
-		s = append(s, rand.MustNewSource())
+		s = append(s, rand.NewSource(rand.MustRead()))
 	}
 
 	cumsum := make([]float64, len(p))
@@ -191,9 +191,9 @@ func T[T any](v []T) [][]T {
 // Shuffle shuffles the dataset.
 func Shuffle[T any](x, t []T, s ...randv2.Source) ([]T, []T) {
 	if len(s) == 0 {
-		s = append(s, rand.MustNewSource())
+		s = append(s, rand.NewSource(rand.MustRead()))
 	}
-	rng := randv2.New(s[0])
+	g := randv2.New(s[0])
 
 	xs, ts := make([]T, len(x)), make([]T, len(t))
 	for i := 0; i < len(x); i++ {
@@ -201,7 +201,7 @@ func Shuffle[T any](x, t []T, s ...randv2.Source) ([]T, []T) {
 	}
 
 	for i := 0; i < len(x); i++ {
-		j := rng.IntN(i + 1)
+		j := g.IntN(i + 1)
 
 		// swap
 		xs[i], xs[j] = xs[j], xs[i]

@@ -59,7 +59,7 @@ type Dataset struct {
 
 func Load(dir, fileName string, s ...randv2.Source) (*Dataset, *Dataset, *Vocab, error) {
 	if len(s) == 0 {
-		s = append(s, rand.MustNewSource())
+		s = append(s, rand.NewSource(rand.MustRead()))
 	}
 
 	// read

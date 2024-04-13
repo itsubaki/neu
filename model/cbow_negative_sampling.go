@@ -25,7 +25,7 @@ type CBOWNegativeSampling struct {
 
 func NewCBOWNegativeSampling(c CBOWNegativeSamplingConfig, s ...randv2.Source) *CBOWNegativeSampling {
 	if len(s) == 0 {
-		s = append(s, rand.MustNewSource())
+		s = append(s, rand.NewSource(rand.MustRead()))
 	}
 
 	// size

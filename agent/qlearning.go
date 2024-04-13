@@ -2,7 +2,7 @@ package agent
 
 import (
 	"fmt"
-	"math/rand"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/math/vector"
 )
@@ -13,13 +13,13 @@ type QLearningAgent struct {
 	Epsilon    float64
 	ActionSize int
 	Q          DefaultMap[float64]
-	Source     rand.Source
+	Source     randv2.Source
 }
 
 func (a *QLearningAgent) GetAction(state fmt.Stringer) int {
-	rng := rand.New(a.Source)
-	if a.Epsilon > rng.Float64() {
-		return rng.Intn(a.ActionSize)
+	g := randv2.New(a.Source)
+	if a.Epsilon > g.Float64() {
+		return g.IntN(a.ActionSize)
 	}
 
 	qs := qstate(a.Q, state.String(), a.ActionSize)

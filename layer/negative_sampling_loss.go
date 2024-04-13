@@ -19,7 +19,7 @@ type NegativeSamplingLoss struct {
 
 func NewNegativeSamplingLoss(W matrix.Matrix, corpus []int, power float64, sampleSize int, s ...randv2.Source) *NegativeSamplingLoss {
 	if len(s) == 0 {
-		s = append(s, rand.MustNewSource())
+		s = append(s, rand.NewSource(rand.MustRead()))
 	}
 
 	embed, loss := make([]EmbeddingDot, sampleSize+1), make([]SigmoidWithLoss, sampleSize+1)
@@ -128,7 +128,7 @@ func NewUnigramSampler(corpus []int, power float64, size int) *UnigramSampler {
 
 func (s *UnigramSampler) NegativeSample(target []int, seed ...randv2.Source) [][]int {
 	if len(seed) == 0 {
-		seed = append(seed, rand.MustNewSource())
+		seed = append(seed, rand.NewSource(rand.MustRead()))
 	}
 
 	N := len(target)

@@ -19,8 +19,8 @@ func NewBandit(arms int, s randv2.Source) *Bandit {
 }
 
 func (b *Bandit) Play(arm int) float64 {
-	rng := randv2.New(b.Source)
-	if b.Rates[arm] > rng.Float64() {
+	g := randv2.New(b.Source)
+	if b.Rates[arm] > g.Float64() {
 		return 1
 	}
 

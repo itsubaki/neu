@@ -2,12 +2,12 @@ package agent_test
 
 import (
 	"fmt"
-	"math/rand"
 	"strconv"
 	"strings"
 
 	"github.com/itsubaki/neu/agent"
 	"github.com/itsubaki/neu/agent/env"
+	"github.com/itsubaki/neu/math/rand"
 )
 
 func ExampleQLearningAgent() {
@@ -18,7 +18,7 @@ func ExampleQLearningAgent() {
 		Epsilon:    0.1,
 		ActionSize: 4,
 		Q:          make(map[string]float64),
-		Source:     rand.NewSource(1),
+		Source:     rand.Const(1),
 	}
 
 	episodes := 10000
@@ -64,24 +64,24 @@ func ExampleQLearningAgent() {
 	// (1, 2) UP    : 0.9000
 	// (1, 2) DOWN  : 0.7290
 	// (1, 2) LEFT  : 0.8100
-	// (1, 2) RIGHT : -0.1000
+	// (1, 2) RIGHT : -0.1001
 	// (1, 3) UP    : 1.0000
 	// (1, 3) DOWN  : 0.0000
-	// (1, 3) LEFT  : 0.6480
-	// (1, 3) RIGHT : 0.0000
+	// (1, 3) LEFT  : 0.0000
+	// (1, 3) RIGHT : -0.0812
 	// (2, 0) UP    : 0.6561
 	// (2, 0) DOWN  : 0.5905
 	// (2, 0) LEFT  : 0.5905
 	// (2, 0) RIGHT : 0.6561
-	// (2, 1) UP    : 0.6561
-	// (2, 1) DOWN  : 0.6557
+	// (2, 1) UP    : 0.6559
+	// (2, 1) DOWN  : 0.6559
 	// (2, 1) LEFT  : 0.5905
 	// (2, 1) RIGHT : 0.7290
 	// (2, 2) UP    : 0.8100
-	// (2, 2) DOWN  : 0.7288
+	// (2, 2) DOWN  : 0.7290
 	// (2, 2) LEFT  : 0.6561
 	// (2, 2) RIGHT : 0.0000
-	// (2, 3) UP    : -0.0992
+	// (2, 3) UP    : -0.1000
 	// (2, 3) DOWN  : 0.0000
 	// (2, 3) LEFT  : 0.0000
 	// (2, 3) RIGHT : 0.0000

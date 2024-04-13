@@ -18,7 +18,7 @@ type AttentionSeq2Seq struct {
 
 func NewAttentionSeq2Seq(c *RNNLMConfig, s ...randv2.Source) *AttentionSeq2Seq {
 	if len(s) == 0 {
-		s = append(s, rand.MustNewSource())
+		s = append(s, rand.NewSource(rand.MustRead()))
 	}
 
 	return &AttentionSeq2Seq{

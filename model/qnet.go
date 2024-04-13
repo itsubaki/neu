@@ -22,7 +22,7 @@ type QNet struct {
 
 func NewQNet(c *QNetConfig, s ...randv2.Source) *QNet {
 	if len(s) == 0 {
-		s = append(s, rand.MustNewSource())
+		s = append(s, rand.NewSource(rand.MustRead()))
 	}
 
 	// size

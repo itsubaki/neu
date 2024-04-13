@@ -60,7 +60,7 @@ func New(m Model, o Optimizer) *Trainer {
 // Fit trains the model using the provided optimizer.
 func (tr *Trainer) Fit(in *Input, s ...randv2.Source) {
 	if len(s) == 0 {
-		s = append(s, rand.MustNewSource())
+		s = append(s, rand.NewSource(rand.MustRead()))
 	}
 
 	for i := 0; i < in.Epochs; i++ {
@@ -92,13 +92,13 @@ func Range(i, batchSize int) (int, int) {
 // Random returns random index.
 func Random(trainSize, batchSize int, s ...randv2.Source) []int {
 	if len(s) == 0 {
-		s = append(s, rand.MustNewSource())
+		s = append(s, rand.NewSource(rand.MustRead()))
 	}
-	rng := randv2.New(s[0])
+	g := randv2.New(s[0])
 
 	counter := make(map[int]bool)
 	for c := 0; c < batchSize; {
-		n := rng.IntN(trainSize)
+		n := g.IntN(trainSize)
 		if _, ok := counter[n]; !ok {
 			counter[n] = true
 			c++

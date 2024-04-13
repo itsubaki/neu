@@ -25,9 +25,9 @@ func (a *DQNAgent) Sync() {
 }
 
 func (a *DQNAgent) GetAction(state []float64) int {
-	rng := randv2.New(a.Source)
-	if a.Epsilon > rng.Float64() {
-		return rng.IntN(a.ActionSize)
+	g := randv2.New(a.Source)
+	if a.Epsilon > g.Float64() {
+		return g.IntN(a.ActionSize)
 	}
 
 	qs := a.Q.Predict(matrix.New(state))

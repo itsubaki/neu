@@ -15,7 +15,7 @@ type GRULM struct {
 
 func NewGRULM(c *LSTMLMConfig, s ...randv2.Source) *GRULM {
 	if len(s) == 0 {
-		s = append(s, rand.MustNewSource())
+		s = append(s, rand.NewSource(rand.MustRead()))
 	}
 
 	// size

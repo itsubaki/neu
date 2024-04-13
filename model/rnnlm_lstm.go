@@ -20,7 +20,7 @@ type LSTMLM struct {
 
 func NewLSTMLM(c *LSTMLMConfig, s ...randv2.Source) *LSTMLM {
 	if len(s) == 0 {
-		s = append(s, rand.MustNewSource())
+		s = append(s, rand.NewSource(rand.MustRead()))
 	}
 
 	// size

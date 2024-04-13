@@ -34,7 +34,7 @@ type Seq2Seq struct {
 
 func NewSeq2Seq(c *RNNLMConfig, s ...randv2.Source) *Seq2Seq {
 	if len(s) == 0 {
-		s = append(s, rand.MustNewSource())
+		s = append(s, rand.NewSource(rand.MustRead()))
 	}
 
 	return &Seq2Seq{

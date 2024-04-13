@@ -23,7 +23,7 @@ type MLP struct {
 
 func NewMLP(c *MLPConfig, s ...randv2.Source) *MLP {
 	if len(s) == 0 {
-		s = append(s, rand.MustNewSource())
+		s = append(s, rand.NewSource(rand.MustRead()))
 	}
 
 	// size

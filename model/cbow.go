@@ -22,7 +22,7 @@ type CBOW struct {
 
 func NewCBOW(c *CBOWConfig, s ...randv2.Source) *CBOW {
 	if len(s) == 0 {
-		s = append(s, rand.MustNewSource())
+		s = append(s, rand.NewSource(rand.MustRead()))
 	}
 
 	// size

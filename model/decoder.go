@@ -19,7 +19,7 @@ type Decoder struct {
 
 func NewDecoder(c *RNNLMConfig, s ...randv2.Source) *Decoder {
 	if len(s) == 0 {
-		s = append(s, rand.MustNewSource())
+		s = append(s, rand.NewSource(rand.MustRead()))
 	}
 
 	// size

@@ -23,7 +23,7 @@ type RNNLM struct {
 
 func NewRNNLM(c *RNNLMConfig, s ...randv2.Source) *RNNLM {
 	if len(s) == 0 {
-		s = append(s, rand.MustNewSource())
+		s = append(s, rand.NewSource(rand.MustRead()))
 	}
 
 	// size

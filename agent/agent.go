@@ -14,9 +14,9 @@ type Agent struct {
 }
 
 func (a *Agent) GetAction() int {
-	rng := randv2.New(a.Source)
-	if a.Epsilon > rng.Float64() {
-		return rng.IntN(len(a.Qs))
+	g := randv2.New(a.Source)
+	if a.Epsilon > g.Float64() {
+		return g.IntN(len(a.Qs))
 	}
 
 	return vector.Argmax(a.Qs)

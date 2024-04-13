@@ -47,7 +47,7 @@ func NewSeq2Seq(m Seq2Seq, o Optimizer) *Seq2SeqTrainer {
 
 func (tr *Seq2SeqTrainer) Fit(in *Seq2SeqInput, s ...randv2.Source) {
 	if len(s) == 0 {
-		s = append(s, rand.MustNewSource())
+		s = append(s, rand.NewSource(rand.MustRead()))
 	}
 
 	var total float64

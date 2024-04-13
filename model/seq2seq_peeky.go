@@ -14,7 +14,7 @@ type PeekySeq2Seq struct {
 
 func NewPeekySeq2Seq(c *RNNLMConfig, s ...randv2.Source) *PeekySeq2Seq {
 	if len(s) == 0 {
-		s = append(s, rand.MustNewSource())
+		s = append(s, rand.NewSource(rand.MustRead()))
 	}
 
 	return &PeekySeq2Seq{

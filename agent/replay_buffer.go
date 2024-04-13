@@ -22,7 +22,7 @@ type ReplayBuffer struct {
 
 func NewReplayBuffer(bufferSize, batchSize int, s ...randv2.Source) *ReplayBuffer {
 	if len(s) == 0 {
-		s = append(s, rand.MustNewSource())
+		s = append(s, rand.NewSource(rand.MustRead()))
 	}
 
 	return &ReplayBuffer{
@@ -47,11 +47,11 @@ func (b *ReplayBuffer) Len() int {
 }
 
 func (b *ReplayBuffer) Batch() ([][]float64, []int, []float64, [][]float64, []bool) {
-	rng := randv2.New(b.Source)
+	g := randv2.New(b.Source)
 
 	counter := make(map[int]bool)
 	for c := 0; c < b.BatchSize; {
-		n := rng.IntN(b.Len())
+		n := g.IntN(b.Len())
 		if _, ok := counter[n]; !ok {
 			counter[n] = true
 			c++

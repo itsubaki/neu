@@ -51,7 +51,7 @@ func main() {
 			Beta1: beta1,
 			Beta2: beta2,
 		},
-		Source: rand.MustNewSource(),
+		Source: rand.NewSource(rand.MustRead()),
 	}
 
 	for i := 0; i < episode; i++ {
