@@ -58,7 +58,7 @@ func ExampleSave_nosuchdir() {
 	}
 
 	// Output:
-	// failed to save params: failed to create file: open ../nosuchdir/hoge.gob: no such file or directory
+	// failed to save params: create file: open ../nosuchdir/hoge.gob: no such file or directory
 }
 
 func ExampleLoad_invaliddir() {

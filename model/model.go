@@ -93,12 +93,12 @@ type AttentionLayer interface {
 func Save(filename string, params [][]matrix.Matrix) error {
 	f, err := os.Create(filename)
 	if err != nil {
-		return fmt.Errorf("failed to create file: %v", err)
+		return fmt.Errorf("create file: %v", err)
 	}
 	defer f.Close()
 
 	if err := gob.NewEncoder(f).Encode(params); err != nil {
-		return fmt.Errorf("failed to encode: %v", err)
+		return fmt.Errorf("encode params: %v", err)
 	}
 
 	return nil
