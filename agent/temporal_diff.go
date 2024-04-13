@@ -2,7 +2,7 @@ package agent
 
 import (
 	"fmt"
-	"math/rand"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/math/vector"
 )
@@ -14,7 +14,7 @@ type TemporalDiffAgent struct {
 	DefaultActions RandomActions
 	Pi             DefaultMap[RandomActions]
 	V              map[string]float64
-	Source         rand.Source
+	Source         randv2.Source
 }
 
 func (a *TemporalDiffAgent) GetAction(state fmt.Stringer) int {

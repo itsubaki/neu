@@ -1,8 +1,8 @@
 package layer
 
-import "math/rand"
+import randv2 "math/rand/v2"
 
 type Opts struct {
 	Train  bool
-	Source rand.Source
+	Source randv2.Source
 }

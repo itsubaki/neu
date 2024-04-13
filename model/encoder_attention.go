@@ -2,7 +2,7 @@ package model
 
 import (
 	"fmt"
-	"math/rand"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/math/matrix"
 )
@@ -11,7 +11,7 @@ type AttentionEncoder struct {
 	Encoder
 }
 
-func NewAttentionEncoder(c *RNNLMConfig, s ...rand.Source) *AttentionEncoder {
+func NewAttentionEncoder(c *RNNLMConfig, s ...randv2.Source) *AttentionEncoder {
 	return &AttentionEncoder{
 		Encoder: *NewEncoder(c, s...),
 	}

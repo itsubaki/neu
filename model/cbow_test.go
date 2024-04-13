@@ -2,9 +2,9 @@ package model_test
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/model"
 )
 
@@ -23,7 +23,7 @@ func ExampleCBOW() {
 	}
 
 	// model
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	m := model.NewCBOW(&model.CBOWConfig{
 		VocabSize:  7,
 		HiddenSize: 5,
@@ -42,9 +42,8 @@ func ExampleCBOW() {
 	fmt.Println(score)
 
 	// Output:
-	// [[1.9461398376656527]]
-	// [[0.00012703871969382832 -1.2392940985965779e-05 6.8815266046905e-05 0.00022359874505051858 0.00012362319821868092 0.0006585876988009539 0.0003365497538731326]]
-
+	// [[1.945926338366903]]
+	// [[0.0002949561336916829 1.6764012522628663e-05 0.00014512664854319168 -0.00013693775475907596 -0.0001516469737667451 7.902275520347142e-05 -1.1785748579958962e-05]]
 }
 
 func ExampleCBOW_Summary() {

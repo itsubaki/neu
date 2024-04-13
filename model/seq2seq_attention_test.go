@@ -2,15 +2,15 @@ package model_test
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/weight"
 )
 
 func ExampleAttentionSeq2Seq() {
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	m := model.NewAttentionSeq2Seq(&model.RNNLMConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
@@ -28,8 +28,8 @@ func ExampleAttentionSeq2Seq() {
 	fmt.Println(m.Generate(xs, 1, 10))
 
 	// Output:
-	// [[[1.0950]]]
-	// [0 0 0 0 0 0 0 0 0 0]
+	// [[[1.0958]]]
+	// [1 1 1 1 1 1 1 1 1 1]
 }
 
 func ExampleAttentionSeq2Seq_Summary() {

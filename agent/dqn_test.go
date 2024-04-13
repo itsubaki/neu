@@ -2,11 +2,11 @@ package agent_test
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/itsubaki/neu/agent"
 	"github.com/itsubaki/neu/agent/env"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/weight"
@@ -14,7 +14,7 @@ import (
 
 func ExampleDQNAgent() {
 	e := env.NewGridWorld()
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	a := &agent.DQNAgent{
 		Gamma:        0.98,
 		Epsilon:      0.1,
@@ -81,47 +81,47 @@ func ExampleDQNAgent() {
 	}
 
 	// Output:
-	// 0: 0.0106, 0.0067
-	// (0, 0) UP    : -0.1061
-	// (0, 0) DOWN  : -0.0477
-	// (0, 0) LEFT  : 0.1598
-	// (0, 0) RIGHT : -0.2651
-	// (0, 1) UP    : -0.0276
-	// (0, 1) DOWN  : -0.0434
-	// (0, 1) LEFT  : 0.1282
-	// (0, 1) RIGHT : -0.1524
-	// (0, 2) UP    : 0.3050
-	// (0, 2) DOWN  : 0.1813
-	// (0, 2) LEFT  : -0.0105
-	// (0, 2) RIGHT : 0.1292
-	// (1, 0) UP    : -0.6514
-	// (1, 0) DOWN  : 0.1122
-	// (1, 0) LEFT  : -0.2203
-	// (1, 0) RIGHT : -0.4828
-	// (1, 2) UP    : -0.8882
-	// (1, 2) DOWN  : -0.0749
-	// (1, 2) LEFT  : -0.0114
-	// (1, 2) RIGHT : -0.4060
-	// (1, 3) UP    : -0.0637
-	// (1, 3) DOWN  : -0.0555
-	// (1, 3) LEFT  : 0.1383
-	// (1, 3) RIGHT : -0.1666
-	// (2, 0) UP    : 0.1170
-	// (2, 0) DOWN  : 0.1217
-	// (2, 0) LEFT  : 0.1104
-	// (2, 0) RIGHT : -0.0538
-	// (2, 1) UP    : 0.1745
-	// (2, 1) DOWN  : 0.0733
-	// (2, 1) LEFT  : 0.1112
-	// (2, 1) RIGHT : -0.3337
-	// (2, 2) UP    : 0.8314
-	// (2, 2) DOWN  : -0.1022
-	// (2, 2) LEFT  : 0.0660
-	// (2, 2) RIGHT : 0.1461
-	// (2, 3) UP    : -2.3387
-	// (2, 3) DOWN  : 0.1448
-	// (2, 3) LEFT  : -0.4197
-	// (2, 3) RIGHT : -1.0760
+	// 0: 0.0143, -0.0046
+	// (0, 0) UP    : 0.1057
+	// (0, 0) DOWN  : 0.0411
+	// (0, 0) LEFT  : -0.1044
+	// (0, 0) RIGHT : -0.1153
+	// (0, 1) UP    : 0.2575
+	// (0, 1) DOWN  : 0.0565
+	// (0, 1) LEFT  : -0.0090
+	// (0, 1) RIGHT : -0.1412
+	// (0, 2) UP    : -0.1237
+	// (0, 2) DOWN  : 0.3362
+	// (0, 2) LEFT  : 0.0124
+	// (0, 2) RIGHT : -0.0446
+	// (1, 0) UP    : 0.0993
+	// (1, 0) DOWN  : 0.0425
+	// (1, 0) LEFT  : -0.1653
+	// (1, 0) RIGHT : -0.0591
+	// (1, 2) UP    : -0.4625
+	// (1, 2) DOWN  : 0.0474
+	// (1, 2) LEFT  : -0.2263
+	// (1, 2) RIGHT : -0.1712
+	// (1, 3) UP    : 0.7964
+	// (1, 3) DOWN  : 0.0965
+	// (1, 3) LEFT  : 0.0643
+	// (1, 3) RIGHT : -0.1828
+	// (2, 0) UP    : -0.4854
+	// (2, 0) DOWN  : 0.2162
+	// (2, 0) LEFT  : -0.2302
+	// (2, 0) RIGHT : -0.1094
+	// (2, 1) UP    : 0.2301
+	// (2, 1) DOWN  : 0.0680
+	// (2, 1) LEFT  : -0.0531
+	// (2, 1) RIGHT : -0.0764
+	// (2, 2) UP    : -1.2781
+	// (2, 2) DOWN  : 0.2185
+	// (2, 2) LEFT  : -0.6493
+	// (2, 2) RIGHT : -0.4158
+	// (2, 3) UP    : -0.7843
+	// (2, 3) DOWN  : 0.1689
+	// (2, 3) LEFT  : -0.4043
+	// (2, 3) RIGHT : -0.2855
 }
 
 func Example_target() {

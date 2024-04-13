@@ -2,13 +2,13 @@ package agent_test
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/itsubaki/neu/agent"
+	"github.com/itsubaki/neu/math/rand"
 )
 
 func ExampleReplayBuffer() {
-	buf := agent.NewReplayBuffer(10, 3, rand.NewSource(1))
+	buf := agent.NewReplayBuffer(10, 3, rand.Const(1))
 	for i := 0; i < 10; i++ {
 		buf.Add([]float64{float64(i), float64(i)}, i, float64(i), []float64{float64(i * 10), float64(i * 10)}, false)
 	}
@@ -21,9 +21,9 @@ func ExampleReplayBuffer() {
 
 	// Unordered output:
 	// 10
-	// [1 1] 1 1 [10 10] false
+	// [0 0] 0 0 [0 0] false
 	// [7 7] 7 7 [70 70] false
-	// [9 9] 9 9 [90 90] false
+	// [5 5] 5 5 [50 50] false
 }
 
 func ExampleReplayBuffer_rand() {

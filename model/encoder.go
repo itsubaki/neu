@@ -2,24 +2,24 @@ package model
 
 import (
 	"fmt"
-	"math/rand"
-	"time"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/math/tensor"
 )
 
 type Encoder struct {
 	TimeEmbedding *layer.TimeEmbedding
 	TimeLSTM      *layer.TimeLSTM
-	Source        rand.Source
+	Source        randv2.Source
 	hs            []matrix.Matrix
 }
 
-func NewEncoder(c *RNNLMConfig, s ...rand.Source) *Encoder {
+func NewEncoder(c *RNNLMConfig, s ...randv2.Source) *Encoder {
 	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
+		s = append(s, rand.MustNewSource())
 	}
 
 	// size

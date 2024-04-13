@@ -1,11 +1,11 @@
 package trainer
 
 import (
-	"math/rand"
-	"time"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/math/vector"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
@@ -58,9 +58,9 @@ func New(m Model, o Optimizer) *Trainer {
 }
 
 // Fit trains the model using the provided optimizer.
-func (tr *Trainer) Fit(in *Input, s ...rand.Source) {
+func (tr *Trainer) Fit(in *Input, s ...randv2.Source) {
 	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
+		s = append(s, rand.MustNewSource())
 	}
 
 	for i := 0; i < in.Epochs; i++ {
@@ -90,15 +90,15 @@ func Range(i, batchSize int) (int, int) {
 }
 
 // Random returns random index.
-func Random(trainSize, batchSize int, s ...rand.Source) []int {
+func Random(trainSize, batchSize int, s ...randv2.Source) []int {
 	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
+		s = append(s, rand.MustNewSource())
 	}
-	rng := rand.New(s[0])
+	rng := randv2.New(s[0])
 
 	counter := make(map[int]bool)
 	for c := 0; c < batchSize; {
-		n := rng.Intn(trainSize)
+		n := rng.IntN(trainSize)
 		if _, ok := counter[n]; !ok {
 			counter[n] = true
 			c++

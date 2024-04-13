@@ -2,11 +2,11 @@ package model
 
 import (
 	"fmt"
-	"math/rand"
-	"time"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 )
 
 var (
@@ -29,12 +29,12 @@ type Seq2Seq struct {
 	Encoder *Encoder
 	Decoder decoder
 	Softmax *layer.TimeSoftmaxWithLoss
-	Source  rand.Source
+	Source  randv2.Source
 }
 
-func NewSeq2Seq(c *RNNLMConfig, s ...rand.Source) *Seq2Seq {
+func NewSeq2Seq(c *RNNLMConfig, s ...randv2.Source) *Seq2Seq {
 	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
+		s = append(s, rand.MustNewSource())
 	}
 
 	return &Seq2Seq{

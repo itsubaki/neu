@@ -2,15 +2,15 @@ package model_test
 
 import (
 	"fmt"
-	"math/rand"
 
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/weight"
 )
 
 func ExampleRNNLMGen() {
 	// model
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	m := model.NewRNNLMGen(&model.LSTMLMConfig{
 		RNNLMConfig: model.RNNLMConfig{
 			VocabSize:   100,
@@ -25,8 +25,8 @@ func ExampleRNNLMGen() {
 	fmt.Println(m.Generate(0, []int{6, 99, 42}, 10))
 
 	// Output:
-	// [6 99 42 79 43 79 13 96 46 92]
-	// [67 12 97 81 66 55 64 25 39 90]
+	// [49 20 18 15 24 96 48 31 94 79]
+	// [58 61 2 35 17 90 71 52 40 29]
 }
 
 func ExampleRNNLMGen_Summary() {

@@ -2,11 +2,11 @@ package model
 
 import (
 	"fmt"
-	"math/rand"
-	"time"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 )
 
 type CBOWConfig struct {
@@ -17,12 +17,12 @@ type CBOWConfig struct {
 type CBOW struct {
 	Win0, Win1, Wout Layer
 	Loss             Layer
-	Source           rand.Source
+	Source           randv2.Source
 }
 
-func NewCBOW(c *CBOWConfig, s ...rand.Source) *CBOW {
+func NewCBOW(c *CBOWConfig, s ...randv2.Source) *CBOW {
 	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
+		s = append(s, rand.MustNewSource())
 	}
 
 	// size

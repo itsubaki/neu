@@ -2,14 +2,14 @@ package model_test
 
 import (
 	"fmt"
-	"math/rand"
 
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/weight"
 )
 
 func ExamplePeekySeq2Seq() {
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	m := model.NewPeekySeq2Seq(&model.RNNLMConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D

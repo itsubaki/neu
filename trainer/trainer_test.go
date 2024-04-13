@@ -2,11 +2,11 @@ package trainer_test
 
 import (
 	"fmt"
-	"math/rand"
 	"sort"
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/trainer"
@@ -79,7 +79,7 @@ func ExampleAccuracy() {
 func ExampleRandom() {
 	x := matrix.New([]float64{0, 1}, []float64{0, 2}, []float64{0, 3}, []float64{0, 4})
 
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	r1 := trainer.Random(len(x), 1, s)
 	r2 := trainer.Random(len(x), 2, s)
 	r3 := trainer.Random(len(x), 3, s)
@@ -98,8 +98,8 @@ func ExampleRandom() {
 	fmt.Println(r5)
 
 	// Output:
-	// [1]
-	// [1 3]
+	// [3]
+	// [0 2]
 	// [0 1 2]
 	// [0 1 2 3]
 	// [0]

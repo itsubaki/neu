@@ -2,15 +2,15 @@ package layer_test
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 )
 
 func ExampleDropout() {
 	x := matrix.New([]float64{1.0, -0.5}, []float64{-2.0, 3.0})
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 
 	drop := &layer.Dropout{}
 	fmt.Println(drop)
@@ -47,10 +47,10 @@ func ExampleDropout() {
 	// [[0 -0] [-0 0]]
 	// [[0 -0] [-0 0]] []
 	//
-	// [[0 -0] [-2 3]]
-	// [[0 -0] [-2 3]] []
+	// [[1 -0] [-0 0]]
+	// [[1 -0] [-0 0]] []
 	// [[0.5 -0.25] [-1 1.5]]
-	// [[0 -0] [-2 3]] []
+	// [[1 -0] [-0 0]] []
 }
 
 func ExampleDropout_Params() {

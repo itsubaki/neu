@@ -2,15 +2,15 @@ package model_test
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/weight"
 )
 
 func ExampleMLP() {
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	m := model.NewMLP(&model.MLPConfig{
 		InputSize:         2,
 		OutputSize:        2,
@@ -27,8 +27,7 @@ func ExampleMLP() {
 	fmt.Printf("%.4f %v\n", loss, m.Predict(x).Argmax())
 
 	// Output:
-	// [[0.6901]] [1 0 1]
-
+	// [[0.6975]] [0 0 0]
 }
 
 func ExampleMLP_Summary() {
@@ -79,7 +78,7 @@ func ExampleMLP_Layers() {
 }
 
 func ExampleMLP_Params() {
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	m := model.NewMLP(&model.MLPConfig{
 		InputSize:         1,
 		HiddenSize:        []int{2},
@@ -108,10 +107,10 @@ func ExampleMLP_Params() {
 	fmt.Println()
 
 	// Output:
-	// [[[-0.01233758177597947 -0.0012634751070237293]] [[0 0]]]
+	// [[[-0.008024826241110656 0.00424707052949676]] [[0 0]]]
 	// [[[1 1]] [[0 0]]]
 	// []
-	// [[[-0.005209945711531503] [0.022857191176995802]] [[0]]]
+	// [[[-0.004985070978632815] [-0.009872764577745819]] [[0]]]
 	// []
 	//
 	// [[] []]
@@ -133,7 +132,7 @@ func ExampleMLP_gradientCheck() {
 	t := matrix.New([]float64{1, 0}, []float64{0, 1}, []float64{0, 1})
 
 	// model
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	m := model.NewMLP(&model.MLPConfig{
 		InputSize:         2,
 		OutputSize:        2,
@@ -171,11 +170,10 @@ func ExampleMLP_gradientCheck() {
 	//  3: *layer.Affine: W(3, 2), B(1, 2): 8
 	//  4: *layer.SoftmaxWithLoss
 	//
-	// 00: 5.659765768000387e-06
-	// 01: 3.23815048849004e-17
-	// 10: 3.97423301588586e-10
-	// 11: 0.0008320159209412661
-	// 30: 3.985856805259017e-08
-	// 31: 3.273245081925058e-08
-
+	// 00: 0.0018878976165139967
+	// 01: 9.251858538542972e-17
+	// 10: 3.416015634604153e-10
+	// 11: 0.0008399733189571372
+	// 30: 3.21054273907014e-08
+	// 31: 3.421842263706676e-08
 }

@@ -1,7 +1,7 @@
 package agent
 
 import (
-	"math/rand"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/math/vector"
 )
@@ -10,13 +10,13 @@ type Agent struct {
 	Epsilon float64
 	Qs      []float64
 	Ns      []float64
-	Source  rand.Source
+	Source  randv2.Source
 }
 
 func (a *Agent) GetAction() int {
-	rng := rand.New(a.Source)
+	rng := randv2.New(a.Source)
 	if a.Epsilon > rng.Float64() {
-		return rng.Intn(len(a.Qs))
+		return rng.IntN(len(a.Qs))
 	}
 
 	return vector.Argmax(a.Qs)

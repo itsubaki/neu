@@ -2,14 +2,14 @@ package sequence_test
 
 import (
 	"fmt"
-	"math/rand"
 	"testing"
 
 	"github.com/itsubaki/neu/dataset/sequence"
+	"github.com/itsubaki/neu/math/rand"
 )
 
 func ExampleLoad() {
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	x, t, v := sequence.Must(sequence.Load("../../testdata", sequence.AdditionTxt, s))
 
 	fmt.Println(len(x.Train), len(x.Train[0]), len(x.Test), len(x.Test[0]))
@@ -22,8 +22,8 @@ func ExampleLoad() {
 	// 45000 7 5000 7
 	// 45000 5 5000 5
 	// 13 13
-	// [4 8 1 2 10 10 5] [12 1 6 11 5]
-	// [5 3 6 + 8 8  ] [_ 6 2 4  ]
+	// [9 0 3 2 7 5 5] [12 9 0 3 5]
+	// [9 1 7 + 0    ] [_ 9 1 7  ]
 }
 
 func ExampleLoad_rand() {

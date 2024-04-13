@@ -2,15 +2,15 @@ package layer_test
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 )
 
 func ExampleTimeDropout() {
 	xs := []matrix.Matrix{{{1.0, -0.5}, {-2.0, 3.0}}}
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 
 	drop := &layer.TimeDropout{}
 	fmt.Println(drop)
@@ -35,10 +35,10 @@ func ExampleTimeDropout() {
 	// [[[1 -0.5] [-2 3]]]
 	// [[[1 -0.5] [-2 3]]]
 	//
-	// [[[0 -1] [-0 0]]]
-	// [[[0 -1] [-0 0]]]
+	// [[[2 -1] [-0 0]]]
+	// [[[2 -1] [-0 0]]]
 	// [[[1 -0.5] [-2 3]]]
-	// [[[0 -1] [-0 0]]]
+	// [[[2 -1] [-0 0]]]
 }
 
 func ExampleTimeDropout_Params() {

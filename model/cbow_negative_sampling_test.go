@@ -2,14 +2,14 @@ package model_test
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/model"
 )
 
 func ExampleCBOWNegativeSampling() {
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	m := model.NewCBOWNegativeSampling(model.CBOWNegativeSamplingConfig{
 		CBOWConfig: model.CBOWConfig{
 			VocabSize:  7,
@@ -44,7 +44,7 @@ func ExampleCBOWNegativeSampling() {
 	fmt.Println(loss)
 
 	// Output:
-	// [[12.476638924761186]]
+	// [[12.47659755078791]]
 }
 
 func ExampleCBOWNegativeSampling_Summary() {

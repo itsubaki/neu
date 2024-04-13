@@ -2,11 +2,11 @@ package model_test
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/math/numerical"
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/weight"
 )
@@ -51,7 +51,7 @@ func numericalGrads(m Model, x, t matrix.Matrix) [][]matrix.Matrix {
 
 func ExampleSequential_gradientCheck() {
 	// weight
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	W1 := matrix.Randn(2, 3, s).MulC(weight.Std(0.01)(2))
 	B1 := matrix.Zero(1, 3)
 	W2 := matrix.Randn(3, 2, s).MulC(weight.Std(0.01)(3))
@@ -87,11 +87,10 @@ func ExampleSequential_gradientCheck() {
 	}
 
 	// Output:
-	// 00: 1.6658328893821156e-10
-	// 01: 7.510020527910314e-13
-	// 20: 2.819144981296903e-10
-	// 21: 3.332532312605441e-08
-
+	// 00: 4.6971204522838296e-11
+	// 01: 9.375737187490574e-11
+	// 20: 5.0088649301722556e-11
+	// 21: 3.333775858149757e-08
 }
 
 func ExampleSequential_Summary() {
@@ -108,7 +107,7 @@ func ExampleSequential_Summary() {
 			},
 			&layer.SoftmaxWithLoss{},
 		},
-		rand.NewSource(1),
+		rand.Const(1),
 	)
 
 	fmt.Println(m.Summary()[0])

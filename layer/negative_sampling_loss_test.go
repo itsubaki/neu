@@ -2,10 +2,10 @@ package layer_test
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 )
 
 func ExampleUnigramSampler() {
@@ -16,7 +16,7 @@ func ExampleUnigramSampler() {
 	sampler := layer.NewUnigramSampler(corpus, power, sampleSize)
 
 	target := []int{1, 3, 0}
-	for i, v := range sampler.NegativeSample(target, rand.NewSource(0)) {
+	for i, v := range sampler.NegativeSample(target, rand.Const(1)) {
 		fmt.Printf("%v: %v\n", target[i], v)
 	}
 
@@ -25,9 +25,9 @@ func ExampleUnigramSampler() {
 	}
 
 	// Output:
-	// 1: [4 2]
-	// 3: [2 0]
-	// 0: [2 2]
+	// 1: [2 3]
+	// 3: [0 1]
+	// 0: [3 3]
 	// 1: 2
 	// 3: 2
 	// 0: 2
@@ -49,7 +49,7 @@ func ExampleNegativeSamplingLoss() {
 	power := 0.75
 	sampleSize := 2
 
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	l := layer.NewNegativeSamplingLoss(W, corpus, power, sampleSize, s)
 	fmt.Println(l)
 

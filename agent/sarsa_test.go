@@ -2,12 +2,12 @@ package agent_test
 
 import (
 	"fmt"
-	"math/rand"
 	"strconv"
 	"strings"
 
 	"github.com/itsubaki/neu/agent"
 	"github.com/itsubaki/neu/agent/env"
+	"github.com/itsubaki/neu/math/rand"
 )
 
 func ExampleSarsaAgent() {
@@ -21,7 +21,7 @@ func ExampleSarsaAgent() {
 		Pi:             make(map[string]agent.RandomActions),
 		Q:              make(map[string]float64),
 		Memory:         agent.NewDeque[agent.Memory](2),
-		Source:         rand.NewSource(1),
+		Source:         rand.Const(1),
 	}
 
 	episodes := 10000
@@ -50,43 +50,43 @@ func ExampleSarsaAgent() {
 	}
 
 	// Output:
-	// (0, 0) UP    : 0.4938
-	// (0, 0) DOWN  : 0.3980
-	// (0, 0) LEFT  : 0.5072
-	// (0, 0) RIGHT : 0.7697
-	// (0, 1) UP    : 0.5558
-	// (0, 1) DOWN  : 0.7522
-	// (0, 1) LEFT  : 0.5122
-	// (0, 1) RIGHT : 0.8945
-	// (0, 2) UP    : 0.8989
-	// (0, 2) DOWN  : 0.8096
-	// (0, 2) LEFT  : 0.6849
+	// (0, 0) UP    : 0.4435
+	// (0, 0) DOWN  : 0.4794
+	// (0, 0) LEFT  : 0.5081
+	// (0, 0) RIGHT : 0.8100
+	// (0, 1) UP    : 0.6910
+	// (0, 1) DOWN  : 0.7147
+	// (0, 1) LEFT  : 0.5726
+	// (0, 1) RIGHT : 0.9000
+	// (0, 2) UP    : 0.8856
+	// (0, 2) DOWN  : 0.8097
+	// (0, 2) LEFT  : 0.6566
 	// (0, 2) RIGHT : 1.0000
-	// (1, 0) UP    : 0.6510
-	// (1, 0) DOWN  : 0.3653
-	// (1, 0) LEFT  : 0.3668
-	// (1, 0) RIGHT : 0.3637
+	// (1, 0) UP    : 0.6862
+	// (1, 0) DOWN  : 0.4138
+	// (1, 0) LEFT  : 0.4232
+	// (1, 0) RIGHT : 0.4689
 	// (1, 2) UP    : 0.9000
-	// (1, 2) DOWN  : 0.3071
-	// (1, 2) LEFT  : 0.7579
-	// (1, 2) RIGHT : -0.1647
-	// (1, 3) UP    : 0.9997
+	// (1, 2) DOWN  : 0.0828
+	// (1, 2) LEFT  : 0.7719
+	// (1, 2) RIGHT : -0.1973
+	// (1, 3) UP    : 0.9920
 	// (1, 3) DOWN  : 0.0000
-	// (1, 3) LEFT  : -0.0331
-	// (1, 3) RIGHT : 0.0000
-	// (2, 0) UP    : 0.6220
-	// (2, 0) DOWN  : 0.4408
-	// (2, 0) LEFT  : 0.4706
-	// (2, 0) RIGHT : 0.4306
-	// (2, 1) UP    : 0.2574
-	// (2, 1) DOWN  : 0.3115
-	// (2, 1) LEFT  : 0.5228
-	// (2, 1) RIGHT : -0.0869
-	// (2, 2) UP    : -0.0407
-	// (2, 2) DOWN  : 0.0979
-	// (2, 2) LEFT  : 0.4150
-	// (2, 2) RIGHT : -0.1596
-	// (2, 3) UP    : -0.1133
+	// (1, 3) LEFT  : 0.6116
+	// (1, 3) RIGHT : -0.8000
+	// (2, 0) UP    : 0.4778
+	// (2, 0) DOWN  : 0.4032
+	// (2, 0) LEFT  : 0.4687
+	// (2, 0) RIGHT : 0.3780
+	// (2, 1) UP    : 0.4054
+	// (2, 1) DOWN  : 0.3012
+	// (2, 1) LEFT  : 0.4845
+	// (2, 1) RIGHT : 0.0498
+	// (2, 2) UP    : -0.1938
+	// (2, 2) DOWN  : 0.0000
+	// (2, 2) LEFT  : 0.3481
+	// (2, 2) RIGHT : -0.1597
+	// (2, 3) UP    : -0.2669
 	// (2, 3) DOWN  : 0.0000
 	// (2, 3) LEFT  : 0.0000
 	// (2, 3) RIGHT : 0.0000

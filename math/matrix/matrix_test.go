@@ -2,9 +2,9 @@ package matrix_test
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 )
 
 func ExampleZero() {
@@ -30,29 +30,28 @@ func ExampleOne() {
 func ExampleRand() {
 	fmt.Println(matrix.Rand(2, 3).Dim())
 
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	for _, r := range matrix.Rand(2, 3, s) {
 		fmt.Println(r)
 	}
 
 	// Output:
 	// 2 3
-	// [0.6046602879796196 0.9405090880450124 0.6645600532184904]
-	// [0.4377141871869802 0.4246374970712657 0.6868230728671094]
+	// [0.23842319087387442 0.50092138792625 0.04999911180706662]
+	// [0.4894631469238666 0.7500167893718852 0.5725763969460762]
 }
 
 func ExampleRandn() {
-	fmt.Println(matrix.Randn(2, 3).Dim())
-
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	for _, r := range matrix.Randn(2, 3, s) {
 		fmt.Println(r)
 	}
+	fmt.Println(matrix.Randn(2, 3).Dim())
 
 	// Output:
+	// [-0.8024826241110656 0.424707052949676 -0.4985070978632815]
+	// [-0.9872764577745818 0.4770185009670911 -0.37300956589935985]
 	// 2 3
-	// [-1.233758177597947 -0.12634751070237293 -0.5209945711531503]
-	// [2.28571911769958 0.3228052526115799 0.5900672875996937]
 }
 
 func ExampleMask() {

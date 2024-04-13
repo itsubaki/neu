@@ -2,19 +2,19 @@ package model
 
 import (
 	"fmt"
-	"math/rand"
-	"time"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/layer"
+	"github.com/itsubaki/neu/math/rand"
 )
 
 type PeekySeq2Seq struct {
 	Seq2Seq
 }
 
-func NewPeekySeq2Seq(c *RNNLMConfig, s ...rand.Source) *PeekySeq2Seq {
+func NewPeekySeq2Seq(c *RNNLMConfig, s ...randv2.Source) *PeekySeq2Seq {
 	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
+		s = append(s, rand.MustNewSource())
 	}
 
 	return &PeekySeq2Seq{

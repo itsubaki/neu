@@ -2,9 +2,9 @@ package trainer_test
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/trainer"
@@ -53,7 +53,7 @@ func ExampleSeq2SeqTrainer_rand() {
 			Beta2: 0.999,
 		})
 
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	tr.Fit(&trainer.Seq2SeqInput{
 		Train:      [][]int{{0, 1, 2, 3, 4, 5}},
 		TrainLabel: [][]int{{1, 2, 3, 4, 5, 6}},

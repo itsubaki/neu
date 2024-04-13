@@ -2,12 +2,12 @@ package agent_test
 
 import (
 	"fmt"
-	"math/rand"
 	"strconv"
 	"strings"
 
 	"github.com/itsubaki/neu/agent"
 	"github.com/itsubaki/neu/agent/env"
+	"github.com/itsubaki/neu/math/rand"
 )
 
 func ExampleMonteCarloAgent() {
@@ -21,7 +21,7 @@ func ExampleMonteCarloAgent() {
 		Pi:             make(map[string]agent.RandomActions),
 		Q:              make(map[string]float64),
 		Memory:         make([]agent.Memory, 0),
-		Source:         rand.NewSource(1),
+		Source:         rand.Const(1),
 	}
 
 	episodes := 10000
@@ -50,44 +50,44 @@ func ExampleMonteCarloAgent() {
 	}
 
 	// Output:
-	// (0, 0) UP    : 0.64
-	// (0, 0) DOWN  : 0.58
-	// (0, 0) LEFT  : 0.28
-	// (0, 0) RIGHT : 0.79
-	// (0, 1) UP    : 0.73
-	// (0, 1) DOWN  : 0.28
-	// (0, 1) LEFT  : 0.70
-	// (0, 1) RIGHT : 0.88
-	// (0, 2) UP    : 0.86
-	// (0, 2) DOWN  : 0.75
+	// (0, 0) UP    : 0.70
+	// (0, 0) DOWN  : 0.63
+	// (0, 0) LEFT  : 0.73
+	// (0, 0) RIGHT : 0.75
+	// (0, 1) UP    : 0.81
+	// (0, 1) DOWN  : 0.80
+	// (0, 1) LEFT  : 0.69
+	// (0, 1) RIGHT : 0.86
+	// (0, 2) UP    : 0.89
+	// (0, 2) DOWN  : 0.77
 	// (0, 2) LEFT  : 0.80
 	// (0, 2) RIGHT : 1.00
-	// (1, 0) UP    : 0.71
-	// (1, 0) DOWN  : 0.53
-	// (1, 0) LEFT  : 0.47
-	// (1, 0) RIGHT : 0.22
-	// (1, 2) UP    : 0.89
-	// (1, 2) DOWN  : 0.66
-	// (1, 2) LEFT  : 0.55
-	// (1, 2) RIGHT : -0.10
-	// (1, 3) UP    : 0.98
-	// (1, 3) DOWN  : 0.00
-	// (1, 3) LEFT  : 0.15
-	// (1, 3) RIGHT : -0.02
+	// (1, 0) UP    : 0.68
+	// (1, 0) DOWN  : 0.57
+	// (1, 0) LEFT  : 0.61
+	// (1, 0) RIGHT : 0.64
+	// (1, 2) UP    : 0.88
+	// (1, 2) DOWN  : 0.63
+	// (1, 2) LEFT  : 0.78
+	// (1, 2) RIGHT : -0.11
+	// (1, 3) UP    : 1.00
+	// (1, 3) DOWN  : -0.14
+	// (1, 3) LEFT  : 0.30
+	// (1, 3) RIGHT : -0.10
 	// (2, 0) UP    : 0.61
-	// (2, 0) DOWN  : 0.46
-	// (2, 0) LEFT  : 0.44
-	// (2, 0) RIGHT : 0.49
-	// (2, 1) UP    : 0.38
-	// (2, 1) DOWN  : 0.09
-	// (2, 1) LEFT  : 0.46
-	// (2, 1) RIGHT : 0.61
-	// (2, 2) UP    : 0.74
-	// (2, 2) DOWN  : 0.54
-	// (2, 2) LEFT  : 0.37
-	// (2, 2) RIGHT : -0.16
-	// (2, 3) UP    : -0.18
-	// (2, 3) DOWN  : 0.00
-	// (2, 3) LEFT  : 0.00
-	// (2, 3) RIGHT : -0.01
+	// (2, 0) DOWN  : 0.56
+	// (2, 0) LEFT  : 0.54
+	// (2, 0) RIGHT : 0.56
+	// (2, 1) UP    : 0.51
+	// (2, 1) DOWN  : 0.21
+	// (2, 1) LEFT  : 0.45
+	// (2, 1) RIGHT : 0.64
+	// (2, 2) UP    : 0.71
+	// (2, 2) DOWN  : 0.48
+	// (2, 2) LEFT  : 0.42
+	// (2, 2) RIGHT : -0.09
+	// (2, 3) UP    : -0.20
+	// (2, 3) DOWN  : -0.20
+	// (2, 3) LEFT  : -0.04
+	// (2, 3) RIGHT : -0.23
 }

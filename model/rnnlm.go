@@ -2,11 +2,11 @@ package model
 
 import (
 	"fmt"
-	"math/rand"
-	"time"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 )
 
 type RNNLMConfig struct {
@@ -18,12 +18,12 @@ type RNNLMConfig struct {
 
 type RNNLM struct {
 	Layer  []TimeLayer
-	Source rand.Source
+	Source randv2.Source
 }
 
-func NewRNNLM(c *RNNLMConfig, s ...rand.Source) *RNNLM {
+func NewRNNLM(c *RNNLMConfig, s ...randv2.Source) *RNNLM {
 	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
+		s = append(s, rand.MustNewSource())
 	}
 
 	// size

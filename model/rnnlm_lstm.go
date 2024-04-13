@@ -2,11 +2,11 @@ package model
 
 import (
 	"fmt"
-	"math/rand"
-	"time"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 )
 
 type LSTMLMConfig struct {
@@ -18,9 +18,9 @@ type LSTMLM struct {
 	RNNLM
 }
 
-func NewLSTMLM(c *LSTMLMConfig, s ...rand.Source) *LSTMLM {
+func NewLSTMLM(c *LSTMLMConfig, s ...randv2.Source) *LSTMLM {
 	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
+		s = append(s, rand.MustNewSource())
 	}
 
 	// size

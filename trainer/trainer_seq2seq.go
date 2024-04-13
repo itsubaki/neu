@@ -1,10 +1,10 @@
 package trainer
 
 import (
-	"math/rand"
-	"time"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/math/tensor"
 	"github.com/itsubaki/neu/math/vector"
 	"github.com/itsubaki/neu/model"
@@ -45,9 +45,9 @@ func NewSeq2Seq(m Seq2Seq, o Optimizer) *Seq2SeqTrainer {
 	}
 }
 
-func (tr *Seq2SeqTrainer) Fit(in *Seq2SeqInput, s ...rand.Source) {
+func (tr *Seq2SeqTrainer) Fit(in *Seq2SeqInput, s ...randv2.Source) {
 	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
+		s = append(s, rand.MustNewSource())
 	}
 
 	var total float64

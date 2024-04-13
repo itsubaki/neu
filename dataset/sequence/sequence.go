@@ -2,13 +2,13 @@ package sequence
 
 import (
 	"fmt"
-	"math/rand"
+	randv2 "math/rand/v2"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
-	"time"
 
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/math/vector"
 )
 
@@ -57,9 +57,9 @@ type Dataset struct {
 	Test  [][]int
 }
 
-func Load(dir, fileName string, s ...rand.Source) (*Dataset, *Dataset, *Vocab, error) {
+func Load(dir, fileName string, s ...randv2.Source) (*Dataset, *Dataset, *Vocab, error) {
 	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
+		s = append(s, rand.MustNewSource())
 	}
 
 	// read

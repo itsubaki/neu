@@ -2,7 +2,7 @@ package agent
 
 import (
 	"fmt"
-	"math/rand"
+	randv2 "math/rand/v2"
 	"sort"
 
 	"github.com/itsubaki/neu/math/vector"
@@ -16,7 +16,7 @@ type RandomAgent struct {
 	V              map[string]float64
 	Counts         map[string]int
 	Memory         []Memory
-	Source         rand.Source
+	Source         randv2.Source
 }
 
 func (a *RandomAgent) GetAction(state fmt.Stringer) int {

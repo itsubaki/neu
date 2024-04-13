@@ -2,12 +2,12 @@ package agent_test
 
 import (
 	"fmt"
-	"math/rand"
 	"strconv"
 	"strings"
 
 	"github.com/itsubaki/neu/agent"
 	"github.com/itsubaki/neu/agent/env"
+	"github.com/itsubaki/neu/math/rand"
 )
 
 func ExampleSarsaOffPolicyAgent() {
@@ -22,7 +22,7 @@ func ExampleSarsaOffPolicyAgent() {
 		B:              make(map[string]agent.RandomActions),
 		Q:              make(map[string]float64),
 		Memory:         agent.NewDeque[agent.Memory](2),
-		Source:         rand.NewSource(1),
+		Source:         rand.Const(1),
 	}
 
 	episodes := 10000
@@ -51,44 +51,44 @@ func ExampleSarsaOffPolicyAgent() {
 	}
 
 	// Output:
-	// (0, 0) UP    : 0.0254
-	// (0, 0) DOWN  : 0.0537
-	// (0, 0) LEFT  : 0.0710
-	// (0, 0) RIGHT : 0.8649
-	// (0, 1) UP    : 0.1514
-	// (0, 1) DOWN  : 0.1759
-	// (0, 1) LEFT  : 0.1171
-	// (0, 1) RIGHT : 0.9667
+	// (0, 0) UP    : 0.0392
+	// (0, 0) DOWN  : 0.0294
+	// (0, 0) LEFT  : 0.0825
+	// (0, 0) RIGHT : 0.9415
+	// (0, 1) UP    : 0.1644
+	// (0, 1) DOWN  : 0.0989
+	// (0, 1) LEFT  : 0.7034
+	// (0, 1) RIGHT : 0.9727
 	// (0, 2) UP    : 0.9730
-	// (0, 2) DOWN  : 0.9269
-	// (0, 2) LEFT  : 0.1602
+	// (0, 2) DOWN  : 0.7868
+	// (0, 2) LEFT  : 0.3601
 	// (0, 2) RIGHT : 1.0000
-	// (1, 0) UP    : 0.5462
-	// (1, 0) DOWN  : 0.0451
-	// (1, 0) LEFT  : 0.0413
-	// (1, 0) RIGHT : 0.0090
-	// (1, 2) UP    : 0.9730
-	// (1, 2) DOWN  : 0.0280
-	// (1, 2) LEFT  : 0.0096
+	// (1, 0) UP    : 0.8772
+	// (1, 0) DOWN  : 0.0449
+	// (1, 0) LEFT  : 0.0249
+	// (1, 0) RIGHT : 0.1231
+	// (1, 2) UP    : 0.9717
+	// (1, 2) DOWN  : 0.0294
+	// (1, 2) LEFT  : 0.0286
 	// (1, 2) RIGHT : -0.1081
 	// (1, 3) UP    : 1.0000
-	// (1, 3) DOWN  : 0.2193
-	// (1, 3) LEFT  : 0.8196
-	// (1, 3) RIGHT : -0.0865
-	// (2, 0) UP    : 0.1737
-	// (2, 0) DOWN  : 0.1080
-	// (2, 0) LEFT  : 0.0727
-	// (2, 0) RIGHT : 0.8900
-	// (2, 1) UP    : 0.0023
-	// (2, 1) DOWN  : 0.0057
-	// (2, 1) LEFT  : 0.1262
-	// (2, 1) RIGHT : 0.9207
-	// (2, 2) UP    : 0.9467
-	// (2, 2) DOWN  : 0.6805
-	// (2, 2) LEFT  : 0.0030
-	// (2, 2) RIGHT : 0.0031
-	// (2, 3) UP    : -0.1081
-	// (2, 3) DOWN  : 0.0031
-	// (2, 3) LEFT  : 0.0125
-	// (2, 3) RIGHT : 0.0033
+	// (1, 3) DOWN  : 0.2980
+	// (1, 3) LEFT  : 0.9221
+	// (1, 3) RIGHT : -0.1081
+	// (2, 0) UP    : 0.7060
+	// (2, 0) DOWN  : 0.1899
+	// (2, 0) LEFT  : 0.0973
+	// (2, 0) RIGHT : 0.0888
+	// (2, 1) UP    : 0.0137
+	// (2, 1) DOWN  : 0.0042
+	// (2, 1) LEFT  : 0.4360
+	// (2, 1) RIGHT : 0.6891
+	// (2, 2) UP    : 0.9112
+	// (2, 2) DOWN  : 0.0142
+	// (2, 2) LEFT  : 0.0029
+	// (2, 2) RIGHT : 0.0530
+	// (2, 3) UP    : -0.0182
+	// (2, 3) DOWN  : 0.0171
+	// (2, 3) LEFT  : 0.0591
+	// (2, 3) RIGHT : 0.0065
 }

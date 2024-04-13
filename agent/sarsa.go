@@ -2,7 +2,7 @@ package agent
 
 import (
 	"fmt"
-	"math/rand"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/math/vector"
 )
@@ -16,7 +16,7 @@ type SarsaAgent struct {
 	Pi             DefaultMap[RandomActions]
 	Q              DefaultMap[float64]
 	Memory         *Deque[Memory]
-	Source         rand.Source
+	Source         randv2.Source
 }
 
 func (a *SarsaAgent) GetAction(state fmt.Stringer) int {

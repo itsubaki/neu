@@ -2,8 +2,9 @@ package vector
 
 import (
 	"math"
-	"math/rand"
-	"time"
+	randv2 "math/rand/v2"
+
+	"github.com/itsubaki/neu/math/rand"
 )
 
 func Zero(n int) []float64 {
@@ -11,15 +12,15 @@ func Zero(n int) []float64 {
 }
 
 // randg returns a pseudo-random number generator.
-func randg(s ...rand.Source) *rand.Rand {
+func randg(s ...randv2.Source) *randv2.Rand {
 	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
+		s = append(s, rand.MustNewSource())
 	}
 
-	return rand.New(s[0])
+	return randv2.New(s[0])
 }
 
-func Rand(n int, s ...rand.Source) []float64 {
+func Rand(n int, s ...randv2.Source) []float64 {
 	rng := randg(s...)
 
 	out := make([]float64, n)
@@ -30,7 +31,7 @@ func Rand(n int, s ...rand.Source) []float64 {
 	return out
 }
 
-func Randn(n int, s ...rand.Source) []float64 {
+func Randn(n int, s ...randv2.Source) []float64 {
 	rng := randg(s...)
 
 	out := make([]float64, n)
@@ -144,9 +145,9 @@ func Cos(x, y []float64) float64 {
 	return sum / (xps * yps)
 }
 
-func Choice(p []float64, s ...rand.Source) int {
+func Choice(p []float64, s ...randv2.Source) int {
 	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
+		s = append(s, rand.MustNewSource())
 	}
 
 	cumsum := make([]float64, len(p))
@@ -157,7 +158,7 @@ func Choice(p []float64, s ...rand.Source) int {
 	}
 
 	var ret int
-	r := rand.New(s[0]).Float64()
+	r := randv2.New(s[0]).Float64()
 	for i, prop := range cumsum {
 		if r <= prop {
 			ret = i
@@ -188,11 +189,11 @@ func T[T any](v []T) [][]T {
 }
 
 // Shuffle shuffles the dataset.
-func Shuffle[T any](x, t []T, s ...rand.Source) ([]T, []T) {
+func Shuffle[T any](x, t []T, s ...randv2.Source) ([]T, []T) {
 	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
+		s = append(s, rand.MustNewSource())
 	}
-	rng := rand.New(s[0])
+	rng := randv2.New(s[0])
 
 	xs, ts := make([]T, len(x)), make([]T, len(t))
 	for i := 0; i < len(x); i++ {
@@ -200,7 +201,7 @@ func Shuffle[T any](x, t []T, s ...rand.Source) ([]T, []T) {
 	}
 
 	for i := 0; i < len(x); i++ {
-		j := rng.Intn(i + 1)
+		j := rng.IntN(i + 1)
 
 		// swap
 		xs[i], xs[j] = xs[j], xs[i]

@@ -2,8 +2,8 @@ package vector_test
 
 import (
 	"fmt"
-	"math/rand"
 
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/math/vector"
 )
 
@@ -15,20 +15,20 @@ func ExampleZero() {
 }
 
 func ExampleRand() {
-	fmt.Println(vector.Rand(3, rand.NewSource(1)))
+	fmt.Println(vector.Rand(3, rand.Const(1)))
 	fmt.Println(len(vector.Rand(10)))
 
 	// Output:
-	// [0.6046602879796196 0.9405090880450124 0.6645600532184904]
+	// [0.23842319087387442 0.50092138792625 0.04999911180706662]
 	// 10
 }
 
 func ExampleRandn() {
-	fmt.Println(vector.Randn(3, rand.NewSource(1)))
+	fmt.Println(vector.Randn(3, rand.Const(1)))
 	fmt.Println(len(vector.Randn(10)))
 
 	// Output:
-	// [-1.233758177597947 -0.12634751070237293 -0.5209945711531503]
+	// [-0.8024826241110656 0.424707052949676 -0.4985070978632815]
 	// 10
 }
 
@@ -140,7 +140,7 @@ func ExampleT() {
 }
 
 func ExampleChoice() {
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	p := []float64{0.1, 0.2, 0.3, 0.4}
 
 	for i := 0; i < 10; i++ {
@@ -148,7 +148,7 @@ func ExampleChoice() {
 	}
 
 	// Output:
-	// 3332230102
+	// 1202321031
 }
 
 func ExampleChoice_rand() {
@@ -164,19 +164,19 @@ func ExampleShuffle() {
 	x := [][]float64{{0, 1}, {0, 2}, {0, 3}, {0, 4}}
 	t := [][]float64{{1, 0}, {2, 0}, {3, 0}, {4, 0}}
 
-	s := rand.NewSource(1234)
+	s := rand.Const(1234)
 	fmt.Println(vector.Shuffle(x, t, s))
 	fmt.Println(vector.Shuffle(x, t, s))
 	fmt.Println(vector.Shuffle(x, t, s))
 	fmt.Println(x, t)
 
 	fmt.Println(vector.Shuffle([][]float64{{0}}, [][]float64{{1}}))
-	fmt.Println(vector.Shuffle([][]int{{1, 2, 3}, {4, 5, 6}}, [][]int{{7, 8, 9}, {10, 11, 12}}, rand.NewSource(2)))
+	fmt.Println(vector.Shuffle([][]int{{1, 2, 3}, {4, 5, 6}}, [][]int{{7, 8, 9}, {10, 11, 12}}, rand.Const(2)))
 
 	// Output:
-	// [[0 4] [0 2] [0 3] [0 1]] [[4 0] [2 0] [3 0] [1 0]]
-	// [[0 2] [0 3] [0 1] [0 4]] [[2 0] [3 0] [1 0] [4 0]]
-	// [[0 2] [0 4] [0 3] [0 1]] [[2 0] [4 0] [3 0] [1 0]]
+	// [[0 4] [0 3] [0 2] [0 1]] [[4 0] [3 0] [2 0] [1 0]]
+	// [[0 3] [0 4] [0 2] [0 1]] [[3 0] [4 0] [2 0] [1 0]]
+	// [[0 3] [0 2] [0 1] [0 4]] [[3 0] [2 0] [1 0] [4 0]]
 	// [[0 1] [0 2] [0 3] [0 4]] [[1 0] [2 0] [3 0] [4 0]]
 	// [[0]] [[1]]
 	// [[4 5 6] [1 2 3]] [[10 11 12] [7 8 9]]

@@ -2,11 +2,11 @@ package model
 
 import (
 	"fmt"
-	"math/rand"
-	"time"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 )
 
 type QNetConfig struct {
@@ -20,9 +20,9 @@ type QNet struct {
 	Sequential
 }
 
-func NewQNet(c *QNetConfig, s ...rand.Source) *QNet {
+func NewQNet(c *QNetConfig, s ...randv2.Source) *QNet {
 	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
+		s = append(s, rand.MustNewSource())
 	}
 
 	// size

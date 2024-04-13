@@ -2,15 +2,15 @@ package model_test
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/weight"
 )
 
 func ExamplePeekyDecoder() {
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	m := model.NewPeekyDecoder(&model.RNNLMConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
@@ -55,7 +55,7 @@ func ExamplePeekyDecoder() {
 	// 3 3
 	// 3 3
 	// 3 3
-	// [1 1 1 1 1 1 1 1 1 1]
+	// [2 2 2 2 2 2 2 2 2 2]
 }
 
 func ExamplePeekyDecoder_Summary() {

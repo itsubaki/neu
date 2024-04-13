@@ -2,7 +2,7 @@ package model
 
 import (
 	"fmt"
-	"math/rand"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/activation"
 	"github.com/itsubaki/neu/math/matrix"
@@ -14,7 +14,7 @@ type RNNLMGen struct {
 	GRULM
 }
 
-func NewRNNLMGen(c *LSTMLMConfig, s ...rand.Source) *RNNLMGen {
+func NewRNNLMGen(c *LSTMLMConfig, s ...randv2.Source) *RNNLMGen {
 	return &RNNLMGen{
 		GRULM: *NewGRULM(c, s...),
 	}

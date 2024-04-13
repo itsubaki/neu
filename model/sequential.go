@@ -2,7 +2,7 @@ package model
 
 import (
 	"fmt"
-	"math/rand"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
@@ -10,10 +10,10 @@ import (
 
 type Sequential struct {
 	Layer  []Layer
-	Source rand.Source
+	Source randv2.Source
 }
 
-func NewSequential(layer []Layer, s rand.Source) *Sequential {
+func NewSequential(layer []Layer, s randv2.Source) *Sequential {
 	return &Sequential{
 		Layer:  layer,
 		Source: s,

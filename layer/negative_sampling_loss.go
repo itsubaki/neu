@@ -3,10 +3,10 @@ package layer
 import (
 	"fmt"
 	"math"
-	"math/rand"
-	"time"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/math/vector"
 )
 
@@ -14,12 +14,12 @@ type NegativeSamplingLoss struct {
 	sampler         *UnigramSampler
 	embeddingDot    []EmbeddingDot
 	sigmoidWithLoss []SigmoidWithLoss
-	s               rand.Source
+	s               randv2.Source
 }
 
-func NewNegativeSamplingLoss(W matrix.Matrix, corpus []int, power float64, sampleSize int, s ...rand.Source) *NegativeSamplingLoss {
+func NewNegativeSamplingLoss(W matrix.Matrix, corpus []int, power float64, sampleSize int, s ...randv2.Source) *NegativeSamplingLoss {
 	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
+		s = append(s, rand.MustNewSource())
 	}
 
 	embed, loss := make([]EmbeddingDot, sampleSize+1), make([]SigmoidWithLoss, sampleSize+1)
@@ -126,9 +126,9 @@ func NewUnigramSampler(corpus []int, power float64, size int) *UnigramSampler {
 	}
 }
 
-func (s *UnigramSampler) NegativeSample(target []int, seed ...rand.Source) [][]int {
+func (s *UnigramSampler) NegativeSample(target []int, seed ...randv2.Source) [][]int {
 	if len(seed) == 0 {
-		seed = append(seed, rand.NewSource(time.Now().UnixNano()))
+		seed = append(seed, rand.MustNewSource())
 	}
 
 	N := len(target)

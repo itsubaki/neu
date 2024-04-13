@@ -2,23 +2,23 @@ package model
 
 import (
 	"fmt"
-	"math/rand"
-	"time"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 )
 
 type AttentionSeq2Seq struct {
 	Encoder *AttentionEncoder
 	Decoder *AttentionDecoder
 	Softmax *layer.TimeSoftmaxWithLoss
-	Source  rand.Source
+	Source  randv2.Source
 }
 
-func NewAttentionSeq2Seq(c *RNNLMConfig, s ...rand.Source) *AttentionSeq2Seq {
+func NewAttentionSeq2Seq(c *RNNLMConfig, s ...randv2.Source) *AttentionSeq2Seq {
 	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
+		s = append(s, rand.MustNewSource())
 	}
 
 	return &AttentionSeq2Seq{

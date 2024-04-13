@@ -2,8 +2,9 @@ package matrix
 
 import (
 	"math"
-	"math/rand"
-	"time"
+	randv2 "math/rand/v2"
+
+	"github.com/itsubaki/neu/math/rand"
 )
 
 type Matrix [][]float64
@@ -42,25 +43,25 @@ func One(m, n int) Matrix {
 }
 
 // rnd returns a pseudo-random number generator.
-func rnd(s ...rand.Source) *rand.Rand {
+func rnd(s ...randv2.Source) *randv2.Rand {
 	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
+		s = append(s, rand.MustNewSource())
 	}
 
-	return rand.New(s[0])
+	return randv2.New(s[0])
 }
 
 // Rand returns a matrix with elements that pseudo-random number in the half-open interval [0.0,1.0).
 // m, n is the dimension of the matrix.
 // s is the source of the pseudo-random number generator.
-func Rand(m, n int, s ...rand.Source) Matrix {
+func Rand(m, n int, s ...randv2.Source) Matrix {
 	return F(Zero(m, n), func(_ float64) float64 { return rnd(s...).Float64() })
 }
 
 // Randn returns a matrix with elements that normally distributed float64 in the range [-math.MaxFloat64, +math.MaxFloat64] with standard normal distribution.
 // m, n is the dimension of the matrix.
 // s is the source of the pseudo-random number generator.
-func Randn(m, n int, s ...rand.Source) Matrix {
+func Randn(m, n int, s ...randv2.Source) Matrix {
 	return F(Zero(m, n), func(_ float64) float64 { return rnd(s...).NormFloat64() })
 }
 

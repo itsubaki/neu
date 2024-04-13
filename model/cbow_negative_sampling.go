@@ -2,11 +2,11 @@ package model
 
 import (
 	"fmt"
-	"math/rand"
-	"time"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/layer"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 )
 
 type CBOWNegativeSamplingConfig struct {
@@ -20,12 +20,12 @@ type CBOWNegativeSamplingConfig struct {
 type CBOWNegativeSampling struct {
 	Embedding []Layer
 	Loss      Layer
-	s         rand.Source
+	s         randv2.Source
 }
 
-func NewCBOWNegativeSampling(c CBOWNegativeSamplingConfig, s ...rand.Source) *CBOWNegativeSampling {
+func NewCBOWNegativeSampling(c CBOWNegativeSamplingConfig, s ...randv2.Source) *CBOWNegativeSampling {
 	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
+		s = append(s, rand.MustNewSource())
 	}
 
 	// size

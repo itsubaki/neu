@@ -2,15 +2,15 @@ package model_test
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/weight"
 )
 
 func ExampleDecoder() {
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	m := model.NewDecoder(&model.RNNLMConfig{
 		VocabSize:   3, // V
 		WordVecSize: 3, // D
@@ -55,8 +55,7 @@ func ExampleDecoder() {
 	// 3 3
 	// 3 3
 	// 3 3
-	// [2 2 2 2 0 2 0 2 0 2]
-
+	// [2 2 1 1 1 1 1 1 1 1]
 }
 
 func ExampleDecoder_Summary() {

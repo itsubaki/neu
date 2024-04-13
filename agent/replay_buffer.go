@@ -1,8 +1,9 @@
 package agent
 
 import (
-	"math/rand"
-	"time"
+	randv2 "math/rand/v2"
+
+	"github.com/itsubaki/neu/math/rand"
 )
 
 type Buffer struct {
@@ -16,12 +17,12 @@ type Buffer struct {
 type ReplayBuffer struct {
 	Buffer    *Deque[Buffer]
 	BatchSize int
-	Source    rand.Source
+	Source    randv2.Source
 }
 
-func NewReplayBuffer(bufferSize, batchSize int, s ...rand.Source) *ReplayBuffer {
+func NewReplayBuffer(bufferSize, batchSize int, s ...randv2.Source) *ReplayBuffer {
 	if len(s) == 0 {
-		s = append(s, rand.NewSource(time.Now().UnixNano()))
+		s = append(s, rand.MustNewSource())
 	}
 
 	return &ReplayBuffer{
@@ -46,11 +47,11 @@ func (b *ReplayBuffer) Len() int {
 }
 
 func (b *ReplayBuffer) Batch() ([][]float64, []int, []float64, [][]float64, []bool) {
-	rng := rand.New(b.Source)
+	rng := randv2.New(b.Source)
 
 	counter := make(map[int]bool)
 	for c := 0; c < b.BatchSize; {
-		n := rng.Intn(b.Len())
+		n := rng.IntN(b.Len())
 		if _, ok := counter[n]; !ok {
 			counter[n] = true
 			c++

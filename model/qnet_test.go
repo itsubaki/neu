@@ -2,16 +2,16 @@ package model_test
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/math/vector"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/weight"
 )
 
 func ExampleQNet() {
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	m := model.NewQNet(&model.QNetConfig{
 		InputSize:  12,
 		OutputSize: 4,
@@ -46,9 +46,9 @@ func ExampleQNet() {
 	//  1: *layer.ReLU
 	//  2: *layer.Affine: W(100, 4), B(1, 4): 404
 	//  3: *layer.MeanSquaredError
-	// [[0.00015980 -0.00057628 0.00159733 0.00016082]], [[0.00159733]]
-	// [[0.99680788]]
-	// [[0.00035037 -0.00028802 0.00124664 -0.00074836 0.00394256 -0.00254541 -0.00054185 -0.00220917 0.00031910 -0.00210713 -0.00066213 -0.00062087]]
+	// [[-0.00007664 -0.00098626 -0.00063908 -0.00086191]], [[-0.00007664]]
+	// [[1.00015329]]
+	// [[-0.00108430 0.00035194 0.00033155 -0.00098515 0.00012841 -0.00121666 -0.00180430 0.00153819 -0.00015329 0.00126458 -0.00082200 0.00016637]]
 	// p( 12, 100), g( 12,100)
 	// p(  1, 100), g(  1,100)
 	// p(100,   4), g(100,  1)
@@ -67,7 +67,7 @@ func ExampleQNet_Sync() {
 		return out
 	}
 
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	c := &model.QNetConfig{
 		InputSize:  12,
 		OutputSize: 4,
@@ -89,9 +89,9 @@ func ExampleQNet_Sync() {
 	fmt.Println("sync:", diff(m, t))
 
 	// Output:
-	// new: [13.589057285251876 0 4.387607068711152 0]
+	// new: [13.36619293822008 0 4.599586087033022 0]
 	// sync: [0 0 0 0]
-	// set: [13.90911363704504 0 4.797890879215467 0]
+	// set: [13.515551906185843 0 4.263141626774541 0]
 	// sync: [0 0 0 0]
 }
 

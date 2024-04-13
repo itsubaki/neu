@@ -3,12 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
-	"math/rand"
-	"time"
 
 	"github.com/itsubaki/neu/agent"
 	"github.com/itsubaki/neu/agent/env"
 	"github.com/itsubaki/neu/math/matrix"
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/model"
 	"github.com/itsubaki/neu/optimizer"
 	"github.com/itsubaki/neu/weight"
@@ -52,7 +51,7 @@ func main() {
 			Beta1: beta1,
 			Beta2: beta2,
 		},
-		Source: rand.NewSource(time.Now().UnixNano()),
+		Source: rand.MustNewSource(),
 	}
 
 	for i := 0; i < episode; i++ {

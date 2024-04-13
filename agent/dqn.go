@@ -1,7 +1,7 @@
 package agent
 
 import (
-	"math/rand"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/math/matrix"
 	"github.com/itsubaki/neu/math/vector"
@@ -17,7 +17,7 @@ type DQNAgent struct {
 	Q            *model.QNet
 	QTarget      *model.QNet
 	Optimizer    *optimizer.Adam
-	Source       rand.Source
+	Source       randv2.Source
 }
 
 func (a *DQNAgent) Sync() {
@@ -25,9 +25,9 @@ func (a *DQNAgent) Sync() {
 }
 
 func (a *DQNAgent) GetAction(state []float64) int {
-	rng := rand.New(a.Source)
+	rng := randv2.New(a.Source)
 	if a.Epsilon > rng.Float64() {
-		return rng.Intn(a.ActionSize)
+		return rng.IntN(a.ActionSize)
 	}
 
 	qs := a.Q.Predict(matrix.New(state))

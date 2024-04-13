@@ -2,10 +2,11 @@ package agent_test
 
 import (
 	"fmt"
-	"math/rand"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/agent"
 	"github.com/itsubaki/neu/agent/env"
+	"github.com/itsubaki/neu/math/rand"
 	"github.com/itsubaki/neu/math/vector"
 )
 
@@ -14,7 +15,7 @@ func ExampleAgent() {
 		Epsilon: 0.5,
 		Qs:      []float64{0, 0, 0, 0, 0},
 		Ns:      []float64{0, 0, 0, 0, 0},
-		Source:  rand.NewSource(1),
+		Source:  rand.Const(1),
 	}
 
 	for i := 0; i < 10; i++ {
@@ -27,18 +28,18 @@ func ExampleAgent() {
 	// 0: [1 0 0 0 0]
 	// 0: [1 0 0 0 0]
 	// 0: [1 0 0 0 0]
-	// 1: [1 1 0 0 0]
-	// 0: [1 1 0 0 0]
-	// 0: [1 1 0 0 0]
-	// 0: [1 1 0 0 0]
-	// 0: [1 1 0 0 0]
-	// 0: [1 1 0 0 0]
-	// 4: [1 1 0 0 1]
+	// 0: [1 0 0 0 0]
+	// 2: [1 0 1 0 0]
+	// 0: [1 0 1 0 0]
+	// 2: [1 0 1 0 0]
+	// 4: [1 0 1 0 1]
+	// 4: [1 0 1 0 1]
+	// 3: [1 0 1 1 1]
 }
 
 func ExampleAgent_bandit() {
 	arms, steps, runs, eps := 10, 1000, 200, 0.1
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 
 	all := make([][]float64, runs)
 	for r := 0; r < runs; r++ {
@@ -64,39 +65,39 @@ func ExampleAgent_bandit() {
 	}
 
 	// Output:
-	// step=190: mean(rate)=0.8534
-	// step=191: mean(rate)=0.9438
-	// step=192: mean(rate)=0.9169
-	// step=193: mean(rate)=0.7310
-	// step=194: mean(rate)=0.9367
-	// step=195: mean(rate)=0.8822
-	// step=196: mean(rate)=0.8339
-	// step=197: mean(rate)=0.8462
-	// step=198: mean(rate)=0.7172
-	// step=199: mean(rate)=0.8401
+	// step=190: mean(rate)=0.7875
+	// step=191: mean(rate)=0.9418
+	// step=192: mean(rate)=0.9185
+	// step=193: mean(rate)=0.6062
+	// step=194: mean(rate)=0.8260
+	// step=195: mean(rate)=0.8314
+	// step=196: mean(rate)=0.8781
+	// step=197: mean(rate)=0.8273
+	// step=198: mean(rate)=0.8844
+	// step=199: mean(rate)=0.8903
 }
 
 func Example_rand() {
 	for i := 0; i < 5; i++ {
-		r := rand.New(rand.NewSource(1))
+		r := randv2.New(rand.Const(1))
 		fmt.Println(r.Float64())
 	}
 
-	s := rand.NewSource(1)
+	s := rand.Const(1)
 	for i := 0; i < 5; i++ {
-		r := rand.New(s)
+		r := randv2.New(s)
 		fmt.Println(r.Float64())
 	}
 
 	// Output:
-	// 0.6046602879796196
-	// 0.6046602879796196
-	// 0.6046602879796196
-	// 0.6046602879796196
-	// 0.6046602879796196
-	// 0.6046602879796196
-	// 0.9405090880450124
-	// 0.6645600532184904
-	// 0.4377141871869802
-	// 0.4246374970712657
+	// 0.23842319087387442
+	// 0.23842319087387442
+	// 0.23842319087387442
+	// 0.23842319087387442
+	// 0.23842319087387442
+	// 0.23842319087387442
+	// 0.50092138792625
+	// 0.04999911180706662
+	// 0.4894631469238666
+	// 0.7500167893718852
 }

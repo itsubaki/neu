@@ -1,17 +1,17 @@
 package env
 
 import (
-	"math/rand"
+	randv2 "math/rand/v2"
 
 	"github.com/itsubaki/neu/math/vector"
 )
 
 type Bandit struct {
 	Rates  []float64
-	Source rand.Source
+	Source randv2.Source
 }
 
-func NewBandit(arms int, s rand.Source) *Bandit {
+func NewBandit(arms int, s randv2.Source) *Bandit {
 	return &Bandit{
 		Rates:  vector.Rand(arms, s),
 		Source: s,
@@ -19,7 +19,7 @@ func NewBandit(arms int, s rand.Source) *Bandit {
 }
 
 func (b *Bandit) Play(arm int) float64 {
-	rng := rand.New(b.Source)
+	rng := randv2.New(b.Source)
 	if b.Rates[arm] > rng.Float64() {
 		return 1
 	}
@@ -30,10 +30,10 @@ func (b *Bandit) Play(arm int) float64 {
 type NonStatBandit struct {
 	Arms   int
 	Rates  []float64
-	Source rand.Source
+	Source randv2.Source
 }
 
-func NewNonStatBandit(arms int, s rand.Source) *NonStatBandit {
+func NewNonStatBandit(arms int, s randv2.Source) *NonStatBandit {
 	return &NonStatBandit{
 		Arms:   arms,
 		Rates:  vector.Rand(arms, s),
@@ -46,7 +46,7 @@ func (b *NonStatBandit) Play(arm int) float64 {
 	randn := vector.Randn(b.Arms, b.Source)
 	b.Rates = vector.Add(b.Rates, vector.Mul(randn, -0.1))
 
-	if rate > rand.New(b.Source).Float64() {
+	if rate > randv2.New(b.Source).Float64() {
 		return 1
 	}
 
