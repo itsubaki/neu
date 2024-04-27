@@ -32,7 +32,7 @@ func (l *RNN) Forward(x, h matrix.Matrix, _ ...Opts) matrix.Matrix {
 }
 
 func (l *RNN) Backward(dhNext matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	dt := dhNext.Mul(matrix.F(l.hNext, dtanh)) // dt = dhNext * (1 - hNext**2)
+	dt := dhNext.Mul(matrix.F(l.hNext, dTanh)) // dt = dhNext * (1 - hNext**2)
 	dx := matrix.Dot(dt, l.Wx.T())             // dot(dt(N, H), Wx.T(H, D)) -> dx(N, D)
 	dh := matrix.Dot(dt, l.Wh.T())             // dot(dt(N, H), Wh.T(H, H)) -> dh(N, H)
 
@@ -43,4 +43,4 @@ func (l *RNN) Backward(dhNext matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 }
 
 // dtanh returns 1 - a**2
-func dtanh(y float64) float64 { return 1 - y*y }
+func dTanh(y float64) float64 { return 1 - y*y }

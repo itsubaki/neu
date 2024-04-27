@@ -56,7 +56,7 @@ func (l *GRU) Backward(dhnext matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	dhprev := dhnext.Mul(matrix.SubC(1, l.z)) // dhprev = dhnext * (1 - z)
 
 	// tanh
-	dt := dhhat.Mul(matrix.F(l.hhat, dtanh))     // dt = dhhat * (1 - hhat**2)
+	dt := dhhat.Mul(matrix.F(l.hhat, dTanh))     // dt = dhhat * (1 - hhat**2)
 	dbh := matrix.New(dt.SumAxis0())             // dbh = sum(dt, axis=0)
 	dWhh := matrix.Dot(l.r.Mul(l.hprev).T(), dt) // dWhh = (r * hprev).T.dt
 	dhr := matrix.Dot(dt, Whh.T())               // dhr = dt.Whh.T
