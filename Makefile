@@ -41,10 +41,10 @@ seq2seq_attention:
 datasetdl: mnistdl ptbdl additiondl datedl
 
 mnistdl:
-	curl -fs -o testdata/train-images-idx3-ubyte.gz http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz
-	curl -fs -o testdata/train-labels-idx1-ubyte.gz http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz
-	curl -fs -o testdata/t10k-images-idx3-ubyte.gz  http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz
-	curl -fs -o testdata/t10k-labels-idx1-ubyte.gz  http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz
+	curl -fs -o testdata/train-images-idx3-ubyte.gz https://storage.googleapis.com/cvdf-datasets/mnist/train-images-idx3-ubyte.gz
+	curl -fs -o testdata/train-labels-idx1-ubyte.gz https://storage.googleapis.com/cvdf-datasets/mnist/train-labels-idx1-ubyte.gz
+	curl -fs -o testdata/t10k-images-idx3-ubyte.gz  https://storage.googleapis.com/cvdf-datasets/mnist/t10k-images-idx3-ubyte.gz
+	curl -fs -o testdata/t10k-labels-idx1-ubyte.gz  https://storage.googleapis.com/cvdf-datasets/mnist/t10k-labels-idx1-ubyte.gz
 
 # https://github.com/zalandoresearch/fashion-mnist
 fashiondl:
