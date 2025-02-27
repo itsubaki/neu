@@ -135,7 +135,7 @@ func TestImageBinaryReadError(t *testing.T) {
 	binary.Write(gz, binary.BigEndian, int32(28))         // Width
 	gz.Close()
 
-	if _, err := mnist.LoadImage(buf); err != nil {
+	if _, err := mnist.LoadImage(buf.String()); err != nil {
 		return
 	}
 
@@ -149,7 +149,7 @@ func TestLabelBinaryReadError(t *testing.T) {
 	binary.Write(gz, binary.BigEndian, int32(1))          // Number of labels
 	gz.Close()
 
-	if _, err := mnist.LoadLabel(buf); err != nil {
+	if _, err := mnist.LoadLabel(buf.String()); err != nil {
 		return
 	}
 
