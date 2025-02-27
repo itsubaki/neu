@@ -1,6 +1,9 @@
 package mnist_test
 
 import (
+	"bytes"
+	"compress/gzip"
+	"encoding/binary"
 	"fmt"
 	"testing"
 
@@ -122,3 +125,34 @@ func TestMust(t *testing.T) {
 	mnist.Must(nil, nil, fmt.Errorf("something went wrong"))
 	t.Fail()
 }
+
+func TestImageBinaryReadError(t *testing.T) {
+	buf := new(bytes.Buffer)
+	gz := gzip.NewWriter(buf)
+	binary.Write(gz, binary.BigEndian, int32(0x00000803)) // Magic number
+	binary.Write(gz, binary.BigEndian, int32(1))          // Number of images
+	binary.Write(gz, binary.BigEndian, int32(28))         // Height
+	binary.Write(gz, binary.BigEndian, int32(28))         // Width
+	gz.Close()
+
+	if _, err := mnist.LoadImage(buf); err != nil {
+		return
+	}
+
+	t.Fail()
+}
+
+func TestLabelBinaryReadError(t *testing.T) {
+	buf := new(bytes.Buffer)
+	gz := gzip.NewWriter(buf)
+	binary.Write(gz, binary.BigEndian, int32(0x00000801)) // Magic number
+	binary.Write(gz, binary.BigEndian, int32(1))          // Number of labels
+	gz.Close()
+
+	if _, err := mnist.LoadLabel(buf); err != nil {
+		return
+	}
+
+	t.Fail()
+}
+
