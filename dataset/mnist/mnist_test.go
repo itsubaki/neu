@@ -126,9 +126,24 @@ func TestMust(t *testing.T) {
 	t.Fail()
 }
 
-func TestLoadImage(t *testing.T) {
-	invalid := []byte{0x00, 0x08, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00}
+func TestLoadImageGzip(t *testing.T) {
+	invalid := []byte("this is not a gzip file.")
+
 	file := "invalid.gz"
+	if err := os.WriteFile(file, invalid, 0644); err != nil {
+		t.Fatalf("write invalid file: %v", err)
+	}
+	defer os.Remove(file)
+
+	if _, err := mnist.LoadImage(file); err != nil {
+		return
+	}
+
+	t.Fatal("unexpected")
+}
+
+func TestLoadImageHeader(t *testing.T) {
+	invalid := []byte{0x00, 0x08, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00}
 
 	buf := new(bytes.Buffer)
 	w := gzip.NewWriter(buf)
@@ -137,6 +152,7 @@ func TestLoadImage(t *testing.T) {
 	}
 	w.Close()
 
+	file := "invalid.gz"
 	if err := os.WriteFile(file, buf.Bytes(), 0644); err != nil {
 		t.Fatalf("write invalid file: %v", err)
 	}
@@ -149,9 +165,14 @@ func TestLoadImage(t *testing.T) {
 	t.Fatal("unexpected")
 }
 
-func TestLoadLabel(t *testing.T) {
-	invalid := []byte{0x00, 0x08, 0x01, 0x00, 0x00, 0x00}
-	file := "invalid.gz"
+func TestLoadImage(t *testing.T) {
+	invalid := []byte{
+		0x00, 0x08, 0x03, 0x00, // Magic
+		0x00, 0x00, 0x00, 0x01, // N
+		0x00, 0x00, 0x00, 0x00, // Height
+		0x00, 0x00, 0x00, 0x00, // Width
+		0x01, 0x02, 0x03, 0x04, 0x05, // invalid data
+	}
 
 	buf := new(bytes.Buffer)
 	w := gzip.NewWriter(buf)
@@ -160,12 +181,79 @@ func TestLoadLabel(t *testing.T) {
 	}
 	w.Close()
 
+	file := "invalid.gz"
+	if err := os.WriteFile(file, buf.Bytes(), 0644); err != nil {
+		t.Fatalf("write invalid file: %v", err)
+	}
+	defer os.Remove(file)
+
+	if _, err := mnist.LoadImage(file); err != nil {
+		return
+	}
+
+	t.Fatal("unexpected")
+}
+
+func TestLoadLabelGzip(t *testing.T) {
+	invalid := []byte("this is not a gzip file.")
+
+	file := "invalid.gz"
+	if err := os.WriteFile(file, invalid, 0644); err != nil {
+		t.Fatalf("write invalid file: %v", err)
+	}
+	defer os.Remove(file)
+
+	if _, err := mnist.LoadLabel(file); err != nil {
+		return
+	}
+
+	t.Fatal("unexpected")
+}
+
+func TestLoadLabelHeader(t *testing.T) {
+	invalid := []byte{0x00, 0x08, 0x01, 0x00, 0x00, 0x00}
+
+	buf := new(bytes.Buffer)
+	w := gzip.NewWriter(buf)
+	if _, err := w.Write(invalid); err != nil {
+		t.Fatalf("write gzip data: %v", err)
+	}
+	w.Close()
+
+	file := "invalid.gz"
 	if err := os.WriteFile(file, buf.Bytes(), 0644); err != nil {
 		t.Fatalf("write invalid file: %v", err)
 	}
 	defer os.Remove(file)
 
 	if _, err := mnist.LoadLabel(file); err != nil {
+		return
+	}
+
+	t.Fatal("unexpected")
+}
+
+func TestLoadLabel(t *testing.T) {
+	invalid := []byte{
+		0x00, 0x08, 0x01, 0x00, // Magic
+		0x00, 0x00, 0x00, 0x01, // N
+		0x01, 0x02, 0x03, 0x04, // invalid data
+	}
+
+	buf := new(bytes.Buffer)
+	w := gzip.NewWriter(buf)
+	if _, err := w.Write(invalid); err != nil {
+		t.Fatalf("write gzip data: %v", err)
+	}
+	w.Close()
+
+	file := "invalid.gz"
+	if err := os.WriteFile(file, buf.Bytes(), 0644); err != nil {
+		t.Fatalf("write invalid file: %v", err)
+	}
+	defer os.Remove(file)
+
+	if _, err := mnist.LoadImage(file); err != nil {
 		return
 	}
 
