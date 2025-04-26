@@ -1,7 +1,10 @@
 package mnist_test
 
 import (
+	"bytes"
+	"compress/gzip"
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/itsubaki/neu/dataset/mnist"
@@ -121,4 +124,50 @@ func TestMust(t *testing.T) {
 
 	mnist.Must(nil, nil, fmt.Errorf("something went wrong"))
 	t.Fail()
+}
+
+func TestLoadImage(t *testing.T) {
+	invalid := []byte{0x00, 0x08, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00}
+	file := "invalid.gz"
+
+	buf := new(bytes.Buffer)
+	w := gzip.NewWriter(buf)
+	if _, err := w.Write(invalid); err != nil {
+		t.Fatalf("write gzip data: %v", err)
+	}
+	w.Close()
+
+	if err := os.WriteFile(file, buf.Bytes(), 0644); err != nil {
+		t.Fatalf("write invalid file: %v", err)
+	}
+	defer os.Remove(file)
+
+	if _, err := mnist.LoadImage(file); err != nil {
+		return
+	}
+
+	t.Fatal("unexpected")
+}
+
+func TestLoadLabel(t *testing.T) {
+	invalid := []byte{0x00, 0x08, 0x01, 0x00, 0x00, 0x00}
+	file := "invalid.gz"
+
+	buf := new(bytes.Buffer)
+	w := gzip.NewWriter(buf)
+	if _, err := w.Write(invalid); err != nil {
+		t.Fatalf("write gzip data: %v", err)
+	}
+	w.Close()
+
+	if err := os.WriteFile(file, buf.Bytes(), 0644); err != nil {
+		t.Fatalf("write invalid file: %v", err)
+	}
+	defer os.Remove(file)
+
+	if _, err := mnist.LoadLabel(file); err != nil {
+		return
+	}
+
+	t.Fatal("unexpected")
 }

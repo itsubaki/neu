@@ -2,27 +2,31 @@ package rand_test
 
 import (
 	crand "crypto/rand"
+	"errors"
 	"fmt"
 	randv2 "math/rand/v2"
-	"strings"
 	"testing"
 
 	"github.com/itsubaki/neu/math/rand"
 )
 
+var ErrSomtingWentWrong = errors.New("something went wrong")
+
 func ExampleRead() {
-	reader := crand.Reader
 	defer func() {
-		crand.Reader = reader
+		rand.RandRead = crand.Read
 	}()
 
-	crand.Reader = strings.NewReader("io.Reader stream to be read\n")
+	rand.RandRead = func(b []byte) (int, error) {
+		return 0, ErrSomtingWentWrong
+	}
+
 	if _, err := rand.Read(); err != nil {
 		fmt.Println(err)
 	}
 
 	// Output:
-	// read: unexpected EOF
+	// read: something went wrong
 }
 
 func TestMustRead(t *testing.T) {
