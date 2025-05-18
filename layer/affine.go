@@ -24,12 +24,12 @@ func (l *Affine) String() string {
 
 func (l *Affine) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.x = x
-	return matrix.Dot(l.x, l.W).Add(l.B) // x.W + B
+	return matrix.MatMul(l.x, l.W).Add(l.B) // x.W + B
 }
 
 func (l *Affine) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
-	dx := matrix.Dot(dout, l.W.T())
-	l.DW = matrix.Dot(l.x.T(), dout)
+	dx := matrix.MatMul(dout, l.W.T())
+	l.DW = matrix.MatMul(l.x.T(), dout)
 	l.DB = matrix.New(dout.SumAxis0()) // Adjusting the shape
 	return dx, nil
 }

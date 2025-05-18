@@ -30,9 +30,9 @@ func NewCBOW(c *CBOWConfig, s ...randv2.Source) *CBOW {
 
 	// model
 	return &CBOW{
-		Win0:   &layer.Dot{W: matrix.Randn(V, H, s[0]).MulC(0.01)},
-		Win1:   &layer.Dot{W: matrix.Randn(V, H, s[0]).MulC(0.01)},
-		Wout:   &layer.Dot{W: matrix.Randn(H, V, s[0]).MulC(0.01)},
+		Win0:   &layer.MatMul{W: matrix.Randn(V, H, s[0]).MulC(0.01)},
+		Win1:   &layer.MatMul{W: matrix.Randn(V, H, s[0]).MulC(0.01)},
+		Wout:   &layer.MatMul{W: matrix.Randn(H, V, s[0]).MulC(0.01)},
 		Loss:   &layer.SoftmaxWithLoss{},
 		Source: s[0],
 	}

@@ -14,7 +14,7 @@ var (
 	_ Layer = (*layer.Add)(nil)
 	_ Layer = (*layer.Affine)(nil)
 	_ Layer = (*layer.BatchNorm)(nil)
-	_ Layer = (*layer.Dot)(nil)
+	_ Layer = (*layer.MatMul)(nil)
 	_ Layer = (*layer.Dropout)(nil)
 	_ Layer = (*layer.EmbeddingDot)(nil)
 	_ Layer = (*layer.Embedding)(nil)

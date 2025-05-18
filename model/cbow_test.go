@@ -59,9 +59,9 @@ func ExampleCBOW_Summary() {
 
 	// Output:
 	// *model.CBOW
-	//  0: *layer.Dot: W(7, 5): 35
-	//  1: *layer.Dot: W(7, 5): 35
-	//  2: *layer.Dot: W(5, 7): 35
+	//  0: *layer.MatMul: W(7, 5): 35
+	//  1: *layer.MatMul: W(7, 5): 35
+	//  2: *layer.MatMul: W(5, 7): 35
 	//  3: *layer.SoftmaxWithLoss
 }
 
@@ -78,9 +78,9 @@ func ExampleCBOW_Layers() {
 
 	// Output:
 	// *model.CBOW
-	//  0: *layer.Dot: W(7, 5): 35
-	//  1: *layer.Dot: W(7, 5): 35
-	//  2: *layer.Dot: W(5, 7): 35
+	//  0: *layer.MatMul: W(7, 5): 35
+	//  1: *layer.MatMul: W(7, 5): 35
+	//  2: *layer.MatMul: W(5, 7): 35
 	//  3: *layer.SoftmaxWithLoss
 }
 

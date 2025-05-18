@@ -26,8 +26,8 @@ func (l *LSTM) String() string {
 }
 
 func (l *LSTM) Forward(x, h, c matrix.Matrix, _ ...Opts) (matrix.Matrix, matrix.Matrix) {
-	A := matrix.Dot(x, l.Wx).Add(matrix.Dot(h, l.Wh)).Add(l.B) // (N, 4H) = x(N, D).Wx(D, 4H) + h(N, H).Wh(H, 4H) + b(1, 4H)
-	AH := matrix.Split(A, len(h[0]))                           // (4, N, H)
+	A := matrix.MatMul(x, l.Wx).Add(matrix.MatMul(h, l.Wh)).Add(l.B) // (N, 4H) = x(N, D).Wx(D, 4H) + h(N, H).Wh(H, 4H) + b(1, 4H)
+	AH := matrix.Split(A, len(h[0]))                                 // (4, N, H)
 
 	f := matrix.F(AH[0], activation.Sigmoid) // (N, H)
 	g := matrix.F(AH[1], activation.Tanh)    // (N, H)
@@ -64,14 +64,14 @@ func (l *LSTM) Backward(dhNext, dcNext matrix.Matrix) (matrix.Matrix, matrix.Mat
 	dA := matrix.HStack(df, dg, di, do) // (N, 4H)
 
 	// grads
-	l.DWx = matrix.Dot(l.x.T(), dA)
-	l.DWh = matrix.Dot(l.h.T(), dA)
+	l.DWx = matrix.MatMul(l.x.T(), dA)
+	l.DWh = matrix.MatMul(l.h.T(), dA)
 	l.DB = matrix.New(dA.SumAxis0())
 
 	// prev
-	dx := matrix.Dot(dA, l.Wx.T())     // (N, D)
-	dhPrev := matrix.Dot(dA, l.Wh.T()) // (N, H)
-	dcPrev := ds.Mul(l.f)              // (N, H)
+	dx := matrix.MatMul(dA, l.Wx.T())     // (N, D)
+	dhPrev := matrix.MatMul(dA, l.Wh.T()) // (N, H)
+	dcPrev := ds.Mul(l.f)                 // (N, H)
 
 	return dx, dhPrev, dcPrev
 }

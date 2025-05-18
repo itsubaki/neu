@@ -339,16 +339,17 @@ func SubC(c float64, m Matrix) Matrix {
 	return F(m, func(v float64) float64 { return c - v })
 }
 
-// Dot returns the dot product of m and n.
-func Dot(m, n Matrix) Matrix {
+// MatMul returns the matrix product of m and n.
+func MatMul(m, n Matrix) Matrix {
 	a, b := m.Dim()
 	_, p := n.Dim()
 
 	out := Zero(a, p)
-	for i := 0; i < a; i++ {
-		for j := 0; j < p; j++ {
-			for k := 0; k < b; k++ {
-				out[i][j] = out[i][j] + m[i][k]*n[k][j]
+	for i := range a {
+		for k := range b {
+			mik := m[i][k]
+			for j := range p {
+				out[i][j] += mik * n[k][j]
 			}
 		}
 	}

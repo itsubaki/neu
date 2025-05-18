@@ -23,7 +23,7 @@ func Example_simplenet() {
 	t := []float64{0, 0, 1}
 
 	// predict
-	p := matrix.Dot(x, W)
+	p := matrix.MatMul(x, W)
 	y := activation.Softmax(p[0])
 	e := loss.CrossEntropyError(y, t)
 
@@ -32,7 +32,7 @@ func Example_simplenet() {
 
 	// gradient
 	fW := func(w ...float64) float64 {
-		p := matrix.Dot(x, W)
+		p := matrix.MatMul(x, W)
 		y := activation.Softmax(p[0])
 		e := loss.CrossEntropyError(y, t)
 		return e
@@ -73,11 +73,11 @@ func Example_neuralnet() {
 	x := matrix.New([]float64{1.0, 0.5})
 
 	// forward
-	A1 := matrix.Dot(x, W1).Add(B1)
+	A1 := matrix.MatMul(x, W1).Add(B1)
 	Z1 := matrix.F(A1, activation.Sigmoid)
-	A2 := matrix.Dot(Z1, W2).Add(B2)
+	A2 := matrix.MatMul(Z1, W2).Add(B2)
 	Z2 := matrix.F(A2, activation.Sigmoid)
-	A3 := matrix.Dot(Z2, W3).Add(B3)
+	A3 := matrix.MatMul(Z2, W3).Add(B3)
 	y := matrix.F(A3, activation.Identity)
 
 	// print
