@@ -5,9 +5,8 @@
 [![tests](https://github.com/itsubaki/neu/workflows/tests/badge.svg)](https://github.com/itsubaki/neu/actions)
 [![codecov](https://codecov.io/gh/itsubaki/neu/branch/main/graph/badge.svg?token=KMJ2GUC1FJ)](https://codecov.io/gh/itsubaki/neu)
 
-- Deep Learning framework for Go from scratch
-- pure Go implementation
-- using only the standard library
+- Deep Learning framework for Go
+- Pure Go implementation using only the standard library
 
 ## Examples
 
