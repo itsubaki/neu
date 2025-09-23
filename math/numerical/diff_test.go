@@ -2,14 +2,13 @@ package numerical_test
 
 import (
 	"fmt"
-	"math"
 
 	"github.com/itsubaki/neu/math/numerical"
 )
 
 func ExampleDiff() {
 	f := func(x float64) float64 {
-		return math.Pow(x, 3) - 2*math.Pow(x, 2) + 1
+		return x*x*x - 2*x*x + 1 // x^3 - 2x^2 + 1
 	}
 
 	x := make([]float64, 0)

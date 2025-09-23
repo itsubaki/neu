@@ -1,12 +1,15 @@
 SHELL := /bin/bash
 
-update:
-	go get -u
-	go mod tidy
-
 test:
 	go test -cover $(shell go list ./... | grep -v /vendor/ | grep -v /build/ | grep -v /cmd/) -v -coverprofile=coverage.txt -covermode=atomic
 	go tool cover -html=coverage.txt -o coverage.html
+
+lint:
+	golangci-lint run
+
+update:
+	go get -u
+	go mod tidy
 
 mnist:
 	go run cmd/mnist/main.go --dir ./testdata

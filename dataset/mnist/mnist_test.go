@@ -133,7 +133,7 @@ func TestLoadImageGzip(t *testing.T) {
 	if err := os.WriteFile(file, invalid, 0644); err != nil {
 		t.Fatalf("write invalid file: %v", err)
 	}
-	defer os.Remove(file)
+	defer func() { _ = os.Remove(file) }()
 
 	if _, err := mnist.LoadImage(file); err != nil {
 		return
@@ -150,13 +150,13 @@ func TestLoadImageHeader(t *testing.T) {
 	if _, err := w.Write(invalid); err != nil {
 		t.Fatalf("write gzip data: %v", err)
 	}
-	w.Close()
+	_ = w.Close()
 
 	file := "invalid.gz"
 	if err := os.WriteFile(file, buf.Bytes(), 0644); err != nil {
 		t.Fatalf("write invalid file: %v", err)
 	}
-	defer os.Remove(file)
+	defer func() { _ = os.Remove(file) }()
 
 	if _, err := mnist.LoadImage(file); err != nil {
 		return
@@ -172,7 +172,7 @@ func TestLoadLabelGzip(t *testing.T) {
 	if err := os.WriteFile(file, invalid, 0644); err != nil {
 		t.Fatalf("write invalid file: %v", err)
 	}
-	defer os.Remove(file)
+	defer func() { _ = os.Remove(file) }()
 
 	if _, err := mnist.LoadLabel(file); err != nil {
 		return
@@ -189,13 +189,13 @@ func TestLoadLabelHeader(t *testing.T) {
 	if _, err := w.Write(invalid); err != nil {
 		t.Fatalf("write gzip data: %v", err)
 	}
-	w.Close()
+	_ = w.Close()
 
 	file := "invalid.gz"
 	if err := os.WriteFile(file, buf.Bytes(), 0644); err != nil {
 		t.Fatalf("write invalid file: %v", err)
 	}
-	defer os.Remove(file)
+	defer func() { _ = os.Remove(file) }()
 
 	if _, err := mnist.LoadLabel(file); err != nil {
 		return

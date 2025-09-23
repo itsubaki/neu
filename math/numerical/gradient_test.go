@@ -2,7 +2,6 @@ package numerical_test
 
 import (
 	"fmt"
-	"math"
 
 	"github.com/itsubaki/neu/math/numerical"
 )
@@ -10,7 +9,7 @@ import (
 func ExampleGradient() {
 	// p104
 	f := func(x ...float64) float64 {
-		return math.Pow(x[0], 2) + math.Pow(x[1], 2)
+		return x[0]*x[0] + x[1]*x[1]
 	}
 
 	fmt.Println(numerical.Gradient(f, []float64{3, 4}))
@@ -27,7 +26,7 @@ func ExampleGradient() {
 func ExampleGradientDescent() {
 	// p108
 	f := func(x ...float64) float64 {
-		return math.Pow(x[0], 2) + math.Pow(x[1], 2)
+		return x[0]*x[0] + x[1]*x[1]
 	}
 
 	fmt.Println(numerical.GradientDescent(f, []float64{-3, 4}, 0.1, 100))

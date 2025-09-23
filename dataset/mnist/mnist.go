@@ -40,7 +40,7 @@ func image(fileName string) ([]Image, error) {
 	if err != nil {
 		return nil, fmt.Errorf("open file=%v: %v", fileName, err)
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 
 	gzr, err := gzip.NewReader(f)
 	if err != nil {
@@ -78,7 +78,7 @@ func label(fileName string) ([]Label, error) {
 	if err != nil {
 		return nil, fmt.Errorf("open file=%v: %v", fileName, err)
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 
 	gzr, err := gzip.NewReader(f)
 	if err != nil {

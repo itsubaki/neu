@@ -24,11 +24,7 @@ func (g *RNNLMGen) Generate(startID int, skipIDs []int, length int) []int {
 	wordIDs := make([]int, 0)
 
 	x := startID
-	for {
-		if len(wordIDs) >= length {
-			break
-		}
-
+	for len(wordIDs) < length {
 		// predict
 		xs := []matrix.Matrix{matrix.New([]float64{float64(x)})}
 		score := tensor.Flatten(g.Predict(xs))

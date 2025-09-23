@@ -95,7 +95,7 @@ func Save(filename string, params [][]matrix.Matrix) error {
 	if err != nil {
 		return fmt.Errorf("create file: %v", err)
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 
 	if err := gob.NewEncoder(f).Encode(params); err != nil {
 		return fmt.Errorf("encode params: %v", err)
@@ -110,7 +110,7 @@ func Load(filename string) ([][]matrix.Matrix, bool) {
 	if err != nil {
 		return nil, false
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 
 	var params [][]matrix.Matrix
 	if err := gob.NewDecoder(f).Decode(&params); err != nil {
