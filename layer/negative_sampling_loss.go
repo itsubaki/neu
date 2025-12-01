@@ -23,7 +23,7 @@ func NewNegativeSamplingLoss(W matrix.Matrix, corpus []int, power float64, sampl
 	}
 
 	embed, loss := make([]EmbeddingDot, sampleSize+1), make([]SigmoidWithLoss, sampleSize+1)
-	for i := 0; i < sampleSize+1; i++ {
+	for i := range sampleSize + 1 {
 		embed[i], loss[i] = EmbeddingDot{Embedding: Embedding{W: W}}, SigmoidWithLoss{}
 	}
 
@@ -74,7 +74,7 @@ func (l *NegativeSamplingLoss) Forward(h, target matrix.Matrix, _ ...Opts) matri
 	// negative
 	sampled := l.sampler.NegativeSample(vector.Int(matrix.Flatten(target)), l.s) // (N, S)
 	label := matrix.Zero(1, len(target))                                         // (1, N)
-	for i := 0; i < l.sampler.sampleSize; i++ {
+	for i := range l.sampler.sampleSize {
 		negative := matrix.Column(matrix.From(sampled), i)    // (N, 1)
 		score := l.embeddingDot[i+1].Forward(h, negative)     // (1, N)
 		nloss := l.sigmoidWithLoss[i+1].Forward(score, label) // (1, 1)
@@ -86,7 +86,7 @@ func (l *NegativeSamplingLoss) Forward(h, target matrix.Matrix, _ ...Opts) matri
 
 func (l *NegativeSamplingLoss) Backward(dout matrix.Matrix) (matrix.Matrix, matrix.Matrix) {
 	dh := matrix.Zero(1, 1)
-	for i := 0; i < l.sampler.sampleSize+1; i++ {
+	for i := range l.sampler.sampleSize + 1 {
 		dscore, _ := l.sigmoidWithLoss[i].Backward(dout) //
 		dh0, _ := l.embeddingDot[i].Backward(dscore)     //
 		dh = dh0.Add(dh)                                 // Broadcast
@@ -134,7 +134,7 @@ func (s *UnigramSampler) NegativeSample(target []int, seed ...randv2.Source) [][
 	N := len(target)
 	out := make([][]int, N)
 
-	for i := 0; i < N; i++ {
+	for i := range N {
 		p := make([]float64, len(s.wordProb))
 		copy(p, s.wordProb)
 		p[target[i]] = 0

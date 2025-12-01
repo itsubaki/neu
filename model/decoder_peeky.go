@@ -74,7 +74,7 @@ func (m *PeekyDecoder) Generate(h matrix.Matrix, startID, length int) []int {
 	m.TimeLSTM.SetState(h)
 
 	x := startID
-	for i := 0; i < length; i++ {
+	for range length {
 		xs := []matrix.Matrix{{{float64(x)}}}
 
 		out := m.TimeEmbedding.Forward(xs, nil)

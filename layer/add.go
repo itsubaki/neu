@@ -9,10 +9,21 @@ import (
 // Add is a layer that performs an element-wise addition.
 type Add struct{}
 
-func (l *Add) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
-func (l *Add) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
-func (l *Add) SetParams(p ...matrix.Matrix) {}
-func (l *Add) String() string               { return fmt.Sprintf("%T", l) }
+func (l *Add) Params() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *Add) Grads() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *Add) SetParams(p ...matrix.Matrix) {
+	// noop
+}
+
+func (l *Add) String() string {
+	return fmt.Sprintf("%T", l)
+}
 
 func (l *Add) Forward(x, y matrix.Matrix, _ ...Opts) matrix.Matrix {
 	return x.Add(y)

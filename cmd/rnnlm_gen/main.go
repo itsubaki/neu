@@ -74,7 +74,7 @@ func main() {
 	tr := trainer.NewRNNLM(m, o)
 
 	now, min := time.Now(), math.MaxFloat64
-	for i := 0; i < epochs; i++ {
+	for i := range epochs {
 		tr.Fit(&trainer.RNNLMInput{
 			Train:      train.Corpus[:len(train.Corpus)-1],
 			TrainLabel: train.Corpus[1:],
@@ -130,16 +130,16 @@ func perplexity(m trainer.RNNLM, corpus []int, batchSize, timeSize int) float64 
 	jump := (corpusSize - 1) / batchSize
 
 	var total float64
-	for j := 0; j < maxIter; j++ {
+	for j := range maxIter {
 		xs, ts := tensor.Zero(timeSize, batchSize, 1), tensor.Zero(timeSize, batchSize, 1)
 
 		timeOffset := j * timeSize
 		offsets := make([]int, batchSize)
-		for i := 0; i < batchSize; i++ {
+		for i := range batchSize {
 			offsets[i] = timeOffset + (i * jump)
 		}
 
-		for t := 0; t < timeSize; t++ {
+		for t := range timeSize {
 			for i, offset := range offsets {
 				xs[t][i] = []float64{float64(corpus[(offset+t)%corpusSize])}
 				ts[t][i] = []float64{float64(corpus[(offset+t+1)%corpusSize])}

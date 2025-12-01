@@ -13,11 +13,25 @@ type TimeBiLSTM struct {
 }
 
 func (l *TimeBiLSTM) Params() []matrix.Matrix {
-	return []matrix.Matrix{l.F.Wx, l.F.Wh, l.F.B, l.B.Wx, l.B.Wh, l.B.B}
+	return []matrix.Matrix{
+		l.F.Wx,
+		l.F.Wh,
+		l.F.B,
+		l.B.Wx,
+		l.B.Wh,
+		l.B.B,
+	}
 }
 
 func (l *TimeBiLSTM) Grads() []matrix.Matrix {
-	return []matrix.Matrix{l.F.DWx, l.F.DWh, l.F.DB, l.B.DWx, l.B.DWh, l.B.DB}
+	return []matrix.Matrix{
+		l.F.DWx,
+		l.F.DWh,
+		l.F.DB,
+		l.B.DWx,
+		l.B.DWh,
+		l.B.DB,
+	}
 }
 
 func (l *TimeBiLSTM) SetParams(p ...matrix.Matrix) {
@@ -38,9 +52,18 @@ func (l *TimeBiLSTM) SetState(h ...matrix.Matrix) {
 	l.B.SetState(h[2], h[3])
 }
 
-func (l *TimeBiLSTM) ResetState()       { l.F.ResetState(); l.B.ResetState() }
-func (l *TimeBiLSTM) String() string    { return fmt.Sprintf("%T", l) }
-func (l *TimeBiLSTM) Summary() []string { return []string{l.String(), l.F.String(), l.B.String()} }
+func (l *TimeBiLSTM) ResetState() {
+	l.F.ResetState()
+	l.B.ResetState()
+}
+
+func (l *TimeBiLSTM) String() string {
+	return fmt.Sprintf("%T", l)
+}
+
+func (l *TimeBiLSTM) Summary() []string {
+	return []string{l.String(), l.F.String(), l.B.String()}
+}
 
 func (l *TimeBiLSTM) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 	o1 := l.F.Forward(xs, nil)

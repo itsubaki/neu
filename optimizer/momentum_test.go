@@ -15,12 +15,22 @@ func ExampleMomentum() {
 	}
 
 	for _, lr := range []float64{0.0, 0.5, 1.0} {
-		opt := optimizer.Momentum{LearningRate: lr, Momentum: 1.0}
+		opt := optimizer.Momentum{
+			LearningRate: lr,
+			Momentum:     1.0,
+		}
+
 		fmt.Println(opt.Update(m)[0][0])
 	}
 	fmt.Println()
 
-	opt := optimizer.Momentum{LearningRate: 0.5, Momentum: 1.0, Hooks: []optimizer.Hook{hook.WeightDecay(0.0)}}
+	opt := optimizer.Momentum{
+		LearningRate: 0.5,
+		Momentum:     1.0,
+		Hooks: []optimizer.Hook{
+			hook.WeightDecay(0.0),
+		},
+	}
 	fmt.Println(opt.Update(m)[0][0])
 	fmt.Println(opt.Update(m)[0][0])
 	fmt.Println(opt.Update(m)[0][0])

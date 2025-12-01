@@ -15,9 +15,18 @@ type BatchNorm struct {
 	xc, xn, std, mu, va matrix.Matrix
 }
 
-func (l *BatchNorm) Params() []matrix.Matrix      { return []matrix.Matrix{l.Gamma, l.Beta} }
-func (l *BatchNorm) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DGamma, l.DBeta} }
-func (l *BatchNorm) SetParams(p ...matrix.Matrix) { l.Gamma, l.Beta = p[0], p[1] }
+func (l *BatchNorm) Params() []matrix.Matrix {
+	return []matrix.Matrix{l.Gamma, l.Beta}
+}
+
+func (l *BatchNorm) Grads() []matrix.Matrix {
+	return []matrix.Matrix{l.DGamma, l.DBeta}
+}
+
+func (l *BatchNorm) SetParams(p ...matrix.Matrix) {
+	l.Gamma, l.Beta = p[0], p[1]
+}
+
 func (l *BatchNorm) String() string {
 	a, b := l.Gamma.Dim()
 	c, d := l.Beta.Dim()

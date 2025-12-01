@@ -12,10 +12,21 @@ type SigmoidWithLoss struct {
 	y, t matrix.Matrix
 }
 
-func (l *SigmoidWithLoss) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
-func (l *SigmoidWithLoss) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
-func (l *SigmoidWithLoss) SetParams(p ...matrix.Matrix) {}
-func (l *SigmoidWithLoss) String() string               { return fmt.Sprintf("%T", l) }
+func (l *SigmoidWithLoss) Params() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *SigmoidWithLoss) Grads() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *SigmoidWithLoss) SetParams(p ...matrix.Matrix) {
+	// noop
+}
+
+func (l *SigmoidWithLoss) String() string {
+	return fmt.Sprintf("%T", l)
+}
 
 func (l *SigmoidWithLoss) Forward(x, t matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.y, l.t = matrix.F(x, activation.Sigmoid), t

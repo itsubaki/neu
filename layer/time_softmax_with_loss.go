@@ -12,12 +12,29 @@ type TimeSoftmaxWithLoss struct {
 	layer []SoftmaxWithLoss
 }
 
-func (l *TimeSoftmaxWithLoss) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
-func (l *TimeSoftmaxWithLoss) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
-func (l *TimeSoftmaxWithLoss) SetParams(p ...matrix.Matrix) {}
-func (l *TimeSoftmaxWithLoss) SetState(h ...matrix.Matrix)  {}
-func (l *TimeSoftmaxWithLoss) ResetState()                  {}
-func (l *TimeSoftmaxWithLoss) String() string               { return fmt.Sprintf("%T", l) }
+func (l *TimeSoftmaxWithLoss) Params() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *TimeSoftmaxWithLoss) Grads() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *TimeSoftmaxWithLoss) SetParams(p ...matrix.Matrix) {
+	// noop
+}
+
+func (l *TimeSoftmaxWithLoss) SetState(h ...matrix.Matrix) {
+	// noop
+}
+
+func (l *TimeSoftmaxWithLoss) ResetState() {
+	// noop
+}
+
+func (l *TimeSoftmaxWithLoss) String() string {
+	return fmt.Sprintf("%T", l)
+}
 
 func (l *TimeSoftmaxWithLoss) Forward(xs, ts []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 	T, V := len(xs), len(xs[0][0])
@@ -26,7 +43,7 @@ func (l *TimeSoftmaxWithLoss) Forward(xs, ts []matrix.Matrix, _ ...Opts) []matri
 	ots := tensor.OneHot(ts, V)
 
 	loss := matrix.Zero(1, 1)
-	for t := 0; t < T; t++ {
+	for t := range T {
 		l.layer[t] = SoftmaxWithLoss{}
 		loss = l.layer[t].Forward(xs[t], ots[t]).Add(loss) // Broadcast
 	}
@@ -39,7 +56,7 @@ func (l *TimeSoftmaxWithLoss) Backward(dout []matrix.Matrix) []matrix.Matrix {
 	dx := make([]matrix.Matrix, T)
 	do := dout[0].MulC(1.0 / float64(T))
 
-	for t := 0; t < T; t++ {
+	for t := range T {
 		dx[t], _ = l.layer[t].Backward(do)
 	}
 

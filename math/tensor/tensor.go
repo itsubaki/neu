@@ -4,7 +4,7 @@ import "github.com/itsubaki/neu/math/matrix"
 
 func Zero(m, n, o int) []matrix.Matrix {
 	out := make([]matrix.Matrix, m)
-	for i := 0; i < m; i++ {
+	for i := range m {
 		out[i] = matrix.Zero(n, o)
 	}
 
@@ -13,7 +13,7 @@ func Zero(m, n, o int) []matrix.Matrix {
 
 func ZeroLike(x []matrix.Matrix) []matrix.Matrix {
 	out := make([]matrix.Matrix, len(x))
-	for i := 0; i < len(x); i++ {
+	for i := range len(x) {
 		out[i] = matrix.ZeroLike(x[i])
 	}
 
@@ -38,7 +38,7 @@ func OneHot(ts []matrix.Matrix, size int) []matrix.Matrix {
 
 func Add(x, y []matrix.Matrix) []matrix.Matrix {
 	out := make([]matrix.Matrix, len(x))
-	for i := 0; i < len(x); i++ {
+	for i := range len(x) {
 		out[i] = x[i].Add(y[i])
 	}
 
@@ -47,7 +47,7 @@ func Add(x, y []matrix.Matrix) []matrix.Matrix {
 
 func Mul(x, y []matrix.Matrix) []matrix.Matrix {
 	out := make([]matrix.Matrix, len(x))
-	for i := 0; i < len(x); i++ {
+	for i := range len(x) {
 		out[i] = x[i].Mul(y[i])
 	}
 
@@ -57,10 +57,10 @@ func Mul(x, y []matrix.Matrix) []matrix.Matrix {
 func SumAxis0(hr []matrix.Matrix) matrix.Matrix {
 	T, N, H := len(hr), len(hr[0]), len(hr[0][0])
 	out := matrix.Zero(N, H)
-	for i := 0; i < N; i++ {
-		for j := 0; j < H; j++ {
+	for i := range N {
+		for j := range H {
 			var sum float64
-			for t := 0; t < T; t++ {
+			for t := range T {
 				sum += hr[t][i][j]
 			}
 
@@ -73,14 +73,14 @@ func SumAxis0(hr []matrix.Matrix) matrix.Matrix {
 
 func Concat(a, b []matrix.Matrix) []matrix.Matrix {
 	out := make([]matrix.Matrix, len(a))
-	for t := 0; t < len(a); t++ {
+	for t := range len(a) {
 		out[t] = make(matrix.Matrix, len(a[t]))
 
-		for i := 0; i < len(a[t]); i++ {
+		for i := range len(a[t]) {
 			out[t][i] = append(out[t][i], a[t][i]...)
 		}
 
-		for i := 0; i < len(b[t]); i++ {
+		for i := range len(b[t]) {
 			out[t][i] = append(out[t][i], b[t][i]...)
 		}
 	}
@@ -103,7 +103,7 @@ func Split(dout []matrix.Matrix, H int) ([]matrix.Matrix, []matrix.Matrix) {
 
 func Repeat(m matrix.Matrix, T int) []matrix.Matrix {
 	out := make([]matrix.Matrix, T)
-	for i := 0; i < T; i++ {
+	for i := range T {
 		out[i] = m
 	}
 
@@ -121,8 +121,8 @@ func Flatten(m []matrix.Matrix) []float64 {
 
 func Argmax(score []matrix.Matrix) int {
 	flatten := Flatten(score)
-
 	max := flatten[0]
+
 	var arg int
 	for i, v := range flatten {
 		if v > max {
@@ -136,7 +136,7 @@ func Argmax(score []matrix.Matrix) int {
 
 func Reverse(m []matrix.Matrix) []matrix.Matrix {
 	out := make([]matrix.Matrix, len(m))
-	for i := 0; i < len(m); i++ {
+	for i := range len(m) {
 		out[i] = m[len(m)-1-i]
 	}
 

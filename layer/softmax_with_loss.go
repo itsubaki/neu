@@ -12,10 +12,21 @@ type SoftmaxWithLoss struct {
 	y, t matrix.Matrix
 }
 
-func (l *SoftmaxWithLoss) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
-func (l *SoftmaxWithLoss) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
-func (l *SoftmaxWithLoss) SetParams(p ...matrix.Matrix) {}
-func (l *SoftmaxWithLoss) String() string               { return fmt.Sprintf("%T", l) }
+func (l *SoftmaxWithLoss) Params() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *SoftmaxWithLoss) Grads() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *SoftmaxWithLoss) SetParams(p ...matrix.Matrix) {
+	// noop
+}
+
+func (l *SoftmaxWithLoss) String() string {
+	return fmt.Sprintf("%T", l)
+}
 
 func (l *SoftmaxWithLoss) Forward(x, t matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.y, l.t = softmax(x), t

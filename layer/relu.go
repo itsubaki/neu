@@ -11,10 +11,21 @@ type ReLU struct {
 	mask matrix.Matrix
 }
 
-func (l *ReLU) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
-func (l *ReLU) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
-func (l *ReLU) SetParams(p ...matrix.Matrix) {}
-func (l *ReLU) String() string               { return fmt.Sprintf("%T", l) }
+func (l *ReLU) Params() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *ReLU) Grads() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *ReLU) SetParams(p ...matrix.Matrix) {
+	// noop
+}
+
+func (l *ReLU) String() string {
+	return fmt.Sprintf("%T", l)
+}
 
 func (l *ReLU) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.mask = matrix.Mask(x, func(x float64) bool { return x > 0 })

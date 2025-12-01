@@ -92,7 +92,7 @@ func generate(x, t [][]int, m trainer.Seq2Seq, v *sequence.Vocab, top int) float
 	xm := matrix.From(xs)
 
 	var acc int
-	for k := 0; k < top; k++ {
+	for k := range top {
 		q, correct := xm[k], ts[k]
 		tq := vector.Reverse(trainer.Time(matrix.New(q)))
 

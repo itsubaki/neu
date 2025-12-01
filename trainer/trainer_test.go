@@ -16,12 +16,31 @@ var _ trainer.Model = (*TestModel)(nil)
 
 type TestModel struct{}
 
-func (m *TestModel) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix { return nil }
-func (m *TestModel) Forward(x, t matrix.Matrix) matrix.Matrix                  { return matrix.New([]float64{1}) }
-func (m *TestModel) Backward() matrix.Matrix                                   { return nil }
-func (m *TestModel) Layers() []model.Layer                                     { return nil }
-func (m *TestModel) Params() [][]matrix.Matrix                                 { return nil }
-func (m *TestModel) Grads() [][]matrix.Matrix                                  { return nil }
+func (m *TestModel) Predict(x matrix.Matrix, opts ...layer.Opts) matrix.Matrix {
+	return nil
+
+}
+
+func (m *TestModel) Forward(x, t matrix.Matrix) matrix.Matrix {
+	return matrix.New([]float64{1})
+}
+
+func (m *TestModel) Backward() matrix.Matrix {
+	return nil
+}
+
+func (m *TestModel) Layers() []model.Layer {
+	return nil
+}
+
+func (m *TestModel) Params() [][]matrix.Matrix {
+	return nil
+}
+
+func (m *TestModel) Grads() [][]matrix.Matrix {
+	return nil
+}
+
 func (m *TestModel) SetParams(p [][]matrix.Matrix) {
 	for i, l := range m.Layers() {
 		l.SetParams(p[i]...)

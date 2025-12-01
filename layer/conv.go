@@ -42,9 +42,9 @@ func im2col(im matrix.Matrix, fh, fw, pad, stride int) matrix.Matrix {
 	xh, xw := im.Dim()
 	outh, outw := outhw(xh, xw, fh, fw, pad, stride)
 	out := matrix.New()
-	for y := 0; y < fh; y++ {
+	for y := range fh {
 		ymax := y + stride*outh
-		for x := 0; x < fw; x++ {
+		for x := range fw {
 			xmax := x + stride*outw
 			out = append(out, pick(img, y, x, ymax, xmax, stride))
 		}

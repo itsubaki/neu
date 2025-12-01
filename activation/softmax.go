@@ -4,7 +4,7 @@ import "math"
 
 // Softmax returns the softmax of the input vector.
 func Softmax(a []float64) []float64 {
-	var max float64
+	max := a[0]
 	for i := range a {
 		if a[i] > max {
 			max = a[i]

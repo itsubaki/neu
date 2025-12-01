@@ -28,7 +28,7 @@ func Gradient(f func(x ...float64) float64, x []float64) []float64 {
 
 // GradientDescent returns the numerical gradient descent of f at x.
 func GradientDescent(f func(x ...float64) float64, x []float64, learningRate float64, step int) []float64 {
-	for i := 0; i < step; i++ {
+	for range step {
 		grad := Gradient(f, x)
 
 		for i := range grad {

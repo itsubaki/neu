@@ -11,12 +11,29 @@ type TimeDropout struct {
 	mask  matrix.Matrix
 }
 
-func (l *TimeDropout) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
-func (l *TimeDropout) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
-func (l *TimeDropout) SetParams(p ...matrix.Matrix) {}
-func (l *TimeDropout) SetState(_ ...matrix.Matrix)  {}
-func (l *TimeDropout) ResetState()                  {}
-func (l *TimeDropout) String() string               { return fmt.Sprintf("%T: Ratio(%v)", l, l.Ratio) }
+func (l *TimeDropout) Params() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *TimeDropout) Grads() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *TimeDropout) SetParams(p ...matrix.Matrix) {
+	// noop
+}
+
+func (l *TimeDropout) SetState(_ ...matrix.Matrix) {
+	// noop
+}
+
+func (l *TimeDropout) ResetState() {
+	// noop
+}
+
+func (l *TimeDropout) String() string {
+	return fmt.Sprintf("%T: Ratio(%v)", l, l.Ratio)
+}
 
 func (l *TimeDropout) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matrix {
 	if len(opts) > 0 && opts[0].Train {
@@ -26,7 +43,7 @@ func (l *TimeDropout) Forward(xs, _ []matrix.Matrix, opts ...Opts) []matrix.Matr
 		l.mask = msk.MulC(1.0 / (1.0 - l.Ratio))
 
 		out := make([]matrix.Matrix, T)
-		for t := 0; t < T; t++ {
+		for t := range T {
 			out[t] = xs[t].Mul(l.mask)
 		}
 
@@ -40,7 +57,7 @@ func (l *TimeDropout) Backward(dout []matrix.Matrix) []matrix.Matrix {
 	T := len(dout)
 
 	dx := make([]matrix.Matrix, T)
-	for t := 0; t < T; t++ {
+	for t := range T {
 		dx[t] = dout[t].Mul(l.mask)
 	}
 

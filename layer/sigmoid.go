@@ -12,10 +12,21 @@ type Sigmoid struct {
 	out matrix.Matrix
 }
 
-func (l *Sigmoid) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
-func (l *Sigmoid) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
-func (l *Sigmoid) SetParams(p ...matrix.Matrix) {}
-func (l *Sigmoid) String() string               { return fmt.Sprintf("%T", l) }
+func (l *Sigmoid) Params() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *Sigmoid) Grads() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *Sigmoid) SetParams(p ...matrix.Matrix) {
+	// noop
+}
+
+func (l *Sigmoid) String() string {
+	return fmt.Sprintf("%T", l)
+}
 
 func (l *Sigmoid) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.out = matrix.F(x, activation.Sigmoid)

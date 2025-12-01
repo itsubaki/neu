@@ -13,10 +13,21 @@ type AttentionWeight struct {
 	hs, hr  []matrix.Matrix
 }
 
-func (l *AttentionWeight) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
-func (l *AttentionWeight) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
-func (l *AttentionWeight) SetParams(p ...matrix.Matrix) {}
-func (l *AttentionWeight) String() string               { return fmt.Sprintf("%T", l) }
+func (l *AttentionWeight) Params() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *AttentionWeight) Grads() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *AttentionWeight) SetParams(p ...matrix.Matrix) {
+	// noop
+}
+
+func (l *AttentionWeight) String() string {
+	return fmt.Sprintf("%T", l)
+}
 
 func (l *AttentionWeight) Forward(hs []matrix.Matrix, h matrix.Matrix) matrix.Matrix {
 	T := len(hs)                         // (T, N, H)

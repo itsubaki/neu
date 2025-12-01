@@ -10,7 +10,7 @@ import (
 func ExampleBandit() {
 	bandit := env.NewBandit(10, rand.Const(1))
 
-	for i := 0; i < 10; i++ {
+	for i := range 10 {
 		fmt.Print(bandit.Play(i))
 	}
 
@@ -21,7 +21,7 @@ func ExampleBandit() {
 func ExampleNonStatBandit() {
 	bandit := env.NewNonStatBandit(10, rand.Const(1))
 
-	for i := 0; i < 10; i++ {
+	for i := range 10 {
 		fmt.Print(bandit.Play(i))
 	}
 

@@ -14,12 +14,38 @@ type TimeGRU struct {
 	Stateful     bool
 }
 
-func (l *TimeGRU) DH() matrix.Matrix            { return l.dh }
-func (l *TimeGRU) Params() []matrix.Matrix      { return []matrix.Matrix{l.Wx, l.Wh, l.B} }
-func (l *TimeGRU) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DWx, l.DWh, l.DB} }
-func (l *TimeGRU) SetParams(p ...matrix.Matrix) { l.Wx, l.Wh, l.B = p[0], p[1], p[2] }
-func (l *TimeGRU) SetState(h ...matrix.Matrix)  { l.h = h[0] }
-func (l *TimeGRU) ResetState()                  { l.h = matrix.New() }
+func (l *TimeGRU) DH() matrix.Matrix {
+	return l.dh
+}
+
+func (l *TimeGRU) Params() []matrix.Matrix {
+	return []matrix.Matrix{
+		l.Wx,
+		l.Wh,
+		l.B,
+	}
+}
+
+func (l *TimeGRU) Grads() []matrix.Matrix {
+	return []matrix.Matrix{
+		l.DWx,
+		l.DWh,
+		l.DB,
+	}
+}
+
+func (l *TimeGRU) SetParams(p ...matrix.Matrix) {
+	l.Wx, l.Wh, l.B = p[0], p[1], p[2]
+}
+
+func (l *TimeGRU) SetState(h ...matrix.Matrix) {
+	l.h = h[0]
+}
+
+func (l *TimeGRU) ResetState() {
+	l.h = matrix.New()
+}
+
 func (l *TimeGRU) String() string {
 	a, b := l.Wx.Dim()
 	c, d := l.Wh.Dim()

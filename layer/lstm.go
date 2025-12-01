@@ -15,9 +15,18 @@ type LSTM struct {
 	cNext        matrix.Matrix // cache
 }
 
-func (l *LSTM) Params() []matrix.Matrix      { return []matrix.Matrix{l.Wx, l.Wh, l.B} }
-func (l *LSTM) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DWx, l.DWh, l.DB} }
-func (l *LSTM) SetParams(p ...matrix.Matrix) { l.Wx, l.Wh, l.B = p[0], p[1], p[2] }
+func (l *LSTM) Params() []matrix.Matrix {
+	return []matrix.Matrix{l.Wx, l.Wh, l.B}
+}
+
+func (l *LSTM) Grads() []matrix.Matrix {
+	return []matrix.Matrix{l.DWx, l.DWh, l.DB}
+}
+
+func (l *LSTM) SetParams(p ...matrix.Matrix) {
+	l.Wx, l.Wh, l.B = p[0], p[1], p[2]
+}
+
 func (l *LSTM) String() string {
 	a, b := l.Wx.Dim()
 	c, d := l.Wh.Dim()

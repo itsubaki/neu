@@ -14,12 +14,30 @@ var _ trainer.RNNLM = (*TestRNNLM)(nil)
 
 type TestRNNLM struct{}
 
-func (m *TestRNNLM) Predict(xs []matrix.Matrix, opts ...layer.Opts) []matrix.Matrix { return nil }
-func (m *TestRNNLM) Forward(xs, ts []matrix.Matrix) []matrix.Matrix                 { return []matrix.Matrix{{{1}}} }
-func (m *TestRNNLM) Backward() []matrix.Matrix                                      { return nil }
-func (m *TestRNNLM) Layers() []model.TimeLayer                                      { return nil }
-func (m *TestRNNLM) Params() [][]matrix.Matrix                                      { return nil }
-func (m *TestRNNLM) Grads() [][]matrix.Matrix                                       { return nil }
+func (m *TestRNNLM) Predict(xs []matrix.Matrix, opts ...layer.Opts) []matrix.Matrix {
+	return nil
+}
+
+func (m *TestRNNLM) Forward(xs, ts []matrix.Matrix) []matrix.Matrix {
+	return []matrix.Matrix{{{1}}}
+}
+
+func (m *TestRNNLM) Backward() []matrix.Matrix {
+	return nil
+}
+
+func (m *TestRNNLM) Layers() []model.TimeLayer {
+	return nil
+}
+
+func (m *TestRNNLM) Params() [][]matrix.Matrix {
+	return nil
+}
+
+func (m *TestRNNLM) Grads() [][]matrix.Matrix {
+	return nil
+}
+
 func (m *TestRNNLM) SetParams(p [][]matrix.Matrix) {
 	for i, l := range m.Layers() {
 		l.SetParams(p[i]...)

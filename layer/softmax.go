@@ -12,10 +12,21 @@ type Softmax struct {
 	out matrix.Matrix
 }
 
-func (l *Softmax) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
-func (l *Softmax) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
-func (l *Softmax) SetParams(p ...matrix.Matrix) {}
-func (l *Softmax) String() string               { return fmt.Sprintf("%T", l) }
+func (l *Softmax) Params() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *Softmax) Grads() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *Softmax) SetParams(p ...matrix.Matrix) {
+	// noop
+}
+
+func (l *Softmax) String() string {
+	return fmt.Sprintf("%T", l)
+}
 
 func (l *Softmax) Forward(x, _ matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.out = softmax(x)

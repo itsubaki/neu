@@ -18,7 +18,7 @@ func New(v ...[]float64) Matrix {
 // Zero returns a matrix with all elements 0.
 func Zero(m, n int) Matrix {
 	out := make(Matrix, m)
-	for i := 0; i < m; i++ {
+	for i := range m {
 		out[i] = make([]float64, n)
 	}
 
@@ -32,9 +32,9 @@ func ZeroLike(m Matrix) Matrix {
 // One returns a matrix with all elements 1.
 func One(m, n int) Matrix {
 	out := make(Matrix, m)
-	for i := 0; i < m; i++ {
+	for i := range m {
 		out[i] = make([]float64, n)
-		for j := 0; j < n; j++ {
+		for j := range n {
 			out[i][j] = 1
 		}
 	}
@@ -125,7 +125,7 @@ func Int(m Matrix) [][]int {
 
 func Identity(size int) Matrix {
 	out := Zero(size, size)
-	for i := 0; i < size; i++ {
+	for i := range size {
 		out[i][i] = 1
 	}
 
@@ -158,8 +158,8 @@ func (m Matrix) T() Matrix {
 	p, q := m.Dim()
 
 	out := Zero(q, p)
-	for i := 0; i < q; i++ {
-		for j := 0; j < p; j++ {
+	for i := range q {
+		for j := range p {
 			out[i][j] = m[j][i]
 		}
 	}
@@ -242,9 +242,9 @@ func (m Matrix) SumAxis0() []float64 {
 	p, q := m.Dim()
 
 	v := make([]float64, 0, q)
-	for j := 0; j < q; j++ {
+	for j := range q {
 		var sum float64
-		for i := 0; i < p; i++ {
+		for i := range p {
 			sum = sum + m[i][j]
 		}
 
@@ -259,9 +259,9 @@ func (m Matrix) SumAxis1() []float64 {
 	p, q := m.Dim()
 
 	v := make([]float64, 0, p)
-	for i := 0; i < p; i++ {
+	for i := range p {
 		var sum float64
-		for j := 0; j < q; j++ {
+		for j := range q {
 			sum = sum + m[i][j]
 		}
 
@@ -312,7 +312,7 @@ func (m Matrix) Broadcast(a, b int) Matrix {
 	if len(m) == 1 {
 		// b is ignored
 		out := make(Matrix, a)
-		for i := 0; i < a; i++ {
+		for i := range a {
 			out[i] = m[0]
 		}
 
@@ -322,8 +322,8 @@ func (m Matrix) Broadcast(a, b int) Matrix {
 	if len(m[0]) == 1 {
 		// a is ignored
 		out := Zero(len(m), b)
-		for i := 0; i < len(m); i++ {
-			for j := 0; j < b; j++ {
+		for i := range len(m) {
+			for j := range b {
 				out[i][j] = m[i][0]
 			}
 		}
@@ -362,8 +362,8 @@ func F(m Matrix, f func(a float64) float64) Matrix {
 	p, q := m.Dim()
 
 	out := Zero(p, q)
-	for i := 0; i < p; i++ {
-		for j := 0; j < q; j++ {
+	for i := range p {
+		for j := range q {
 			out[i][j] = f(m[i][j])
 		}
 	}
@@ -376,8 +376,8 @@ func F2(m, n Matrix, f func(a, b float64) float64) Matrix {
 	p, q := m.Dim()
 
 	out := Zero(p, q)
-	for i := 0; i < p; i++ {
-		for j := 0; j < q; j++ {
+	for i := range p {
+		for j := range q {
 			out[i][j] = f(m[i][j], n[i][j])
 		}
 	}
@@ -390,8 +390,8 @@ func F3(m, n, o Matrix, f func(a, b, c float64) float64) Matrix {
 	p, q := m.Dim()
 
 	out := Zero(p, q)
-	for i := 0; i < p; i++ {
-		for j := 0; j < q; j++ {
+	for i := range p {
+		for j := range q {
 			out[i][j] = f(m[i][j], n[i][j], o[i][j])
 		}
 	}
@@ -406,7 +406,7 @@ func Padding(x Matrix, pad int) Matrix {
 
 	// top
 	out := New()
-	for i := 0; i < pad; i++ {
+	for range pad {
 		out = append(out, make([]float64, pw))
 	}
 
@@ -418,7 +418,7 @@ func Padding(x Matrix, pad int) Matrix {
 	}
 
 	// bottom
-	for i := 0; i < pad; i++ {
+	for range pad {
 		out = append(out, make([]float64, pw))
 	}
 
@@ -472,7 +472,7 @@ func Reshape(x Matrix, m, n int) Matrix {
 // Split returns the matrix split into H parts.
 func Split(x Matrix, H int) []Matrix {
 	out := make([]Matrix, len(x[0])/H)
-	for i := 0; i < len(out); i++ {
+	for i := range len(out) {
 		out[i] = New()
 		for _, r := range x {
 			out[i] = append(out[i], r[i*H:(i+1)*H])

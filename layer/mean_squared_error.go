@@ -10,10 +10,21 @@ type MeanSquaredError struct {
 	y, t matrix.Matrix
 }
 
-func (l *MeanSquaredError) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
-func (l *MeanSquaredError) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
-func (l *MeanSquaredError) SetParams(p ...matrix.Matrix) {}
-func (l *MeanSquaredError) String() string               { return fmt.Sprintf("%T", l) }
+func (l *MeanSquaredError) Params() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *MeanSquaredError) Grads() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *MeanSquaredError) SetParams(p ...matrix.Matrix) {
+	// noop
+}
+
+func (l *MeanSquaredError) String() string {
+	return fmt.Sprintf("%T", l)
+}
 
 func (l *MeanSquaredError) Forward(y, t matrix.Matrix, _ ...Opts) matrix.Matrix {
 	l.y, l.t = y, t

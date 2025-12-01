@@ -50,7 +50,7 @@ func greedyProbs(Q DefaultMap[float64], state string, epsilon float64, actionSiz
 	max := vector.Argmax(qs)
 
 	probs := make(RandomActions)
-	for i := 0; i < actionSize; i++ {
+	for i := range actionSize {
 		probs[i] = epsilon / float64(actionSize)
 	}
 
@@ -60,7 +60,7 @@ func greedyProbs(Q DefaultMap[float64], state string, epsilon float64, actionSiz
 
 func qstate(Q DefaultMap[float64], state string, actionSize int) []float64 {
 	qs := make([]float64, 0)
-	for i := 0; i < actionSize; i++ {
+	for i := range actionSize {
 		qs = append(qs, Q.Get(StateAction{State: state, Action: i}, 0.0))
 	}
 

@@ -3,6 +3,7 @@ package vector
 import (
 	"math"
 	randv2 "math/rand/v2"
+	"slices"
 
 	"github.com/itsubaki/neu/math/rand"
 )
@@ -63,7 +64,8 @@ func Max[T int | float64](v []T) T {
 }
 
 func Argmax(v []float64) int {
-	var max float64
+	max := v[0]
+
 	var arg int
 	for i, e := range v {
 		if e > max {
@@ -157,8 +159,8 @@ func Choice(p []float64, s ...randv2.Source) int {
 		cumsum[i] = sum
 	}
 
-	var ret int
 	r := randv2.New(s[0]).Float64()
+	var ret int
 	for i, prop := range cumsum {
 		if r <= prop {
 			ret = i
@@ -170,13 +172,7 @@ func Choice(p []float64, s ...randv2.Source) int {
 }
 
 func Contains[T comparable](v T, s []T) bool {
-	for _, ss := range s {
-		if v == ss {
-			return true
-		}
-	}
-
-	return false
+	return slices.Contains(s, v)
 }
 
 func T[T any](v []T) [][]T {
@@ -196,11 +192,11 @@ func Shuffle[T any](x, t []T, s ...randv2.Source) ([]T, []T) {
 	g := randv2.New(s[0])
 
 	xs, ts := make([]T, len(x)), make([]T, len(t))
-	for i := 0; i < len(x); i++ {
+	for i := range len(x) {
 		xs[i], ts[i] = x[i], t[i]
 	}
 
-	for i := 0; i < len(x); i++ {
+	for i := range len(x) {
 		j := g.IntN(i + 1)
 
 		// swap
@@ -213,7 +209,7 @@ func Shuffle[T any](x, t []T, s ...randv2.Source) ([]T, []T) {
 
 // Reverse reverses the slice.
 func Reverse[T any](xs []T) []T {
-	for i := 0; i < len(xs)/2; i++ {
+	for i := range len(xs) / 2 {
 		xs[i], xs[len(xs)-1-i] = xs[len(xs)-1-i], xs[i]
 	}
 

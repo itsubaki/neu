@@ -33,11 +33,11 @@ func ExampleRandn() {
 }
 
 func ExampleArgmax() {
-	v := []float64{1, 2, 3}
+	v := []float64{-1, -2, -3}
 	fmt.Println(vector.Argmax(v))
 
 	// Output:
-	// 2
+	// 0
 }
 
 func ExampleAdd() {

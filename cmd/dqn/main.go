@@ -54,7 +54,7 @@ func main() {
 		Source: rand.NewSource(rand.MustRead()),
 	}
 
-	for i := 0; i < episode; i++ {
+	for i := range episode {
 		state := e.Reset()
 		var totalLoss, totalReward float64
 		var count int

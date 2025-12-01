@@ -33,7 +33,7 @@ func NewMLP(c *MLPConfig, s ...randv2.Source) *MLP {
 	// layer
 	// Affine -> BatchNorm -> ReLU -> ... -> Affine -> SoftmaxWithLoss
 	layers := make([]Layer, 0)
-	for i := 0; i < len(size)-2; i++ {
+	for i := range len(size) - 2 {
 		S, H := size[i], size[i+1]
 
 		layers = append(layers, &layer.Affine{

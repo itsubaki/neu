@@ -14,9 +14,18 @@ type GRU struct {
 	z, r           matrix.Matrix // cache
 }
 
-func (l *GRU) Params() []matrix.Matrix      { return []matrix.Matrix{l.Wx, l.Wh, l.B} }
-func (l *GRU) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DWx, l.DWh, l.DB} }
-func (l *GRU) SetParams(p ...matrix.Matrix) { l.Wx, l.Wh, l.B = p[0], p[1], p[2] }
+func (l *GRU) Params() []matrix.Matrix {
+	return []matrix.Matrix{l.Wx, l.Wh, l.B}
+}
+
+func (l *GRU) Grads() []matrix.Matrix {
+	return []matrix.Matrix{l.DWx, l.DWh, l.DB}
+}
+
+func (l *GRU) SetParams(p ...matrix.Matrix) {
+	l.Wx, l.Wh, l.B = p[0], p[1], p[2]
+}
+
 func (l *GRU) String() string {
 	a, b := l.Wx.Dim()
 	c, d := l.Wh.Dim()

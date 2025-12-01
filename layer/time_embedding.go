@@ -12,11 +12,26 @@ type TimeEmbedding struct {
 	layer []Embedding
 }
 
-func (l *TimeEmbedding) Params() []matrix.Matrix      { return []matrix.Matrix{l.W} }
-func (l *TimeEmbedding) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DW} }
-func (l *TimeEmbedding) SetParams(p ...matrix.Matrix) { l.W = p[0] }
-func (l *TimeEmbedding) SetState(_ ...matrix.Matrix)  {}
-func (l *TimeEmbedding) ResetState()                  {}
+func (l *TimeEmbedding) Params() []matrix.Matrix {
+	return []matrix.Matrix{l.W}
+}
+
+func (l *TimeEmbedding) Grads() []matrix.Matrix {
+	return []matrix.Matrix{l.DW}
+}
+
+func (l *TimeEmbedding) SetParams(p ...matrix.Matrix) {
+	l.W = p[0]
+}
+
+func (l *TimeEmbedding) SetState(_ ...matrix.Matrix) {
+	// noop
+}
+
+func (l *TimeEmbedding) ResetState() {
+	// noop
+}
+
 func (l *TimeEmbedding) String() string {
 	a, b := l.W.Dim()
 	return fmt.Sprintf("%T: W(%v, %v): %v", l, a, b, a*b)

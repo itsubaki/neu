@@ -90,7 +90,7 @@ func ExampleSequential_gradientCheck() {
 	// 00: 4.6971204522838296e-11
 	// 01: 9.375737187490574e-11
 	// 20: 5.0088649301722556e-11
-	// 21: 3.333775858149757e-08
+	// 21: 3.3338036137253724e-08
 }
 
 func ExampleSequential_Summary() {

@@ -17,7 +17,7 @@ func ExampleDiff() {
 	}
 	y := numerical.Diff(f, x, 1e-3)
 
-	for i := 0; i < len(x); i++ {
+	for i := range len(x) {
 		fmt.Printf("%.4f,%.4f\n", x[i], y[i])
 	}
 

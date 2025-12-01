@@ -14,7 +14,10 @@ func ExampleSGD() {
 		grads:  [][]matrix.Matrix{{{{2, 4, 6}, {8, 10, 12}}}},
 	}
 
-	opt := optimizer.SGD{Hooks: []optimizer.Hook{hook.WeightDecay(0.0)}}
+	opt := optimizer.SGD{
+		Hooks: []optimizer.Hook{hook.WeightDecay(0.0)},
+	}
+
 	opt.LearningRate = 0.0
 	fmt.Println(opt.Update(m)[0][0])
 

@@ -14,11 +14,34 @@ type TimeRNN struct {
 	Stateful     bool
 }
 
-func (l *TimeRNN) Params() []matrix.Matrix      { return []matrix.Matrix{l.Wx, l.Wh, l.B} }
-func (l *TimeRNN) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DWx, l.DWh, l.DB} }
-func (l *TimeRNN) SetParams(p ...matrix.Matrix) { l.Wx, l.Wh, l.B = p[0], p[1], p[2] }
-func (l *TimeRNN) SetState(h ...matrix.Matrix)  { l.h = h[0] }
-func (l *TimeRNN) ResetState()                  { l.h = matrix.New() }
+func (l *TimeRNN) Params() []matrix.Matrix {
+	return []matrix.Matrix{
+		l.Wx,
+		l.Wh,
+		l.B,
+	}
+}
+
+func (l *TimeRNN) Grads() []matrix.Matrix {
+	return []matrix.Matrix{
+		l.DWx,
+		l.DWh,
+		l.DB,
+	}
+}
+
+func (l *TimeRNN) SetParams(p ...matrix.Matrix) {
+	l.Wx, l.Wh, l.B = p[0], p[1], p[2]
+}
+
+func (l *TimeRNN) SetState(h ...matrix.Matrix) {
+	l.h = h[0]
+}
+
+func (l *TimeRNN) ResetState() {
+	l.h = matrix.New()
+}
+
 func (l *TimeRNN) String() string {
 	a, b := l.Wx.Dim()
 	c, d := l.Wh.Dim()
@@ -35,7 +58,7 @@ func (l *TimeRNN) Forward(xs, _ []matrix.Matrix, _ ...Opts) []matrix.Matrix {
 		l.h = matrix.Zero(N, H)
 	}
 
-	for t := 0; t < T; t++ {
+	for t := range T {
 		l.layer[t] = RNN{Wx: l.Wx, Wh: l.Wh, B: l.B}
 		l.h = l.layer[t].Forward(xs[t], l.h)
 		hs[t] = l.h

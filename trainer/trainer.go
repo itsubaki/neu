@@ -63,10 +63,10 @@ func (tr *Trainer) Fit(in *Input, s ...randv2.Source) {
 		s = append(s, rand.NewSource(rand.MustRead()))
 	}
 
-	for i := 0; i < in.Epochs; i++ {
+	for i := range in.Epochs {
 		// shuffle dataset
 		xs, ts := vector.Shuffle(in.Train, in.TrainLabel, s[0])
-		for j := 0; j < len(in.Train)/in.BatchSize; j++ {
+		for j := range len(in.Train) / in.BatchSize {
 			// batch
 			begin, end := Range(j, in.BatchSize)
 			xbatch, tbatch := xs[begin:end], ts[begin:end]

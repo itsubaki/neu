@@ -22,7 +22,7 @@ func ExampleQLearningAgent() {
 	}
 
 	episodes := 10000
-	for i := 0; i < episodes; i++ {
+	for range episodes {
 		state := e.Reset()
 
 		for {
@@ -68,7 +68,7 @@ func ExampleQLearningAgent() {
 	// (1, 3) UP    : 1.0000
 	// (1, 3) DOWN  : 0.0000
 	// (1, 3) LEFT  : 0.0000
-	// (1, 3) RIGHT : -0.0812
+	// (1, 3) RIGHT : 0.0000
 	// (2, 0) UP    : 0.6561
 	// (2, 0) DOWN  : 0.5905
 	// (2, 0) LEFT  : 0.5905
@@ -80,9 +80,9 @@ func ExampleQLearningAgent() {
 	// (2, 2) UP    : 0.8100
 	// (2, 2) DOWN  : 0.7290
 	// (2, 2) LEFT  : 0.6561
-	// (2, 2) RIGHT : 0.0000
-	// (2, 3) UP    : -0.1000
+	// (2, 2) RIGHT : 0.5039
+	// (2, 3) UP    : -0.0997
 	// (2, 3) DOWN  : 0.0000
-	// (2, 3) LEFT  : 0.0000
+	// (2, 3) LEFT  : 0.6998
 	// (2, 3) RIGHT : 0.0000
 }

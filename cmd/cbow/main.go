@@ -54,7 +54,7 @@ func main() {
 		Beta2: beta2,
 	}
 
-	for i := 0; i < epochs; i++ {
+	for i := range epochs {
 		loss := m.Forward(c, t)
 		m.Backward()
 		o.Update(m)

@@ -63,7 +63,7 @@ func (m *Decoder) Generate(h matrix.Matrix, startID, length int) []int {
 	sampled := make([]int, 0)
 
 	x := startID
-	for i := 0; i < length; i++ {
+	for range length {
 		xs := []matrix.Matrix{{{float64(x)}}}
 
 		out := m.TimeEmbedding.Forward(xs, nil) // (1, 1, 16)

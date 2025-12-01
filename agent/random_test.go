@@ -22,7 +22,7 @@ func ExampleRandomAgent() {
 	}
 
 	episodes := 1000
-	for i := 0; i < episodes; i++ {
+	for range episodes {
 		state := e.Reset()
 		a.Reset()
 

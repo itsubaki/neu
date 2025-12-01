@@ -17,7 +17,7 @@ func ExampleAlphaAgent() {
 		Source:  rand.Const(1),
 	}
 
-	for i := 0; i < 10; i++ {
+	for range 10 {
 		action := a.GetAction()
 		a.Update(action, 1.0)
 		fmt.Printf("%v: %.4f\n", action, a.Qs)
@@ -42,13 +42,13 @@ func ExampleAlphaAgent_bandit() {
 	s := rand.Const(1)
 
 	all := make([][]float64, runs)
-	for r := 0; r < runs; r++ {
+	for r := range runs {
 		bandit := env.NewNonStatBandit(arms, s)
 		agent := &agent.AlphaAgent{Epsilon: eps, Alpha: alpha, Qs: make([]float64, arms), Source: s}
 
 		var total float64
 		rates := make([]float64, steps)
-		for i := 0; i < steps; i++ {
+		for i := range steps {
 			action := agent.GetAction()
 			reward := bandit.Play(action)
 			agent.Update(action, reward)

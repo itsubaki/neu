@@ -12,16 +12,27 @@ type WeightSum struct {
 	hs, ar []matrix.Matrix
 }
 
-func (l *WeightSum) Params() []matrix.Matrix      { return make([]matrix.Matrix, 0) }
-func (l *WeightSum) Grads() []matrix.Matrix       { return make([]matrix.Matrix, 0) }
-func (l *WeightSum) SetParams(p ...matrix.Matrix) {}
-func (l *WeightSum) String() string               { return fmt.Sprintf("%T", l) }
+func (l *WeightSum) Params() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *WeightSum) Grads() []matrix.Matrix {
+	return make([]matrix.Matrix, 0)
+}
+
+func (l *WeightSum) SetParams(p ...matrix.Matrix) {
+	// noop
+}
+
+func (l *WeightSum) String() string {
+	return fmt.Sprintf("%T", l)
+}
 
 func (l *WeightSum) Forward(hs []matrix.Matrix, a matrix.Matrix) matrix.Matrix {
 	T, N, H := len(hs), len(hs[0]), len(hs[0][0])
 
 	ar := make([]matrix.Matrix, T)
-	for i := 0; i < T; i++ {
+	for i := range T {
 		ar[i] = matrix.New(vector.T(a[i])...).Broadcast(N, H) // (1, N) -> (N, 1) -> (N, H)
 	}
 
@@ -37,7 +48,7 @@ func (l *WeightSum) Backward(dc matrix.Matrix) ([]matrix.Matrix, matrix.Matrix) 
 	dhs := tensor.Mul(dt, l.ar) // (T, N, H)
 
 	da := make(matrix.Matrix, T)
-	for i := 0; i < T; i++ {
+	for i := range T {
 		da[i] = dar[i].SumAxis1() // (N, H) -> (1, N)
 	}
 

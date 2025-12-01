@@ -60,8 +60,8 @@ func (tr *RNNLMTrainer) Fit(in *RNNLMInput) {
 	maxIter := dataSize / (in.BatchSize * in.TimeSize)
 	var totalLoss float64
 	var lossCount int
-	for epoch := 0; epoch < in.Epochs; epoch++ {
-		for j := 0; j < maxIter; j++ {
+	for epoch := range in.Epochs {
+		for j := range maxIter {
 			// (Time, N, 1)
 			xbatch, tbatch := tr.Batch(xs, ts, offsets, in.TimeSize)
 
@@ -84,7 +84,7 @@ func (tr *RNNLMTrainer) Fit(in *RNNLMInput) {
 
 func (tr *RNNLMTrainer) Batch(xs, ts, offsets []int, T int) ([]matrix.Matrix, []matrix.Matrix) {
 	xbatch, tbatch := tensor.Zero(T, len(offsets), 1), tensor.Zero(T, len(offsets), 1)
-	for t := 0; t < T; t++ {
+	for t := range T {
 		for i, offset := range offsets {
 			xbatch[t][i] = []float64{float64(xs[(offset+tr.timeIdx)%len(xs)])}
 			tbatch[t][i] = []float64{float64(ts[(offset+tr.timeIdx)%len(xs)])}

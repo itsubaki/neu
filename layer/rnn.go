@@ -13,9 +13,18 @@ type RNN struct {
 	x, h, hNext  matrix.Matrix // cache
 }
 
-func (l *RNN) Params() []matrix.Matrix      { return []matrix.Matrix{l.Wx, l.Wh, l.B} }
-func (l *RNN) Grads() []matrix.Matrix       { return []matrix.Matrix{l.DWx, l.DWh, l.DB} }
-func (l *RNN) SetParams(p ...matrix.Matrix) { l.Wx, l.Wh, l.B = p[0], p[1], p[2] }
+func (l *RNN) Params() []matrix.Matrix {
+	return []matrix.Matrix{l.Wx, l.Wh, l.B}
+}
+
+func (l *RNN) Grads() []matrix.Matrix {
+	return []matrix.Matrix{l.DWx, l.DWh, l.DB}
+}
+
+func (l *RNN) SetParams(p ...matrix.Matrix) {
+	l.Wx, l.Wh, l.B = p[0], p[1], p[2]
+}
+
 func (l *RNN) String() string {
 	a, b := l.Wx.Dim()
 	c, d := l.Wh.Dim()
