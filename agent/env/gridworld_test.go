@@ -12,10 +12,10 @@ func ExampleGridState() {
 	s2 := &env.GridState{Height: 1, Width: 0}
 	s3 := &env.GridState{Height: 1, Width: 1}
 
-	fmt.Println(s0.Equals(s0))
-	fmt.Println(s0.Equals(s1))
-	fmt.Println(s0.Equals(s2))
-	fmt.Println(s0.Equals(s3))
+	fmt.Println(s0.Equal(s0))
+	fmt.Println(s0.Equal(s1))
+	fmt.Println(s0.Equal(s2))
+	fmt.Println(s0.Equal(s3))
 
 	// Output:
 	// true

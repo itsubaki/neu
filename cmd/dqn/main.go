@@ -85,7 +85,7 @@ func main() {
 			fmt.Printf("%d: %.8f, %.8f\n", i, totalLoss/float64(count), totalReward/float64(count))
 
 			for _, s := range e.State {
-				if s.Equals(e.GoalState) || s.Equals(e.WallState) {
+				if s.Equal(e.GoalState) || s.Equal(e.WallState) {
 					continue
 				}
 

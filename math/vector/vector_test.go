@@ -200,18 +200,18 @@ func ExampleMatchCount() {
 	// 2
 }
 
-func ExampleEquals() {
-	fmt.Println(vector.Equals(
+func ExampleEqual() {
+	fmt.Println(vector.Equal(
 		[]int{1, 2, 3, 4, 5},
 		[]int{1, 2, 3, 4, 5},
 	))
 
-	fmt.Println(vector.Equals(
+	fmt.Println(vector.Equal(
 		[]int{1, 2, 3, 4, 5},
 		[]int{0, 2, 4, 3, 5},
 	))
 
-	fmt.Println(vector.Equals(
+	fmt.Println(vector.Equal(
 		[]int{1, 2, 3},
 		[]int{0, 2, 4, 3, 5},
 	))

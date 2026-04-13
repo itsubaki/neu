@@ -18,7 +18,7 @@ type GridState struct {
 	Width  int
 }
 
-func (s *GridState) Equals(o *GridState) bool {
+func (s *GridState) Equal(o *GridState) bool {
 	return s.Height == o.Height && s.Width == o.Width
 }
 
@@ -95,7 +95,7 @@ func (w *GridWorld) NextState(s *GridState, a int) *GridState {
 	}
 
 	// wall
-	if next.Equals(w.WallState) {
+	if next.Equal(w.WallState) {
 		next = s
 	}
 
@@ -115,7 +115,7 @@ func (w *GridWorld) Step(a int) (*GridState, float64, bool) {
 	s := w.AgentState
 	n := w.NextState(s, a)
 	r := w.Reward(s, a, n)
-	done := n.Equals(w.GoalState)
+	done := n.Equal(w.GoalState)
 
 	w.AgentState = n
 	return n, r, done

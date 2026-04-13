@@ -97,7 +97,7 @@ func generate(x, t [][]int, m trainer.Seq2Seq, v *sequence.Vocab, top int) float
 		tq := vector.Reverse(trainer.Time(matrix.New(q)))
 
 		guess := m.Generate(tq, correct[0], len(correct[1:]))
-		if vector.Equals(correct[1:], guess) {
+		if vector.Equal(correct[1:], guess) {
 			acc++
 		}
 
