@@ -69,8 +69,7 @@ func Argmax(v []float64) int {
 	var arg int
 	for i, e := range v {
 		if e > max {
-			max = e
-			arg = i
+			arg, max = i, e
 		}
 	}
 
