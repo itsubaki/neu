@@ -97,3 +97,11 @@ go run cmd/seq2seq/main.go --dir ./testdata
 40,  0: loss=0.0912, train_acc=1.0000, test_acc=0.0000
 ...
 ```
+
+## References
+- [ゼロから作るDeep Learning](https://www.oreilly.co.jp/books/9784873117584/)
+- [ゼロから作るDeep Learning ❷](https://www.oreilly.co.jp/books/9784873118369/)
+- [ゼロから作るDeep Learning ❹](https://www.oreilly.co.jp/books/9784873119755/)
+- [oreilly-japan/deep-learning-from-scratch](https://github.com/oreilly-japan/deep-learning-from-scratch)
+- [oreilly-japan/deep-learning-from-scratch-2](https://github.com/oreilly-japan/deep-learning-from-scratch-2)
+- [oreilly-japan/deep-learning-from-scratch-4](https://github.com/oreilly-japan/deep-learning-from-scratch-4)
