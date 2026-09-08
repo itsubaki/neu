@@ -2,7 +2,6 @@
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/itsubaki/neu)](https://pkg.go.dev/github.com/itsubaki/neu)
 [![tests](https://github.com/itsubaki/neu/workflows/tests/badge.svg)](https://github.com/itsubaki/neu/actions)
-[![codecov](https://codecov.io/gh/itsubaki/neu/branch/main/graph/badge.svg?token=KMJ2GUC1FJ)](https://codecov.io/gh/itsubaki/neu)
 
 A deep learning framework in Go using only the standard library.
 
