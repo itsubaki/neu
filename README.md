@@ -3,7 +3,7 @@
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/itsubaki/neu)](https://pkg.go.dev/github.com/itsubaki/neu)
 [![tests](https://github.com/itsubaki/neu/workflows/tests/badge.svg)](https://github.com/itsubaki/neu/actions)
 
-A deep learning framework in Go using only the standard library.
+A deep learning framework in Go from scratch.
 
 ## Examples
 
